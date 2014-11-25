@@ -19,12 +19,6 @@ angular.module('myApp.routeConfig', ['ngRoute'])
             .when('/', {
                 templateUrl: '/assets/partials/view.html'
             })
-            .when('/users/create', {
-                templateUrl: '/assets/partials/create.html'
-            })
-            .when('/users/update/:_id', {
-                templateUrl: 'assets/partials/update.html'
-            })
             .otherwise({redirectTo: '/'})
 
 @commonModule = angular.module('myApp.common', [])
