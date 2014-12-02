@@ -1,10 +1,8 @@
-package models.tournament
+package models.tournament.tournaments
 
-import models.teams.Team
-import models.users.User
+import models.team.Team
+import models.user.User
 import reactivemongo.bson.BSONObjectID
-
-import TournamentState._
 
 /**
  * Created by Szymek.

@@ -1,6 +1,6 @@
-package models.tournament
+package models.tournament.tournaments
 
-import models.users.User
+import models.user.User
 
 /**
  * Created by Szymek.

@@ -1,4 +1,4 @@
-package models.tournament
+package models.tournament.tournaments
 
 import org.joda.time.DateTime
 

@@ -1,4 +1,6 @@
-package models.teams
+package models.team.teams
+
+import models.team.Team
 
 /**
  * Created by Szymek.

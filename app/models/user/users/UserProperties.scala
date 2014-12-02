@@ -1,4 +1,4 @@
-package models.users
+package models.user.users
 
 /**
  * Created by Szymek.

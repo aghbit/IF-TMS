@@ -1,6 +1,6 @@
-package models.tournament
+package models.tournament.tournaments
 
-import models.strategies.TournamentStrategy
+import models.strategy.TournamentStrategy
 
 /**
  * Created by Szymek.

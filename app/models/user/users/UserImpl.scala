@@ -1,8 +1,9 @@
-package models.users
+package models.user.users
 
 import models.statistics.Statistics
-import models.teams.Team
-import models.tournament.Tournament
+import models.team.Team
+import models.tournament.tournaments.Tournament
+import models.user.User
 import reactivemongo.bson.BSONObjectID
 
 /**

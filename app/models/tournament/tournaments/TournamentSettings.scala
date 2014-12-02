@@ -1,10 +1,8 @@
-package models.tournament
+package models.tournament.tournaments
 
 /**
  * Created by Szymek.
  */
-
-import TournamentLevel._
 
 class TournamentSettings(val numberOfPitches: Int,
                           val numberOfTeams: Int,

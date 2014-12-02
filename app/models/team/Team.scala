@@ -1,4 +1,4 @@
-package models.teams
+package models.team
 
 /**
  * Created by Szymek.

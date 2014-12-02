@@ -1,4 +1,4 @@
-package models.strategies
+package models.strategy
 
 /**
  * Created by Szymek.
