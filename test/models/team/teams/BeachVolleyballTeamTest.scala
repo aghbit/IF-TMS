@@ -22,14 +22,14 @@ class BeachVolleyballTeamTest extends FunSuite {
   }
 
   test("Constructor: simple test") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2)
     assert(underTest.name === "underTest", "Constructor: test 1")
     assert(underTest.isComplete === false, "Constructor: test 2")
     assert(underTest.getUsersIDs === List(), "Constructor: test 3")
   }
 
   test("AddPlayer: simple test") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = BeachVolleyballTeam("underTest")
     val players = users()
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(1))
@@ -37,7 +37,7 @@ class BeachVolleyballTeamTest extends FunSuite {
   }
 
   test("RemovePlayer: simple test") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = BeachVolleyballTeam("underTest")
     val players = users()
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(1))
@@ -46,7 +46,7 @@ class BeachVolleyballTeamTest extends FunSuite {
   }
 
   test("SetCaptainAndCaptainID: simple test") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = BeachVolleyballTeam("underTest")
     val players = users()
     intercept[NullPointerException]{
       underTest.captainID()
@@ -61,7 +61,7 @@ class BeachVolleyballTeamTest extends FunSuite {
   }
 
   test("IsCompleteAddPlayerRemovePlayer: BenchWarmers") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = BeachVolleyballTeam("underTest")
     val players = users()
     players.foreach(user => underTest.addPlayer(user))
     assert(underTest.isComplete, "IsComplete: BenchWarmers")
@@ -72,7 +72,7 @@ class BeachVolleyballTeamTest extends FunSuite {
   }
 
   test("RemovePlayer: remove absent player") {
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest")
+    val underTest:Team = BeachVolleyballTeam("underTest")
     intercept[NoSuchElementException]{
       underTest.removePlayer(users().head)
     }

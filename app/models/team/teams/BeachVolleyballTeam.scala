@@ -11,7 +11,7 @@ import reactivemongo.bson.BSONObjectID
 
 class BeachVolleyballTeam(val _id:BSONObjectID,
                            val name:String,
-                           val playersNumber:Int = 2) extends Team {
+                           val playersNumber:Int) extends Team {
 
   private var playersID:List[BSONObjectID] =  List()
 
@@ -46,5 +46,11 @@ class BeachVolleyballTeam(val _id:BSONObjectID,
     }else {
       playersID.head
     }
+  }
+}
+
+object BeachVolleyballTeam {
+  def apply(name:String):BeachVolleyballTeam = {
+    new BeachVolleyballTeam(BSONObjectID.generate, name, 2)
   }
 }

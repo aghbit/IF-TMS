@@ -9,7 +9,7 @@ import reactivemongo.bson.BSONObjectID
  */
 class VolleyballTeam(val _id:BSONObjectID,
                      val name:String,
-                     val playersNumber:Int = 6) extends Team {
+                     val playersNumber:Int) extends Team {
 
   private var playersID:List[BSONObjectID] =  List()
 
@@ -44,5 +44,10 @@ class VolleyballTeam(val _id:BSONObjectID,
     }else {
       playersID.head
     }
+  }
+}
+object VolleyballTeam{
+  def apply(name:String):VolleyballTeam = {
+    new VolleyballTeam(BSONObjectID.generate, name, 6)
   }
 }
