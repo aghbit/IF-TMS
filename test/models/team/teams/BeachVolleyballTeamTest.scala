@@ -39,7 +39,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar{
     val underTest:Team = BeachVolleyballTeam("underTest")
     val players = users()
 
-    //whem
+    //when
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(1))
 
@@ -62,34 +62,35 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar{
     assert(!underTest.isComplete, "RemovePlayer: test 1")
   }
 
-  test("SetCaptainAndCaptainID: simple test") {
+  test("CaptainID: throw exception, when wasn't set.") {
 
     //given
     val underTest:Team = BeachVolleyballTeam("underTest")
-    val players = users()
 
     //when&then
     intercept[NullPointerException]{
       underTest.captainID()
     }
 
-    //when
+  }
+
+  test("SetCaptain&CaptainID: simple test") {
+
+    //given
+    val underTest:Team = BeachVolleyballTeam("underTest")
+    val players = users()
     underTest.addPlayer(players(0))
-    underTest.setCaptain(players(1))
     underTest.addPlayer(players(2))
 
-    //then
-    assert(underTest.captainID() === players(1)._id, "SetCaptainAndCaptainID: test 1")
-
     //when
-    underTest.setCaptain(players(0))
+    underTest.setCaptain(players(1))
 
     //then
-    assert(underTest.captainID() === players(0)._id, "SetCaptainAndCaptainID: test 2")
+    assert(underTest.captainID() === players(1)._id, "SetCaptain&CaptainID: test 1")
 
   }
 
-  test("IsCompleteAddPlayerRemovePlayer: BenchWarmers") {
+  test("AddPlayer: BenchWarmers") {
 
     //given
     val underTest:Team = BeachVolleyballTeam("underTest")
@@ -99,15 +100,37 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar{
     players.foreach(user => underTest.addPlayer(user))
 
     //then
-    assert(underTest.isComplete, "IsComplete: BenchWarmers")
     assert(underTest.getUsersIDs.length === 3, "AddPlayer: BenchWarmers")
+  }
+
+  test("RemovePlayer: BenchWarmers"){
+
+    //given
+    val underTest:Team = BeachVolleyballTeam("underTest")
+    val players = users()
+    players.foreach(user => underTest.addPlayer(user))
 
     //when
     underTest.removePlayer(players.head)
     underTest.removePlayer(players.tail.head)
 
     //then
-    assert(!underTest.isComplete, "DeleteUser: BenchWarmers")
+    assert(underTest.getUsersIDs.length === 1, "RemoveUser: BenchWarmers")
+  }
+
+  test("isComplete: BenchWarmers"){
+
+    //given
+    val underTest:Team = BeachVolleyballTeam("underTest")
+    val players = users()
+    players.foreach(user => underTest.addPlayer(user))
+
+    //when
+    val isComplete = underTest.isComplete
+
+    //then
+    assert(isComplete, "isComplete: BenchWarmers")
+
   }
 
   test("RemovePlayer: remove absent player") {
