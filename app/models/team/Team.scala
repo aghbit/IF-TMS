@@ -8,6 +8,10 @@ import reactivemongo.bson.BSONObjectID
  */
 trait Team {
 
+  val _id:BSONObjectID
+
+  val name:String
+
   def getUsersIDs:List[BSONObjectID]
 
   def isComplete:Boolean
@@ -15,8 +19,6 @@ trait Team {
   def addPlayer(player:User)
 
   def removePlayer(player:User)
-
-  def name:String
 
   def setCaptain(captain:User)
 
