@@ -5,11 +5,11 @@ import org.joda.time.DateTime
 /**
  * Created by Szymek.
  */
-class TournamentTerm(val enrollDeadline: DateTime,
-                      val begin: DateTime,
-                      val end:DateTime,
-                      val extraBegin: DateTime,
-                      val extraEnd:DateTime) {
+class TournamentTerm(var enrollDeadline: DateTime,
+                      var begin: DateTime,
+                      var end:DateTime,
+                      var extraBegin: DateTime,
+                      var extraEnd:DateTime) {
 
   def getDuration() = ???
 
