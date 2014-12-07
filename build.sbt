@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   "javax.inject" % "javax.inject" % "1",
   "org.scalatest" % "scalatest_2.10" % "2.2.1" % "test",
   "junit" % "junit" % "4.10" % "test",
-  "org.mockito" % "mockito-core" % "1.10.8"
+  "org.mockito" % "mockito-core" % "1.10.8",
+  "org.mockito" % "mockito-all" % "1.10.8"
 )
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
