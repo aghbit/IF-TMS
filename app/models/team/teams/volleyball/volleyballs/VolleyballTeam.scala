@@ -9,7 +9,9 @@ import reactivemongo.bson.BSONObjectID
 class VolleyballTeam( val _id:BSONObjectID,
                       val name:String,
                       val playersNumber:Int) extends VolleyballTeams {
+  override val playersLimit: Int = 12
 
+  override def canAddPlayer: Boolean = playersID.length<playersLimit
 }
 object VolleyballTeam{
   def apply(name:String):VolleyballTeam = {

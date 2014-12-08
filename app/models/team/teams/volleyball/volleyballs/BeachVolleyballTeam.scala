@@ -10,6 +10,9 @@ class BeachVolleyballTeam(val _id:BSONObjectID,
                            val name:String,
                            val playersNumber:Int) extends VolleyballTeams {
 
+  override val playersLimit: Int = 3
+
+  override def canAddPlayer: Boolean = playersID.length<playersLimit
 }
 
 object BeachVolleyballTeam {

@@ -142,4 +142,18 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
       underTest.removePlayer(players.head)
     }
   }
+
+  test("AddPlayer: Add too many players"){
+
+    //given
+    players.foreach(user => underTest.addPlayer(user))
+    val player = mock[User]
+    Mockito.when(player._id).thenReturn(BSONObjectID.generate)
+
+    //when&then
+    intercept[Exception]{
+      underTest.addPlayer(player)
+    }
+
+  }
 }

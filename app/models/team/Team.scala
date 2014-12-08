@@ -23,4 +23,6 @@ trait Team {
   def setCaptain(captain:User)
 
   def captainID():BSONObjectID
+
+  def canAddPlayer:Boolean
 }

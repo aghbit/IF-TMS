@@ -12,15 +12,20 @@ trait VolleyballTeams extends Team {
   val _id:BSONObjectID
   val name:String
   val playersNumber:Int
+  val playersLimit: Int
 
-  private var playersID:List[BSONObjectID] =  List()
+  protected var playersID:List[BSONObjectID] =  List()
 
   override def getUsersIDs: List[BSONObjectID] = playersID
 
   override def isComplete: Boolean = playersID.length>=playersNumber
 
   override def addPlayer(player: User): Unit = {
-    playersID = playersID ::: List(player._id)
+    if(canAddPlayer){
+      playersID = playersID ::: List(player._id)
+    }else {
+      throw new Exception("Can't add! Too many players in this team!")
+    }
   }
 
   override def removePlayer(player: User): Unit = {
