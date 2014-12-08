@@ -1,15 +1,12 @@
 package models.tournament.tournaments
 
 import models.user.User
-import models.tournament.tournaments.TournamentProperties
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Szymek.
  */
 class TournamentStaff(val admin:User,
-                      var Referees:Option[List[User]]) {
+                      var Referees: ListBuffer[User]) {
 
-  def addReferee(user:User) = {
-    //var newProps: TournamentProperties = new TournamentProperties()
-  }
 }

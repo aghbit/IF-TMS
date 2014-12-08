@@ -1,19 +1,20 @@
 package models.tournament.tournaments
 
 import models.team.Team
-import models.tournament.tournaments.TournamentProperties
 import models.user.User
 import reactivemongo.bson.BSONObjectID
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Szymek.
  * Edited by: Przemek
+ * forgive me
  */
 
 
 class Tournament(val _id: Option[BSONObjectID],
                  var properties: TournamentProperties,
-                 var teams: List[Team]) {
+                 var teams: ListBuffer[Team]) {
 
   def generateTree() = {
     properties.strategy.getOrder()
@@ -77,6 +78,12 @@ class Tournament(val _id: Option[BSONObjectID],
       if(canEdit(8)) properties.staff.Referees = newProperties.staff.Referees
   }
 
+  def addReferee(user:User) = {
+    val newProps = properties
+    newProps.staff.Referees.append(user)
+    changeTournamentProperties(newProps)
+  }
+
   // canEdit consist of:
   // canEditDescription,  3 fields; 1 - name, 2 - place, 3 - description
   // canEditTerm,         1 fields  1 - all,
@@ -86,9 +93,9 @@ class Tournament(val _id: Option[BSONObjectID],
 }
 
 object Tournament {
-  def apply(id: Option[BSONObjectID], properties: TournamentProperties, teams: List[Team]) = {
+  def apply(id: Option[BSONObjectID], properties: TournamentProperties, teams: ListBuffer[Team]) = {
     val newTournament = new Tournament(id, properties, teams)
-    newTournament.teams = List[Team]()
+    newTournament.teams = ListBuffer[Team]()
     for( a: Int <- 0 to 9) newTournament.canEdit(a) = true
     newTournament.startBeforeEnrollment()
     newTournament
