@@ -56,10 +56,10 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     underTest.removePlayer(players(3))
 
     //when
-    val isComplete:Boolean = underTest.isComplete
+    val playersNumber = underTest.getUsersIDs.length
 
     //then
-    assert(!isComplete, "RemovePlayer: test 1")
+    assert(playersNumber === 5, "RemovePlayer: test 1")
   }
 
   test("CaptainID: throw exception, when wasn't set.") {
@@ -146,6 +146,7 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     additionalPlayers.foreach(player => underTest.addPlayer(player))
     val player = mock[User]
     Mockito.when(player._id).thenReturn(BSONObjectID.generate)
+
     //when&then
     intercept[Exception]{
       underTest.addPlayer(player)

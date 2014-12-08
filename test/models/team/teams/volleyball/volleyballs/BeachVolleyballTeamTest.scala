@@ -60,10 +60,10 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     underTest.removePlayer(players(0))
 
     //when
-    val isComplete = underTest.isComplete
+    val playersNumber = underTest.getUsersIDs.length
 
     //then
-    assert(!isComplete, "RemovePlayer: test 1")
+    assert(playersNumber === 1, "RemovePlayer: test 1")
   }
 
   test("CaptainID: throw exception, when wasn't set.") {
@@ -83,9 +83,9 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(2))
+    underTest.setCaptain(players(1))
 
     //when
-    underTest.setCaptain(players(1))
     val captainID = underTest.captainID()
 
     //then
