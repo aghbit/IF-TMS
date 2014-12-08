@@ -9,9 +9,9 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by Szymek.
  */
-class UserImpl(val _id:Option[BSONObjectID],
+class UserImpl(val _id:BSONObjectID,
                 val personalData: UserProperties,
-                val statistics: Statistics) extends User
+                val statistics: Option[Statistics]) extends User
 {
 
 }
