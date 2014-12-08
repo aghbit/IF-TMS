@@ -1,4 +1,4 @@
-package models.team.teams
+package models.team.teams.volleyball
 
 import models.team.Team
 import models.user.User
@@ -7,9 +7,11 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by Szymek.
  */
-class VolleyballTeam(val _id:BSONObjectID,
-                     val name:String,
-                     val playersNumber:Int) extends Team {
+trait VolleyballTeams extends Team {
+
+  val _id:BSONObjectID
+  val name:String
+  val playersNumber:Int
 
   private var playersID:List[BSONObjectID] =  List()
 
@@ -22,9 +24,9 @@ class VolleyballTeam(val _id:BSONObjectID,
   }
 
   override def removePlayer(player: User): Unit = {
-    if(!playersID.contains(player._id)){
+    if(!playersID.contains(player._id))
       throw new NoSuchElementException("Can't remove absent player from the team!")
-    }else{
+    else{
       playersID = playersID.filter(id => id!= player._id)
     }
   }
@@ -40,14 +42,10 @@ class VolleyballTeam(val _id:BSONObjectID,
 
   override def captainID(): BSONObjectID = {
     if(playersID.isEmpty){
-      throw new NullPointerException("Can't returned captain of the empty team!")
+      throw new NullPointerException("Can't return captain of the empty team!")
     }else {
       playersID.head
     }
   }
-}
-object VolleyballTeam{
-  def apply(name:String):VolleyballTeam = {
-    new VolleyballTeam(BSONObjectID.generate, name, 6)
-  }
+
 }
