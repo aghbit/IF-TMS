@@ -12,17 +12,25 @@ trait Team {
 
   val name:String
 
-  def getUsersIDs:List[BSONObjectID]
+  def getMembersIDs:List[BSONObjectID]
 
   def isComplete:Boolean
 
   def addPlayer(player:User)
 
+  def addBenchWarmer(benchWarmer:User)
+
   def removePlayer(player:User)
+
+  def removeBenchWarmer(benchWarmer:User)
 
   def setCaptain(captain:User)
 
-  def captainID():BSONObjectID
+  def getCaptainID:BSONObjectID
 
   def canAddPlayer:Boolean
+
+  def canAddBenchWarmer:Boolean
+
+  def containsMember(member:User):Boolean
 }

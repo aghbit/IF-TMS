@@ -1,5 +1,6 @@
 package models.team.teams.volleyball.volleyballs
 
+import models.exceptions.TooManyMembersInTeamException
 import models.team.Team
 import models.user.User
 import org.junit.runner.RunWith
@@ -25,114 +26,69 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
   }
 
-
-  test("Constructor: simple test") {
+  test("Constructor: Simple test") {
 
     //given
 
     //when
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2)
+    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2, 1)
 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")
     assert(underTest.isComplete === false, "Constructor: test 2")
-    assert(underTest.getUsersIDs === List(), "Constructor: test 3")
+    assert(underTest.getMembersIDs === List(), "Constructor: test 3")
   }
 
-  test("AddPlayer: simple test") {
+  test("AddPlayer: Simple test") {
+
+    //given
+
+    //when
+    underTest.addPlayer(players(0))
+    val containsPlayer = underTest.containsMember(players(0))
+
+    //then
+    assert(containsPlayer, "AddPlayer: test 1")
+  }
+
+  test("AddPlayer: Too many players"){
 
     //given
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(1))
 
-    //when
-    val isComplete = underTest.isComplete
-
-    //then
-    assert(isComplete, "AddPlayer: test 1")
+    //then&then
+    intercept[TooManyMembersInTeamException]{
+      underTest.addPlayer(players(2))
+    }
   }
 
-  test("RemovePlayer: simple test") {
+  test("AddBenchWarmer: Beach volleyball team can't has bench warmers!"){
 
     //given
-    underTest.addPlayer(players(0))
-    underTest.addPlayer(players(1))
-    underTest.removePlayer(players(0))
-
-    //when
-    val playersNumber = underTest.getUsersIDs.length
-
-    //then
-    assert(playersNumber === 1, "RemovePlayer: test 1")
-  }
-
-  test("CaptainID: throw exception, when wasn't set.") {
-
-    //given
-    val underTest:Team = BeachVolleyballTeam("underTest")
 
     //when&then
-    intercept[NullPointerException]{
-      underTest.captainID()
+    intercept[TooManyMembersInTeamException]{
+      underTest.addBenchWarmer(players(1))
     }
 
   }
 
-  test("SetCaptain&CaptainID: simple test") {
+  test("RemovePlayer: Simple test") {
 
     //given
     underTest.addPlayer(players(0))
-    underTest.addPlayer(players(2))
-    underTest.setCaptain(players(1))
+    underTest.addPlayer(players(1))
 
     //when
-    val captainID = underTest.captainID()
+    underTest.removePlayer(players(0))
+    val containsPlayer: Boolean = underTest.containsMember(players(0))
 
     //then
-    assert(captainID === players(1)._id, "SetCaptain&CaptainID: test 1")
-
+    assert(!containsPlayer, "RemovePlayer: test 1")
   }
 
-  test("AddPlayer: BenchWarmers") {
-
-    //given
-    players.foreach(user => underTest.addPlayer(user))
-
-    //when
-    val playersNumber = underTest.getUsersIDs.length
-
-    //then
-    assert(playersNumber === 3, "AddPlayer: BenchWarmers")
-  }
-
-  test("RemovePlayer: BenchWarmers"){
-
-    //given
-    players.foreach(user => underTest.addPlayer(user))
-    underTest.removePlayer(players.head)
-    underTest.removePlayer(players.tail.head)
-
-    //when
-    val playersNumber = underTest.getUsersIDs.length
-
-    //then
-    assert(playersNumber === 1, "RemoveUser: BenchWarmers")
-  }
-
-  test("isComplete: BenchWarmers"){
-
-    //given
-    players.foreach(user => underTest.addPlayer(user))
-
-    //when
-    val isComplete = underTest.isComplete
-
-    //then
-    assert(isComplete, "isComplete: BenchWarmers")
-
-  }
-
-  test("RemovePlayer: remove absent player") {
+  test("RemovePlayer: Remove absent player") {
 
     //given
     val underTest:Team = BeachVolleyballTeam("underTest")
@@ -143,17 +99,63 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     }
   }
 
-  test("AddPlayer: Add too many players"){
+  test("RemoveBenchWarmer: Remove absent bench warmer") {
 
     //given
-    players.foreach(user => underTest.addPlayer(user))
-    val player = mock[User]
-    Mockito.when(player._id).thenReturn(BSONObjectID.generate)
+    val underTest:Team = BeachVolleyballTeam("underTest")
 
     //when&then
-    intercept[Exception]{
-      underTest.addPlayer(player)
+    intercept[NoSuchElementException]{
+      underTest.removeBenchWarmer(players.head)
+    }
+  }
+
+  test("CaptainID: Throw exception, when wasn't set.") {
+
+    //given
+
+    //when&then
+    intercept[NullPointerException]{
+      underTest.getCaptainID
     }
 
   }
+
+  test("SetCaptain: Captain has to be a team member!") {
+
+    //given
+
+    //when&then
+    intercept[NoSuchElementException]{
+      underTest.setCaptain(players(1))
+    }
+
+  }
+
+  test("SetCaptain&CaptainID: Set player as captain"){
+
+    //given
+    underTest.addPlayer(players(0))
+
+    //when
+    underTest.setCaptain(players(0))
+    val captainID = underTest.getCaptainID
+    //then
+    assert(captainID === players(0)._id, "SetCaptain&CaptainID: test 1")
+  }
+
+  test("isComplete: BenchWarmers"){
+
+    //given
+    underTest.addPlayer(players(0))
+    underTest.addPlayer(players(1))
+
+    //when
+    val isComplete = underTest.isComplete
+
+    //then
+    assert(isComplete, "isComplete: BenchWarmers")
+
+  }
+
 }
