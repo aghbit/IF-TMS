@@ -1,31 +1,27 @@
-package models.statistics.volleyball.volleyball
+package models.statistics.user
 
+import models.statistics.Statistics
 import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by krzysiek.
  */
-class UserStatistics(val discipline:String,
-                     val pointUnit:String,
-                     var numberOfTournaments:Int,
-                     var numberOfMatches:Int,
-                     var numberOfSets:Int,
-                     var numberOfPoints:Int) extends VolleyballStats{
-  var numberOfWonTournaments:Int = 0
-  var numberOfWonMatches:Int = 0
-  var winStreak:Int = 0
-  var tournaments:Array[BSONObjectID] = Array() // tournamentID
+trait UserStatistics extends Statistics{
+  var tournamentsID:Array[BSONObjectID]
+  var numberOfTournaments:Int
+  var numberOfWonTournaments:Int
+  var numberOfWonMatches:Int
+  var numberOfLostMatches:Int
+  var winStreak:Int
 
   def addTournaments(tournament:BSONObjectID):Unit = {
-    tournaments :+= tournament
+    tournamentsID :+= tournament
+    numberOfTournaments = tournamentsID.length
   }
   def getTournaments:Array[BSONObjectID] = {
-    tournaments
+    tournamentsID
   }
 
-  def updateNumberOfTournaments():Unit = {
-    numberOfTournaments = tournaments.length
-  }
   def getNumberOfTournaments:Int = {
     numberOfTournaments
   }
@@ -42,6 +38,13 @@ class UserStatistics(val discipline:String,
   }
   def getNumberOfWonMatches:Int = {
     numberOfWonMatches
+  }
+
+  def addNumberOfLostMatches():Unit = {
+    numberOfLostMatches += 1
+  }
+  def getNumberOfLostMatches:Int = {
+    numberOfLostMatches
   }
 
   def didTeamWin(win:Boolean):Unit = { // true - win, false - loss
