@@ -12,7 +12,7 @@ class Match(val host:BSONObjectID,
   var scoreHost:Score = Score()
   var scoreGuest:Score = Score()
 
-  def winningTeam:BSONObjectID ={   // obsluga wyjatkow
+  def winningTeam:BSONObjectID ={
     if(scoreHost>scoreGuest) host
     else guest
   }
