@@ -5,13 +5,6 @@ package models.statistics
  * Edited by krzysiek
  */
 trait Statistics {
-  val discipline:String
+  val discipline:String // BUG discipline should be enum
   val pointUnit:String // ex. point/goal
-
-  def getDiscipline:String = {
-    discipline
-  }
-  def getPointUnit:String = {
-    pointUnit
-  }
 }
