@@ -1,27 +1,21 @@
 package models.strategy.strategies
 
 
-import models.strategy.{MatchStructure, TournamentStrategy}
-import models.strategy.matches.Match
-import models.team.Team
 import reactivemongo.bson.BSONObjectID
 
 
 /**
  * Created by Szymek.
  */
-class DoubleEliminationStrategy (val ListOfTeams:List[Team],
-                                 val isThirdPlaceMatch:Boolean,
-                                 val isSeeding:Boolean) extends EliminationStrategy{
+class DoubleEliminationStrategy (val ListOfTeams:List[BSONObjectID],
+                                 val isSeeding:Boolean) {
 
-
-      override val ListOfMatches:List[Match] = ???
-      override val View: MatchStructure = _
-
-      override def draw[Option:String]:Unit = ???
-      override def setScore(id: Option[BSONObjectID],score:String):Unit = ???
-      override def getView():MatchStructure = ???
-      override def getOrder():List[Team] = ???
-      override def attachNumberOfTeams():Int = ???
-
+//
+//      override var matches:Map[Match,Int] = ???
+//
+//      override def draw:Unit = ???
+//      override def getOrder():List[Team] = ???
+//      override def attachNumberOfTeams():Int = ???
+//
+//      override def setScore(game: Match, score: Score): Unit = ???
 }

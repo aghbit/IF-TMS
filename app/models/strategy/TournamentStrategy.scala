@@ -1,6 +1,5 @@
 package models.strategy
 
-import models.strategy.matches.Match
 import models.team.Team
 import reactivemongo.bson.BSONObjectID
 
@@ -9,15 +8,12 @@ import reactivemongo.bson.BSONObjectID
  */
 trait TournamentStrategy {
 
-  val ListOfTeams: List[Team]
-  val ListOfMatches: List[Match]
-  val View: MatchStructure
+  val ListOfTeams: List[BSONObjectID]
+  var matches:Map[Match,Int]
 
-  def draw[Option: String]: Unit = ???
+  def draw:Unit
 
-  def setScore(id: Option[BSONObjectID], score: String)
-
-  def getView(): MatchStructure
+  def setScore(game: Match, score: Score): Unit
 
   def getOrder(): List[Team]
 
