@@ -1,6 +1,8 @@
 package models.tournament.tournaments
 
 import models.team.Team
+import models.tournament.tournaments.tournamentfields._
+import models.tournament.tournaments.tournamentstate._
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 import scala.collection.mutable.ListBuffer
@@ -8,96 +10,73 @@ import scala.collection.mutable.ListBuffer
 /**
  * Created by Szymek.
  * Edited by: Przemek
- * forgive me
  */
 
 
-class Tournament(val _id: Option[BSONObjectID],
-                 var properties: TournamentProperties,
-                 var teams: ListBuffer[Team]) {
+trait Tournament {
+
+  val _id: BSONObjectID
+  var properties: TournamentProperties
+  var teams: ListBuffer[BSONObjectID]
+  val discipline: TournamentDiscipline
 
   def generateTree() = {
     properties.strategy.getOrder()
   }
 
-  def startBeforeEnrollment() = {
-    properties.state = TournamentState.BeforeEnrollment
+  def startEnrollment(): Enrollment = {
+    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID], this.discipline)
+    newState.properties.settings.canEnroll = true
+    newState
   }
 
-  def startEnrollment() = {
-    properties.state = TournamentState.Enrollment
-    canEdit(0) = false // description.name
-    canEdit(1) = false // description.place
-    canEdit(3) = false // term
-    canEdit(7) = false // settings.level
+  def startBreak(): Break = {
+    val newState = new Break(this._id, this.properties, this.teams, this.discipline)
+    newState.properties.settings.canEnroll = false
+    newState
   }
 
-  def startBreak() = {
-    properties.state = TournamentState.Break
-    canEdit(6) = false // settings.canEnroll
-    canEdit(5) = false // settings.numberOfTeams
+  def startTournament(): DuringTournament = {
+    val newState = new DuringTournament(this._id, this.properties, this.teams, this.discipline)
+    newState
   }
 
-  def startBeforeTournament() = {
-    properties.state = TournamentState.BeforeTournament
+  def startAfterTournament(): AfterTournament = {
+    val newState = new AfterTournament(this._id, this.properties, this.teams, this.discipline)
+    newState
   }
 
-  def startTournament() = {
-    properties.state = TournamentState.Tournament
-    canEdit(4) = false // settings.numberOfPitches
-    canEdit(8) = false // staff
+  def addReferee(user:User): Unit = {
+    properties.staff.Referees.append(user)
   }
 
-  def startAfterTournament() = {
-    properties.state = TournamentState.AfterTournament
+  def addTeam(team: Team): Unit = {
+    // void
   }
 
-  def changeTournamentProperties(newProperties: TournamentProperties) = {
-    if(properties.description != newProperties.description) {
-      if (canEdit(0)) properties.description.name = newProperties.description.name
-      if (canEdit(1)) properties.description.place = newProperties.description.place
-      if (canEdit(2)) properties.description.description = newProperties.description.description
-    }
-
-    if(properties.term != newProperties.term) {
-      if (canEdit(3)) {
-        properties.term.enrollDeadline = newProperties.term.enrollDeadline
-        properties.term.begin = newProperties.term.begin
-        properties.term.end = newProperties.term.end
-        properties.term.extraBegin = newProperties.term.extraBegin
-        properties.term.extraEnd = newProperties.term.extraEnd
-      }
-    }
-    if(properties.settings != newProperties.settings) {
-      if (canEdit(4)) properties.settings.numberOfPitches = newProperties.settings.numberOfPitches
-      if (canEdit(5)) properties.settings.numberOfTeams = newProperties.settings.numberOfTeams
-      if (canEdit(6)) properties.settings.canEnroll = newProperties.settings.canEnroll
-      if (canEdit(7)) properties.settings.level = newProperties.settings.level
-    }
-    if(properties.staff != newProperties.staff)
-      if(canEdit(8)) properties.staff.Referees = newProperties.staff.Referees
+  def removeTeam(team: Team): Unit = {
+    // void
   }
 
-  def addReferee(user:User) = {
-    val newProps = properties
-    newProps.staff.Referees.append(user)
-    changeTournamentProperties(newProps)
+  def removeReferee(user:User): Unit = {
+    properties.staff.Referees = properties.staff.Referees.filter(x => x != user)
   }
 
-  // canEdit consist of:
-  // canEditDescription,  3 fields; 1 - name, 2 - place, 3 - description
-  // canEditTerm,         1 fields  1 - all,
-  // canEditSettings,     4 fields, 1 - num of pitches, 2 - num of teams, 3 - can enroll, 4 - level
-  // canEditStaff,        1 field,  1 - referee because you can't edit admin
-  private val canEdit: Array[Boolean] = new Array[Boolean](9)
-}
-
-object Tournament {
-  def apply(id: Option[BSONObjectID], properties: TournamentProperties, teams: ListBuffer[Team]) = {
-    val newTournament = new Tournament(id, properties, teams)
-    newTournament.teams = ListBuffer[Team]()
-    for( a: Int <- 0 to 9) newTournament.canEdit(a) = true
-    newTournament.startBeforeEnrollment()
-    newTournament
+  def editTerm(term: TournamentTerm): Unit = {
+    /* you can edit term only before enrollment so I implemented it there */
   }
+
+  def editSettings(settings: TournamentSettings): Unit = {
+    this.properties.settings.numberOfPitches = settings.numberOfPitches
+    this.properties.settings.numberOfTeams = settings.numberOfTeams
+  }
+
+  def editDescription(description: TournamentDescription): Unit = {
+    this.properties.description.description = description.description
+  }
+
+  def containsTeam(team: Team):Boolean = {
+    teams.contains(team._id)
+  }
+
 }
