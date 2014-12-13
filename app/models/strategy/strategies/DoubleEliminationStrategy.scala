@@ -18,7 +18,7 @@ class DoubleEliminationStrategy (val ListOfTeams:List[BSONObjectID],
 
   override def getNextMatch(): Match = ???
 
-  override def generateTree(count: Integer): EliminationTree = ???
+  override def generateTree(): EliminationTree = ???
 
   override def updateTree(m: Match): Unit = ???
 }

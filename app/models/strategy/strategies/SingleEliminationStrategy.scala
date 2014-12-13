@@ -1,27 +1,38 @@
 package models.strategy.strategies
 
-import models.strategy.Tree.EliminationTree
-import models.strategy.{TournamentStrategy, Match, Score}
+import models.strategy.Tree.{Game, EliminationTree}
+import models.strategy.{TournamentStrategy, Match}
 import models.team.Team
 import reactivemongo.bson.BSONObjectID
 
 import scala.annotation.tailrec
-import scala.util.Random
+import scala.math._
 
 /**
  * Created by Szymek.edited by Ludwik
  */
- class SingleEliminationStrategy(val ListOfTeams:List[BSONObjectID]) extends TournamentStrategy {
+ class SingleEliminationStrategy(val ListOfTeams:List[Team]) extends TournamentStrategy {
 
-  //Generates tree withh null in every leaf/branch
-  override def generateTree(count: Integer): EliminationTree = {
-    val num = attachNumberOfTeams;
-    def log2(x: Double) = scala.math.log(x) / scala.math.log(2)
+  //Generates full tree with NULLs
+  override def generateTree(): EliminationTree = {
+
+     val num = attachNumberOfTeams
+    def log2(x: Double) = log(x) / log(2)
     //To get logaritm with base 2
-    val deph = log2(num.toDouble).toInt;
-    var root: EliminationTree = new EliminationTree()
-    def
-    tree
+    val deph = log2(num.toDouble).toInt
+    //Recursion method to create tree with deph given in "deph"
+    def addNull(root: Game, count : Int):Game = {
+      if(count>0){
+        root.left = new Game()
+        root.right = new Game()
+        root.value = null
+        root.left = addNull(root.left,count-1)
+        root.right = addNull(root.right,count-1)
+        root
+      }else
+        root
+    }
+   new EliminationTree(addNull(new Game(),deph-1))
   }
 
    def attachNumberOfTeams: Int = {

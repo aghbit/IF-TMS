@@ -8,11 +8,7 @@ import models.team.Team
  */
 trait TournamentStrategy {
   var tree:EliminationTree;
-  def generateTree():EliminationTree ={
-    tree =new EliminationTree();
-   tree;
-  }
-  def generateTree(count:Integer):EliminationTree;
+  def generateTree():EliminationTree;
   def populateTree(list:List[Team]);
   def updateTree(m:Match);
   def getNextMatch():Match;
