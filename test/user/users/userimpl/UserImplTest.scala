@@ -4,6 +4,7 @@ import models.statistics.Statistics
 import models.user.userproperties.UserProperties
 import models.user.users.UserType
 import models.user.users.userimpl.UserImpl
+import models.user.userstatus.UserStatus
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
@@ -59,41 +60,45 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("Setting admin when not admin") {
     //given
-    //when
-    val test: Boolean = instance.setAdmin(instance2)
+    //when & then
+    intercept[IllegalStateException] {
+      instance.setAdmin(instance2)
+    }
 
-    //then
-    assert(!test, "Admin setting failed")
   }
 
   test("Setting admin") {
     //given
     //when
-    val test: Boolean = instance2.setAdmin(instance)
+    instance2.setAdmin(instance)
+    val test = instance.userType
 
     //then
-    assert(test, "Admin setting completed")
+    assert(test === UserType.Admin, "Admin setting completed")
   }
 
   test("Banning admin") {
 
     //given
-    //when
-    val test: Boolean = instance.setAdmin(instance2)
+    //when & then
+    intercept[IllegalStateException] {
+      instance.banUser(instance2)
+    }
 
-    //then
-    assert(!test, "Ban failed")
 
   }
 
   test("Banning user") {
 
     //given
+    instance.status = UserStatus.Active
+
     //when
-    val test: Boolean = instance2.setAdmin(instance)
+    instance2.banUser(instance)
+    val test = instance.status
 
     //then
-    assert(test, "Ban completed")
+    assert(test === UserStatus.Banned, "Ban completed")
 
   }
 

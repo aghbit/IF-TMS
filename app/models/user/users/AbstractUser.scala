@@ -25,10 +25,10 @@ abstract class AbstractUser(val _id: BSONObjectID,
 
   def isAdmin: Boolean = userType == UserType.Admin
 
-  def setAdmin(user: AbstractUser): Boolean = {
-    if(!this.isAdmin || user.isAdmin) return false
+  def setAdmin(user: AbstractUser): Unit = {
+    if(user.isAdmin) throw new IllegalStateException("User is already admin")
     user.userType = UserType.Admin
-    true
+
   }
 
 
@@ -40,12 +40,11 @@ abstract class AbstractUser(val _id: BSONObjectID,
     false
   }
 
-  def banUser(user: AbstractUser): Boolean = {
-    if(this.userType == UserType.Admin && user.status == UserStatus.Active && user.userType != UserStatus.Active) {
-      user.status = UserStatus.Banned
-      return true
-    }
-    false
+  def banUser(user: AbstractUser): Unit = {
+    if(user.userType == UserType.Admin) throw new IllegalStateException("Cannot ban admin")
+    if(user.status != UserStatus.Active ) throw new IllegalStateException("Cannot ban nonActive or banned user")
+
+    user.status = UserStatus.Banned
   }
 
 
