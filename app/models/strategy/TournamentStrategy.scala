@@ -7,16 +7,10 @@ import models.team.Team
  * Created by Szymek. Edited by Ludwik
  */
 trait TournamentStrategy {
-  var tree:EliminationTree;
-  def generateTree():EliminationTree;
-  def populateTree(list:List[Team]);
-  def updateTree(m:Match);
-  def getNextMatch():Match;
-
-
-
-
-
+  def generateTree():EliminationTree
+  def populateTree(tree:EliminationTree,list:List[Team]):EliminationTree
+  def updateTree(m:Match):EliminationTree
+  def getNextMatch():Match
 }
 /*
   val ListOfTeams: List[Team]
