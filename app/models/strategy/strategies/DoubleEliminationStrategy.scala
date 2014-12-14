@@ -14,17 +14,18 @@ import scala.util.Random
  * Created by Szymek.
  */
 class DoubleEliminationStrategy (val listOfTeams:List[Team]) extends TournamentStrategy{
-//  override var tree: EliminationTree = _
+
+
   var notYetPopulatedPlaces:Int = attachNumberOfTeams
   def populateTree(tree:EliminationTree, list: List[Team]): EliminationTree = {
     if(list.size<=4) throw new NotEnoughTeamsException(list.size+" teams is too few for DoubleEliminationStrategy")
-    var left = tree.root.left.left
-    var right = tree.root.right.left
+    val left = tree.root.left.left
+    val right = tree.root.right.left
     populateTree(left,populateTree(right,list))
     tree
   }
 
-  protected def populateTree(root:Game,list:List[Team]):List[Team] = {
+  private def populateTree(root:Game,list:List[Team]):List[Team] = {
     if(root.left==null && root.right==null) {
       root.value = draw(list)
       list.filter(team => team._id!=root.value.host && team._id != root.value.guest)
@@ -32,7 +33,7 @@ class DoubleEliminationStrategy (val listOfTeams:List[Team]) extends TournamentS
     else populateTree(root.right,populateTree(root.left,list))
   }
 
-  protected def draw(list:List[Team]):Match = {
+  private def draw(list:List[Team]):Match = {
     var team1 = list(Random.nextInt(list.size))
     if(list.size<notYetPopulatedPlaces) {
       notYetPopulatedPlaces-=2
@@ -46,18 +47,12 @@ class DoubleEliminationStrategy (val listOfTeams:List[Team]) extends TournamentS
     }
   }
 
-
-  override def getNextMatch(): Match = ???
-
   def attachNumberOfTeams: Int = {
     @tailrec def compareAndReturn(n: Int): Int =
       if (n >= listOfTeams.size) n
       else compareAndReturn(2 * n)
     compareAndReturn(1)
   }
-
-///  override def generateTree(): EliminationTree = ???
-
 
   override def generateTree(): EliminationTree = {
 
@@ -66,21 +61,75 @@ class DoubleEliminationStrategy (val listOfTeams:List[Team]) extends TournamentS
     //To get logaritm with base 2
     val deph = log2(num.toDouble).toInt+1
     //Recursion method to create tree with deph given in "deph"
-    def addNull(root: Game, count : Int):Game = {
+    def addNull(root: Game,source:Game, count : Int):Game = {
       if(count>0){
         root.left = new Game()
         root.right = new Game()
         root.value = null
-        root.left = addNull(root.left,count-1)
-        root.right = addNull(root.right,count-1)
+        root.parent = source
+        root.left = addNull(root.left,root,count-1)
+        root.right = addNull(root.right,root,count-1)
         root
       }else
         root
     }
-    new EliminationTree(addNull(new Game(),deph-1))
+
+    var tree = new EliminationTree()
+    tree.root.left=new Game()
+    tree.root.right=new Game()
+    tree.root.left.parent=tree.root
+    tree.root.right.parent=tree.root
+    tree.root.left.left=new Game()
+    tree.root.left.right=new Game()
+    tree.root.right.left=new Game()
+    tree.root.right.right=new Game()
+    tree.root.left.left=addNull(tree.root.left.left,tree.root.left,deph-3)
+    tree.root.left.right=addNull(tree.root.left.right,tree.root.left,deph-2)
+    tree.root.right.left=addNull(tree.root.right.left,tree.root.right,deph-3)
+    tree.root.right.right=addNull(tree.root.right.right,tree.root.right,deph-2)
+    tree
+//
+//    new EliminationTree(addNull(new Game(),null,deph-1))
   }
 
-  override def updateTree(m: Match): EliminationTree = ???
+  override def updateTree(tree: EliminationTree): EliminationTree = ???
+
+//  def getAsscociatedWithWinner(game:Game, tree:EliminationTree):Game ={
+//
+//
+//  }
+
+  private def potentialQrtFinal(game:Game, tree:EliminationTree):Int = {  //1st and 3rd QF are winner branches, 2nd and 4th are looser branches
+    def findQrtFinal(game:Game):Game={                            //returns 0 when it's semi-final or final
+       if(getLevel(game)==2) game
+       else findQrtFinal(game.parent)
+    }
+    if(getLevel(game)<=2) 0
+    else{
+      if(findQrtFinal(game)==tree.root.left.left) 1 else
+      if(findQrtFinal(game)==tree.root.left.right) 2 else
+      if(findQrtFinal(game)==tree.root.right.left) 3 else
+      if(findQrtFinal(game)==tree.root.right.right) 4 else
+      0
+    }
+  }
+
+
+
+  private def getLevel(game:Game):Int={     // Final has 1st level, Semis have 2nd level and so on
+    def getLevel(game:Game, count:Int): Int ={
+      if(game.parent==null) count
+      else getLevel(game.parent,count+1)
+    }
+    getLevel(game,0)+1
+  }
+
+
+
+
+
+
+
 
 
 /////////////////////////Methods useful in Testing/////////////////////////////////////

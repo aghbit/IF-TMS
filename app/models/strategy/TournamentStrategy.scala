@@ -9,22 +9,7 @@ import models.team.Team
 trait TournamentStrategy {
   def generateTree():EliminationTree
   def populateTree(tree:EliminationTree,list:List[Team]):EliminationTree
-  def updateTree(m:Match):EliminationTree
-  def getNextMatch():Match
+  def updateTree(tree:EliminationTree):EliminationTree
 }
-/*
-  val ListOfTeams: List[Team]
-  val ListOfMatches: List[Match]
-  val View: MatchStructure
 
-  def draw[Option: String]: Unit = ???
-
-  def setScore(id: Option[BSONObjectID], score: String)
-
-  def getView(): MatchStructure
-
-  def getOrder(): List[Team]
-
-  def attachNumberOfTeams(): Int
-  */
 
