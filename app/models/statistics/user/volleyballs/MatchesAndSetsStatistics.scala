@@ -5,7 +5,8 @@ import models.exceptions.{NegativeValueException, TooManySetsInMatchException}
 /**
  * Created by krzysiek.
  */
-class MatchesAndSetsStatistics(var numberOfWonMatches:Int,
+class MatchesAndSetsStatistics(val discipline:String,
+                               var numberOfWonMatches:Int,
                                var numberOfLostMatches:Int,
                                var numberOfWonSets:Int,
                                var numberOfLostSets:Int){
@@ -18,23 +19,28 @@ class MatchesAndSetsStatistics(var numberOfWonMatches:Int,
     numberOfLostMatches += 1
   }
 
-  def addNumberOfWonSets(sets:Int):Unit = {
-    if(sets > 3){
-      throw new TooManySetsInMatchException("Can't add. Too many sets in this match (Max 3).")
-    }
-    else if(sets < 0){
+  def validityCheck(sets:Int):Boolean = {
+    if(sets < 0){
       throw new NegativeValueException("Can't add. Positive value required.")
     }
-    numberOfWonSets += sets
+    if(discipline == "Beach Volleyball" && sets > 3){
+        throw new TooManySetsInMatchException("Can't add. Too many sets in this match (Max 3).")
+    }
+    else if(discipline == "Volleyball" && sets > 5){
+        throw new TooManySetsInMatchException("Can't add. Too many sets in this match (Max 5).")
+    }
+    true
+  }
+
+  def addNumberOfWonSets(sets:Int):Unit = {
+    if(validityCheck(sets)) {
+      numberOfWonSets += sets
+    }
   }
 
   def addNumberOfLostSets(sets:Int):Unit = {
-    if(sets > 3){
-      throw new TooManySetsInMatchException("Can't add. Too many sets in this match (Max 3).")
+    if(validityCheck(sets)) {
+      numberOfLostSets += sets
     }
-    else if(sets < 0){
-      throw new NegativeValueException("Can't add. Positive value required.")
-    }
-    numberOfLostSets += sets
   }
 }

@@ -25,7 +25,8 @@ class VolleyballStatisticsTest extends FunSuite with MockitoSugar with BeforeAnd
   val winStreak = 3
 
   before{
-    testInstance = new VolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
+    testInstance = new VolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,
+            numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
   }
 
   test("Constructor test"){
@@ -33,7 +34,8 @@ class VolleyballStatisticsTest extends FunSuite with MockitoSugar with BeforeAnd
     //given
 
     //when
-    val testInstance:VolleyballStatistics = new VolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
+    val testInstance:VolleyballStatistics = new VolleyballStatistics(discipline,pointUnit,tournamentsID,
+            numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
 
     //then
     assert(testInstance.discipline === "Volleyball", "Constructor: test discipline")

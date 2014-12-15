@@ -21,7 +21,8 @@ class BeachVolleyballStatisticsTest extends FunSuite with MockitoSugar with Befo
   val numberOfTieBreaks:Int = 10
 
   before{
-    testInstance = new BeachVolleyballStatistics(discipline,pointUnit,numberOfMatches,numberOfSets,numberOfPoints,numberOfTieBreaks)
+    testInstance = new BeachVolleyballStatistics(discipline,pointUnit,numberOfMatches,numberOfSets,numberOfPoints,
+            numberOfTieBreaks)
   }
 
   test("Constructor test"){
@@ -29,7 +30,8 @@ class BeachVolleyballStatisticsTest extends FunSuite with MockitoSugar with Befo
     //given
 
     //when
-    val testInstance:BeachVolleyballStatistics = new BeachVolleyballStatistics(discipline,pointUnit,numberOfMatches,numberOfSets,numberOfPoints,numberOfTieBreaks)
+    val testInstance:BeachVolleyballStatistics = new BeachVolleyballStatistics(discipline,pointUnit,numberOfMatches,
+            numberOfSets,numberOfPoints,numberOfTieBreaks)
 
     //then
     assert(testInstance.discipline === "Beach Volleyball", "Constructor: test discipline")

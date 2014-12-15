@@ -14,13 +14,15 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
 
   var testInstance:MatchesAndSetsStatistics = _
 
+  val discipline:String = "Beach Volleyball"
   val numberOfWonMatches:Int = 10
   val numberOfLostMatches:Int = 6
   val numberOfWonSets:Int = 25
   val numberOfLostSets:Int = 15
 
   before{
-    testInstance = new MatchesAndSetsStatistics(numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
+    testInstance = new MatchesAndSetsStatistics(discipline,
+            numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
   }
 
   test("Constructor test"){
@@ -28,9 +30,11 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
     //given
 
     //when
-    val testInstance:MatchesAndSetsStatistics = new MatchesAndSetsStatistics(numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
+    val testInstance:MatchesAndSetsStatistics = new MatchesAndSetsStatistics(discipline,
+            numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
 
     //then
+    assert(testInstance.discipline === "Beach Volleyball", "Constructor test discipline")
     assert(testInstance.numberOfWonMatches === 10, "Constructor: test numberOfWonMatches")
     assert(testInstance.numberOfLostMatches === 6, "Constructor: test numberOfLostMatches")
     assert(testInstance.numberOfWonSets === 25, "Constructor: test numberOfSets")
@@ -107,7 +111,7 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
 
     //when&then
     intercept[TooManySetsInMatchException]{
-      testInstance.addNumberOfLostSets(4)
+      testInstance.addNumberOfLostSets(5)
     }
   }
 
@@ -117,7 +121,7 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
 
     //when&then
     intercept[NegativeValueException]{
-      testInstance.addNumberOfLostSets(-2)
+      testInstance.addNumberOfLostSets(-3)
     }
   }
 

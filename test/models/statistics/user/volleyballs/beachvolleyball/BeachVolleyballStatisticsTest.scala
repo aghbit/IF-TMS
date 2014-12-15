@@ -25,7 +25,8 @@ class BeachVolleyballStatisticsTest extends FunSuite with MockitoSugar with Befo
   val winStreak = 3
 
   before{
-    testInstance = new BeachVolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
+    testInstance = new BeachVolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,
+            numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
   }
 
   test("Constructor test"){
@@ -33,7 +34,8 @@ class BeachVolleyballStatisticsTest extends FunSuite with MockitoSugar with Befo
     //given
 
     //when
-    val testInstance:BeachVolleyballStatistics = new BeachVolleyballStatistics(discipline,pointUnit,tournamentsID,numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
+    val testInstance:BeachVolleyballStatistics = new BeachVolleyballStatistics(discipline,pointUnit,tournamentsID,
+            numberOfTournaments,numberOfWonTournaments,mock[MatchesAndSetsStatistics],numberOfPoints,winStreak)
 
     //then
     assert(testInstance.discipline === "Beach Volleyball", "Constructor: test discipline")
