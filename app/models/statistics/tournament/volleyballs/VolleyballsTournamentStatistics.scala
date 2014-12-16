@@ -5,7 +5,7 @@ import models.statistics.tournament.TournamentStatistics
 /**
  * Created by krzysiek.
  */
-trait VolleyballsStatistics extends TournamentStatistics {
+trait VolleyballsTournamentStatistics extends TournamentStatistics {
   val numberOfTieBreaks:Int
 
   def getNumberOfTieBreaks:Int = {

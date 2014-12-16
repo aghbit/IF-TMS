@@ -10,19 +10,20 @@ import org.scalatest.mock.MockitoSugar
  * Created by krzysiek.
  */
 @RunWith(classOf[JUnitRunner])
-class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
 
-  var testInstance:MatchesAndSetsStatistics = _
+  var testInstance:MatchesAndSetsUserStatistics = _
 
   val discipline:String = "Beach Volleyball"
   val numberOfWonMatches:Int = 10
   val numberOfLostMatches:Int = 6
   val numberOfWonSets:Int = 25
   val numberOfLostSets:Int = 15
+  val numberOfPoints:Int = 500
 
   before{
-    testInstance = new MatchesAndSetsStatistics(discipline,
-            numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
+    testInstance = new MatchesAndSetsUserStatistics(discipline,numberOfWonMatches,numberOfLostMatches,numberOfWonSets,
+            numberOfLostSets,numberOfPoints)
   }
 
   test("Constructor test"){
@@ -30,8 +31,8 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
     //given
 
     //when
-    val testInstance:MatchesAndSetsStatistics = new MatchesAndSetsStatistics(discipline,
-            numberOfWonMatches,numberOfLostMatches,numberOfWonSets,numberOfLostSets)
+    val testInstance:MatchesAndSetsUserStatistics = new MatchesAndSetsUserStatistics(discipline,numberOfWonMatches,
+            numberOfLostMatches,numberOfWonSets,numberOfLostSets,numberOfPoints)
 
     //then
     assert(testInstance.discipline === "Beach Volleyball", "Constructor test discipline")
@@ -39,6 +40,7 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
     assert(testInstance.numberOfLostMatches === 6, "Constructor: test numberOfLostMatches")
     assert(testInstance.numberOfWonSets === 25, "Constructor: test numberOfSets")
     assert(testInstance.numberOfLostSets === 15, "Constructor: test numberOfSets")
+    assert(testInstance.numberOfPoints === 500, "Constructor: test numberOfPoints")
   }
 
   test("addNumberOfWonMatches test"){
@@ -68,10 +70,10 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
     //given
 
     //when
-    testInstance.addNumberOfWonSets(3)
+    testInstance.addNumberOfWonSets(2)
 
     //then
-    assert(testInstance.numberOfWonSets === 28, "addNumberOfWonSets test")
+    assert(testInstance.numberOfWonSets === 27, "addNumberOfWonSets test1")
   }
 
   test("addNumberOfWonSets test2 - too many sets"){
@@ -80,7 +82,7 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
 
     //when&then
     intercept[TooManySetsInMatchException]{
-      testInstance.addNumberOfWonSets(4)
+      testInstance.addNumberOfWonSets(3)
     }
   }
 
@@ -125,4 +127,24 @@ class MatchesAndSetsStatisticsTest extends FunSuite with MockitoSugar with Befor
     }
   }
 
+  test("addNumberOfPoints test1"){
+
+    //given
+
+    //when
+    testInstance.addNumberOfPoints(30)
+
+    //then
+    assert(testInstance.numberOfPoints === 530, "addNumberOfPoints test")
+  }
+
+  test("addNumberOfPoints test2 - negative value"){
+
+    //given
+
+    //when&then
+    intercept[NegativeValueException]{
+      testInstance.addNumberOfPoints(-5)
+    }
+  }
 }
