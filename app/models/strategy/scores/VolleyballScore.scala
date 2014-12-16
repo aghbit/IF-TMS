@@ -35,6 +35,7 @@ class VolleyballScore(val maxSets:Int)extends Score {
       Other match {
         case other:A => other.isEnded && !isEnded
         case _ => false
+
       }
   }
   override def >[A <: Score](Other:Score):Boolean={

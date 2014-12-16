@@ -11,12 +11,24 @@ class Match(val host:BSONObjectID,
 
   var scoreHost:Score = Score()
   var scoreGuest:Score = Score()
-
-  def winningTeam:BSONObjectID = scoreGuest match{
-    case null => host
-    case score if score<scoreHost => host
-    case _ => guest
+  def isEnded:Boolean={
+    if(scoreHost.isEnded || scoreGuest.isEnded) true else false
   }
+  def losingTeam:BSONObjectID =
+    if(guest==null) guest
+    else
+      scoreGuest match{
+        case score if score<scoreHost => guest
+        case _ => host
+      }
+
+  def winningTeam:BSONObjectID =
+    if(guest==null) host
+    else
+      scoreGuest match{
+        case score if score<scoreHost => host
+        case _ => guest
+      }
 }
 object Match {
   def apply(host:Team, guest:Team)= if(guest!=null) new Match(host._id,guest._id) else new Match(host._id,null)
