@@ -25,7 +25,7 @@ class GenerateTreeIT extends FunSuite with BeforeAndAfter with MockitoSugar {
     for(i <- 0 until 14) my_list = mock[Team]::my_list
     underTest = new SingleEliminationStrategy(my_list)
     val expectedDeph = 4
-    val tree = underTest.generateTree()
+    val tree = underTest.generateTree(my_list)
 
     //when
 
@@ -50,7 +50,7 @@ class GenerateTreeIT extends FunSuite with BeforeAndAfter with MockitoSugar {
     for(i <- 0 until 20) my_list = mock[Team]::my_list
     underTest = new SingleEliminationStrategy(my_list)
     val expectedDeph = 5
-    val tree = underTest.generateTree()
+    val tree = underTest.generateTree(my_list)
 
     //when
 
@@ -73,7 +73,7 @@ class GenerateTreeIT extends FunSuite with BeforeAndAfter with MockitoSugar {
     var my_list = List(mock[Team])
     underTest = new SingleEliminationStrategy(my_list)
     val expectedDeph = 1
-    val tree = underTest.generateTree()
+    val tree = underTest.generateTree(my_list)
 
     //when
 

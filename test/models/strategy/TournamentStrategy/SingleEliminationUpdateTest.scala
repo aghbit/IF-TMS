@@ -85,7 +85,6 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
       Mockito.when(team.name).thenReturn("team "+i)
       listOfTeams = team :: listOfTeams
     }
-    listOfTeams.foreach(t => (System.out.println("Mam drozyne o nazwie "+t.name)))
     underTest=SingleEliminationStrategy(listOfTeams)
     tree = underTest.generateTree(listOfTeams)
     tree = underTest.populateTree(tree,listOfTeams)
@@ -116,8 +115,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
     val game4 = underTest.getGame(tree.root,"rr")
     val games = List(game1,game2,game3,game4)
     games.foreach(game => (game.value.scoreHost=score, game.value.scoreGuest=score2))
-    games.foreach(game=>(System.out.println("Game  have host "+game.value.host.toString()),
-      System.out.println("Game  have guest "+game.value.guest.toString())))
+
 
 
     ///////////////////////////////////////
@@ -390,7 +388,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
     assert(condition0, "Update Tree: 16 teams match, checking semi final match")
     assert(condition1, "Update Tree: 16 teams match, checking final teams")
   }
-  test("UpdateTree: playing 8-team tournament, 10 teams whole matches simulation"){
+  test("UpdateTree: playing 8-team tournament, 10 teams whole 1. phase"){
 
     //given
 
@@ -467,8 +465,10 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
     var updatedTree = underTest.updateTree(tree)
     //checking third math
     val condition0 = (game11.value.host==game5.value.host && game11.value.guest ==game6.value.host)
-
+    val condition1 = (game4.value.host!=null && game4.value.guest==null)
 
     assert(condition0, "Update Tree: 10 teams match, checking third match after one update")
+    assert(condition1, "Update Tree: 10 teams match, checking 4. match ")
   }
+
 }
