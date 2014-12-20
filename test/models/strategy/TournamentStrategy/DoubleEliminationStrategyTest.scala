@@ -23,7 +23,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
 
   before{
-      listOfTeams = List()         
+      listOfTeams = List()
   }
 
   test("populateTree: too few teams"){

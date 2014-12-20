@@ -47,6 +47,27 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
 
     //given
     Mockito.when(scoreHost.>(scoreGuest)).thenReturn(true)
+    Mockito.when(scoreHost.<(scoreGuest)).thenReturn(false)
+    Mockito.when(scoreGuest.<(scoreHost)).thenReturn(true)
+    Mockito.when(scoreGuest.>(scoreHost)).thenReturn(false)
+
+
+    underTest.scoreHost = scoreHost
+    underTest.scoreGuest = scoreGuest
+
+    //when
+
+    //then
+    assert(underTest.losingTeam===guestId,"WinningTeam test: hostWins1")
+    assert(underTest.winningTeam===hostId,"WinningTeam test: hostWins2")
+  }
+
+  test("WinningTeam test: guestWins"){
+
+    //given
+    Mockito.when(scoreHost.<(scoreGuest)).thenReturn(true)
+    Mockito.when(scoreHost.>(scoreGuest)).thenReturn(false)
+    Mockito.when(scoreGuest.>(scoreHost)).thenReturn(true)
     Mockito.when(scoreGuest.<(scoreHost)).thenReturn(false)
     underTest.scoreHost = scoreHost
     underTest.scoreGuest = scoreGuest
@@ -54,20 +75,33 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
     //when
 
     //then
-    assert(underTest.winningTeam===hostId,"WinningTeam test1")
+    assert(underTest.losingTeam===hostId,"WinningTeam test: guestWins1")
+    assert(underTest.winningTeam===guestId,"WinningTeam test: guestWins2")
   }
 
-  test("WinningTeam test: guestWins"){
+  test("WinningTeam test: one team is null"){
 
     //given
-    Mockito.when(scoreHost.<(scoreGuest)).thenReturn(true)
-    Mockito.when(scoreGuest.>(scoreHost)).thenReturn(false)
-    underTest.scoreHost = scoreHost
-    underTest.scoreGuest = scoreGuest
+    underTest=Match(host,null)
 
     //when
 
     //then
-    assert(underTest.winningTeam===guestId,"WinningTeam test2")
+    assert(underTest.losingTeam===null,"WinningTeam test: one team is null1")
+    assert(underTest.winningTeam===hostId,"WinningTeam test: one team is null2")
   }
+
+  test("WinningTeam test: two teams are null"){
+
+    //given
+    underTest=Match(null,null)
+
+    //when
+
+    //then
+    assert(underTest.losingTeam===null,"WinningTeam test: two teams are null1")
+    assert(underTest.winningTeam===null,"WinningTeam test: two teams are null2")
+  }
+
+
 }

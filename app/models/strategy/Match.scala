@@ -35,5 +35,10 @@ class Match(val host:BSONObjectID,
       }
 }
 object Match {
-  def apply(host:Team, guest:Team)= if(guest!=null) new Match(host._id,guest._id) else new Match(host._id,null)
+  def apply(host:Team, guest:Team)= (host,guest) match {
+    case (null,null) => new Match(null,null)
+    case(null,guest) => new Match(null,guest._id)
+    case(host,null) => new Match(host._id,null)
+    case(host,guest) => new Match(host._id,guest._id)
+  }
 }
