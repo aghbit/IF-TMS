@@ -11,12 +11,11 @@ import scala.math._
 /**
  * Created by Szymek.edited by Ludwik
  */
- class SingleEliminationStrategy(val ListOfTeams:List[Team]) extends TournamentStrategy {
+ class SingleEliminationStrategy() extends TournamentStrategy {
 
   //Generates full tree with NULLs
   override def generateTree(listOfTeams:List[Team]): EliminationTree = {
-
-     val num = attachNumberOfTeams
+     val num = attachNumberOfTeams(listOfTeams)
     def log2(x: Double) = log(x) / log(2)
     //To get logaritm with base 2
     val deph = log2(num.toDouble).toInt
@@ -37,74 +36,67 @@ import scala.math._
    new EliminationTree(addNull(new Game(),deph-1))
   }
 
-   def attachNumberOfTeams: Int = {
+   def attachNumberOfTeams(listOfTeams:List[Team]): Int = {
     @tailrec def compareAndReturn(n: Int): Int =
-      if (n >= ListOfTeams.size) n
+      if (n >= listOfTeams.size) n
       else compareAndReturn(2 * n)
     compareAndReturn(1)
   }
-
+// Fills the leafs with team
+//for example for tree with 16 leafs and 20 teams
+//after first "round" there will be only hosts filled
+//after second round method will fill guest, (starting from left side) and
+// the last 4 leafs will have guest part filled with null (20-16 = 4)
   override def populateTree(tre: EliminationTree, list: List[Team]): EliminationTree = {
     var overrided_list = list
-    var tree = tre
-    if(list.isEmpty==true) {
+    val tree = tre
+    if(list.isEmpty) {
       throw new NotEnoughTeamsException("Populating Tree failed. Empty list of teams.")}//no teams given
     def populate(root: Game) {
       //to use Game not ElminationTree
       if (overrided_list.isEmpty) {
-      // System.out.println("Empty list")
-        return 1 //End of populating
-
+        return null//End of populating, its not in Scala way, but it  ends my method
       }
         if (root.left != null)
         populate(root.left) //do recursion
-      if (root.left==null) {
+        if(root.left==null) {
         if(root.value==null)
         root.value = Match(overrided_list.head, null) // Adding leaf
         else
         root.value = new Match(root.value.host,overrided_list.head._id)
         overrided_list = overrided_list.tail//removing first element from list
-        //System.out.println("Removing object from list with lengh " + overrided_list.length)
       }
       if(root.parent!=null && root.parent.right!=root)
       populate(root.parent.right)
-  } ;
+  }
     while(overrided_list.length>0) {
       populate(tree.root)
-      System.out.println("--")
     }
     tree
   }
 
   override def updateTree(tree: EliminationTree): EliminationTree = {
-    var root: Game = tree.root
-    if(root==null) ()
-
-
+    val root: Game = tree.root
     def check(tmp:Game): Unit ={
       if(tmp==null){
-        //throw badTreeExcepttion
         null
       }
       if(tmp.value==null) {//have to go deeper
         check(tmp.left)
         check(tmp.right)
       }else {
-
         if(tmp.value.isEnded){
           if(tmp.parent.right!=tmp && tmp.parent.right.value.isEnded){
-            //UPDAE!
+            //UPDATE!
             tmp.parent.value = new Match(tmp.value.winningTeam,tmp.parent.right.value.winningTeam)
-           // System.out.println("Updating me! with "+tmp.parent.value.host.toString())
-            null;//means updated
+            null
           }
         }
       }
-      null//means not updated
+      null
     }
     check(root)
     new EliminationTree(root)
-
   }
   //Test method
   def getGame(root:Game,route:String):Game= {
@@ -118,5 +110,5 @@ import scala.math._
   }
 }
 object SingleEliminationStrategy{
-  def apply(listOfTeams:List[Team]) = new SingleEliminationStrategy(listOfTeams)
+  def apply(listOfTeams:List[Team]) = new SingleEliminationStrategy()
 }

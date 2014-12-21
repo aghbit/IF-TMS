@@ -65,7 +65,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
 
 
 
-    val newGame3 = updatedTree.root;
+    val newGame3 = updatedTree.root
 
     //////////////////////////////////////
 
@@ -126,12 +126,11 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
 
 
 
-    val condition0 = game5.value.host!=null && game5.value.guest!=null && game1.value.host!=null//  ERROR HERE
-    val condition1 = game5.value.host.toString().equals(game1.value.host.toString())//  ERROR HERE
+    val condition0 = game5.value.host!=null && game5.value.guest!=null && game1.value.host!=null
+    val condition1 = game5.value.host.toString().equals(game1.value.host.toString())
     val condition2 = game5.value.guest.toString().equals(game2.value.host.toString())
 
-    System.out.println("Game 5 have host"+game5.value.host.toString())
-    System.out.println("Game 5 have guest"+game5.value.guest.toString())
+
 
     assert(game1.value.host!=null,"UpdateTree: playing 8-team tournament, testing one check")
     assert(tree.root.left.value!=null,"UpdateTree: playing 8-team tournament, testing one check")
@@ -201,7 +200,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
 
     //then
    assert(finalmatch!=null,"Update Tree: FinalMatch is null")
-   val condition = (finalmatch.value.host==game1.value.host)//checking first team in final
+   val condition = finalmatch.value.host==game1.value.host//checking first team in final
    val condition2 = finalmatch.value.guest==game3.value.host //checking the second team
 
     assert(condition, "Update Tree: 8 teams match, checking the final")
@@ -284,7 +283,186 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
     assert(condition, "Update Tree: 8 teams match, checking the final")
     assert(condition2,"Update Tree: 8 teams match, checking the final")
   }
-  test("UpdateTree: playing 8-team tournament, whole matches simulation"){
+  test("UpdateTree: playing 12-team tournament, 1 phase"){
+
+    //given
+
+    listOfTeams = List()
+    for(i<-0 until 12) {
+      val team = mock[Team]
+      listOfTeams = team :: listOfTeams
+      Mockito.when(team._id).thenReturn(BSONObjectID.generate)
+      Mockito.when(team.name).thenReturn("team "+i)
+    }
+    underTest=SingleEliminationStrategy(listOfTeams)
+    tree = underTest.generateTree(listOfTeams)
+    tree = underTest.populateTree(tree,listOfTeams)
+
+    //when
+    //score Part
+
+    /// Scores 3:0
+    val VSetw = mock[VSet]
+    val VSetl = mock[VSet]
+
+    Mockito.when(VSetw.won).thenReturn(true)
+    Mockito.when(VSetl.won).thenReturn(false)
+
+    val setsW = List(VSetw,VSetw,VSetw)
+    val setsL = List(VSetl,VSetl,VSetl)
+
+
+    val score:VolleyballScore = VolleyballScore()
+    val score2:VolleyballScore = VolleyballScore()
+
+    score.sets=setsW
+    score2.sets=setsL
+
+    /// Scores 3:2
+
+    val setsW2 = List(VSetw,VSetw,VSetw)
+    val setsL2 = List(VSetw,VSetw,VSetl)
+
+
+    val score21:VolleyballScore = VolleyballScore()
+    val score22:VolleyballScore = VolleyballScore()
+
+    score21.sets=setsW2
+    score22.sets=setsL2
+
+    ////////////1st phase/////////////////
+    val game1 = underTest.getGame(tree.root,"lll")
+    val game2 = underTest.getGame(tree.root,"llr")
+    val game3 = underTest.getGame(tree.root,"lrl")
+    val game4 = underTest.getGame(tree.root,"lrr")
+
+    val game5 = underTest.getGame(tree.root,"rll")
+    val game6 = underTest.getGame(tree.root,"rlr")
+    val game7 = underTest.getGame(tree.root,"rrl")
+    val game8 = underTest.getGame(tree.root,"rrr")
+
+    val games = List(game1,game2,game3,game4,game5,game6,game7,game8)
+
+
+    games.foreach(game =>(game.value.scoreHost = score2,game.value.scoreGuest = score))
+    var updatedTree = underTest.updateTree(tree) // updating matches
+
+    val game9 = underTest.getGame(tree.root,"ll")
+    val game10 = underTest.getGame(tree.root,"lr")
+    val game11 = underTest.getGame(tree.root,"rl")
+    val game12 = underTest.getGame(tree.root,"rr")
+
+  val condition1 = (game9.value.host==game1.value.guest && game9.value.guest == game2.value.guest)
+  val condition2 = (game10.value.host==game3.value.guest && game10.value.guest == game4.value.guest)
+  val condition3 = (game11.value.host==game5.value.host && game11.value.guest==game6.value.host)
+
+
+    assert(condition1, "Update Tree: 12 teams, update after 1 phase")
+    assert(condition2, "Update Tree: 12 teams, update after 1 phase")
+    assert(condition3, "Update Tree: 12 teams, update after 1 phase")
+  }
+  test("UpdateTree: playing 12-team tournament,update to final"){
+
+    //given
+
+    listOfTeams = List()
+    for(i<-0 until 12) {
+      val team = mock[Team]
+      listOfTeams = team :: listOfTeams
+      Mockito.when(team._id).thenReturn(BSONObjectID.generate)
+      Mockito.when(team.name).thenReturn("team "+i)
+    }
+    underTest=SingleEliminationStrategy(listOfTeams)
+    tree = underTest.generateTree(listOfTeams)
+    tree = underTest.populateTree(tree,listOfTeams)
+
+    //when
+    //score Part
+
+    /// Scores 3:0
+    val VSetw = mock[VSet]
+    val VSetl = mock[VSet]
+
+    Mockito.when(VSetw.won).thenReturn(true)
+    Mockito.when(VSetl.won).thenReturn(false)
+
+    val setsW = List(VSetw,VSetw,VSetw)
+    val setsL = List(VSetl,VSetl,VSetl)
+
+
+    val score:VolleyballScore = VolleyballScore()
+    val score2:VolleyballScore = VolleyballScore()
+
+    score.sets=setsW
+    score2.sets=setsL
+
+
+    /// Scores 3:2
+
+    val setsW2 = List(VSetw,VSetw,VSetw)
+    val setsL2 = List(VSetw,VSetw,VSetl)
+
+
+    val score21:VolleyballScore = VolleyballScore()
+    val score22:VolleyballScore = VolleyballScore()
+
+    score21.sets=setsW2
+    score22.sets=setsL2
+
+    ////////////1st phase/////////////////
+    val game1 = underTest.getGame(tree.root,"lll")
+    val game2 = underTest.getGame(tree.root,"llr")
+    val game3 = underTest.getGame(tree.root,"lrl")
+    val game4 = underTest.getGame(tree.root,"lrr")
+
+    val game5 = underTest.getGame(tree.root,"rll")
+    val game6 = underTest.getGame(tree.root,"rlr")
+    val game7 = underTest.getGame(tree.root,"rrl")
+    val game8 = underTest.getGame(tree.root,"rrr")
+
+    val games = List(game1,game2,game3,game4,game5,game6,game7,game8)
+
+
+    games.foreach(game =>(game.value.scoreHost = score2,game.value.scoreGuest = score))
+    var updatedTree = underTest.updateTree(tree) // updating matches
+
+    val game9 = underTest.getGame(tree.root,"ll")
+    val game10 = underTest.getGame(tree.root,"lr")
+    val game11 = underTest.getGame(tree.root,"rl")
+    val game12 = underTest.getGame(tree.root,"rr")
+
+    game9.value.scoreHost = score
+    game9.value.scoreGuest = score2
+
+    game10.value.scoreHost = score2
+    game10.value.scoreGuest = score
+
+    game11.value.scoreHost = score
+    game11.value.scoreGuest = score2
+
+    game12.value.scoreHost = score2
+    game12.value.scoreGuest = score// 9 vs 12 and 5 vs 8
+
+    updatedTree = underTest.updateTree(tree)
+
+    val game13= underTest.getGame(tree.root,"l")
+    val game14 = underTest.getGame(tree.root,"r")
+
+    game13.value.scoreHost = score2
+    game13.value.scoreGuest = score
+
+    game14.value.scoreHost = score2
+    game14.value.scoreGuest = score// final is 12 vs 8
+
+    var updatedTree2 = underTest.updateTree(tree)
+
+    val condition = (tree.root.value.host==game4.value.guest)
+    val condition2 = (tree.root.value.guest==game8.value.host)
+    assert(condition, "Update Tree: 12 teams, update to final")
+    assert(condition2, "Update Tree: 12 teams, update to final")
+
+  }
+  test("UpdateTree: playing 16-team tournament, whole match simulation"){
 
     //given
 
@@ -388,87 +566,5 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
     assert(condition0, "Update Tree: 16 teams match, checking semi final match")
     assert(condition1, "Update Tree: 16 teams match, checking final teams")
   }
-  test("UpdateTree: playing 8-team tournament, 10 teams whole 1. phase"){
-
-    //given
-
-    listOfTeams = List()
-    for(i<-0 until 10) {
-      val team = mock[Team]
-      listOfTeams = team :: listOfTeams
-      Mockito.when(team._id).thenReturn(BSONObjectID.generate)
-      Mockito.when(team.name).thenReturn("team "+i)
-    }
-    underTest=SingleEliminationStrategy(listOfTeams)
-    tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
-
-    //when
-    //score Part
-
-    /// Scores 3:1
-    val VSetw = mock[VSet]
-    val VSetl = mock[VSet]
-
-    Mockito.when(VSetw.won).thenReturn(true)
-    Mockito.when(VSetl.won).thenReturn(false)
-
-    val setsW = List(VSetl,VSetw,VSetw)
-    val setsL = List(VSetw,VSetl,VSetl)
-
-
-    val score:VolleyballScore = VolleyballScore()
-    val score2:VolleyballScore = VolleyballScore()
-
-    score.sets=setsW
-    score2.sets=setsL
-
-    /// Scores 3:2
-
-    val setsW2 = List(VSetw,VSetw,VSetw)
-    val setsL2 = List(VSetw,VSetw,VSetl)
-
-
-    val score21:VolleyballScore = VolleyballScore()
-    val score22:VolleyballScore = VolleyballScore()
-
-    score21.sets=setsW2
-    score22.sets=setsL2
-
-    ////////////1st phase/////////////////
-    val game1 = underTest.getGame(tree.root,"lll")
-    val game2 = underTest.getGame(tree.root,"llr")
-    val game3 = underTest.getGame(tree.root,"lrl")
-    val game4 = underTest.getGame(tree.root,"lrr")
-
-    val game5 = underTest.getGame(tree.root,"rll")
-    val game6 = underTest.getGame(tree.root,"rlr")
-    val game7 = underTest.getGame(tree.root,"rrl")
-    val game8 = underTest.getGame(tree.root,"rrr")
-
-    val games = List(game1,game2,game3,game4,game5,game6,game7,game8)
-
-    def setWinLooseSet = {if(new Random().nextInt(10)>5) // Returns set 3:1 or 3:2
-      List(score,score2)
-      else
-      List(score21,score22)
-    }
-    games.foreach(game =>(game.value.scoreHost = setWinLooseSet(0),game.value.scoreGuest = setWinLooseSet(1)))
-
-    underTest.updateTree(tree) // updating matches
-    //Right now play : 1 vs 3, 5 vs 7, 9 vs 11, 13 vs 15
-    val game9 = underTest.getGame(tree.root,"ll")
-    val game10 = underTest.getGame(tree.root,"lr")
-    val game11 = underTest.getGame(tree.root,"rl")
-    val game12 = underTest.getGame(tree.root,"rr")
-
-    var updatedTree = underTest.updateTree(tree)
-    //checking third math
-    val condition0 = (game11.value.host==game5.value.host && game11.value.guest ==game6.value.host)
-    val condition1 = (game4.value.host!=null && game4.value.guest==null)
-
-    assert(condition0, "Update Tree: 10 teams match, checking third match after one update")
-    assert(condition1, "Update Tree: 10 teams match, checking 4. match ")
-  }
-
 }
+

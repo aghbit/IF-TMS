@@ -28,7 +28,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
      var A = List(mock[Team])
     for(i <- 0 until 14)A =mock[Team]::A //have 15 elements in List of Teams
-     underTest = new SingleEliminationStrategy(A)
+     underTest = new SingleEliminationStrategy()
 
     //when
 
@@ -48,7 +48,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //given
 
-    underTest = new SingleEliminationStrategy(List(mock[Team]))
+    underTest = new SingleEliminationStrategy()
 
     //when
 
@@ -68,7 +68,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     var A = List(mock[Team])
     for(i <- 0 until 7) A=mock[Team]::A //Added 7+1 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -93,7 +93,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     var A = List(mock[Team])
     for(i <- 0 until 17) A=mock[Team]::A //Added 17 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -118,7 +118,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     var A = List(mock[Team])
     for(i <- 0 until 19) A=mock[Team]::A //Added 20 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -144,7 +144,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     var A = List(mock[Team])
     for(i <- 0 until 18) A=mock[Team]::A //Added 7+1 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -175,7 +175,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       Mockito.when(B._id).thenReturn(BSONObjectID.generate) //Generate Team id
       A = B::A
     }
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -207,7 +207,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
     }
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -238,7 +238,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
     } //Added 18 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
@@ -270,7 +270,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
     } //Added 18 teams to my list
-    underTest = new SingleEliminationStrategy(A)
+    underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
