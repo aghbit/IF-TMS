@@ -1,4 +1,4 @@
-package tournament.tournaments
+package models.tournaments
 
 import models.team.Team
 import models.tournament.tournaments.Tournament
@@ -14,7 +14,7 @@ import reactivemongo.bson.BSONObjectID
 import scala.collection.mutable.ListBuffer
 
 /**
- * Created by Przemek_ on 2014-12-13.
+ * Created by Przemek
  */
 @RunWith(classOf[JUnitRunner])
 class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
