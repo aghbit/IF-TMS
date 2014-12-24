@@ -20,7 +20,7 @@ import scala.collection.mutable.ListBuffer
  * Created by Przemek
  */
 @RunWith(classOf[JUnitRunner])
-class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
+class StateTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   var instance: Tournament = _
   var properties: TournamentProperties = _
   var teams: ListBuffer[Team] = _
