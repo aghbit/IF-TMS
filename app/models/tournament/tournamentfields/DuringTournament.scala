@@ -1,6 +1,8 @@
-package models.tournament.tournaments
+package models.tournament.tournamentfields
 
-import models.tournament.tournaments.TournamentDiscipline.Discipline
+import models.tournament.tournamentstate.{TournamentSettings, TournamentProperties, TournamentDiscipline}
+import TournamentDiscipline.Discipline
+import models.tournament.tournaments.Tournament
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 

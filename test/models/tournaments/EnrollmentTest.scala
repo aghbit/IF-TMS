@@ -1,8 +1,9 @@
 package models.tournaments
 
 import models.team.Team
+import models.tournament.tournamentfields.BeforeEnrollment
 import models.tournament.tournaments._
-import models.tournament.tournaments.TournamentSettings
+import models.tournament.tournamentstate.{TournamentProperties, TournamentDiscipline, TournamentSettings}
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.scalatest.{BeforeAndAfter, FunSuite}

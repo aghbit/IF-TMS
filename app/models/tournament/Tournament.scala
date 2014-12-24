@@ -1,7 +1,8 @@
 package models.tournament.tournaments
 
 import models.team.Team
-import models.tournament.tournaments.TournamentDiscipline.Discipline
+import models.tournament.tournamentstate._
+import TournamentDiscipline.Discipline
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 import scala.collection.mutable.ListBuffer

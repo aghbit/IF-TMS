@@ -1,4 +1,4 @@
-package models.tournament.tournaments
+package models.tournament.tournamentstate
 
 import models.user.User
 

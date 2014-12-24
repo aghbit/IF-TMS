@@ -3,9 +3,10 @@ package ITE.tournaments
 import models.statistics.Statistics
 import models.strategy.TournamentStrategy
 import models.team.Team
-import models.tournament.tournaments.TournamentDiscipline.BeachVolleyball
+import models.tournament.tournamentfields.BeforeEnrollment
+import models.tournament.tournamentstate._
+import TournamentDiscipline.BeachVolleyball
 import models.tournament.tournaments._
-import models.tournament.tournaments.TournamentSettings
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.joda.time.DateTime
