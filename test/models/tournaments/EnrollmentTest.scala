@@ -1,9 +1,8 @@
 package models.tournaments
 
 import models.team.Team
-import models.tournament.tournaments.Tournament
-import models.tournament.tournaments.tournamentfields.{TournamentSettings, TournamentProperties, TournamentDiscipline}
-import models.tournament.tournaments.tournamentstate.BeforeEnrollment
+import models.tournament.tournaments._
+import models.tournament.tournaments.TournamentSettings
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.scalatest.{BeforeAndAfter, FunSuite}
@@ -21,18 +20,18 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   var instance: Tournament = _
   var properties: TournamentProperties = _
   var teams: ListBuffer[Team] = _
-  var discipline: TournamentDiscipline = _
+  var discipline: TournamentDiscipline.Discipline = _
 
   before {
     teams = ListBuffer(mock[Team], mock[Team], mock[Team], mock[Team], mock[Team], mock[Team])
-    discipline = mock[TournamentDiscipline]
+    discipline = mock[TournamentDiscipline.Discipline]
     teams.foreach(team => Mockito.when(team._id).thenReturn(BSONObjectID.generate))
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
     instance = BeforeEnrollment(tournamentPropertiesMock, discipline)
-    instance = instance.startEnrollment()
+    instance = instance.startNext()
   }
 
   test("addTeam test") {
@@ -44,11 +43,11 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val containsTeam = instance.containsTeam(teams(0))
 
     // then
-    assert(containsTeam, "addTeam: test 1")
+    assert(containsTeam, "addTeam: test")
 
   }
 
-  test("removeTeam: Simple test") {
+  test("removeTeam: test") {
 
     //given
       instance.addTeam(teams(3))
@@ -58,7 +57,7 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val containsTeam = instance.containsTeam(teams(3))
 
     //then
-    assert(!containsTeam, "RemovePlayer: test 1")
+    assert(!containsTeam, "RemovePlayer: test")
 
   }
 

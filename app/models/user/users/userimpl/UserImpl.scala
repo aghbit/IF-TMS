@@ -1,6 +1,7 @@
 package models.user.users.userimpl
 
 import models.statistics.Statistics
+import models.user.User
 import models.user.userproperties.UserProperties
 import models.user.users.AbstractUser
 import reactivemongo.bson.BSONObjectID
@@ -16,7 +17,7 @@ class UserImpl(override val _id: BSONObjectID,
 
 
 object UserImpl {
-  private def apply(personalData: UserProperties, statistics: Option[Statistics]): Unit = {
+  def apply(personalData: UserProperties, statistics: Option[Statistics]): User = {
     new UserImpl(BSONObjectID.generate, personalData, statistics)
   }
 }

@@ -7,5 +7,5 @@ package models.tournament.tournaments
 class TournamentSettings(var numberOfPitches: Int,
                           var numberOfTeams: Int,
                           var canEnroll: Boolean,
-                          var level: TournamentLevel) {
+                          var level: TournamentLevel.Value) {
 }
