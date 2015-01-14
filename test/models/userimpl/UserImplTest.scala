@@ -1,10 +1,8 @@
-package user.users.userimpl
+package models.userimpl
 
 import models.statistics.Statistics
 import models.user.userproperties.UserProperties
-import models.user.users.UserType
 import models.user.users.userimpl.UserImpl
-import models.user.userstatus.UserStatus
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
@@ -24,21 +22,19 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   before {
     instance = new UserImpl(BSONObjectID.generate, mock[UserProperties], mock[Option[Statistics]])
     instance2 = new UserImpl(BSONObjectID.generate, mock[UserProperties], mock[Option[Statistics]])
-    instance2.userType = UserType.Admin
+    instance2.isAdmin = true
   }
 
 
   test("Default account status is NotActive") {
     //given
     //when
-    val test1: Boolean = instance.isAccountNotActive
-    val test2: Boolean = instance.isAccountActive
-    val test3: Boolean = instance.isAccountBanned
+    val test1: Boolean = instance.isActive
+    val test2: Boolean = instance.isBanned
 
     //then
-    assert(test1, "Status is NotActive test")
-    assert(!test2, "Status is not Active test")
-    assert(!test3, "Status is not Banned test")
+    assert(!test1, "Status is NotActive test")
+    assert(!test2, "Status is Banned test")
   }
 
   test("Activation account works") {
@@ -47,14 +43,12 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     instance.activateAccount
 
     //when
-    val test1: Boolean = instance.isAccountNotActive
-    val test2: Boolean = instance.isAccountActive
-    val test3: Boolean = instance.isAccountBanned
+    val test1: Boolean = instance.isActive
+    val test2: Boolean = instance.isBanned
 
     //then
-    assert(!test1, "Status is not NotActive test")
-    assert(test2, "Status is  Active test")
-    assert(!test3, "Status is not Banned test")
+    assert(test1, "Status is  Active test")
+    assert(!test2, "Status is  not Banned test")
   }
 
 
@@ -71,10 +65,10 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     //given
     //when
     instance2.setAdmin(instance)
-    val test = instance.userType
+    val test = instance.isAdmin
 
     //then
-    assert(test === UserType.Admin, "Admin setting completed")
+    assert(test, "Admin setting completed")
   }
 
   test("Banning admin") {
@@ -91,14 +85,13 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   test("Banning user") {
 
     //given
-    instance.status = UserStatus.Active
-
+    instance.isActive = true
     //when
     instance2.banUser(instance)
-    val test = instance.status
+    val test = instance.isBanned
 
     //then
-    assert(test === UserStatus.Banned, "Ban completed")
+    assert(test, "Ban completed")
 
   }
 

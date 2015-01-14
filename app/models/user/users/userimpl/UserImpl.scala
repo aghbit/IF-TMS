@@ -10,7 +10,8 @@ import reactivemongo.bson.BSONObjectID
  */
 class UserImpl(override val _id: BSONObjectID,
                override val personalData: UserProperties,
-               override val statistics: Option[Statistics]) extends AbstractUser(_id, personalData, statistics) {
+               override val statistics: Option[Statistics])
+  extends AbstractUser(_id, personalData, statistics, isAdmin = false, isActive = false, isBanned = false) {
 
 }
 

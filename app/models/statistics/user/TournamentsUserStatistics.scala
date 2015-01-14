@@ -5,16 +5,16 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by krzysiek.
  */
-class TournamentsUserStatistics(var tournamentsID:Array[BSONObjectID],
-                                var numberOfTournaments:Int,
-                                var numberOfWonTournaments:Int) {
+class TournamentsUserStatistics(var tournamentsID: Array[BSONObjectID],
+                                var numberOfTournaments: Int,
+                                var numberOfWonTournaments: Int) {
 
-  def addTournament(tournament:BSONObjectID):Unit = {
+  def addTournament(tournament: BSONObjectID): Unit = {
     tournamentsID :+= tournament
     numberOfTournaments = tournamentsID.length
   }
 
-  def addNumberOfWonTournaments():Unit = {
+  def addNumberOfWonTournaments(): Unit = {
     numberOfWonTournaments += 1
   }
 
