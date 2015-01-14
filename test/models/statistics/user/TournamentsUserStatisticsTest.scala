@@ -1,41 +1,41 @@
 package models.statistics.user
 
 import org.junit.runner.RunWith
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by krzysiek.
  */
 @RunWith(classOf[JUnitRunner])
-class TournamentsUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class TournamentsUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
-  var testInstance:TournamentsUserStatistics = _
+  var testInstance: TournamentsUserStatistics = _
 
-  val tournamentsID:Array[BSONObjectID] = Array(BSONObjectID.generate)
-  val numberOfTournaments:Int = tournamentsID.length
-  val numberOfWonTournaments:Int = 1
+  val tournamentsID: Array[BSONObjectID] = Array(BSONObjectID.generate)
+  val numberOfTournaments: Int = tournamentsID.length
+  val numberOfWonTournaments: Int = 1
 
-  before{
-    testInstance = new TournamentsUserStatistics(tournamentsID,numberOfTournaments,numberOfWonTournaments)
+  before {
+    testInstance = new TournamentsUserStatistics(tournamentsID, numberOfTournaments, numberOfWonTournaments)
   }
 
-  test("Constructor test"){
+  test("Constructor test") {
 
     //given
 
     //when
-    val testInstance:TournamentsUserStatistics = new TournamentsUserStatistics(tournamentsID,numberOfTournaments,
-            numberOfWonTournaments)
+    val testInstance: TournamentsUserStatistics = new TournamentsUserStatistics(tournamentsID, numberOfTournaments,
+      numberOfWonTournaments)
 
     //then
     assert(testInstance.numberOfTournaments === 1, "Constructor: test numberOfTournaments")
     assert(testInstance.numberOfWonTournaments === 1, "Constructor: test numberOfWonTournaments")
   }
 
-  test("addTournament test"){
+  test("addTournament test") {
 
     //given
 
@@ -46,7 +46,7 @@ class TournamentsUserStatisticsTest extends FunSuite with MockitoSugar with Befo
     assert(testInstance.numberOfTournaments === 2, "addTournament test")
   }
 
-  test("addNumberOfWonTournaments test"){
+  test("addNumberOfWonTournaments test") {
 
     //given
 

@@ -5,8 +5,8 @@ package models.tournament.tournaments
  */
 
 class TournamentSettings(val numberOfPitches: Int,
-                          val numberOfTeams: Int,
-                          val canEnroll: Boolean,
-                          val level: TournamentLevel) {
+                         val numberOfTeams: Int,
+                         val canEnroll: Boolean,
+                         val level: TournamentLevel) {
 
 }

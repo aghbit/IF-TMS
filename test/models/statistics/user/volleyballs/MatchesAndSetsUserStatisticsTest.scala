@@ -2,37 +2,37 @@ package models.statistics.user.volleyballs
 
 import models.exceptions.{NegativeValueException, TooManySetsInMatchException}
 import org.junit.runner.RunWith
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
 /**
  * Created by krzysiek.
  */
 @RunWith(classOf[JUnitRunner])
-class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
-  var testInstance:MatchesAndSetsUserStatistics = _
+  var testInstance: MatchesAndSetsUserStatistics = _
 
-  val discipline:String = "Beach Volleyball"
-  val numberOfWonMatches:Int = 10
-  val numberOfLostMatches:Int = 6
-  val numberOfWonSets:Int = 25
-  val numberOfLostSets:Int = 15
-  val numberOfPoints:Int = 500
+  val discipline: String = "Beach Volleyball"
+  val numberOfWonMatches: Int = 10
+  val numberOfLostMatches: Int = 6
+  val numberOfWonSets: Int = 25
+  val numberOfLostSets: Int = 15
+  val numberOfPoints: Int = 500
 
-  before{
-    testInstance = new MatchesAndSetsUserStatistics(discipline,numberOfWonMatches,numberOfLostMatches,numberOfWonSets,
-            numberOfLostSets,numberOfPoints)
+  before {
+    testInstance = new MatchesAndSetsUserStatistics(discipline, numberOfWonMatches, numberOfLostMatches, numberOfWonSets,
+      numberOfLostSets, numberOfPoints)
   }
 
-  test("Constructor test"){
+  test("Constructor test") {
 
     //given
 
     //when
-    val testInstance:MatchesAndSetsUserStatistics = new MatchesAndSetsUserStatistics(discipline,numberOfWonMatches,
-            numberOfLostMatches,numberOfWonSets,numberOfLostSets,numberOfPoints)
+    val testInstance: MatchesAndSetsUserStatistics = new MatchesAndSetsUserStatistics(discipline, numberOfWonMatches,
+      numberOfLostMatches, numberOfWonSets, numberOfLostSets, numberOfPoints)
 
     //then
     assert(testInstance.discipline === "Beach Volleyball", "Constructor test discipline")
@@ -43,7 +43,7 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfPoints === 500, "Constructor: test numberOfPoints")
   }
 
-  test("addNumberOfWonMatches test"){
+  test("addNumberOfWonMatches test") {
 
     //given
 
@@ -54,7 +54,7 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfWonMatches === 11, "addNumberOfWonMatches test")
   }
 
-  test("addNumberOfLostMatches test"){
+  test("addNumberOfLostMatches test") {
 
     //given
 
@@ -65,7 +65,7 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfLostMatches === 7, "addNumberOfLostMatches test")
   }
 
-  test("addNumberOfWonSets test1"){
+  test("addNumberOfWonSets test1") {
 
     //given
 
@@ -76,27 +76,27 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfWonSets === 27, "addNumberOfWonSets test1")
   }
 
-  test("addNumberOfWonSets test2 - too many sets"){
+  test("addNumberOfWonSets test2 - too many sets") {
 
     //given
 
     //when&then
-    intercept[TooManySetsInMatchException]{
+    intercept[TooManySetsInMatchException] {
       testInstance.addNumberOfWonSets(3)
     }
   }
 
-  test("addNumberOfWonSets test3 - negative value"){
+  test("addNumberOfWonSets test3 - negative value") {
 
     //given
 
     //when&then
-    intercept[NegativeValueException]{
+    intercept[NegativeValueException] {
       testInstance.addNumberOfWonSets(-2)
     }
   }
 
-  test("addNumberOfLostSets test1"){
+  test("addNumberOfLostSets test1") {
 
     //given
 
@@ -107,27 +107,27 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfLostSets === 17, "addNumberOfWonSets test")
   }
 
-  test("addNumberOfLostSets test2 - too many sets"){
+  test("addNumberOfLostSets test2 - too many sets") {
 
     //given
 
     //when&then
-    intercept[TooManySetsInMatchException]{
+    intercept[TooManySetsInMatchException] {
       testInstance.addNumberOfLostSets(5)
     }
   }
 
-  test("addNumberOfLostSets test3 - negative value"){
+  test("addNumberOfLostSets test3 - negative value") {
 
     //given
 
     //when&then
-    intercept[NegativeValueException]{
+    intercept[NegativeValueException] {
       testInstance.addNumberOfLostSets(-3)
     }
   }
 
-  test("addNumberOfPoints test1"){
+  test("addNumberOfPoints test1") {
 
     //given
 
@@ -138,12 +138,12 @@ class MatchesAndSetsUserStatisticsTest extends FunSuite with MockitoSugar with B
     assert(testInstance.numberOfPoints === 530, "addNumberOfPoints test")
   }
 
-  test("addNumberOfPoints test2 - negative value"){
+  test("addNumberOfPoints test2 - negative value") {
 
     //given
 
     //when&then
-    intercept[NegativeValueException]{
+    intercept[NegativeValueException] {
       testInstance.addNumberOfPoints(-5)
     }
   }

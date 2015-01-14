@@ -8,10 +8,10 @@ import reactivemongo.bson.BSONObjectID
  * Created by Szymek.
  */
 class Tournament(val _id: Option[BSONObjectID],
-                  val properties: TournamentProperties,
-                  val state: TournamentState,
-                  val teams: List[Team],
-                  val users: List[User]) {
+                 val properties: TournamentProperties,
+                 val state: TournamentState,
+                 val teams: List[Team],
+                 val users: List[User]) {
 
   def generateTree() = ???
 
@@ -26,7 +26,6 @@ class Tournament(val _id: Option[BSONObjectID],
   def startTournament() = ???
 
   def startAfterTournament() = ???
-
 
 
 }

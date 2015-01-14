@@ -5,6 +5,6 @@ import models.strategy.TournamentStrategy
 /**
  * Created by Szymek.
  */
-class DoubleEliminationStrategy extends TournamentStrategy{
+class DoubleEliminationStrategy extends TournamentStrategy {
 
 }

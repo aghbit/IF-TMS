@@ -1,37 +1,37 @@
 package models.statistics.tournament.volleyballs.beachvolleyball
 
 import org.junit.runner.RunWith
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
 /**
  * Created by krzysiek.
  */
 @RunWith(classOf[JUnitRunner])
-class BeachVolleyballTournamentStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class BeachVolleyballTournamentStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
-  var testInstance:BeachVolleyballTournamentStatistics = _
+  var testInstance: BeachVolleyballTournamentStatistics = _
 
-  val discipline:String = "Beach Volleyball"
-  val pointUnit:String = "point"
-  val numberOfMatches:Int = 12
-  val numberOfSets:Int = 36
-  val numberOfPoints:Int = 200
-  val numberOfTieBreaks:Int = 10
+  val discipline: String = "Beach Volleyball"
+  val pointUnit: String = "point"
+  val numberOfMatches: Int = 12
+  val numberOfSets: Int = 36
+  val numberOfPoints: Int = 200
+  val numberOfTieBreaks: Int = 10
 
-  before{
-    testInstance = new BeachVolleyballTournamentStatistics(discipline,pointUnit,numberOfMatches,numberOfSets,
-            numberOfPoints,numberOfTieBreaks)
+  before {
+    testInstance = new BeachVolleyballTournamentStatistics(discipline, pointUnit, numberOfMatches, numberOfSets,
+      numberOfPoints, numberOfTieBreaks)
   }
 
-  test("Constructor test"){
+  test("Constructor test") {
 
     //given
 
     //when
-    val testInstance:BeachVolleyballTournamentStatistics = new BeachVolleyballTournamentStatistics(discipline,pointUnit,
-            numberOfMatches,numberOfSets,numberOfPoints,numberOfTieBreaks)
+    val testInstance: BeachVolleyballTournamentStatistics = new BeachVolleyballTournamentStatistics(discipline, pointUnit,
+      numberOfMatches, numberOfSets, numberOfPoints, numberOfTieBreaks)
 
     //then
     assert(testInstance.discipline === "Beach Volleyball", "Constructor: test discipline")

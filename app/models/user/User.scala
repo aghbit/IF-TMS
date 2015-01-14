@@ -1,6 +1,5 @@
 package models.user
 
-import models.user.userstatus.UserStatus
 import reactivemongo.bson.BSONObjectID
 
 /**
@@ -8,16 +7,8 @@ import reactivemongo.bson.BSONObjectID
  */
 trait User {
 
-    def _id:BSONObjectID
+  def _id: BSONObjectID
 
-    def isAccountActive: Boolean
-
-    def isAccountNotActive: Boolean
-
-    def isAccountBanned: Boolean
-
-    def isAdmin: Boolean
-
-    def activateAccount: Boolean
+  def activateAccount: Boolean
 
 }
