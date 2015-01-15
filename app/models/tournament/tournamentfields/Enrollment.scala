@@ -1,9 +1,8 @@
 package models.tournament.tournamentfields
 
 import models.team.Team
-import models.tournament.tournamentstate.{TournamentProperties, TournamentDiscipline}
-import TournamentDiscipline.Discipline
 import models.tournament.tournaments.Tournament
+import models.tournament.tournamentstate.TournamentProperties
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -13,11 +12,10 @@ import scala.collection.mutable.ListBuffer
  */
 class Enrollment(override val _id: BSONObjectID,
                  override var properties: TournamentProperties,
-                 override var teams: ListBuffer[BSONObjectID],
-                 override val discipline: Discipline) extends Tournament{
+                 override var teams: ListBuffer[BSONObjectID]) extends Tournament {
 
   override def startNext(): Break = {
-    val newState = new Break(this._id, this.properties, this.teams, this.discipline)
+    val newState = new Break(this._id, this.properties, this.teams)
     newState.properties.settings.canEnroll = false
     newState
   }
@@ -27,8 +25,8 @@ class Enrollment(override val _id: BSONObjectID,
   }
 
   override def removeTeam(team: Team): Unit = {
-    if(!teams.contains(team._id))
+    if (!teams.contains(team._id))
       throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams = teams.filter(id => id!= team._id)
+    teams = teams.filter(id => id != team._id)
   }
 }

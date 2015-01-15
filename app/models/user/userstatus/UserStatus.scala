@@ -5,7 +5,7 @@ package models.user.userstatus
  */
 
 
-object UserStatus extends Enumeration{
+object UserStatus extends Enumeration {
   type State = Value
   val NotActive, Active, Banned = Value
 

@@ -1,8 +1,7 @@
 package models.tournament.tournamentfields
 
-import models.tournament.tournamentstate._
-import TournamentDiscipline.Discipline
 import models.tournament.tournaments._
+import models.tournament.tournamentstate._
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -11,12 +10,11 @@ import scala.collection.mutable.ListBuffer
  * Created by Przemek
  */
 class BeforeEnrollment(override val _id: BSONObjectID,
-                       override var properties: TournamentProperties,
-                       override val discipline: Discipline) extends Tournament{
+                       override var properties: TournamentProperties) extends Tournament {
 
 
   override def startNext(): Enrollment = {
-    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID], this.discipline)
+    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID])
     newState.properties.settings.canEnroll = true
     newState
   }
@@ -24,9 +22,10 @@ class BeforeEnrollment(override val _id: BSONObjectID,
   override var teams: ListBuffer[BSONObjectID] = _
 
   override def editSettings(settings: TournamentSettings): Unit = {
-    this.properties.settings.level = settings.level
     this.properties.settings.numberOfPitches = settings.numberOfPitches
     this.properties.settings.numberOfTeams = settings.numberOfTeams
+    this.properties.settings.level = settings.level
+    this.properties.settings.discipline = settings.discipline
   }
 
   override def editTerm(term: TournamentTerm) {
@@ -39,8 +38,8 @@ class BeforeEnrollment(override val _id: BSONObjectID,
 }
 
 object BeforeEnrollment {
-  def apply(properties: TournamentProperties, discipline: Discipline): Tournament = {
-    val newTournament = new BeforeEnrollment(BSONObjectID.generate, properties, discipline)
+  def apply(properties: TournamentProperties): Tournament = {
+    val newTournament = new BeforeEnrollment(BSONObjectID.generate, properties)
     newTournament.properties.settings.canEnroll = false
     newTournament
   }

@@ -9,7 +9,7 @@ class TournamentTerm(var enrollDeadline: DateTime,
                      var begin: DateTime,
                      var end: DateTime,
                      var extraBegin: DateTime,
-                     var extraEnd:DateTime) {
+                     var extraEnd: DateTime) {
 
   def getDuration: Duration = {
     val tournamentDuration = new Interval(begin, end).toDuration

@@ -1,8 +1,7 @@
 package models.tournament.tournamentfields
 
-import models.tournament.tournamentstate.{TournamentSettings, TournamentProperties, TournamentDiscipline}
-import TournamentDiscipline.Discipline
 import models.tournament.tournaments.Tournament
+import models.tournament.tournamentstate.{TournamentProperties, TournamentSettings}
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 
@@ -14,8 +13,7 @@ import scala.collection.mutable.ListBuffer
  */
 class AfterTournament(override val _id: BSONObjectID,
                       override var properties: TournamentProperties,
-                      override var teams: ListBuffer[BSONObjectID],
-                      override val discipline: Discipline) extends Tournament{
+                      override var teams: ListBuffer[BSONObjectID]) extends Tournament {
   override def addReferee(user: User): Unit = {
     // void
   }

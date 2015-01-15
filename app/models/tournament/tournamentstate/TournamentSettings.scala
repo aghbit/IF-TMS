@@ -1,11 +1,12 @@
 package models.tournament.tournamentstate
 
 /**
- * Created by Szymek.
+ * Created by Przemek.
  */
 
 class TournamentSettings(var numberOfPitches: Int,
-                          var numberOfTeams: Int,
-                          var canEnroll: Boolean,
-                          var level: TournamentLevel.Value) {
+                         var numberOfTeams: Int,
+                         var canEnroll: Boolean,
+                         var level: Integer,
+                         var discipline: String) { // as suggested
 }
