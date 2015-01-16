@@ -1,5 +1,6 @@
 package models.tournament.tournamentfields
 
+import models.team.Team
 import models.tournament.tournaments._
 import models.tournament.tournamentstate._
 import reactivemongo.bson.BSONObjectID
@@ -34,6 +35,14 @@ class BeforeEnrollment(override val _id: BSONObjectID,
 
   override def editDescription(description: TournamentDescription): Unit = {
     this.properties.description = description
+  }
+
+  override def addTeam(team: Team): Unit = {
+    throw new IllegalStateException("You can't add teams during this tournament phase")
+  }
+
+  override def removeTeam(team: Team): Unit = {
+    throw new IllegalStateException("You can't remove teams during this tournament phase")
   }
 }
 

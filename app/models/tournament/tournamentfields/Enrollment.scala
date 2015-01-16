@@ -2,7 +2,7 @@ package models.tournament.tournamentfields
 
 import models.team.Team
 import models.tournament.tournaments.Tournament
-import models.tournament.tournamentstate.TournamentProperties
+import models.tournament.tournamentstate.{TournamentTerm, TournamentProperties}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -28,5 +28,9 @@ class Enrollment(override val _id: BSONObjectID,
     if (!teams.contains(team._id))
       throw new NoSuchElementException("Can't remove absent team from the Tournament!")
     teams = teams.filter(id => id != team._id)
+  }
+
+  override def editTerm(term: TournamentTerm): Unit = {
+    throw new IllegalStateException("You can't edit term during this tournament phase")
   }
 }
