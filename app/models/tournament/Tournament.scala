@@ -18,13 +18,13 @@ trait Tournament {
   var properties: TournamentProperties
   var teams: ListBuffer[BSONObjectID]
 
-  def startNext(): Tournament = ???
+  def startNext(): Tournament
 
-  def addTeam(team: Team): Unit = ???
+  def addTeam(team: Team): Unit
 
-  def removeTeam(team: Team): Unit = ???
+  def removeTeam(team: Team): Unit
 
-  def editTerm(term: TournamentTerm): Unit = ???
+  def editTerm(term: TournamentTerm): Unit
 
   def generateTree() = {
     properties.strategy.getOrder()
