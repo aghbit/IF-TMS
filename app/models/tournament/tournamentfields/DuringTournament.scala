@@ -1,7 +1,8 @@
 package models.tournament.tournamentfields
 
+import models.team.Team
 import models.tournament.tournaments.Tournament
-import models.tournament.tournamentstate.{TournamentProperties, TournamentSettings}
+import models.tournament.tournamentstate.{TournamentTerm, TournamentProperties, TournamentSettings}
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 
@@ -29,5 +30,17 @@ class DuringTournament(override val _id: BSONObjectID,
 
   override def editSettings(settings: TournamentSettings): Unit = {
     // void
+  }
+
+  override def addTeam(team: Team): Unit = {
+    throw new IllegalStateException("You can't add teams during this tournament phase")
+  }
+
+  override def editTerm(term: TournamentTerm): Unit = {
+    throw new IllegalStateException("You can't edit term during this tournament phase")
+  }
+
+  override def removeTeam(team: Team): Unit = {
+    throw new IllegalStateException("You can't remove teams during this tournament phase")
   }
 }
