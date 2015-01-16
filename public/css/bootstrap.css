@@ -12,8 +12,6 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
-
-
 body {
   margin: 0;
 }
@@ -904,6 +902,7 @@ body {
   font-size: 13px;
   line-height: 1.846;
   color: #666666;
+  background-color: #ffffff;
 }
 input,
 button,

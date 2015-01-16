@@ -1,0 +1,10 @@
+.personalmenu{
+    background-color: rgba(237, 210, 93, 0.35);
+    text-align: center;
+}
+.mainnavbar{
+    background-color: #edd25d;
+}
+.logo{
+    cursor : pointer;
+}
