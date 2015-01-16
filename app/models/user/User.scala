@@ -7,5 +7,8 @@ import reactivemongo.bson.BSONObjectID
  */
 trait User {
 
-    def _id:BSONObjectID
+  def _id: BSONObjectID
+
+  def activateAccount: Boolean
+
 }

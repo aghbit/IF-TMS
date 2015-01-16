@@ -5,9 +5,9 @@ import models.user.User
 /**
  * Created by Szymek.
  */
-class TournamentStaff(val admin:User,
-                       val Referees:Option[List[User]]) {
+class TournamentStaff(val admin: User,
+                      val Referees: Option[List[User]]) {
 
-  def addReferee(user:User) = ???
+  def addReferee(user: User) = ???
 
 }

@@ -3,6 +3,6 @@ package models.exceptions
 /**
  * Created by Szymek.
  */
-class TooManyMembersInTeamException(s: String) extends Exception(s){
+class TooManyMembersInTeamException(s: String) extends Exception(s) {
 
 }

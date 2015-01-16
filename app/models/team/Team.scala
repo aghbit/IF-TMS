@@ -8,29 +8,29 @@ import reactivemongo.bson.BSONObjectID
  */
 trait Team {
 
-  val _id:BSONObjectID
+  val _id: BSONObjectID
 
-  val name:String
+  val name: String
 
-  def getMembersIDs:List[BSONObjectID]
+  def getMembersIDs: List[BSONObjectID]
 
-  def isComplete:Boolean
+  def isComplete: Boolean
 
-  def addPlayer(player:User)
+  def addPlayer(player: User)
 
-  def addBenchWarmer(benchWarmer:User)
+  def addBenchWarmer(benchWarmer: User)
 
-  def removePlayer(player:User)
+  def removePlayer(player: User)
 
-  def removeBenchWarmer(benchWarmer:User)
+  def removeBenchWarmer(benchWarmer: User)
 
-  def setCaptain(captain:User)
+  def setCaptain(captain: User)
 
-  def getCaptainID:BSONObjectID
+  def getCaptainID: BSONObjectID
 
-  def canAddPlayer:Boolean
+  def canAddPlayer: Boolean
 
-  def canAddBenchWarmer:Boolean
+  def canAddBenchWarmer: Boolean
 
-  def containsMember(member:User):Boolean
+  def containsMember(member: User): Boolean
 }
