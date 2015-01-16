@@ -352,12 +352,19 @@ jQuery.extend( jQuery.easing,
         });
       }
       else {
+        console.log(activates.selector);
         activates.css({
           display: 'block',
           top: origin.offset().top,
           left: origin.offset().left,
           height: 0
         });
+        //Dla dropdowna z lewej kurwa chuj
+        if(activates.selector === '#dropdown2'){
+          activates.css({
+            left: origin.offset().left - 40
+          });
+        }
       }
       activates.velocity({opacity: 1}, {duration: options.inDuration, queue: false, easing: 'easeOutQuad'})
       .velocity(
