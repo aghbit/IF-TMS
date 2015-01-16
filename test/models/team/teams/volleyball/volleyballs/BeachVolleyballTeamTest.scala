@@ -5,9 +5,9 @@ import models.team.Team
 import models.user.User
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 import reactivemongo.bson.BSONObjectID
 
 
@@ -15,12 +15,12 @@ import reactivemongo.bson.BSONObjectID
  * Created by Szymek.
  */
 @RunWith(classOf[JUnitRunner])
-class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
-  var underTest:Team = _
-  var players:List[User] = _
+  var underTest: Team = _
+  var players: List[User] = _
 
-  before{
+  before {
     underTest = BeachVolleyballTeam("underTest")
     players = List(mock[User], mock[User], mock[User])
     players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
@@ -31,7 +31,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
 
     //when
-    val underTest:Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2, 1)
+    val underTest: Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2, 1)
 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")
@@ -51,24 +51,24 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     assert(containsPlayer, "AddPlayer: test 1")
   }
 
-  test("AddPlayer: Too many players"){
+  test("AddPlayer: Too many players") {
 
     //given
     underTest.addPlayer(players(0))
     underTest.addPlayer(players(1))
 
     //then&then
-    intercept[TooManyMembersInTeamException]{
+    intercept[TooManyMembersInTeamException] {
       underTest.addPlayer(players(2))
     }
   }
 
-  test("AddBenchWarmer: Beach volleyball team can't has bench warmers!"){
+  test("AddBenchWarmer: Beach volleyball team can't has bench warmers!") {
 
     //given
 
     //when&then
-    intercept[TooManyMembersInTeamException]{
+    intercept[TooManyMembersInTeamException] {
       underTest.addBenchWarmer(players(1))
     }
 
@@ -91,10 +91,10 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
   test("RemovePlayer: Remove absent player") {
 
     //given
-    val underTest:Team = BeachVolleyballTeam("underTest")
+    val underTest: Team = BeachVolleyballTeam("underTest")
 
     //when&then
-    intercept[NoSuchElementException]{
+    intercept[NoSuchElementException] {
       underTest.removePlayer(players.head)
     }
   }
@@ -102,10 +102,10 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
   test("RemoveBenchWarmer: Remove absent bench warmer") {
 
     //given
-    val underTest:Team = BeachVolleyballTeam("underTest")
+    val underTest: Team = BeachVolleyballTeam("underTest")
 
     //when&then
-    intercept[NoSuchElementException]{
+    intercept[NoSuchElementException] {
       underTest.removeBenchWarmer(players.head)
     }
   }
@@ -115,7 +115,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
 
     //when&then
-    intercept[NullPointerException]{
+    intercept[NullPointerException] {
       underTest.getCaptainID
     }
 
@@ -126,13 +126,13 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
 
     //when&then
-    intercept[NoSuchElementException]{
+    intercept[NoSuchElementException] {
       underTest.setCaptain(players(1))
     }
 
   }
 
-  test("SetCaptain&CaptainID: Set player as captain"){
+  test("SetCaptain&CaptainID: Set player as captain") {
 
     //given
     underTest.addPlayer(players(0))
@@ -144,7 +144,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     assert(captainID === players(0)._id, "SetCaptain&CaptainID: test 1")
   }
 
-  test("isComplete: BenchWarmers"){
+  test("isComplete: BenchWarmers") {
 
     //given
     underTest.addPlayer(players(0))

@@ -3,34 +3,34 @@ package models.statistics.user.volleyballs.volleyball
 import models.statistics.user.TournamentsUserStatistics
 import models.statistics.user.volleyballs.MatchesAndSetsUserStatistics
 import org.junit.runner.RunWith
-import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
+import org.scalatest.{BeforeAndAfter, FunSuite}
 
 /**
  * Created by krzysiek.
  */
 @RunWith(classOf[JUnitRunner])
-class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter{
+class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
-  var testInstance:VolleyballUserStatistics = _
+  var testInstance: VolleyballUserStatistics = _
 
-  val discipline:String = "Volleyball"
-  val pointUnit:String = "point"
+  val discipline: String = "Volleyball"
+  val pointUnit: String = "point"
   val winStreak = 3
 
-  before{
-    testInstance = new VolleyballUserStatistics(discipline,pointUnit,mock[TournamentsUserStatistics],
-            mock[MatchesAndSetsUserStatistics],winStreak)
+  before {
+    testInstance = new VolleyballUserStatistics(discipline, pointUnit, mock[TournamentsUserStatistics],
+      mock[MatchesAndSetsUserStatistics], winStreak)
   }
 
-  test("Constructor test"){
+  test("Constructor test") {
 
     //given
 
     //when
-    val testInstance:VolleyballUserStatistics = new VolleyballUserStatistics(discipline,pointUnit,
-            mock[TournamentsUserStatistics],mock[MatchesAndSetsUserStatistics],winStreak)
+    val testInstance: VolleyballUserStatistics = new VolleyballUserStatistics(discipline, pointUnit,
+      mock[TournamentsUserStatistics], mock[MatchesAndSetsUserStatistics], winStreak)
 
     //then
     assert(testInstance.discipline === "Volleyball", "Constructor: test discipline")
@@ -38,10 +38,10 @@ class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with Befor
     assert(testInstance.winStreak === 3, "Constructor: test winStreak")
   }
 
-  test("didTeamWin test1 - won"){
+  test("didTeamWin test1 - won") {
 
     //given
-    val win:Boolean = true
+    val win: Boolean = true
 
     //when
     testInstance.didTeamWin(win)
@@ -50,10 +50,10 @@ class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with Befor
     assert(testInstance.winStreak === 4, "winStreak test1")
   }
 
-  test("didTeamWin test2 - lost"){
+  test("didTeamWin test2 - lost") {
 
     //given
-    val loss:Boolean = false
+    val loss: Boolean = false
 
     //when
     testInstance.didTeamWin(loss)

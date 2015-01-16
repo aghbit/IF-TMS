@@ -6,9 +6,9 @@ import models.statistics.tournament.TournamentStatistics
  * Created by krzysiek.
  */
 trait VolleyballsTournamentStatistics extends TournamentStatistics {
-  val numberOfTieBreaks:Int
+  val numberOfTieBreaks: Int
 
-  def getNumberOfTieBreaks:Int = {
+  def getNumberOfTieBreaks: Int = {
     numberOfTieBreaks
   }
 }

@@ -5,6 +5,7 @@ package models.statistics
  * Edited by krzysiek
  */
 trait Statistics {
-  val discipline:String // BUG discipline should be enum
-  val pointUnit:String // ex. point/goal
+  val discipline: String
+  // BUG discipline should be enum
+  val pointUnit: String // ex. point/goal
 }

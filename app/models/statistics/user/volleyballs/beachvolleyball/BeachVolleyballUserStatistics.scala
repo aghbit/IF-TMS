@@ -6,10 +6,10 @@ import models.statistics.user.volleyballs.{MatchesAndSetsUserStatistics, Volleyb
 /**
  * Created by krzysiek.
  */
-class BeachVolleyballUserStatistics(val discipline:String,
-                                    val pointUnit:String,
-                                    var tournamentsStats:TournamentsUserStatistics,
+class BeachVolleyballUserStatistics(val discipline: String,
+                                    val pointUnit: String,
+                                    var tournamentsStats: TournamentsUserStatistics,
                                     var matchesAndSetsStats: MatchesAndSetsUserStatistics,
-                                    var winStreak:Int) extends VolleyballsUserStatistics {
+                                    var winStreak: Int) extends VolleyballsUserStatistics {
 
 }
