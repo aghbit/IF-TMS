@@ -3,7 +3,7 @@ package models.tournament.tournamentstate
 /**
  * Created by Przemek.
  */
-object TournamentDiscipline extends Enumeration{
+object TournamentDiscipline extends Enumeration {
   type Discipline = Value
   val BeachVolleyball, Volleyball = Value
 
