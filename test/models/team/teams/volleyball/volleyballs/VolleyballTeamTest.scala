@@ -39,7 +39,7 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")
     assert(underTest.isComplete === false, "Constructor: test 2")
-    assert(underTest.getMembersIDs === List(), "Constructor: test 3")
+    assert(underTest.getMembersIDs.size() === 0, "Constructor: test 3")
   }
 
   test("AddPlayer: Simple test") {

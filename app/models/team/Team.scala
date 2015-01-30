@@ -2,7 +2,6 @@ package models.team
 
 import models.user.User
 import reactivemongo.bson.BSONObjectID
-
 /**
  * Created by Szymek.
  */
@@ -12,7 +11,7 @@ trait Team {
 
   val name: String
 
-  def getMembersIDs: List[BSONObjectID]
+  def getMembersIDs: java.util.List[BSONObjectID]
 
   def isComplete: Boolean
 

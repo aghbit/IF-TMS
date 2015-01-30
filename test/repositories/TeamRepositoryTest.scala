@@ -1,46 +1,46 @@
 package repositories
 
+import models.team.Team
 import models.team.teams.volleyball.volleyballs.VolleyballTeam
-import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
-import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.scalatest.FunSuite
-import org.scalatest.junit.JUnitRunner
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
-import play.api.mvc.Controller
-import play.modules.reactivemongo.MongoController
-
-
-//Really important import!
-import scala.collection.JavaConversions._
-
+import org.scalatest.mock.MockitoSugar
+import org.springframework.data.mongodb.core.query._
+import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by Szymek.
  */
-@RunWith(classOf[JUnitRunner])
-class TeamRepositoryTest extends FunSuite{
+class TeamRepositoryTest extends FunSuite with MockitoSugar{
 
-  test("Simple add, find and remove demonstration"){
+  test("Simple test"){
 
     //given
-    val repository = new TeamRepository()
-    //change normal db to test db.
-    repository.initTest()
-    val team = VolleyballTeam("Czarne ninje")
-    team.setCaptain(UserImpl(new UserProperties("Szymek", "l", "p", "7", ","), None))
+    val teamRepository = new TeamRepository
+    teamRepository.initTest()
+    val team = VolleyballTeam("czarne")
+    val user = mock[UserImpl]
+    Mockito.when(user._id).thenReturn(BSONObjectID.generate)
+    team.addPlayer(user)
+    team.setCaptain(user)
+    val query = new Query(Criteria where "name" is "czarne")
 
-    //add example
-    repository.insert(team)
+    //when
+    teamRepository.insert(team)
+    val teamRestored = teamRepository.find(query).get(0)
 
-    //find example
-    val query = new Query(Criteria where ("name") is ("Czarne ninje"))
+    //then
+    assert(teamRestored.getClass == classOf[VolleyballTeam], "Wrong class type!")
+    assert(teamRestored.name == "czarne", "Wrong name!")
+    assert(teamRestored.containsMember(user), "Added player is lost!")
 
-    //val teamsFromDB = repository.find(query, classOf[VolleyballTeam])
-    repository.remove(query, classOf[VolleyballTeam])
-    //println(teamFromDB.head.name)
+    //when
+    teamRepository.remove(query)
+    val teamRestored2 = teamRepository.find(query)
 
-
+    assert(teamRestored2.isEmpty, "Deleting is not working!")
   }
 
 }
+

@@ -1,11 +1,11 @@
 package models.team.teams.volleyball
 
+import java.util
+
 import models.exceptions.TooManyMembersInTeamException
 import models.team.Team
 import models.user.User
 import reactivemongo.bson.BSONObjectID
-
-import scala.collection.immutable.List
 
 /**
  * Created by Szymek.
@@ -17,43 +17,54 @@ trait VolleyballTeams extends Team {
   val playersNumber: Int
   val benchWarmersNumber: Int
 
-  protected var playersID: List[BSONObjectID] = List()
-  protected var benchWarmersID: List[BSONObjectID] = List()
+  protected var playersID: java.util.List[BSONObjectID] = new util.ArrayList[BSONObjectID]()
+  protected var benchWarmersID: java.util.List[BSONObjectID] = new util.ArrayList[BSONObjectID]()
   protected var captainID: Option[BSONObjectID] = None
 
-  override def getMembersIDs: List[BSONObjectID] = playersID ::: benchWarmersID
+  override def getMembersIDs: java.util.List[BSONObjectID] = {
+    val result = new util.ArrayList[BSONObjectID]()
+    val iterator = playersID.iterator()
+    while (iterator.hasNext){
+      result.add(iterator.next())
+    }
+    val iterator2 = benchWarmersID.iterator()
+    while (iterator.hasNext){
+      result.add(iterator.next())
+    }
+    result
+  }
 
-  override def isComplete: Boolean = playersID.length >= playersNumber
+  override def isComplete: Boolean = playersID.size() >= playersNumber
 
-  override def canAddPlayer: Boolean = playersID.length < playersNumber
+  override def canAddPlayer: Boolean = playersID.size() < playersNumber
 
-  override def canAddBenchWarmer: Boolean = benchWarmersID.length < benchWarmersNumber
+  override def canAddBenchWarmer: Boolean = benchWarmersID.size() < benchWarmersNumber
 
   override def addPlayer(player: User): Unit = {
     if (!canAddPlayer) {
       throw new TooManyMembersInTeamException("Can't add! Too many players in this team!")
     }
-    playersID = playersID ::: List(player._id)
+    playersID.add(player._id)
   }
 
   override def addBenchWarmer(benchWarmer: User): Unit = {
     if (!canAddBenchWarmer) {
       throw new TooManyMembersInTeamException("Can't add! Too many bench warmers in this team!")
     }
-    benchWarmersID = benchWarmersID ::: List(benchWarmer._id)
+    benchWarmersID.add(benchWarmer._id)
   }
 
   override def removePlayer(player: User): Unit = {
     if (!playersID.contains(player._id))
       throw new NoSuchElementException("Can't remove absent player from the team!")
-    playersID = playersID.filter(id => id != player._id)
+    playersID.remove(player._id)
   }
 
   override def removeBenchWarmer(benchWarmer: User): Unit = {
     if (!benchWarmersID.contains(benchWarmer._id)) {
       throw new NoSuchElementException("Can't remove absent bench warmer from the team!")
     }
-    benchWarmersID = benchWarmersID.filter(id => id != benchWarmer._id)
+    benchWarmersID.remove(benchWarmer._id)
   }
 
   override def setCaptain(captain: User): Unit = {
