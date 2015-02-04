@@ -16,9 +16,18 @@
 
 .content-bg {
     margin: 4%;
+    position: relative;
 }
 
 footer {
     background-color: #3f51b5;
+    position: fixed;
+    bottom:0;
+    width:100%;
+}
+
+
+.slider-image {
+    width: 100%;
 }
 
