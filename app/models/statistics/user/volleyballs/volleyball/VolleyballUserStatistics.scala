@@ -17,8 +17,8 @@ class VolleyballUserStatistics(val _id: BSONObjectID,
 }
 
 object VolleyballUserStatistics {
-  def apply(tournamentsStats: TournamentsUserStatistics): VolleyballUserStatistics ={
-    new VolleyballUserStatistics(BSONObjectID.generate,"Volleyball","point",tournamentsStats,
-            MatchesAndSetsUserStatistics("Volleyball"),0)
+  def apply(tournamentsStats: TournamentsUserStatistics): VolleyballUserStatistics = {
+    new VolleyballUserStatistics(BSONObjectID.generate, "Volleyball", "point", tournamentsStats,
+      MatchesAndSetsUserStatistics("Volleyball"), 0)
   }
 }

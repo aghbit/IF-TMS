@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration
  * Created by Szymek.
  */
 
-class MongoDBConfiguration(val databaseName:String) extends AbstractMongoConfiguration {
+class MongoDBConfiguration(val databaseName: String) extends AbstractMongoConfiguration {
 
   override def getDatabaseName: String = databaseName
 

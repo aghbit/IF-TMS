@@ -1,6 +1,5 @@
 package models.user.users
 
-import models.statistics.Statistics
 import models.user.User
 import models.user.userproperties.UserProperties
 import reactivemongo.bson.BSONObjectID
@@ -10,7 +9,6 @@ import reactivemongo.bson.BSONObjectID
  */
 abstract class AbstractUser(val _id: BSONObjectID,
                             val personalData: UserProperties,
-                            val statistics: Option[Statistics],
                             var isAdmin: Boolean,
                             var isActive: Boolean,
                             var isBanned: Boolean) extends User {
@@ -49,5 +47,5 @@ abstract class AbstractUser(val _id: BSONObjectID,
 
   }
 
-
+  override def getProperties: UserProperties = personalData
 }

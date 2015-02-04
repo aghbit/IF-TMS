@@ -12,14 +12,14 @@ trait Repository {
   /**
    * Change normal db to test db.
    */
-  def initTest()={
+  def initTest() = {
     mongoTemplate = WebAppConfiguration.mongoTemplateTest
   }
 
   /**
    * Change test db to normal db.
    */
-  def finishTest()={
+  def finishTest() = {
     mongoTemplate = WebAppConfiguration.mongoTemplate
   }
 

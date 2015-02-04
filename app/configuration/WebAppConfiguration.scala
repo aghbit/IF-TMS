@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.MongoTemplate
  */
 object WebAppConfiguration {
 
-  val databaseName:String = "TMS_DB"
-  val testDatabaseName:String = "TEST_TMS_DB"
+  val databaseName: String = "TMS_DB"
+  val testDatabaseName: String = "TEST_TMS_DB"
 
   def mongoTemplate: MongoTemplate = {
     val mongoDBConfiguration: MongoDBConfiguration = new MongoDBConfiguration(databaseName)
@@ -16,7 +16,7 @@ object WebAppConfiguration {
   }
 
   def mongoTemplateTest: MongoTemplate = {
-    val mongoDBConfiguration:MongoDBConfiguration = new MongoDBConfiguration(testDatabaseName)
+    val mongoDBConfiguration: MongoDBConfiguration = new MongoDBConfiguration(testDatabaseName)
     new MongoTemplate(mongoDBConfiguration.mongo(), testDatabaseName)
   }
 

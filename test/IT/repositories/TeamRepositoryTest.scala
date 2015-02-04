@@ -49,7 +49,7 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     underTest.remove(team)
     val teamRestored2 = underTest.find(query)
 
-    assert(teamRestored2.isEmpty, "Deleting is not working!")
+    assert(teamRestored2.isEmpty, "Remove error!")
   }
 
   test("insert: Insert not ready team") {
@@ -57,7 +57,7 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //given
 
     //when&then
-    intercept[IllegalArgumentException]{
+    intercept[IllegalArgumentException] {
       underTest.insert(team)
     }
 

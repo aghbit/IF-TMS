@@ -8,13 +8,13 @@ import org.springframework.data.mongodb.core.query.Query
 /**
  * Created by Szymek.
  */
-class TeamRepository extends Repository{
+class TeamRepository extends Repository {
 
-  val collectionName:String = "Teams"
+  val collectionName: String = "Teams"
   val clazz = classOf[Team]
 
   def insert(team: Team) = {
-    if(!team.isReadyToSave)
+    if (!team.isReadyToSave)
       throw new IllegalArgumentException("Team is not ready to save!")
     mongoTemplate.save(team, collectionName)
   }

@@ -2,6 +2,7 @@ package models.team
 
 import models.user.User
 import reactivemongo.bson.BSONObjectID
+
 /**
  * Created by Szymek.
  */

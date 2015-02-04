@@ -157,7 +157,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     assert(isComplete, "isComplete: BenchWarmers")
 
   }
-  test("isReadyToSave: Captain is not set"){
+  test("isReadyToSave: Captain is not set") {
 
     //given
 
@@ -168,7 +168,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
 
   }
 
-  test("isReadyToSave: Captain is set"){
+  test("isReadyToSave: Captain is set") {
 
     //given
 

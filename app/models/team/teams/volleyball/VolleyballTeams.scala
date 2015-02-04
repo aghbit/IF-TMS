@@ -24,11 +24,11 @@ trait VolleyballTeams extends Team {
   override def getMembersIDs: java.util.List[BSONObjectID] = {
     val result = new util.ArrayList[BSONObjectID]()
     val iterator = playersID.iterator()
-    while (iterator.hasNext){
+    while (iterator.hasNext) {
       result.add(iterator.next())
     }
     val iterator2 = benchWarmersID.iterator()
-    while (iterator.hasNext){
+    while (iterator.hasNext) {
       result.add(iterator.next())
     }
     result
@@ -84,7 +84,7 @@ trait VolleyballTeams extends Team {
   }
 
   override def isReadyToSave: Boolean = captainID match {
-    case Some(captain)  => true
+    case Some(captain) => true
     case _ => false
   }
 }

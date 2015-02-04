@@ -16,8 +16,8 @@ class BeachVolleyballTournamentStatistics(val _id: BSONObjectID,
 
 }
 
-object BeachVolleyballTournamentStatistics{
-  def apply(): BeachVolleyballTournamentStatistics ={
-    new BeachVolleyballTournamentStatistics(BSONObjectID.generate,"Beach Volleyball","point",0,0,0,0)
+object BeachVolleyballTournamentStatistics {
+  def apply(): BeachVolleyballTournamentStatistics = {
+    new BeachVolleyballTournamentStatistics(BSONObjectID.generate, "Beach Volleyball", "point", 0, 0, 0, 0)
   }
 }
