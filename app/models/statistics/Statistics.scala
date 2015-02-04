@@ -1,11 +1,13 @@
 package models.statistics
 
+import reactivemongo.bson.BSONObjectID
+
 /**
  * Created by Szymek.
  * Edited by krzysiek
  */
 trait Statistics {
+  val _id: BSONObjectID
   val discipline: String
-  // BUG discipline should be enum
   val pointUnit: String // ex. point/goal
 }
