@@ -52,3 +52,10 @@ class MatchesAndSetsUserStatistics(val discipline: String,
     numberOfPoints += points
   }
 }
+
+
+object MatchesAndSetsUserStatistics{
+  def apply(discipline:String): MatchesAndSetsUserStatistics ={
+    new MatchesAndSetsUserStatistics(discipline,0,0,0,0,0)
+  }
+}

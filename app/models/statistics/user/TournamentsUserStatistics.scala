@@ -19,3 +19,9 @@ class TournamentsUserStatistics(var tournamentsID: Array[BSONObjectID],
   }
 
 }
+
+object TournamentsUserStatistics {
+  def apply(tournamentsID: Array[BSONObjectID]): TournamentsUserStatistics ={
+    new TournamentsUserStatistics(tournamentsID,0,0)
+  }
+}
