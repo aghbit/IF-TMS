@@ -4,10 +4,13 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
 
+    $('.slider').slider({full_width: true});
+
     $stateProvider
         .state('mainPage',{
             url: "/",
-            templateUrl: "/assets/userapp/partials/main.html"
+            templateUrl: "/assets/userapp/partials/main.html",
+            controller: 'StatisticsController'
         })
         .state('statistics', {
             url: "/statistics",
