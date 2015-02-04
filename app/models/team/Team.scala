@@ -27,6 +27,8 @@ trait Team {
 
   def getCaptainID: BSONObjectID
 
+  def isReadyToSave: Boolean
+
   def canAddPlayer: Boolean
 
   def canAddBenchWarmer: Boolean

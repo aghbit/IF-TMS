@@ -194,5 +194,28 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     assert(isComplete, "isComplete: BenchWarmers")
   }
 
+  test("isReadyToSave: Captain is not set"){
+
+    //given
+
+    //when
+
+    //then
+    assert(!underTest.isReadyToSave, "isReadyToSave: test 1")
+
+  }
+
+  test("isReadyToSave: Captain is set"){
+
+    //given
+
+    //when
+    underTest.addPlayer(players.head)
+    underTest.setCaptain(players.head)
+
+    //then
+    assert(underTest.isReadyToSave, "isReadyToSave: test 2")
+  }
+
 }
 

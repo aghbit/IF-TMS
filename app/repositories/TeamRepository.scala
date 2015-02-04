@@ -14,6 +14,8 @@ class TeamRepository extends Repository{
   val clazz = classOf[Team]
 
   def insert(team: Team) = {
+    if(!team.isReadyToSave)
+      throw new IllegalArgumentException("Team is not ready to save!")
     mongoTemplate.save(team, collectionName)
   }
 
@@ -21,8 +23,8 @@ class TeamRepository extends Repository{
     mongoTemplate.find(query, clazz, collectionName)
   }
 
-  def remove(query: Query) = {
-    mongoTemplate.findAllAndRemove(query, clazz, collectionName)
+  def remove(team: Team) = {
+    mongoTemplate.remove(team, collectionName)
   }
 
 }

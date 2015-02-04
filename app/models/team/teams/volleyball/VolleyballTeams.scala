@@ -76,11 +76,15 @@ trait VolleyballTeams extends Team {
 
   override def getCaptainID: BSONObjectID = captainID match {
     case Some(captain) => captain
-    case None => throw new NullPointerException("Can't return captain of the empty team!")
+    case None => throw new NullPointerException("Can't return captain; Captain is not set!")
   }
 
   override def containsMember(member: User): Boolean = {
     playersID.contains(member._id) || benchWarmersID.contains(member._id)
   }
 
+  override def isReadyToSave: Boolean = captainID match {
+    case Some(captain)  => true
+    case _ => false
+  }
 }
