@@ -1,11 +1,10 @@
-
-var mainApp = angular.module('mainApp', ['ui.router','angular-loading-bar']);
-mainApp.config(function($stateProvider, $urlRouterProvider) {
+var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar']);
+mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
 
     $stateProvider
-        .state('mainPage',{
+        .state('mainPage', {
             url: "/",
             templateUrl: "/assets/userapp/partials/main.html"
         })

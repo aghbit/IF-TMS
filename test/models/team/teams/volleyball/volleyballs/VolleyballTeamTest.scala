@@ -39,7 +39,7 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")
     assert(underTest.isComplete === false, "Constructor: test 2")
-    assert(underTest.getMembersIDs === List(), "Constructor: test 3")
+    assert(underTest.getMembersIDs.size() === 0, "Constructor: test 3")
   }
 
   test("AddPlayer: Simple test") {
@@ -192,6 +192,29 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
     //then
     assert(isComplete, "isComplete: BenchWarmers")
+  }
+
+  test("isReadyToSave: Captain is not set") {
+
+    //given
+
+    //when
+
+    //then
+    assert(!underTest.isReadyToSave, "isReadyToSave: test 1")
+
+  }
+
+  test("isReadyToSave: Captain is set") {
+
+    //given
+
+    //when
+    underTest.addPlayer(players.head)
+    underTest.setCaptain(players.head)
+
+    //then
+    assert(underTest.isReadyToSave, "isReadyToSave: test 2")
   }
 
 }

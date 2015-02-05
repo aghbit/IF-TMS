@@ -53,8 +53,8 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   test("removeTeam: test") {
     //given
-      instance.addTeam(teams(3))
-      instance.removeTeam(teams(3))
+    instance.addTeam(teams(3))
+    instance.removeTeam(teams(3))
 
     //when
     val containsTeam = instance.containsTeam(teams(3))
