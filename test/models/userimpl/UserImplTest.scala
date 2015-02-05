@@ -17,11 +17,13 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   var instance: UserImpl = _
   var instance2: UserImpl = _
+  var userProperties: UserProperties = _
 
 
   before {
-    instance = new UserImpl(BSONObjectID.generate, mock[UserProperties], mock[Option[Statistics]])
-    instance2 = new UserImpl(BSONObjectID.generate, mock[UserProperties], mock[Option[Statistics]])
+    userProperties = mock[UserProperties]
+    instance = new UserImpl(BSONObjectID.generate, userProperties)
+    instance2 = new UserImpl(BSONObjectID.generate, mock[UserProperties])
     instance2.isAdmin = true
   }
 
@@ -92,6 +94,17 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     //then
     assert(test, "Ban completed")
+
+  }
+
+  test("Get Properties") {
+
+    //given
+
+    //when
+
+    //then
+    assert(instance.personalData == userProperties, "User properties does't work!")
 
   }
 

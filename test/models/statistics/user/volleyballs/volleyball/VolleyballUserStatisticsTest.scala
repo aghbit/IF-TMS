@@ -22,7 +22,7 @@ class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with Befor
 
   before {
     testInstance = new VolleyballUserStatistics(BSONObjectID.generate, discipline, pointUnit,
-            mock[TournamentsUserStatistics], mock[MatchesAndSetsUserStatistics], winStreak)
+      mock[TournamentsUserStatistics], mock[MatchesAndSetsUserStatistics], winStreak)
   }
 
   test("didTeamWin test1 - won") {

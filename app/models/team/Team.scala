@@ -12,7 +12,7 @@ trait Team {
 
   val name: String
 
-  def getMembersIDs: List[BSONObjectID]
+  def getMembersIDs: java.util.List[BSONObjectID]
 
   def isComplete: Boolean
 
@@ -27,6 +27,8 @@ trait Team {
   def setCaptain(captain: User)
 
   def getCaptainID: BSONObjectID
+
+  def isReadyToSave: Boolean
 
   def canAddPlayer: Boolean
 
