@@ -6,20 +6,8 @@ import org.springframework.data.mongodb.core.query.Query
 /**
  * Created by Szymek.
  */
-class UserRepository extends Repository {
+class UserRepository extends Repository[User] {
 
-  val collectionName: String = "Users"
-  val clazz = classOf[User]
-
-  def find(query: Query) = {
-    mongoTemplate.find(query, clazz, collectionName)
-  }
-
-  def insert(user: User) = {
-    mongoTemplate.save(user, "Users")
-  }
-
-  def remove(user: User) = {
-    mongoTemplate.remove(user, collectionName)
-  }
+  override val collectionName: String = "Users"
+  override val clazz: Class[User] = classOf[User]
 }
