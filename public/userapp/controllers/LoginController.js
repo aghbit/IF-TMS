@@ -3,7 +3,7 @@
  */
 mainApp.controller('LoginController', ['$scope', function($scope) {
     $('.modal-trigger').leanModal();
-    $('#modal1').openModal();
+    $('#loginmodal').openModal();
     $scope.testmessage = "Login page";
 
 }]);

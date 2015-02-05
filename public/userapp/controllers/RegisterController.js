@@ -4,7 +4,7 @@
 
 mainApp.controller('RegisterController', ['$scope', function($scope) {
     $('.modal-trigger').leanModal();
-    $('#modal1').openModal();
+    $('#registermodal').openModal();
     $scope.testmessage = "Register page";
 
 }]);

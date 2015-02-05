@@ -21,6 +21,7 @@
 
 footer {
     background-color: #3f51b5;
+    z-index: 999;
     position: fixed;
     bottom:0;
     width:100%;
@@ -29,5 +30,6 @@ footer {
 
 .slider-image {
     width: 100%;
+    position: relative;
 }
 
