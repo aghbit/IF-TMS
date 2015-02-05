@@ -19,7 +19,6 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
   before {
     underTest = new UserRepository()
-    underTest.initTest()
     userProperties = new UserProperties("Name", "Login", "Password", "Phone", "Mail")
     user = UserImpl(userProperties)
   }
@@ -44,6 +43,7 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
     //when
     underTest.remove(user)
+
     val userRestored2 = underTest.find(query)
 
     //then

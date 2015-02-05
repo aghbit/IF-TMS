@@ -14,20 +14,6 @@ trait Repository[T] {
 
   protected var mongoTemplate = WebAppConfiguration.mongoTemplate
 
-  /**
-   * Change normal db to test db.
-   */
-  def initTest() = {
-    mongoTemplate = WebAppConfiguration.mongoTemplateTest
-  }
-
-  /**
-   * Change test db to normal db.
-   */
-  def finishTest() = {
-    mongoTemplate = WebAppConfiguration.mongoTemplate
-  }
-
   def remove[T](obj: T) = {
     mongoTemplate.remove(obj, collectionName)
   }

@@ -23,7 +23,6 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
   var captain: User = _
   before {
     underTest = new TeamRepository()
-    underTest.initTest()
     team = VolleyballTeam("Czarne ninje")
     captain = mock[User]
     Mockito.when(captain._id).thenReturn(BSONObjectID.generate)
