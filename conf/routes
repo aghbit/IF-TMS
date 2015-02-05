@@ -4,7 +4,8 @@
 
 GET        /                     controllers.ApplicationController.index
 
-
+POST        /token/:login/:password        controllers.ApplicationController.authenticate(login: String,password: String)
+GET         /statistics        controllers.ApplicationController.statistics(token: String)
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file         controllers.Assets.at(path="/public", file)
 GET        /webjars/*file        controllers.WebJarAssets.at(file)
