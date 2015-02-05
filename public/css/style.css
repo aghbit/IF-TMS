@@ -7,5 +7,29 @@
  */
 
 .icon-block {
-    padding: 0 15px;
+  padding: 0 15px;
 }
+
+.row .col.s12{
+  padding: 0 0;
+}
+
+.content-bg {
+    margin: 4%;
+    position: relative;
+}
+
+footer {
+    background-color: #3f51b5;
+    z-index: 999;
+    position: fixed;
+    bottom:0;
+    width:100%;
+}
+
+
+.slider-image {
+    width: 100%;
+    position: relative;
+}
+
