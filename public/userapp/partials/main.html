@@ -1,3 +1,20 @@
+<script type="text/ng-template" id="templateId">
+    <div class="ngdialog-message">
+        <h3>Create new account</h3>
+
+    </div>
+    <div class="ngdialog-buttons">
+        <form ng-submit="submit()">
+            <input type="text" ng-model="login" name="text" value="Your Login"/>
+            <input type="password" ng-model="password" name="text" value="XXX"/>
+            <input type="submit" id="submit" value="Submit" />
+        </form>
+        <a ng-click="closeThisDialog()" href="#/login">or sign in</a>
+    </div>
+</script>
+
+
+
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
         <div class="col s8 m7">
@@ -8,7 +25,8 @@
                 <p class="flow-text">Like playing volleyball or soccer?<br>
                     You always wanted to organise a tournament in your city,<br> but you couldn't?<br>
                     Now you can do it with ease using <br>  <b>Tournament Management System!</b><br></p>
-                <a href="/#/register" class="read-more btn-large indigo"><i class="mdi-av-fast-forward right"></i>Join us</a>
+                <a ng-click="registerPopUp()" class="read-more btn-large indigo"><i class="mdi-av-fast-forward right"></i>Join us</a>
+
             </section>
 
         </div>

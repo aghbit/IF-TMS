@@ -1,7 +1,9 @@
-<div id="loginmodal" class="modal">
-    <h4>Login</h4>
-    <p>Form placeholder</p>
-    <div class="action-bar">
-        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Login</a>
+<div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
+        <div class="row">
+            <form ng-submit="submit()">
+                <input type="text" ng-model="credentials.login" name="text" />
+                <input type="password" ng-model="credentials.password" name="text" />
+                <input type="submit" id="submit" value="Submit" />
+            </form>
+        </div>
     </div>
-</div>
