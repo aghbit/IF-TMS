@@ -26,7 +26,7 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   def generateTree() = {
-    properties.strategy.getOrder()
+   // properties.strategy.getOrder()
   }
 
   def addReferee(user: User): Unit = {

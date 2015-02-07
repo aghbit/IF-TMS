@@ -6,28 +6,28 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by Rafal on 2014-12-02.
  */
-class Match(val host:BSONObjectID,
-            val guest:BSONObjectID){
+class Match(val host:Option[BSONObjectID],
+            val guest:Option[BSONObjectID]){
 
   var scoreHost:Score = Score()
   var scoreGuest:Score = Score()
   def isEnded:Boolean={
-    if(host==null || guest==null) true
+    if(host==None || guest==None) true
     else
     if(scoreHost.isEnded || scoreGuest.isEnded) true else false
   }
-  def losingTeam:BSONObjectID =
-    if(guest==null) guest
-    else if(host==null) host
+  def losingTeam:Option[BSONObjectID] =
+    if(guest==None) guest
+    else if(host==None) host
     else
       scoreGuest match{
         case score if score<scoreHost => guest
         case _ => host
       }
 
-  def winningTeam:BSONObjectID =
-    if(guest==null) host
-      else if(host==null) guest
+  def winningTeam:Option[BSONObjectID] =
+    if(guest==None) host
+    else if(host==None) guest
     else
       scoreGuest match{
         case score if score<scoreHost => host
@@ -35,10 +35,10 @@ class Match(val host:BSONObjectID,
       }
 }
 object Match {
-  def apply(host:Team, guest:Team)= (host,guest) match {
-    case (null,null) => new Match(null,null)
-    case(null,guest) => new Match(null,guest._id)
-    case(host,null) => new Match(host._id,null)
-    case(host,guest) => new Match(host._id,guest._id)
+  def apply(host:Option[Team], guest:Option[Team])= (host,guest) match {
+    case (None,None) => new Match(None,None)
+    case(None,Some(guest)) => new Match(None,Some(guest._id))
+    case(Some(host),None) => new Match(Some(host._id),None)
+    case(Some(host),Some(guest)) => new Match(Some(host._id),Some(guest._id))
   }
 }
