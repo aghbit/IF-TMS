@@ -1,0 +1,35 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+.icon-block {
+  padding: 0 15px;
+}
+
+.row .col.s12{
+  padding: 0 0;
+}
+
+.content-bg {
+    margin: 4%;
+    position: relative;
+}
+
+footer {
+    background-color: #3f51b5;
+    z-index: 999;
+    position: fixed;
+    bottom:0;
+    width:100%;
+}
+
+
+.slider-image {
+    width: 100%;
+    position: relative;
+}
+
