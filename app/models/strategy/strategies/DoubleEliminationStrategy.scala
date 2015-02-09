@@ -32,11 +32,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   private def populateTree(root:Game,list:List[Team]):List[Team] = {
     if(root.left==None && root.right==None) {
       root.value = draw(list)
-      println(root.value.get)
-      println(root.value.get.host.get)
-      println(root.value.get.guest)
-      list.filter(team => team._id!=root.value.get.host.get && team._id != root.value.get.guest.get)
-
+      if(root.value.get.guest!=None)
+        list.filter(team => team._id!=root.value.get.host.get && team._id != root.value.get.guest.get)
+      else
+        list.filter(team => team._id!=root.value.get.host.get)
     }
     else populateTree(root.right.get,populateTree(root.left.get,list))
   }
@@ -45,20 +44,12 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     val team1 = list(Random.nextInt(list.size))
     if(list.size<notYetPopulatedPlaces) {
       notYetPopulatedPlaces-=2
-      println("withnone")
-      println(team1)
-      println("withnone")
       Some(Match(Some(team1), None))
     }
     else {
       notYetPopulatedPlaces-=2
       val list2 = list.filter(team => team != team1)
       val team2 = list2(Random.nextInt(list2.size))
-      println("2games")
-      println(team1)
-      println("2games")
-      println(team2)
-      println("2games")
       Some(Match(Some(team1), Some(team2)))
     }
   }
@@ -138,25 +129,11 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   private def updateWinnerQuarterGame(game:Game, tree:EliminationTree):EliminationTree = {
     if(game.value!=None) {                                                           //match must exist
       if (game.value.get.isEnded) {                                                      //match must be finished
-      //          println("ended!!")
-      //          println(game)
-      //          println("!!")
       val associatedMatch = getAssociatedWithWinner(game, tree)                    //get associated match for winner of game
         if (associatedMatch.value != None) {                                         //above mentioned match must exist
-          //            println("tez ended!!")
-          //            println(associatedMatch)
-          //            println("!!")
           if (associatedMatch.value.get.isEnded)                                         //and must be finished
-            if (game.parent.get.value == None) {
-              //we ensure that this pair wasn't earlier updated
-              //                println("parent niezagrany!!")
-              //                println(game.value.get.winningTeam)
-              //                println("ooo")
-              //                println(associatedMatch.value.get.winningTeam)
-              //                println("ooo")
+            if (game.parent.get.value == None)
               game.parent.get.value = Some(new Match(game.value.get.winningTeam, associatedMatch.value.get.winningTeam)) //creating match for winners
-              //                println("ooo")
-            }
         }
         if (getLevel(game) == maxLevel) {                                            //match is in the first round
         val associatedLoseMatch = getAssociatedWithLooser(game, tree)              //getting loser from associated first round
@@ -187,9 +164,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
           if(associatedMatch.value.get.isEnded)                                               //and must be finished
             if(game.parent.get.value==None)                                                   //we ensure that this pair wasn't earlier updated
               if(getLevel(game)%2==1)
-                game.parent.get.value = Some(new Match(associatedMatch.value.get.winningTeam,game.value.get.winningTeam)) //creating match for winners in the same quarter
+                game.parent.get.value = Some(new Match(game.value.get.winningTeam,associatedMatch.value.get.winningTeam)) //creating match for winners in the same quarter
               else
-                game.parent.get.value = Some(new Match(associatedMatch.value.get.losingTeam,game.value.get.winningTeam))  //creating match for this game and appropriate loser in winners' quarter
+                game.parent.get.value = Some(new Match(associatedMatch.value.get.losingTeam, game.value.get.winningTeam)) //creating match for this game and appropriate loser in winners' quarter
+
         }
       }
     tree
@@ -219,11 +197,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   def getAssociatedWithWinner(game:Game, tree:EliminationTree):Game ={
     if(getLevel(game)==1) throw new TournamentWinException                //no match is associated with final. finalists only win or lose
     val gameQrtFinal= potentialQrtFinal(game,tree)                        //getting according qrtFinal for match
-    //    println(gameQrtFinal+" game qrt final")
-    if(gameQrtFinal==0 || gameQrtFinal==1 || gameQrtFinal==3){            //0 - semi final
-      //      println("jestem tu")
-      getNeighbour(game)                                                  //getting simple neighbour
-    }
+    if(gameQrtFinal==0 || gameQrtFinal==1 || gameQrtFinal==3) getNeighbour(game)     //0 - semi final                                             //getting simple neighbour
     else{
       if(getLevel(game) % 2==1) {
 
@@ -232,7 +206,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
       else{
         var stack = new mutable.Stack[Int]                                //0 - left 1 - right
         stack = goUp(stack,game)                                          //filling Stack
-        if(getLevel(game)-maxLevel % 4 == 0)                              //once we search opponent from 1st quarter, once from 3rd one. to mix teams
+        if((maxLevel-stack.size-3)%2==0)                             //once we search opponent from 1st quarter, once from 3rd one. to mix teams
           goDown(stack,getNeighbour(findQrtFinal(game).parent.get).left.get)      //searching in another half of tournament
         else goDown(stack,findQrtFinal(game).parent.get.left.get)                 //searching in the same half of tournament
       }
@@ -273,7 +247,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     if(getLevel(game)==4) stack
     else {                                                                  //we leave the state where going right is obligatory
     val parent = game.parent.get
-      if (parent.parent.get.left == parent) stack.push(0)                       //going left
+      if (parent.parent.get.left.get == parent) stack.push(0)                       //going left
       else stack.push(1)                                                    //going right
       goUp(stack, parent.parent.get)
     }
@@ -288,13 +262,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   }
   //  //getting second son of its' parent
   def getNeighbour(game:Game):Game = {
-    if(game.parent.get.right==game){
-      //      println("hereiam")
+    if(game.parent.get.right.get==game){
       game.parent.get.left.get}
-    else {
-      //      println("hereiamnot")
+    else
       game.parent.get.right.get
-    }
   }
   //  //getting qrtFinal as number
   private def potentialQrtFinal(game:Game, tree:EliminationTree):Int = {  //1st and 3rd QF are winner branches, 2nd and 4th are looser branches
@@ -321,17 +292,17 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   }
     getLevel(game,0)+1
   }
-  //
-  //
-  ///////////////////////////Methods useful in Testing/////////////////////////////////////
-  //
-  //  def checkGameByRoute(route:String,game:Game):String={
-  //    if(game.parent==null) route
-  //    else if(game.parent.left==game) checkGameByRoute("l"+route,game.parent)
-  //    else checkGameByRoute("r"+route,game.parent)
-  //  }
-  //
-  //
+
+
+  /////////////////////////Methods useful in Testing/////////////////////////////////////
+
+    def checkGameByRoute(route:String,game:Game):String={
+      if(game.parent==None) route
+      else if(game.parent.get.left.get==game) checkGameByRoute("l"+route,game.parent.get)
+      else checkGameByRoute("r"+route,game.parent.get)
+    }
+
+
   def getGame(root:Game,route:String):Game= {
     if (route.size==0) root
     else
@@ -341,33 +312,36 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
         case _ => throw new BadParameterException
       }
   }
-  //
-  //  def areAllTeamsSet(tree:EliminationTree, listOfTeams:List[Team]):Boolean = countTeams(tree.root,listOfTeams).isEmpty
-  //  private def countTeams(root: Game, listOfTeams:List[Team]):List[Team] = {
-  //    if(root.left==null && root.right==null) {
-  //      root.value match {
-  //        case null => listOfTeams
-  //        case value => {
-  //          tickTeams(listOfTeams,value)
-  //        }
-  //      }
-  //    }
-  //    else countTeams(root.left, countTeams(root.right,listOfTeams))
-  //  }
-  //  private def tickTeams(listOfTeams:List[Team], value:Match):List[Team] = {
-  //    if(value.host!=null && !listOfTeams.exists(team => team._id == value.host)) throw new BadlyPopulatedTreeException
-  //    if(value.guest!=null && !listOfTeams.exists(team => team._id == value.guest)) throw new BadlyPopulatedTreeException
-  //    if(value.host==value.guest) throw new BadlyPopulatedTreeException
-  //    listOfTeams.filter(team => team._id != value.host && team._id != value.guest)
-  //  }
-  //
-  //  def is2ndand4thQuarterEmpty(root:Game):Boolean = isQuarterEmpty(root.left.right) && isQuarterEmpty(root.right.right)
-  //
-  //  private def isQuarterEmpty(root:Game):Boolean = {
-  //    if(root.left==null || root.right==null)  root.value==null
-  //    else isQuarterEmpty(root.left) && isQuarterEmpty(root.right)
-  //  }
-  //  //////////////////////////////////////////////////////////////////////////////
+
+    def areAllTeamsSet(tree:EliminationTree, listOfTeams:List[Team]):Boolean = countTeams(tree.root,listOfTeams).isEmpty
+    private def countTeams(root: Game, listOfTeams:List[Team]):List[Team] = {
+      if(root.left==None && root.right==None) {
+        root.value match {
+          case None => listOfTeams
+          case value => tickTeams(listOfTeams,value.get)
+        }
+      }
+      else countTeams(root.left.get, countTeams(root.right.get,listOfTeams))
+    }
+    private def tickTeams(listOfTeams:List[Team], value:Match):List[Team] = {
+      if(value.host!=None && !listOfTeams.exists(team => team._id == value.host.get)) throw new BadlyPopulatedTreeException
+      if(value.guest!=None && !listOfTeams.exists(team => team._id == value.guest.get)) throw new BadlyPopulatedTreeException
+      if(value.host==value.guest) throw new BadlyPopulatedTreeException
+      if(value.host!=None && value.guest!=None)
+        listOfTeams.filter(team => team._id != value.host.get && team._id != value.guest.get)
+      else
+        if(value.host!=None) listOfTeams.filter(team => team._id != value.host.get)
+        else if(value.guest!=None) listOfTeams.filter(team => team._id != value.guest.get)
+        else listOfTeams
+    }
+
+    def is2ndand4thQuarterEmpty(root:Game):Boolean = isQuarterEmpty(root.left.get.right.get) && isQuarterEmpty(root.right.get.right.get)
+
+    private def isQuarterEmpty(root:Game):Boolean = {
+      if(root.left==None || root.right==None)  root.value==None
+      else isQuarterEmpty(root.left.get) && isQuarterEmpty(root.right.get)
+    }
+    //////////////////////////////////////////////////////////////////////////////
 
 }
 
