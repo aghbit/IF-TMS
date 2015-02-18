@@ -33,8 +33,8 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
     //when
 
     var tmp = underTest.generateTree(A).root
-    var count: Int = 0
-    while(tmp!=None){
+    var count: Int = 1
+    while(tmp.left!=None){
       tmp = tmp.left.get
       count+=1
     }
@@ -233,7 +233,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
 
     var A = List(mock[Team])
-    for(i <- 0 until 18){
+    for(i <- 0 until 17){
       var B = mock[Team]
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
@@ -253,11 +253,11 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
     }
 
     val condition = (tmp.parent.get.right.get.value.get.guest!=None && tmp.parent.get.right.get.value.get.host!=None)
-    val cond2 = (tmp.parent.get.parent.get.right.get.left.get.value.get.guest==None && tmp.parent.get.parent.get.right.get.left.get.value.get.host!=None)
-
+    val cond2 = ( tmp.parent.get.parent.get.right.get.left.get.value.get.host!=None)
+    val cond3 = tmp.parent.get.parent.get.right.get.left.get.value.get.guest==None
     //then
 
-    assert(((condition) && (cond2)), "Populating SingleElminationStrategy Test doesnt work.")
+    assert(((condition) && (cond2) && cond3), "Populating SingleElminationStrategy Test doesnt work.")
   }
   test("PopulateTree: Simple test 8"){
 
@@ -265,7 +265,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
 
     var A = List(mock[Team])
-    for(i <- 0 until 18){
+    for(i <- 0 until 17){
       var B = mock[Team]
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
