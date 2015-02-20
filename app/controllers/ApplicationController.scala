@@ -1,7 +1,9 @@
 package controllers
 
+import controllers.security.{TokenImpl, tokensKeeper}
 import play.api.mvc.{Action, Controller}
 import play.modules.reactivemongo.MongoController
+import reactivemongo.bson.BSONObjectID
 
 
 object ApplicationController extends Controller with MongoController {
@@ -11,6 +13,9 @@ object ApplicationController extends Controller with MongoController {
   }
   def authenticate(login:String, password: String) = Action{ request =>
     if(login == "login" && password =="haslo"){
+      val token = new TokenImpl(BSONObjectID.generate)
+      println(token.toString)
+      tokensKeeper.addToken(token)
       Ok("token123")
     }
     else{

@@ -1,5 +1,6 @@
 package IT.repositories
 
+import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.User
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
@@ -21,6 +22,10 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     underTest = new UserRepository()
     userProperties = new UserProperties("Name", "Login", "Password", "Phone", "Mail")
     user = UserImpl(userProperties)
+  }
+
+  after {
+    underTest.dropCollection()
   }
 
   test("Simple test") {
@@ -48,6 +53,19 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
     //then
     assert(userRestored2.isEmpty, "Simple test: Remove error!")
+
+  }
+
+  test("Add two users with the same login. Should throw an exception."){
+
+    //given
+    val user2 = UserImpl(userProperties)
+    underTest.insert(user)
+
+    //when&then
+    intercept[UserWithThisLoginExistsInDB]{
+      underTest.insert(user2)
+    }
 
   }
 }
