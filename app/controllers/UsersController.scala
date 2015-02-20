@@ -1,16 +1,14 @@
 package controllers
 
-import java.math.BigInteger
-
-import controllers.security.{TokenImpl, tokensKeeper, AuthorizationAction}
+import controllers.security.{AuthorizationAction, TokenImpl, tokensKeeper}
 import models.exceptions.UserWithThisLoginExistsInDB
+import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
+import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
-import models.user.userproperties.JsonFormat._
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 
 import scala.concurrent.Future
 
@@ -31,23 +29,23 @@ object UsersController extends Controller{
       }
   }
 
-  def getUser(id: String) = Action.async {
-    val query = new Query(Criteria where "_id" is BSONObjectID(id))
-    val users = repository.find(query)
-    Future.successful(Ok(users.get(0).toJson))
-  }
-
-  def test() = AuthorizationAction.async {
-    request =>
-      val userID = new TokenImpl(request.headers.get("token").get).getUserID
-      val query = new Query(Criteria where "_id" is userID)
-      println(userID.stringify)
-      val user = repository.find(query).get(0)
-      Future.successful(Ok("Cześć "+user.personalData.name+"!").withHeaders("token"->"<uuuAleTokenuuu>"))
+  def getUser(id: String) = AuthorizationAction.async {
+    request => {
+      val token = TokenImpl(request.headers.get("token").get)
+      val userID = token.getUserID
+      if(userID.stringify == id){
+        val query = new Query(Criteria where "_id" is BSONObjectID(id))
+        val users = repository.find(query)
+        Future.successful(Ok(users.get(0).toJson))
+      }else {
+        Future.successful(Unauthorized("You are not authorized to see this content!"))
+      }
+    }
   }
 
   def login() = Action.async(parse.json) {
     request =>
+      println("logged")
       val login = request.body.\("login").toString().replaceAll("\"", "")
       val password = request.body.\("password").toString().replaceAll("\"", "")
       val query = new Query(Criteria where "personalData.login" is login and "personalData.password" is password)

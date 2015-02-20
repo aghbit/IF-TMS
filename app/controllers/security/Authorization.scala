@@ -17,10 +17,10 @@ case class Authorization[A](action: Action[A]) extends Action[A] with Controller
         if(tokensKeeper.containsToken(token)){
           action(request)
         }else {
-          Future.successful(Ok("Zabroniony dostęp!"))
+          Future.successful(Unauthorized("Forbidden, you have to be logged in!"))
         }
       }
-      case _ => Future.successful(Ok("Zabroniony dostęp!"))
+      case _ => Future.successful(Unauthorized("Forbidden, you have to be logged in!"))
     }
   }
 

@@ -19,9 +19,9 @@ trait User {
 
   def toJson: String = {
     val stringBuilder = new StringBuilder
-    stringBuilder.append("{\"id\": ")
+    stringBuilder.append("{\"id\": \"")
     stringBuilder.append(_id.stringify)
-    stringBuilder.append(", ")
+    stringBuilder.append("\", \"userProperties\":")
     val userPropertiesJson = Json.toJson(getProperties)
     stringBuilder.append(userPropertiesJson.as[JsObject] - "password")
     stringBuilder.append("}")

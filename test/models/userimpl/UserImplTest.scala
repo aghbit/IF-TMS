@@ -119,9 +119,9 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     Mockito.when(userProperties.password).thenReturn("Password")
     Mockito.when(userProperties.phone).thenReturn("Phone")
     val userPropertiesJson = Json.toJson(userProperties)
-    val result = "{\"id\": " + instance._id.stringify + ", "+ userPropertiesJson + "}"
+    val result = "{\"id\": \"" + instance._id.stringify + "\", \"userProperties\":"+ userPropertiesJson + "}"
     val userPropertiesJsonWithoutPassword = userPropertiesJson.as[JsObject] - "password"
-    val resultWithoutPassword = "{\"id\": " + instance._id.stringify + ", "+ userPropertiesJsonWithoutPassword + "}"
+    val resultWithoutPassword = "{\"id\": \"" + instance._id.stringify + "\", \"userProperties\":"+ userPropertiesJsonWithoutPassword + "}"
 
     //when
     val instanceResult = instance.toJson

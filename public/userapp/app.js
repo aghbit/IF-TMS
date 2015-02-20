@@ -30,7 +30,7 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
 mainApp.factory('SessionService', function() {
     var usersCredentials = {
-        token : '12',
+        token : ' ',
         isLoggedIn : false,
         login : function () {
             ngDialog.open({
@@ -47,7 +47,7 @@ mainApp.factory('SessionService', function() {
 mainApp.factory('sessionInjector', ['SessionService', function(SessionService) {
     var sessionInjector = {
         request: function(config) {
-            config.headers['session-token'] = SessionService.token;
+            config.headers['token'] = SessionService.token;
 
             return config;
         }

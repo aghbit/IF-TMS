@@ -4,12 +4,9 @@
 
 GET         /                              controllers.ApplicationController.index
 
-POST        /token/:login/:password        controllers.ApplicationController.authenticate(login: String,password: String)
-GET         /statistics                    controllers.ApplicationController.statistics(token: String)
 
 POST        /api/users                     controllers.UsersController.createUser
 GET         /api/users/:id                 controllers.UsersController.getUser(id:String)
-GET         /api/t                         controllers.UsersController.test()
 POST        /api/login                     controllers.UsersController.login()
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                  controllers.Assets.at(path="/public", file)

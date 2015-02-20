@@ -26,4 +26,7 @@ class TokenImpl(val token: String) extends Token {
     token
   }
 }
+object TokenImpl {
+  def apply(token:String) = new TokenImpl(token)
+}
 

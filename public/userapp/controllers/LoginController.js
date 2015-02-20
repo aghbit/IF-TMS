@@ -3,13 +3,14 @@
  */
 mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','SessionService', function($scope,$http,$location, ngDialog, SessionService) {
     $scope.credentials = {
-        login : "login",
-        password : "haslo"
+        login : "Passarinho",
+        password : "Passarinho123"
     };
     $scope.submit = function(){
-        $http.post('/token/'+$scope.credentials.login+"/"+$scope.credentials.password, {}).
+        $http.post('/api/login', {"login" : $scope.credentials.login, "password": $scope.credentials.password}).
             success(function(data, status, headers, config) {
                 SessionService.token = data
+                console.log(data)
                 $location.url('statistics');
             }).
             error(function(data, status, headers, config) {

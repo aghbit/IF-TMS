@@ -1,8 +1,10 @@
 mainApp.controller('StatisticsController', ['$scope','$http','SessionService', function ($scope,$http, SessionService) {
-    $scope.testmessage = "test message"
-        $http.get('/statistics', {params:{token:SessionService.token}}).
+    $scope.testmessage = "test messagee"
+        $http.get('api/users/'+SessionService.token.substr(0,24), {}).
         success(function(data, status, headers, config) {
-            $scope.testmessage = data;
+                $scope.testmessage = data;
+
+        }).error(function(data, status, headers, config, statusText) {
 
         });
 

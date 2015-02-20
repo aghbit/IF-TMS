@@ -11,23 +11,5 @@ object ApplicationController extends Controller with MongoController {
   def index = Action {
     Ok(views.html.index())
   }
-  def authenticate(login:String, password: String) = Action{ request =>
-    if(login == "login" && password =="haslo"){
-      val token = new TokenImpl(BSONObjectID.generate)
-      println(token.toString)
-      tokensKeeper.addToken(token)
-      Ok("token123")
-    }
-    else{
-      Unauthorized("Fail to sign in")
-    }
-  }
-  def statistics(token: String) = Action{request=>
-    if(token == "token123"){
-      Ok("zawartosc strony ")
-    }
-    else{
-      Unauthorized("Unauthorized")
-    }
-  }
+
 }
