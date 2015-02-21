@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.security.{TokenImpl, tokensKeeper}
+import controllers.security.{TokenImpl, TokensKeeper}
 import play.api.mvc.{Action, Controller}
 import play.modules.reactivemongo.MongoController
 import reactivemongo.bson.BSONObjectID

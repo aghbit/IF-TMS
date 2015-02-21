@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.security.{AuthorizationAction, TokenImpl, tokensKeeper}
+import controllers.security.{AuthorizationAction, TokenImpl, TokensKeeper}
 import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
@@ -52,7 +52,7 @@ object UsersController extends Controller{
       val users = repository.find(query)
       if(!users.isEmpty){
         val token = users.get(0).generateToken
-        tokensKeeper.addToken(token)
+        TokensKeeper.addToken(token)
         Future.successful(Ok(token.toString))
       }else{
         Future.successful(Unauthorized("Wrong login or password!"))
