@@ -45,7 +45,6 @@ object UsersController extends Controller{
 
   def login() = Action.async(parse.json) {
     request =>
-      println("logged")
       val login = request.body.\("login").toString().replaceAll("\"", "")
       val password = request.body.\("password").toString().replaceAll("\"", "")
       val query = new Query(Criteria where "personalData.login" is login and "personalData.password" is password)
