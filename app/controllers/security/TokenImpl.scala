@@ -13,7 +13,7 @@ class TokenImpl(val token: String) extends Token {
 
   override def getUserID: BSONObjectID = BSONObjectID(token.substring(0, 24))
 
-  override def equals(obj: scala.Any): Boolean = obj match {
+  override def equals(obj: Any): Boolean = obj match {
     case t: TokenImpl => t.token == this.token
     case _ => false
   }

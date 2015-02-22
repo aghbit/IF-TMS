@@ -50,24 +50,23 @@ object UsersController extends Controller{
       val password = request.body.\("password").toString().replaceAll("\"", "")
       val query = new Query(Criteria where "personalData.login" is login and "personalData.password" is password)
       val users = repository.find(query)
-      if(!users.isEmpty){
+      if(users.isEmpty){
+        Future.successful(Unauthorized("Wrong login or password!"))
+      }else{
         val token = users.get(0).generateToken
         TokensKeeper.addToken(token)
         Future.successful(Ok(token.toString))
-      }else{
-        Future.successful(Unauthorized("Wrong login or password!"))
       }
   }
 
   def isLoginInUse(login: String) = Action.async{
     request =>
-      println(login)
       val query = new Query(Criteria where "personalData.login" is login)
       val users = repository.find(query)
-      if(!users.isEmpty){
-        Future(Ok("Login is in use."))
-      }else {
+      if(users.isEmpty){
         Future(NotFound("Login is not in use."))
+      }else {
+        Future(Ok("Login is in use."))
       }
   }
 }

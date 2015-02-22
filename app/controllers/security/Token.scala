@@ -11,6 +11,8 @@ trait Token {
 
   override def equals(obj: scala.Any): Boolean
 
+  override def hashCode(): Int
+
   override def toString: String
 
 }
