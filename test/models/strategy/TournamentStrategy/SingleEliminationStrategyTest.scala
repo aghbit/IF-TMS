@@ -1,7 +1,7 @@
 
 
-import models.strategy.TournamentStrategy
-import models.strategy.Tree.EliminationTree
+import models.Game.EliminationTree
+import models.strategy.{TournamentStrategy}
 import models.strategy.strategies.SingleEliminationStrategy
 import models.team.Team
 import org.junit.runner.RunWith

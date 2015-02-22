@@ -1,6 +1,6 @@
 package models.strategy
 
-import models.strategy.Tree.EliminationTree
+import models.Game.EliminationTree
 import models.team.Team
 
 /**

@@ -1,5 +1,6 @@
 
-import models.strategy.Tree.EliminationTree
+
+import models.Game.EliminationTree
 import models.strategy.VSet
 import models.strategy.scores.VolleyballScore
 import models.strategy.strategies.{DoubleEliminationStrategy, NotEnoughTeamsException}

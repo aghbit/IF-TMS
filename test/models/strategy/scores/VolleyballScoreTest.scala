@@ -112,8 +112,8 @@ class VolleyballScoreTest extends FunSuite with BeforeAndAfter{
       bvolScore2.addPoint(bvolScore1)
       bvolScore2.addPoint(bvolScore1)
 
-      bvolScore2.sets.foreach(vset => println(vset.points+" "+vset.won))
-      bvolScore1.sets.foreach(vset => println(vset.points+" "+vset.won))
+
+
       //when
 
 

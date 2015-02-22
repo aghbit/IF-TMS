@@ -1,8 +1,7 @@
 package models.strategy.strategies
 
 
-
-import models.strategy.Tree.{Game, EliminationTree}
+import models.Game.{Game, EliminationTree}
 import models.strategy.{Match, TournamentStrategy}
 import models.team.Team
 
@@ -20,16 +19,16 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   private var notYetPopulatedPlaces:Int = 0
   private var maxLevel:Int = 0
 
-  //  //populating only in 1st and 3rd quarter
+  //populating only in 1st and 3rd quarter
   def populateTree(tree:EliminationTree, list: List[Team]): EliminationTree = {
     if(list.size<=4) throw new NotEnoughTeamsException(list.size+" teams is too few for DoubleEliminationStrategy")
     val left = tree.root.left.get.left
     val right = tree.root.right.get.left
-    populateTree(left.get,populateTree(right.get,list))
+    populateBranch(left.get,populateBranch(right.get,list))
     tree
   }
   //populating all the subtree with the given list
-  private def populateTree(root:Game,list:List[Team]):List[Team] = {
+  private def populateBranch(root:Game,list:List[Team]):List[Team] = {
     if(root.left==None && root.right==None) {
       root.value = draw(list)
       if(root.value.get.guest!=None)
@@ -37,7 +36,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
       else
         list.filter(team => team._id!=root.value.get.host.get)
     }
-    else populateTree(root.right.get,populateTree(root.left.get,list))
+    else populateBranch(root.right.get,populateBranch(root.left.get,list))
   }
   //getting random teams to be playing against themselves
   private def draw(list:List[Team]):Option[Match] = {
@@ -71,18 +70,6 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     //To get logaritm with base 2
     val depth = log2(num.toDouble).toInt+1
     //Recursion method to create tree with depth given in "depth"
-    def addNull(root: Game, count : Int):Game = {
-      if(count>0) {
-        root.left = Some(Game())
-        root.right = Some(Game())
-        root.value = None
-        root.left = Some(addNull(root.left.get, count - 1))
-        root.left.get.parent = Some(root)
-        root.right = Some(addNull(root.right.get, count - 1))
-        root.right.get.parent = Some(root)
-      }
-      root
-    }
 
     val tree = new EliminationTree()
     tree.root.left=Some(Game())
@@ -93,10 +80,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     tree.root.left.get.right=Some(Game())
     tree.root.right.get.left=Some(Game())
     tree.root.right.get.right=Some(Game())
-    tree.root.left.get.left=Some(addNull(tree.root.left.get.left.get,depth-3))
-    tree.root.left.get.right=Some(addNull(tree.root.left.get.right.get,2*depth-7))
-    tree.root.right.get.left=Some(addNull(tree.root.right.get.left.get,depth-3))
-    tree.root.right.get.right=Some(addNull(tree.root.right.get.right.get,2*depth-7))
+    tree.root.left.get.left=Some(tree.root.left.get.left.get.addNull(depth-3))
+    tree.root.left.get.right=Some(tree.root.left.get.right.get.addNull(2*depth-7))
+    tree.root.right.get.left=Some(tree.root.right.get.left.get.addNull(depth-3))
+    tree.root.right.get.right=Some(tree.root.right.get.right.get.addNull(2*depth-7))
     tree.root.left.get.left.get.parent=tree.root.left
     tree.root.left.get.right.get.parent=tree.root.left
     tree.root.right.get.left.get.parent=tree.root.right
@@ -136,7 +123,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
               game.parent.get.value = Some(new Match(game.value.get.winningTeam, associatedMatch.value.get.winningTeam)) //creating match for winners
         }
         if (getLevel(game) == maxLevel) {                                            //match is in the first round
-        val associatedLoseMatch = getAssociatedWithLooser(game, tree)              //getting loser from associated first round
+        val associatedLoseMatch = getAssociatedWithLoser(game, tree)              //getting loser from associated first round
           if (associatedLoseMatch.value != None)                                     //associated match must exist
             if (associatedLoseMatch.value.get.isEnded)                                   //associated match must be finished
               createMatchForLosersIn1stRound(game, tree)                             //creating match in losers(in losers' guarter)
@@ -195,7 +182,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   //If game is in 1st,3rd quarter or level of game in 2nd or 4th is odd - getting simply neighbour of game(next match then is their parent)
   //else getting appropriate loser from appropriate winners' quarter
   def getAssociatedWithWinner(game:Game, tree:EliminationTree):Game ={
-    if(getLevel(game)==1) throw new TournamentWinException                //no match is associated with final. finalists only win or lose
+    if(getLevel(game)==1) throw new TournamentWinException("Final needs no associations")                //no match is associated with final. finalists only win or lose
     val gameQrtFinal= potentialQrtFinal(game,tree)                        //getting according qrtFinal for match
     if(gameQrtFinal==0 || gameQrtFinal==1 || gameQrtFinal==3) getNeighbour(game)     //0 - semi final                                             //getting simple neighbour
     else{
@@ -214,11 +201,11 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   }
   //
   //  //should be invoked only if the team is in first round
-  private def getAssociatedWithLooser(game:Game, tree:EliminationTree):Game ={
+  private def getAssociatedWithLoser(game:Game, tree:EliminationTree):Game ={
     if(getLevel(game)==1) throw new LoserInFinalException
     val gameQrtFinal= potentialQrtFinal(game,tree)
     if(gameQrtFinal==0) throw new LoserInSemisException
-    if(gameQrtFinal==2 || gameQrtFinal==4) throw new SecondLoseException
+    if(gameQrtFinal==2 || gameQrtFinal==4) throw new SecondLoseException("Losers in that quarters are thrown away from tournament")
     else getNeighbour(game)
   }
   //
@@ -309,7 +296,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
       route.charAt(0) match{
         case 'r' => getGame(root.right.get,route.substring(1))
         case 'l' => getGame(root.left.get,route.substring(1))
-        case _ => throw new BadParameterException
+        case _ => throw new IllegalArgumentException("You can go either to the right (r) or to the left (l)")
       }
   }
 
@@ -324,9 +311,9 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
       else countTeams(root.left.get, countTeams(root.right.get,listOfTeams))
     }
     private def tickTeams(listOfTeams:List[Team], value:Match):List[Team] = {
-      if(value.host!=None && !listOfTeams.exists(team => team._id == value.host.get)) throw new BadlyPopulatedTreeException
-      if(value.guest!=None && !listOfTeams.exists(team => team._id == value.guest.get)) throw new BadlyPopulatedTreeException
-      if(value.host==value.guest) throw new BadlyPopulatedTreeException
+      if(value.host!=None && !listOfTeams.exists(team => team._id == value.host.get)) throw new BadlyPopulatedTreeException("Team Host has already been ticked")
+      if(value.guest!=None && !listOfTeams.exists(team => team._id == value.guest.get)) throw new BadlyPopulatedTreeException("Team Guest has already been ticked")
+      if(value.host==value.guest) throw new BadlyPopulatedTreeException("Host and Guest cannot be the same team")
       if(value.host!=None && value.guest!=None)
         listOfTeams.filter(team => team._id != value.host.get && team._id != value.guest.get)
       else

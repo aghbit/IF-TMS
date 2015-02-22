@@ -7,8 +7,7 @@ import play.modules.reactivemongo.MongoController
 object ApplicationController extends Controller with MongoController {
 
   def index = Action {
-    //Ok(views.html.index())
-    Ok("ls")
+    Ok(views.html.index())
   }
   def authenticate(login:String, password: String) = Action{ request =>
     if(login == "login" && password =="haslo"){

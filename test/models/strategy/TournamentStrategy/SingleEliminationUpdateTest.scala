@@ -1,7 +1,6 @@
-package models.strategy.strategies
 
+import models.Game.EliminationTree
 import models.strategy.{VSet, TournamentStrategy}
-import models.strategy.Tree.EliminationTree
 import models.strategy.scores.VolleyballScore
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.team.Team

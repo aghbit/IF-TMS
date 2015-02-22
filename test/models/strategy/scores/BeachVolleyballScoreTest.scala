@@ -2,7 +2,6 @@ package models.strategy.scores
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
 
@@ -113,8 +112,7 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
     bvolScore2.addPoint(bvolScore1)
     bvolScore2.addPoint(bvolScore1)
 
-    bvolScore2.sets.foreach(vset => println(vset.points+" "+vset.won))
-    bvolScore1.sets.foreach(vset => println(vset.points+" "+vset.won))
+
     //when
 
 

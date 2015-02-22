@@ -1,9 +1,9 @@
 package models.strategy.strategies
 
-import models.strategy.Tree.{Game, EliminationTree}
+
+import models.Game.{Game, EliminationTree}
 import models.strategy.{TournamentStrategy, Match}
 import models.team.Team
-import reactivemongo.bson.BSONObjectID
 
 import scala.annotation.tailrec
 import scala.math._
@@ -20,20 +20,7 @@ import scala.math._
     //To get logaritm with base 2
     val deph = log2(num.toDouble).toInt
     //Recursion method to create tree with deph given in "deph"
-    def addNull(root: Game, count : Int):Game = {
-      if(count>0){
-        root.left = Some(new Game());
-        root.right = Some(new Game())
-        root.value = None
-        root.left = Some(addNull(root.left.get,count-1))
-        root.left.get.parent = Some(root)
-        root.right = Some(addNull(root.right.get,count-1))
-        root.right.get.parent = Some(root)
-        root
-      }else
-        root
-    }
-   new EliminationTree(addNull(new Game(),deph-1))
+   new EliminationTree(new Game().addNull(deph-1))
   }
 
    def attachNumberOfTeams(listOfTeams:List[Team]): Int = {
@@ -42,11 +29,13 @@ import scala.math._
       else compareAndReturn(2 * n)
     compareAndReturn(1)
   }
-// Fills the leafs with team
-//for example for tree with 16 leafs and 20 teams
-//after first "round" there will be only hosts filled
-//after second round method will fill guest, (starting from left side) and
-// the last 4 leafs will have guest part filled with null (20-16 = 4)
+  /*
+  Fills the leafs with team
+  for example for tree with 16 leafs and 20 teams
+  after first "round" there will be only hosts filled
+  after second round method will fill guest, (starting from left side) and
+  the last 4 leafs will have guest part filled with null (20-16 = 4)
+  */
   override def populateTree(tre: EliminationTree, list: List[Team]): EliminationTree = {
     var overrided_list = list
     val tree = tre
@@ -105,7 +94,7 @@ import scala.math._
       route.charAt(0) match{
         case 'r' => getGame(root.right.get,route.substring(1))
         case 'l' => getGame(root.left.get,route.substring(1))
-        case _ => throw new BadParameterException
+        case _ => throw new IllegalArgumentException("You can go either to the right (r) or to the left (l)")
       }
   }
 

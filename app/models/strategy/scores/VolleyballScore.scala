@@ -9,7 +9,7 @@ class VolleyballScore(val maxSets:Int)extends Score {
   var sets: List[VSet] = List(VSet())
   val maxPoints = 25
 
-  def isEnded:Boolean = sets.filter(set => set.won).size==maxSets
+  def isEnded:Boolean = sets.count(set => set.won)==maxSets
 
   def addPoint[A <: VolleyballScore](opponentScore:A):Unit = {
      sets.last.points+=1
@@ -25,7 +25,7 @@ class VolleyballScore(val maxSets:Int)extends Score {
   }
 
 
-  protected def isCorrectlyFinished(Other:Score): Unit = {
+  protected def isCorrectlyFinished(Other:Score) = {
     if(!isEnded && !Other.isEnded) throw new MatchNotFinishedException("Match is not yet finished")
   }
 
@@ -41,7 +41,7 @@ class VolleyballScore(val maxSets:Int)extends Score {
   override def >[A <: Score](Other:Score):Boolean={
     isCorrectlyFinished(Other)
     Other match {
-      case other:A => isEnded && !(other.isEnded)
+      case other:A => isEnded && !other.isEnded
       case _ => false
     }
   }
