@@ -7,7 +7,8 @@
         <form ng-submit="submit()" class="col s12">
             <div class="row">
                 <div class="input-field col s8">
-                    <input id="login" type="text" ng-model="login">
+                    <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
+                           ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
                     <label for="login">Login</label>
                 </div>
             </div>
@@ -37,7 +38,8 @@
             </div>
             <div class="row">
                 <div class="input-field col s8">
-                    <input id="password2" type="password" ng-model="password2" ng-style="{'border-bottom' : borderBottom, 'box-shadow' : boxShadow}"
+                    <input id="password2" type="password" ng-model="password2"
+                           ng-style="{'border-bottom' : password2BorderBottom, 'box-shadow' : password2BoxShadow}"
                            ng-change="checkPasswordsEquality()">
                     <label for="password2">Confirm Password</label>
 

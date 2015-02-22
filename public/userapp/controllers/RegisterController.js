@@ -6,13 +6,27 @@ mainApp.controller('RegisterController', ['$scope', '$http', function($scope, $h
 
     $scope.checkPasswordsEquality = function(){
         if($scope.password != $scope.password2){
-            $scope.borderBottom = "1px solid #f42334"
-            $scope.boxShadow = "0 1px 0 0 #f42334"
+            $scope.password2BorderBottom = "1px solid #f42334"
+            $scope.password2BoxShadow = "0 1px 0 0 #f42334"
         }else {
-            $scope.borderBottom = ""
-            $scope.boxShadow = ""
+            $scope.password2BorderBottom = ""
+            $scope.password2BoxShadow = ""
         }
     };
+
+    $scope.checkLoginAvailability = function(){
+        if($scope.login != ""){
+            $http.get('/api/users/login/'+$scope.login).
+                success(function (data, status, headers, config) {
+                    $scope.loginBorderBottom = "1px solid #f42334"
+                    $scope.loginBoxShadow = "0 1px 0 0 #f42334"
+                }).
+                error(function (data, status, headers, config){
+                    $scope.loginBorderBottom = ""
+                    $scope.loginBoxShadow = ""
+                })
+        }
+    }
 
     function checkForm($scope) {
         return $scope.password == $scope.password2

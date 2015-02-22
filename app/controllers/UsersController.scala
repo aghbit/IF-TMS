@@ -11,6 +11,7 @@ import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
 
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 
 object UsersController extends Controller{
@@ -55,6 +56,18 @@ object UsersController extends Controller{
         Future.successful(Ok(token.toString))
       }else{
         Future.successful(Unauthorized("Wrong login or password!"))
+      }
+  }
+
+  def isLoginInUse(login: String) = Action.async{
+    request =>
+      println(login)
+      val query = new Query(Criteria where "personalData.login" is login)
+      val users = repository.find(query)
+      if(!users.isEmpty){
+        Future(Ok("Login is in use."))
+      }else {
+        Future(NotFound("Login is not in use."))
       }
   }
 }
