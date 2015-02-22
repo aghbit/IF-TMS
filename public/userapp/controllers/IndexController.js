@@ -6,7 +6,7 @@ mainApp.controller('IndexController', ['$scope', 'ngDialog', function($scope, ng
     $scope.testmessage = "Index page";
     $scope.registerPopUp = function(){
         ngDialog.open({
-            template: 'templateId',
+            template: '/assets/userapp/partials/register/register.html',
             className: 'ngdialog-theme-plain',
             closeByDocument: true
         });

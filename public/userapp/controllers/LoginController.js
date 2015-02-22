@@ -9,7 +9,7 @@ mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','
     $scope.submit = function(){
         $http.post('/api/login', {"login" : $scope.credentials.login, "password": $scope.credentials.password}).
             success(function(data, status, headers, config) {
-                SessionService.token = data
+                SessionService.token = data;
                 history.back()
             }).
             error(function(data, status, headers, config) {
