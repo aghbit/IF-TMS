@@ -14,6 +14,7 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 
+
 object UsersController extends Controller{
 
   private val repository = new UserRepository()
