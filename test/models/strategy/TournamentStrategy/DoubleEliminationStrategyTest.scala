@@ -38,7 +38,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     //then
     intercept[NotEnoughTeamsException]{
-      underTest.populateTree(tree, listOfTeams)
+      underTest.drawTeamsInTournament(tree, listOfTeams)
     }
   }
 
@@ -51,7 +51,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     }
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
     //when
     val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
     val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
@@ -74,7 +74,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       }
       underTest=DoubleEliminationStrategy()
       tree = underTest.generateTree(listOfTeams)
-      underTest.populateTree(tree,listOfTeams)
+      underTest.drawTeamsInTournament(tree,listOfTeams)
       //when
       val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
       val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
@@ -92,7 +92,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       }
       underTest=DoubleEliminationStrategy()
       tree = underTest.generateTree(listOfTeams)
-      underTest.populateTree(tree,listOfTeams)
+      underTest.drawTeamsInTournament(tree,listOfTeams)
       //when
       val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
       val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
@@ -111,22 +111,24 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     }
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
 
     //when
 
-    val score:VolleyballScore = mock[VolleyballScore]
-    val score2:VolleyballScore = mock[VolleyballScore]
-    Mockito.when(score.isEnded).thenReturn(true)
+
 
     val game1 = underTest.getGame(tree.root,"lll")
     val game2 = underTest.getGame(tree.root,"llr")
+    val games = List(game1,game2)
+    games.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
-    game1.value.get.scoreHost=score
-    game2.value.get.scoreGuest=score
-    game1.value.get.scoreGuest=score2
-    game2.value.get.scoreHost=score2
 
     val winner1 = game1.value.get.winningTeam
     val winner2 = game2.value.get.winningTeam
@@ -155,13 +157,10 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     }
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
     //when
-    //score Part
-    val score:VolleyballScore = mock[VolleyballScore]
-    val score2:VolleyballScore = mock[VolleyballScore]
-    Mockito.when(score.isEnded).thenReturn(true)
+
 
 
     ////////////1st phase/////////////////
@@ -171,7 +170,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game4 = underTest.getGame(tree.root,"rlr")
     val games = List(game1,game2,game3,game4)
 
-    games.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ///////////////////////////////////////
     var updatedTree = underTest.updateTree(tree)
@@ -180,7 +185,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game6 = underTest.getGame(tree.root,"rrr")
     val games2 = List(game5,game6)
 
-    games2.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games2.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
 
     updatedTree = underTest.updateTree(updatedTree)
@@ -206,23 +217,22 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     }
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
     //when
     //score Part
-    val VSetw = mock[VSet]
-    val VSetl = mock[VSet]
-    Mockito.when(VSetw.won).thenReturn(true)
-    Mockito.when(VSetl.won).thenReturn(false)
-
-    val setsW = List(VSetw,VSetw,VSetw)
-    val setsL = List(VSetl,VSetl,VSetl)
-
-
-    val score:VolleyballScore = VolleyballScore()
-    val score2:VolleyballScore = VolleyballScore()
-    score.sets=setsW
-    score2.sets=setsL
+//    val VSetw = mock[VSet]
+//    val VSetl = mock[VSet]
+//    Mockito.when(VSetw.won).thenReturn(true)
+//    Mockito.when(VSetl.won).thenReturn(false)
+//
+//    val setsW = List(VSetw,VSetw,VSetw)
+//    val setsL = List(VSetl,VSetl,VSetl)
+//
+//
+//    val score:VolleyballScore = VolleyballScore()
+//    score.sets=setsW
+//    score2.sets=setsL
 
 
     ////////////1st phase/////////////////
@@ -232,7 +242,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game4 = underTest.getGame(tree.root,"rlr")
     val games = List(game1,game2,game3,game4)
 
-    games.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
 
 
@@ -246,7 +262,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game8 = underTest.getGame(updatedTree.root,"rrr")
     val games2 = List(game5,game6,game7,game8)
 
-    games2.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games2.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -256,7 +278,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val games3 = List(game9,game10)
 
 
-    games3.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games3.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     /////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -265,7 +293,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game12 = underTest.getGame(updatedTree.root,"r")
     val games4 = List(game11,game12)
 
-    games4.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games4.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ///////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -273,7 +307,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game13 = underTest.getGame(updatedTree.root,"")
     val games5 = List(game13)
 
-    games5.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games5.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
 
@@ -286,6 +326,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     assert(Final.value.get.losingTeam===winnerList(2),"UpdateTree: playing 8-team tournament till the final2")
   }
   //
+
   test("UpdateTree: playing 5-team tournament till the final Semis Phase"){
     //given
     for(i<-0 until 5) {
@@ -297,23 +338,9 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
     //when
-    //score Part
-    val VSetw = mock[VSet]
-    val VSetl = mock[VSet]
-    Mockito.when(VSetw.won).thenReturn(true)
-    Mockito.when(VSetl.won).thenReturn(false)
-
-    val setsW = List(VSetw,VSetw,VSetw)
-    val setsL = List(VSetl,VSetl,VSetl)
-
-
-    val score:VolleyballScore = VolleyballScore()
-    val score2:VolleyballScore = VolleyballScore()
-    score.sets=setsW
-    score2.sets=setsL
 
 
     ////////////1st phase/////////////////
@@ -324,7 +351,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val games = List(game1,game2,game3,game4)
 
 
-    games.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
 
     val winnerList = games.map(game=>game.value.get.winningTeam)
@@ -337,7 +370,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val games2 = List(game5,game7)
 
 
-    games2.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games2.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -346,7 +385,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game10 = underTest.getGame(updatedTree.root,"rr")
     val games3 = List(game9,game10)
 
-    games3.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games3.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     /////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -355,7 +400,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game12 = underTest.getGame(updatedTree.root,"r")
     val games4 = List(game11,game12)
 
-    games4.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games4.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ///////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -363,7 +414,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game13 = underTest.getGame(updatedTree.root,"")
     val games5 = List(game13)
 
-    games5.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games5.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
 
@@ -385,23 +442,10 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       }
       underTest=DoubleEliminationStrategy()
       tree = underTest.generateTree(listOfTeams)
-      tree = underTest.populateTree(tree,listOfTeams)
+      tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
       //when
-      //score Part
-      val VSetw = mock[VSet]
-      val VSetl = mock[VSet]
-      Mockito.when(VSetw.won).thenReturn(true)
-      Mockito.when(VSetl.won).thenReturn(false)
 
-      val setsW = List(VSetw,VSetw,VSetw)
-      val setsL = List(VSetl,VSetl,VSetl)
-
-
-      val score:VolleyballScore = VolleyballScore()
-      val score2:VolleyballScore = VolleyballScore()
-      score.sets=setsW
-      score2.sets=setsL
 
 
       ////////////1st phase/////////////////
@@ -423,7 +467,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       val game16 = underTest.getGame(tree.root,"rlrrr")
       val games = List(game1,game2,game3,game4,game5,game6,game7,game8,game9,game10,game11,game12,game13,game14,game15,game16)
 
-      games.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
 
 
 
@@ -459,7 +509,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       val game32 = underTest.getGame(updatedTree.root,"rlrr")     //winners in game15,16
       val games2 = List(game17,game18,game19,game20,game21,game22,game23,game24,game25,game26,game27,game28,game29,game30,game31,game32)
 
-      games2.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games2.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
 
       ////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -485,7 +541,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
 
       val games3 = List(game33,game34,game35,game36,game37,game38,game39,game40,game41,game42,game43,game44)
-      games3.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games3.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
 
       /////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -507,7 +569,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
       val games4 = List(game45,game46,game47,game48,game49,game50)
 
-      games4.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games4.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
 
       ///////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -526,7 +594,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
       val games5 = List(game51,game52,game53,game54)
 
-      games5.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games5.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
 
@@ -544,7 +618,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
       val games6 = List(game55,game56)
 
-      games6.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games6.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
 
@@ -561,7 +641,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
       val games7 = List(game57,game58)
 
-      games7.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games7.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
       ///////////7th Phase ///////////////////////
@@ -577,14 +663,24 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       //////////////////////////////////////
       val games8 = List(game59,game60)
 
-      games8.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+      games8.foreach ( game =>
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        game.value.get.score = score}
+      )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
       ///////////7th Phase ///////////////////////
       val Final = underTest.getGame(updatedTree.root,"")                //winner in 59,60
 
-      Final.value.get.scoreHost=score
-      Final.value.get.scoreGuest=score2
+      { val score: VolleyballScore = mock[VolleyballScore]
+        Mockito.when(score.getWinner).thenReturn(Final.value.get.host)
+        Mockito.when(score.getLoser).thenReturn(Final.value.get.guest)
+        Mockito.when(score.isMatchFinished).thenReturn(true)
+        Final.value.get.score = score}
+
 
       updatedTree = underTest.updateTree(updatedTree)
       //then
@@ -602,23 +698,9 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     }
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
-    tree = underTest.populateTree(tree,listOfTeams)
+    tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
     //when
-    //score Part
-    val VSetw = mock[VSet]
-    val VSetl = mock[VSet]
-    Mockito.when(VSetw.won).thenReturn(true)
-    Mockito.when(VSetl.won).thenReturn(false)
-
-    val setsW = List(VSetw,VSetw,VSetw)
-    val setsL = List(VSetl,VSetl,VSetl)
-
-
-    val score:VolleyballScore = VolleyballScore()
-    val score2:VolleyballScore = VolleyballScore()
-    score.sets=setsW
-    score2.sets=setsL
 
 
     ////////////1st phase/////////////////
@@ -640,7 +722,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game16 = underTest.getGame(tree.root,"rlrrr")
     val games = List(game1,game2,game3,game4,game5,game6,game7,game8,game9,game10,game11,game12,game13,game14,game15,game16)
     val normalMatches = List(game4,game5,game6,game7,game8)
-    normalMatches.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    normalMatches.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     val winnerList = games.map(game=>game.value.get.winningTeam)
     val loserList = normalMatches.map(game=>game.value.get.losingTeam)
 
@@ -675,7 +763,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game32 = underTest.getGame(updatedTree.root,"rlrr")     //winners in game15,16
     val games2 = List(game17,game18,game19,game20,game21,game22,game23,game24,game25,game26,game27,game28,game29,game30,game31,game32)
 
-    games2.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games2.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -707,7 +801,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
 
     val games3 = List(game33,game34,game35,game36,game37,game38,game39,game40,game41,game42,game43,game44)
-    games3.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games3.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     /////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -729,7 +829,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     val games4 = List(game45,game46,game47,game48,game49,game50)
 
-    games4.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games4.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
 
     ///////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -748,7 +854,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     val games5 = List(game51,game52,game53,game54)
 
-    games5.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games5.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
 
@@ -764,7 +876,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     val game56 = underTest.getGame(updatedTree.root,"lrr")                //winner in 53,54
     val games6 = List(game55,game56)
 
-    games6.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games6.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
 
@@ -781,7 +899,13 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     val games7 = List(game57,game58)
 
-    games7.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games7.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
     ///////////7th Phase ///////////////////////
@@ -797,21 +921,29 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     //////////////////////////////////////
     val games8 = List(game59,game60)
 
-    games8.foreach(game => (game.value.get.scoreHost=score, game.value.get.scoreGuest=score2))
+    games8.foreach ( game =>
+    { val score: VolleyballScore = mock[VolleyballScore]
+      Mockito.when(score.getWinner).thenReturn(game.value.get.host)
+      Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
+      Mockito.when(score.isMatchFinished).thenReturn(true)
+      game.value.get.score = score}
+    )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
     ///////////7th Phase ///////////////////////
     val Final = underTest.getGame(updatedTree.root,"")                //winner in 59,60
 
-    Final.value.get.scoreHost=score
-    Final.value.get.scoreGuest=score2
+    val score: VolleyballScore = mock[VolleyballScore]
+    Mockito.when(score.getWinner).thenReturn(Final.value.get.host)
+    Mockito.when(score.getLoser).thenReturn(Final.value.get.guest)
+    Mockito.when(score.isMatchFinished).thenReturn(true)
+    Final.value.get.score = score
 
     updatedTree = underTest.updateTree(updatedTree)
     //then
     assert(Final.value.get.winningTeam===winnerList(0),"FinalUpdateTest1")
     assert(Final.value.get.losingTeam===winnerList(8),"FinalUpdateTest2")
   }
-
 
 
 }

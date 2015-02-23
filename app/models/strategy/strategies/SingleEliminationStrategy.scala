@@ -20,7 +20,7 @@ import scala.math._
     //To get logaritm with base 2
     val deph = log2(num.toDouble).toInt
     //Recursion method to create tree with deph given in "deph"
-   new EliminationTree(new Game().addNull(deph-1))
+   new EliminationTree(new Game().createFullEmptyTree(deph-1))
   }
 
    def attachNumberOfTeams(listOfTeams:List[Team]): Int = {
@@ -36,7 +36,7 @@ import scala.math._
   after second round method will fill guest, (starting from left side) and
   the last 4 leafs will have guest part filled with null (20-16 = 4)
   */
-  override def populateTree(tre: EliminationTree, list: List[Team]): EliminationTree = {
+  override def drawTeamsInTournament(tre: EliminationTree, list: List[Team]): EliminationTree = {
     var overrided_list = list
     val tree = tre
     if(list.isEmpty) {
@@ -74,8 +74,8 @@ import scala.math._
         check(tmp.get.left)
         check(tmp.get.right)
       }else {
-        if(tmp.get.value.get.isEnded){
-          if(tmp.get.parent.get.right.get!=tmp.get && tmp.get.parent.get.right.get.value.get.isEnded){
+        if(tmp.get.value.get.isMatchFinished){
+          if(tmp.get.parent.get.right.get!=tmp.get && tmp.get.parent.get.right.get.value.get.isMatchFinished){
             //UPDATE!
             tmp.get.parent.get.value = Some(new Match(tmp.get.value.get.winningTeam,tmp.get.parent.get.right.get.value.get.winningTeam))
             None

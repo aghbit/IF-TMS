@@ -20,13 +20,17 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   private var maxLevel:Int = 0
 
   //populating only in 1st and 3rd quarter
-  def populateTree(tree:EliminationTree, list: List[Team]): EliminationTree = {
-    if(list.size<=4) throw new NotEnoughTeamsException(list.size+" teams is too few for DoubleEliminationStrategy")
+  def drawTeamsInTournament(tree:EliminationTree, list: List[Team]): EliminationTree = {
+    if(list.size<=4){
+      throw new NotEnoughTeamsException(list.size+" teams is too few for DoubleEliminationStrategy")
+    }
     val left = tree.root.left.get.left
     val right = tree.root.right.get.left
     populateBranch(left.get,populateBranch(right.get,list))
     tree
   }
+
+
   //populating all the subtree with the given list
   private def populateBranch(root:Game,list:List[Team]):List[Team] = {
     if(root.left==None && root.right==None) {
@@ -67,7 +71,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     maxLevel=(log(attachNumberOfTeams(listOfTeams).toDouble) / log(2)).toInt+1
     val num = attachNumberOfTeams(listOfTeams)
     def log2(x: Double) = log(x) / log(2)
-    //To get logaritm with base 2
+    //To get logarithm with base 2
     val depth = log2(num.toDouble).toInt+1
     //Recursion method to create tree with depth given in "depth"
 
@@ -80,10 +84,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
     tree.root.left.get.right=Some(Game())
     tree.root.right.get.left=Some(Game())
     tree.root.right.get.right=Some(Game())
-    tree.root.left.get.left=Some(tree.root.left.get.left.get.addNull(depth-3))
-    tree.root.left.get.right=Some(tree.root.left.get.right.get.addNull(2*depth-7))
-    tree.root.right.get.left=Some(tree.root.right.get.left.get.addNull(depth-3))
-    tree.root.right.get.right=Some(tree.root.right.get.right.get.addNull(2*depth-7))
+    tree.root.left.get.left=Some(tree.root.left.get.left.get.createFullEmptyTree(depth-3))
+    tree.root.left.get.right=Some(tree.root.left.get.right.get.createFullEmptyTree(2*depth-7))
+    tree.root.right.get.left=Some(tree.root.right.get.left.get.createFullEmptyTree(depth-3))
+    tree.root.right.get.right=Some(tree.root.right.get.right.get.createFullEmptyTree(2*depth-7))
     tree.root.left.get.left.get.parent=tree.root.left
     tree.root.left.get.right.get.parent=tree.root.left
     tree.root.right.get.left.get.parent=tree.root.right
@@ -115,17 +119,17 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   //losers in the next rounds will be updated as associated teams for winners in losers quarters)
   private def updateWinnerQuarterGame(game:Game, tree:EliminationTree):EliminationTree = {
     if(game.value!=None) {                                                           //match must exist
-      if (game.value.get.isEnded) {                                                      //match must be finished
+      if (game.value.get.isMatchFinished) {                                                      //match must be finished
       val associatedMatch = getAssociatedWithWinner(game, tree)                    //get associated match for winner of game
         if (associatedMatch.value != None) {                                         //above mentioned match must exist
-          if (associatedMatch.value.get.isEnded)                                         //and must be finished
+          if (associatedMatch.value.get.isMatchFinished)                                         //and must be finished
             if (game.parent.get.value == None)
               game.parent.get.value = Some(new Match(game.value.get.winningTeam, associatedMatch.value.get.winningTeam)) //creating match for winners
         }
         if (getLevel(game) == maxLevel) {                                            //match is in the first round
         val associatedLoseMatch = getAssociatedWithLoser(game, tree)              //getting loser from associated first round
           if (associatedLoseMatch.value != None)                                     //associated match must exist
-            if (associatedLoseMatch.value.get.isEnded)                                   //associated match must be finished
+            if (associatedLoseMatch.value.get.isMatchFinished)                                   //associated match must be finished
               createMatchForLosersIn1stRound(game, tree)                             //creating match in losers(in losers' guarter)
         }
       }
@@ -145,10 +149,10 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   //losers are dropped out from the tournament)
   private def updateLoserQuarterGame(game:Game,tree:EliminationTree):EliminationTree ={
     if(game.value!=None)                                                                //match must exist
-      if(game.value.get.isEnded){                                                             //match must be finished
+      if(game.value.get.isMatchFinished){                                                             //match must be finished
       val associatedMatch = getAssociatedWithWinner(game,tree)                          //get associated match for winner of game
         if(associatedMatch.value!=None){                                                  //above mentioned match must exist
-          if(associatedMatch.value.get.isEnded)                                               //and must be finished
+          if(associatedMatch.value.get.isMatchFinished)                                               //and must be finished
             if(game.parent.get.value==None)                                                   //we ensure that this pair wasn't earlier updated
               if(getLevel(game)%2==1)
                 game.parent.get.value = Some(new Match(game.value.get.winningTeam,associatedMatch.value.get.winningTeam)) //creating match for winners in the same quarter
