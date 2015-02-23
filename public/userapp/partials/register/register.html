@@ -1,7 +1,54 @@
-<div id="registermodal" class="modal">
-    <h4>Registration</h4>
-    <p>Form placeholder</p>
-    <div class="action-bar">
-        <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Register</a>
+
+    <div class="ngdialog-message">
+        <h3>Create new account</h3>
+
     </div>
-</div>
+    <div class="ngdialog-buttons" ng-controller="RegisterController">
+        <form ng-submit="submit()" class="col s12">
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
+                           ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                    <label for="login">Login</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="name" type="text" ng-model="name">
+                    <label for="name">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="mail" type="email" ng-model="mail">
+                    <label for="mail">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="phone" type="text" ng-model="phone">
+                    <label for="phone">Phone Number</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="password" type="password" ng-model="password" ng-change="checkPasswordsEquality()">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+                    <input id="password2" type="password" ng-model="password2"
+                           ng-style="{'border-bottom' : password2BorderBottom, 'box-shadow' : password2BoxShadow}"
+                           ng-change="checkPasswordsEquality()">
+                    <label for="password2">Confirm Password</label>
+
+                </div>
+            </div>
+
+            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Register <i class="mdi-content-send right"></i></button>
+
+        </form>
+        <a ng-click="closeThisDialog()" href="#/login">or Sign In</a>
+    </div>
+
