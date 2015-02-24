@@ -25,6 +25,11 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/tournaments/main.html",
             controller: 'TournamentsController'
         })
+        .state('tournaments/create', {
+            url: "/tournaments/create",
+            templateUrl: "/assets/userapp/partials/tournaments/create.html",
+            controller: 'TournamentsController'
+        })
         .state('login', {
             url: "/login",
             templateUrl: "/assets/userapp/partials/login/login.html",

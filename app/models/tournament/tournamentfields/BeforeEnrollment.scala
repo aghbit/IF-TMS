@@ -1,5 +1,6 @@
 package models.tournament.tournamentfields
 
+import models.strategy.TournamentStrategy
 import models.team.Team
 import models.tournament.tournaments._
 import models.tournament.tournamentstate._
@@ -11,11 +12,13 @@ import scala.collection.mutable.ListBuffer
  * Created by Przemek
  */
 class BeforeEnrollment(override val _id: BSONObjectID,
-                       override var properties: TournamentProperties) extends Tournament {
+                       override var properties: TournamentProperties,
+                       override val strategy: TournamentStrategy,
+                       override val staff: TournamentStaff) extends Tournament {
 
 
   override def startNext(): Enrollment = {
-    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID])
+    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID], strategy, staff)
     newState.properties.settings.canEnroll = true
     newState
   }
@@ -47,8 +50,8 @@ class BeforeEnrollment(override val _id: BSONObjectID,
 }
 
 object BeforeEnrollment {
-  def apply(properties: TournamentProperties): Tournament = {
-    val newTournament = new BeforeEnrollment(BSONObjectID.generate, properties)
+  def apply(properties: TournamentProperties, strategy: TournamentStrategy, staff: TournamentStaff): Tournament = {
+    val newTournament = new BeforeEnrollment(BSONObjectID.generate, properties, strategy, staff)
     newTournament.properties.settings.canEnroll = false
     newTournament
   }

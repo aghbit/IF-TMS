@@ -1,11 +1,12 @@
 package models.tournament.tournamentstate
 
 import org.joda.time.{DateTime, Duration, Interval}
+import play.api.libs.json.Json
 
 /**
  * Created by Szymek.
  */
-class TournamentTerm(var enrollDeadline: DateTime,
+case class TournamentTerm(var enrollDeadline: DateTime,
                      var begin: DateTime,
                      var end: DateTime,
                      var extraBegin: DateTime,
@@ -16,4 +17,7 @@ class TournamentTerm(var enrollDeadline: DateTime,
     tournamentDuration
   }
 
+}
+object JsonFormatTournamentTerm {
+  implicit val tournamentTermFormat = Json.format[TournamentTerm]
 }
