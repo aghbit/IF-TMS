@@ -1,51 +1,113 @@
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-        <form ng-submit="submit()" class="col s12">
-            <div class="row">
-                <div class="input-field col s8">
+        <form ng-submit="submit()" class="col l4 offset-l4">
+            <div class="row col l12">
+                <div class="input-field">
                     <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
                            ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
                     <label for="login">Login</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="name" type="text" ng-model="name">
-                    <label for="name">Name</label>
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="tournamentName" type="text" ng-model="tournamentName">
+                    <label for="tournamentName">Tournament Place</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="mail" type="email" ng-model="mail">
-                    <label for="mail">Email</label>
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="tournamentPlace" type="text" ng-model="tournamentPlace">
+                    <label for="tournamentPlace">Tournament Place</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="phone" type="text" ng-model="phone">
-                    <label for="phone">Phone Number</label>
+            <div class="row col l12">
+                <div class="input-field">
+                    <textarea class="materialize-textarea" id="tournamentDescription" type="text" ng-model="tournamentDescription"></textarea>
+                    <label for="tournamentDescription">Tournament Description</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="password" type="password" ng-model="password" ng-change="checkPasswordsEquality()">
-                    <label for="password">Password</label>
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="numberOfPitches" type="number" ng-model="numberOfPitches">
+                    <label for="numberOfPitches">Number of pitches</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input id="password2" type="password" ng-model="password2"
-                           ng-style="{'border-bottom' : password2BorderBottom, 'box-shadow' : password2BoxShadow}"
-                           ng-change="checkPasswordsEquality()">
-                    <label for="password2">Confirm Password</label>
-
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="numberOfTeams" type="number" ng-model="numberOfTeams">
+                    <label for="numberOfTeams">Number of teams</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="input-field col s8">
-                    <input type="text" class="datepicker" id="date"/>
-                    <label for="date">Start Date</label>
-
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="level" type="number" ng-model="level">
+                    <label for="level">Level</label>
+                </div>
+            </div>
+            <div class="row col l12">
+                <div class="input-field">
+                    <input id="discipline" type="text" ng-model="discipline">
+                    <label for="discipline">Discipline</label>
+                </div>
+            </div>
+            <div class="row col l7">
+                <div class="input-field">
+                    <label for="enrollDeadline">Enroll end date</label>
+                    <input id="enrollDeadline" type="text" class="datepicker"/>
+                </div>
+            </div>
+            <div class="row col l5">
+                <div class="input-field">
+                    <label for="enrollDeadlineTime">Enroll end time</label>
+                    <input id="enrollDeadlineTime" type="text" class="timepicker"/>
+                </div>
+            </div>
+            <div class="row col l7">
+                <div class="input-field">
+                    <label for="begin">Begin date</label>
+                    <input id="begin" type="text" class="datepicker"/>
+                </div>
+            </div>
+            <div class="row col l5">
+                <div class="input-field">
+                    <label for="beginTime">Begin time</label>
+                    <input id="beginTime" type="text" class="timepicker"/>
+                </div>
+            </div>
+            <div class="row col l7">
+                <div class="input-field">
+                    <label for="end">End date</label>
+                    <input id="end" type="text" class="datepicker"/>
+                </div>
+            </div>
+            <div class="row col l5">
+                <div class="input-field">
+                    <label for="endTime">End time</label>
+                    <input id="endTime" type="text" class="timepicker"/>
+                </div>
+            </div>
+            <div class="row col l7">
+                <div class="input-field">
+                    <label for="extraBegin">Extra begin date</label>
+                    <input id="extraBegin" type="text" class="datepicker"/>
+                </div>
+            </div>
+            <div class="row col l5">
+                <div class="input-field">
+                    <label for="extraBeginTime">Extra begin time</label>
+                    <input id="extraBeginTime" type="text" class="timepicker"/>
+                </div>
+            </div>
+            <div class="row col l7">
+                <div class="input-field">
+                    <label for="extraEnd">Extra end date</label>
+                    <input id="extraEnd" type="text" class="datepicker"/>
+                </div>
+            </div>
+            <div class="row col l5">
+                <div class="input-field">
+                    <label for="extraEndTime">Extra end time</label>
+                    <input id="extraEndTime" type="text" class="timepicker"/>
                 </div>
             </div>
 
