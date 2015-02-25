@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsCreateController', ['$scope',  '$http', function ($scope, $http) {
+mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$location', function ($scope, $http, $location) {
     //important! it loads js for datePicker.
     angular.element(document).ready(function(){
         $('.datepicker').pickadate({
@@ -33,7 +33,8 @@ mainApp.controller('TournamentsCreateController', ['$scope',  '$http', function 
             "settings":{"numberOfPitches":$scope.numberOfPitches, "numberOfTeams":$scope.numberOfTeams,
                         "canEnroll": true, "level":$scope.level, "discipline":$scope.discipline}
         }).success(function(){
-            alert("ok!")
+            toast("Tournament created!", 4000)
+            $location.path("tournaments/myTournaments")
         }).error(function(){
             alert("error!")
         })

@@ -4,7 +4,7 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
         success(function(data, status, headers, config) {
             $scope.tournaments = data;
             $('.collapsible').collapsible({
-                accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+                accordion : false
             });
 
         }).error(function(data, status, headers, config, statusText) {
