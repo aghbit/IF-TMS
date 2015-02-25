@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsController', ['$scope',  '$http', function ($scope, $http) {
+mainApp.controller('TournamentsCreateController', ['$scope',  '$http', function ($scope, $http) {
     //important! it loads js for datePicker.
     angular.element(document).ready(function(){
         $('.datepicker').pickadate({
@@ -13,7 +13,6 @@ mainApp.controller('TournamentsController', ['$scope',  '$http', function ($scop
         })
     })
     $scope.submit = function(){
-        alert("submit!")
         var enrollDeadline = $('#enrollDeadline')[0].value;
         var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
         var begin = $('#begin')[0].value;
