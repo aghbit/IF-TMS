@@ -3,15 +3,8 @@
         <form ng-submit="submit()" class="col l4 offset-l4">
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
-                           ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
-                    <label for="login">Login</label>
-                </div>
-            </div>
-            <div class="row col l12">
-                <div class="input-field">
                     <input id="tournamentName" type="text" ng-model="tournamentName">
-                    <label for="tournamentName">Tournament Place</label>
+                    <label for="tournamentName">Tournament Name</label>
                 </div>
             </div>
             <div class="row col l12">
@@ -53,66 +46,66 @@
             <div class="row col l7">
                 <div class="input-field">
                     <label for="enrollDeadline">Enroll end date</label>
-                    <input id="enrollDeadline" type="text" class="datepicker"/>
+                    <input id="enrollDeadline" type="date" class="datepicker" ng-model="enrollDeadline"/>
                 </div>
             </div>
             <div class="row col l5">
                 <div class="input-field">
                     <label for="enrollDeadlineTime">Enroll end time</label>
-                    <input id="enrollDeadlineTime" type="text" class="timepicker"/>
+                    <input id="enrollDeadlineTime" type="time" class="timepicker" ng-model="enrollDeadlineTime"/>
                 </div>
             </div>
             <div class="row col l7">
                 <div class="input-field">
                     <label for="begin">Begin date</label>
-                    <input id="begin" type="text" class="datepicker"/>
+                    <input id="begin" type="date" class="datepicker" ng-model="begin"/>
                 </div>
             </div>
             <div class="row col l5">
                 <div class="input-field">
                     <label for="beginTime">Begin time</label>
-                    <input id="beginTime" type="text" class="timepicker"/>
+                    <input id="beginTime" type="text" class="timepicker" ng-model="beginTime"/>
                 </div>
             </div>
             <div class="row col l7">
                 <div class="input-field">
                     <label for="end">End date</label>
-                    <input id="end" type="text" class="datepicker"/>
+                    <input id="end" type="date" class="datepicker" ng-model="end"/>
                 </div>
             </div>
             <div class="row col l5">
                 <div class="input-field">
                     <label for="endTime">End time</label>
-                    <input id="endTime" type="text" class="timepicker"/>
+                    <input id="endTime" type="text" class="timepicker" ng-model="endTime"/>
                 </div>
             </div>
             <div class="row col l7">
                 <div class="input-field">
                     <label for="extraBegin">Extra begin date</label>
-                    <input id="extraBegin" type="text" class="datepicker"/>
+                    <input id="extraBegin" type="date" class="datepicker" ng-model="extraBegin"/>
                 </div>
             </div>
             <div class="row col l5">
                 <div class="input-field">
                     <label for="extraBeginTime">Extra begin time</label>
-                    <input id="extraBeginTime" type="text" class="timepicker"/>
+                    <input id="extraBeginTime" type="text" class="timepicker" ng-model="extraBeginTime"/>
                 </div>
             </div>
             <div class="row col l7">
                 <div class="input-field">
                     <label for="extraEnd">Extra end date</label>
-                    <input id="extraEnd" type="text" class="datepicker"/>
+                    <input id="extraEnd" type="date" class="datepicker" ng-model="extraEnd"/>
                 </div>
             </div>
             <div class="row col l5">
                 <div class="input-field">
                     <label for="extraEndTime">Extra end time</label>
-                    <input id="extraEndTime" type="text" class="timepicker"/>
+                    <input id="extraEndTime" type="text" class="timepicker" ng-model="extraEndTime"/>
                 </div>
             </div>
 
 
-            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Register <i class="mdi-content-send right"></i></button>
+            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Create <i class="mdi-content-send right"></i></button>
 
         </form>
     </div>

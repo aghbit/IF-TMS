@@ -10,10 +10,13 @@ import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
+import play.api.Logger
+import play.api.libs.json.Json
 import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
 import org.joda.time.DateTime
 import org.springframework.data.mongodb.core.query._
+import models.tournament.tournamentstate.JsonFormatTournamentProperties._
 
 
 /**
@@ -36,6 +39,7 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
   before {
     underTest = new TournamentRepository()
     tournament = BeforeEnrollment(tournamentProperties, tournamentStrategy, tournamentStaff)
+    println(Json.toJson(tournamentProperties).toString())
   }
 
   after {

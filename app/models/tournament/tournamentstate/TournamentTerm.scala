@@ -1,7 +1,7 @@
 package models.tournament.tournamentstate
 
 import org.joda.time.{DateTime, Duration, Interval}
-import play.api.libs.json.Json
+import play.api.libs.json.{Reads, Writes, Json}
 
 /**
  * Created by Szymek.
@@ -19,5 +19,7 @@ case class TournamentTerm(var enrollDeadline: DateTime,
 
 }
 object JsonFormatTournamentTerm {
+  implicit val yourJodaDateReads = Reads.jodaDateReads("yyyy-MM-dd' 'HH:mm:ss")
+  implicit val yourJodaDateWrites = Writes.jodaDateWrites("yyyy-MM-dd' 'HH:mm:ss")
   implicit val tournamentTermFormat = Json.format[TournamentTerm]
 }
