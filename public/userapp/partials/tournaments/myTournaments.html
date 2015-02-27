@@ -4,13 +4,27 @@
             <li ng-repeat="tournament in tournaments">
                 <div class="collapsible-header">{{tournament.description.name}}</div>
                 <div class="collapsible-body">
-                    <h5 class="col l4 offset-l1">Place: {{tournament.description.place}}</h5>
-                    <h5 class="col l7 right-align">Start Date: {{tournament.term.begin}}</h5>
-                    <h5 class="col l7 offset-l5 right-align">End Date: {{tournament.term.end}}</h5>
-                    <h5 class="col l3 ">Pitches: {{tournament.settings.numberOfPitches}}</h5>
-                    <h5 class="col l3 ">Max teams: {{tournament.settings.numberOfTeams}}</h5>
-                    <h5 class="col l3 ">Level: {{tournament.settings.level}}</h5>
-                    <h5 class="col l3 ">Discipline: {{tournament.settings.discipline}}</h5>
+                    <h5 class="col l4 offset-l1">
+                        <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
+                    </h5>
+                    <h5 class="col l7 right-align">
+                        <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
+                    </h5>
+                    <h5 class="col l7 offset-l5 right-align">
+                        <i class="mdi-notification-event-note"></i>End Date: {{tournament.term.end}}
+                    </h5>
+                    <h5 class="col l3 ">
+                        <i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}
+                    </h5>
+                    <h5 class="col l3 ">
+                        <i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}
+                    </h5>
+                    <h5 class="col l3 ">
+                        <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}
+                    </h5>
+                    <h5 class="col l3 ">
+                        <i class="mdi-action-polymer"></i> Discipline: {{tournament.settings.discipline}}
+                    </h5>
                     <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
                 </div>
             </li>
