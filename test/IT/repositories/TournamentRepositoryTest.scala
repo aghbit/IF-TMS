@@ -39,7 +39,6 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
   before {
     underTest = new TournamentRepository()
     tournament = BeforeEnrollment(tournamentProperties, tournamentStrategy, tournamentStaff)
-    println(Json.toJson(tournamentProperties).toString())
   }
 
   after {
