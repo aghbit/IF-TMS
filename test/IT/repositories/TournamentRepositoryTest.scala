@@ -58,6 +58,10 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
 
     //then
     assert(tournamentRestored.getClass == classOf[BeforeEnrollment] , "Simple test: Wrong class type!")
+    /* uncomment when somebody write equals method for TournamentProperties class. (Przemek)
+    assert(tournamentRestored.properties == tournamentProperties, "Simple test: Tournament Properties are wrong!")
+    and delete assertion below.
+     */
     assert(tournamentRestored.properties.description.name == tournamentProperties.description.name ,
       "Simple test: Tournament Properties are wrong!")
   }
