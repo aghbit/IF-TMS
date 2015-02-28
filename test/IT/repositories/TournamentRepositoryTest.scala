@@ -27,7 +27,7 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
   var underTest:TournamentRepository = _
   var tournament:Tournament = _
   val tournamentDescription = new TournamentDescription("TournamentName", "TournamentPlace", "TournamentDescription")
-  val tournamentTerms = new TournamentTerm(new DateTime(2014, 3, 15, 0, 0, 0, 0),
+  val tournamentTerms = new TournamentTerm(new DateTime(2014, 3, 3, 0, 0, 0, 0),
     new DateTime(2014, 3, 20, 8, 0, 0, 0),
     new DateTime(2014, 3, 20, 16, 0, 0, 0),
     new DateTime(2014, 3, 27, 8, 0, 0, 0),

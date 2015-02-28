@@ -14,6 +14,7 @@ import scala.collection.mutable.ListBuffer
 
 
 trait Tournament {
+
   val _id: BSONObjectID
   var properties: TournamentProperties
   var teams: ListBuffer[BSONObjectID]
@@ -55,5 +56,13 @@ trait Tournament {
 
   def containsReferee(referee: User): Boolean = {
     staff.contains(referee)
+  }
+
+  def isReadyToSave = {
+    if(properties.settings.isValid && properties.term.isValid){
+      true
+    }else {
+      false
+    }
   }
 }

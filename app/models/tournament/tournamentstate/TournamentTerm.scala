@@ -12,6 +12,27 @@ case class TournamentTerm(var enrollDeadline: DateTime,
                      var extraBegin: DateTime,
                      var extraEnd: DateTime) {
 
+  private def checkEnrollmentBeforeBegin() = {
+    enrollDeadline.isBefore(begin)
+  }
+
+  private def checkDate(): Boolean = {
+    begin.isBefore(end)
+  }
+
+  private def checkExtraDate(): Boolean = {
+    extraBegin.isBefore(extraEnd)
+  }
+
+  private def checkBeginDateBeforeExtraDate(): Boolean = {
+    begin.isBefore(extraBegin)
+  }
+
+  def isValid: Boolean = {
+    checkEnrollmentBeforeBegin() && checkDate() && checkExtraDate() && checkBeginDateBeforeExtraDate()
+  }
+
+
   def getDuration: Duration = {
     val tournamentDuration = new Interval(begin, end).toDuration
     tournamentDuration
