@@ -12,7 +12,7 @@ class TournamentRepository extends Repository[Tournament] {
 
   def insert(tournament: Tournament) = {
     if(!tournament.isReadyToSave){
-      throw new IllegalArgumentException("Tournament is not ready to save!")
+      throw new IllegalArgumentException("Tournament is not ready to save (Probably contains illegal values)!")
     }else{
       mongoTemplate.save(tournament, collectionName)
     }

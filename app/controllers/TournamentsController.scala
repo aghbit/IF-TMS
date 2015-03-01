@@ -31,8 +31,13 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
       val beforeEnrollment = BeforeEnrollment(tournamentProperties, new SingleEliminationStrategy(), tournamentStaff)
-      repository.insert(beforeEnrollment)
-      Future.successful(Created)
+      try {
+        repository.insert(beforeEnrollment)
+        Future.successful(Created)
+      } catch {
+        case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
+        case e:Throwable => Future.failed(e)
+      }
   }
 
   def getMyTournaments = AuthorizationAction.async {

@@ -37,7 +37,7 @@ mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$locatio
             toast("Tournament created!", 4000)
             $location.path("tournaments/myTournaments")
         }).error(function(){
-            alert("error!")
+            toast("Wrong data, tournament can't be created!", 4000)
         })
 
     }
