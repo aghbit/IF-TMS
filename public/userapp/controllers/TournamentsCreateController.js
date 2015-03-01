@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$location', function ($scope, $http, $location) {
+mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$location', 'SessionService', function ($scope, $http, $location, SessionService) {
     //important! it loads js for datePicker.
     angular.element(document).ready(function(){
         $('select').material_select();
@@ -13,6 +13,7 @@ mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$locatio
             closeOnSelect: true
         })
     })
+    $scope.isLoggedIn = SessionService.isLoggedIn
     $scope.submit = function(){
         var enrollDeadline = $('#enrollDeadline')[0].value;
         var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
