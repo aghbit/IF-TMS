@@ -58,11 +58,9 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     //then
     assert(testDrawing1,"populateTree: 2^n teams1")
     assert(testDrawing2,"populateTree: 2^n teams2")
-    assert(tree.root.value==None,"populateTree: 2^n teams3")
-    assert(tree.root.left.get.left.get.left.get.value==None,"populateTree: 2^n teams3")
-    assert(tree.root.left.get.left.get.left.get.left.get.value!=None,"populateTree: 2^n teams3")
-    assert(tree.root.left.get.left.get.left.get==underTest.getGame(tree.root,"lll"),"populateTree: 2^n teams4")
-    assert(tree.root.left.get.left.get.left.get.left.get==underTest.getGame(tree.root,"llll"),"populateTree: 2^n teams5")
+    assert(underTest.getGame(tree.root,"").value==None,"populateTree: 2^n teams3")
+    assert(underTest.getGame(tree.root,"lll").value==None,"populateTree: 2^n teams4")
+    assert(underTest.getGame(tree.root,"llll").value!=None,"populateTree: 2^n teams5")
   }
 
     test("populateTree: 2^n-1 teams"){
@@ -126,9 +124,8 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
-
 
     val winner1 = game1.value.get.winningTeam
     val winner2 = game2.value.get.winningTeam
@@ -175,7 +172,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ///////////////////////////////////////
@@ -190,7 +187,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
 
@@ -247,7 +244,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
 
@@ -267,7 +264,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ////////////////////////////////////////
@@ -283,7 +280,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     /////////////////////////////////////////
@@ -298,7 +295,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ///////////////////////////////////////////
@@ -312,7 +309,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -356,7 +353,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
 
@@ -375,7 +372,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ////////////////////////////////////////
@@ -390,7 +387,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     /////////////////////////////////////////
@@ -405,7 +402,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ///////////////////////////////////////////
@@ -419,7 +416,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -472,7 +469,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
 
 
@@ -514,7 +511,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
 
       ////////////////////////////////////////
@@ -546,7 +543,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
 
       /////////////////////////////////////////
@@ -574,7 +571,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
 
       ///////////////////////////////////////////
@@ -599,7 +596,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -623,7 +620,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -646,7 +643,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -668,7 +665,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(game.value.get.host)
         Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        game.value.get.score = score}
+        game.value.get.score = Some(score)}
       )
       ////////////////////////////////////////////
       updatedTree = underTest.updateTree(updatedTree)
@@ -679,7 +676,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
         Mockito.when(score.getWinner).thenReturn(Final.value.get.host)
         Mockito.when(score.getLoser).thenReturn(Final.value.get.guest)
         Mockito.when(score.isMatchFinished).thenReturn(true)
-        Final.value.get.score = score}
+        Final.value.get.score = Some(score)}
 
 
       updatedTree = underTest.updateTree(updatedTree)
@@ -727,7 +724,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     val winnerList = games.map(game=>game.value.get.winningTeam)
     val loserList = normalMatches.map(game=>game.value.get.losingTeam)
@@ -768,7 +765,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ////////////////////////////////////////
@@ -806,7 +803,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     /////////////////////////////////////////
@@ -834,7 +831,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
 
     ///////////////////////////////////////////
@@ -859,7 +856,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -881,7 +878,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -904,7 +901,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -926,7 +923,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       Mockito.when(score.getWinner).thenReturn(game.value.get.host)
       Mockito.when(score.getLoser).thenReturn(game.value.get.guest)
       Mockito.when(score.isMatchFinished).thenReturn(true)
-      game.value.get.score = score}
+      game.value.get.score = Some(score)}
     )
     ////////////////////////////////////////////
     updatedTree = underTest.updateTree(updatedTree)
@@ -937,7 +934,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     Mockito.when(score.getWinner).thenReturn(Final.value.get.host)
     Mockito.when(score.getLoser).thenReturn(Final.value.get.guest)
     Mockito.when(score.isMatchFinished).thenReturn(true)
-    Final.value.get.score = score
+    Final.value.get.score = Some(score)
 
     updatedTree = underTest.updateTree(updatedTree)
     //then

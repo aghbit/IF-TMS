@@ -30,17 +30,7 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
     underTest=Match(Option(host),Option(guest))
   }
 
-  test("WinningTeam test: failure"){
 
-    //given
-
-    //when
-
-    //then
-    intercept[MatchNotFinishedException]{
-      underTest.winningTeam
-    }
-  }
 
   test("WinningTeam test: hostWins"){
 
@@ -48,7 +38,7 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
     Mockito.when(score.getWinner).thenReturn(Some(hostId))
     Mockito.when(score.getLoser).thenReturn(Some(guestId))
 
-    underTest.score=score
+    underTest.score=Some(score)
 
     //when
 
@@ -63,7 +53,7 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
     Mockito.when(score.getWinner).thenReturn(Some(guestId))
     Mockito.when(score.getLoser).thenReturn(Some(hostId))
 
-    underTest.score=score
+    underTest.score=Some(score)
 
     //when
 

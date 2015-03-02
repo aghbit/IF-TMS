@@ -5,8 +5,8 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by Rafal on 2014-12-08.
  */
-class BeachVolleyballScore(override val host:Option[BSONObjectID],
-                           override val guest:Option[BSONObjectID],
+class BeachVolleyballScore(override val host:BSONObjectID,
+                           override val guest:BSONObjectID,
                            override val maxSets:Int) extends VolleyballScore(host,guest,maxSets) {
 
   override val maxPoints = 21
@@ -14,5 +14,5 @@ class BeachVolleyballScore(override val host:Option[BSONObjectID],
 }
 
 object BeachVolleyballScore{
-  def apply(host:Option[BSONObjectID],guest:Option[BSONObjectID],maxSets:Int = 2) = new BeachVolleyballScore(host,guest,maxSets)
+  def apply(host:BSONObjectID,guest:BSONObjectID,maxSets:Int = 3) = new BeachVolleyballScore(host,guest,maxSets)
 }

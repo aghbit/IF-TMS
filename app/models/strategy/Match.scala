@@ -9,14 +9,13 @@ import reactivemongo.bson.BSONObjectID
 class Match(val host:Option[BSONObjectID],
             val guest:Option[BSONObjectID]){
 
-  var score:Score = Score()
-  def isMatchFinished:Boolean=
-    if(host==None || guest==None || score.isMatchFinished) {
-      true
-    } else {
-        false
-      }
-
+  var score:Option[Score] = None
+  def isMatchFinished:Boolean= (host,guest,score) match {
+    case(None,_,_) => true
+    case(_,None,_) => true
+    case(_,_,None) => false
+    case(_,_,score) => score.get.isMatchFinished
+  }
 
   def losingTeam:Option[BSONObjectID] =
     if(guest==None){
@@ -25,7 +24,7 @@ class Match(val host:Option[BSONObjectID],
       if(host==None){
         host
       } else{
-        score.getLoser
+        score.get.getLoser
       }
 
 
@@ -38,7 +37,7 @@ class Match(val host:Option[BSONObjectID],
 }
 object Match {
   def apply(host:Option[Team], guest:Option[Team])= (host,guest) match {
-    case (None,None) => new Match(None,None)
+    case(None,None) => new Match(None,None)
     case(None,Some(guest)) => new Match(None,Some(guest._id))
     case(Some(host),None) => new Match(Some(host._id),None)
     case(Some(host),Some(guest)) => new Match(Some(host._id),Some(guest._id))
