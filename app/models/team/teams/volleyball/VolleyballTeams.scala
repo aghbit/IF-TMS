@@ -3,6 +3,8 @@ package models.team.teams.volleyball
 import java.util
 
 import models.exceptions.TooManyMembersInTeamException
+import models.player.Player
+import models.player.players.Captain
 import models.team.Team
 import models.user.User
 import reactivemongo.bson.BSONObjectID
@@ -40,34 +42,34 @@ trait VolleyballTeams extends Team {
 
   override def canAddBenchWarmer: Boolean = benchWarmersID.size() < benchWarmersNumber
 
-  override def addPlayer(player: User): Unit = {
+  override def addPlayer(player: Player): Unit = {
     if (!canAddPlayer) {
       throw new TooManyMembersInTeamException("Can't add! Too many players in this team!")
     }
     playersID.add(player._id)
   }
 
-  override def addBenchWarmer(benchWarmer: User): Unit = {
+  override def addBenchWarmer(benchWarmer: Player): Unit = {
     if (!canAddBenchWarmer) {
       throw new TooManyMembersInTeamException("Can't add! Too many bench warmers in this team!")
     }
     benchWarmersID.add(benchWarmer._id)
   }
 
-  override def removePlayer(player: User): Unit = {
+  override def removePlayer(player: Player): Unit = {
     if (!playersID.contains(player._id))
       throw new NoSuchElementException("Can't remove absent player from the team!")
     playersID.remove(player._id)
   }
 
-  override def removeBenchWarmer(benchWarmer: User): Unit = {
+  override def removeBenchWarmer(benchWarmer: Player): Unit = {
     if (!benchWarmersID.contains(benchWarmer._id)) {
       throw new NoSuchElementException("Can't remove absent bench warmer from the team!")
     }
     benchWarmersID.remove(benchWarmer._id)
   }
 
-  override def setCaptain(captain: User): Unit = {
+  override def setCaptain(captain: Captain): Unit = {
     if (!containsMember(captain)) {
       throw new NoSuchElementException("Captain has to be a team member!")
     }
@@ -79,7 +81,7 @@ trait VolleyballTeams extends Team {
     case None => throw new NullPointerException("Can't return captain; Captain is not set!")
   }
 
-  override def containsMember(member: User): Boolean = {
+  override def containsMember(member: Player): Boolean = {
     playersID.contains(member._id) || benchWarmersID.contains(member._id)
   }
 

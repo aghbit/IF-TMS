@@ -1,5 +1,7 @@
 package models.team
 
+import models.player.Player
+import models.player.players.Captain
 import models.user.User
 import reactivemongo.bson.BSONObjectID
 
@@ -16,15 +18,15 @@ trait Team {
 
   def isComplete: Boolean
 
-  def addPlayer(player: User)
+  def addPlayer(player: Player)
 
-  def addBenchWarmer(benchWarmer: User)
+  def addBenchWarmer(benchWarmer: Player)
 
-  def removePlayer(player: User)
+  def removePlayer(player: Player)
 
-  def removeBenchWarmer(benchWarmer: User)
+  def removeBenchWarmer(benchWarmer: Player)
 
-  def setCaptain(captain: User)
+  def setCaptain(captain: Captain)
 
   def getCaptainID: BSONObjectID
 
@@ -34,5 +36,5 @@ trait Team {
 
   def canAddBenchWarmer: Boolean
 
-  def containsMember(member: User): Boolean
+  def containsMember(member: Player): Boolean
 }
