@@ -1,5 +1,6 @@
 package models.tournament.tournaments
 
+import models.strategy.TournamentStrategy
 import models.team.Team
 import models.tournament.tournamentstate._
 import models.user.User
@@ -13,9 +14,12 @@ import scala.collection.mutable.ListBuffer
 
 
 trait Tournament {
+
   val _id: BSONObjectID
   var properties: TournamentProperties
   var teams: ListBuffer[BSONObjectID]
+  val strategy: TournamentStrategy
+  val staff: TournamentStaff
 
   def startNext(): Tournament
 
@@ -26,15 +30,15 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   def generateTree() = {
-    properties.strategy.getOrder()
+    strategy.getOrder()
   }
 
   def addReferee(user: User): Unit = {
-    properties.staff.addReferee(user)
+    staff.addReferee(user)
   }
 
   def removeReferee(user: User): Unit = {
-    properties.staff.removeReferee(user)
+    staff.removeReferee(user)
   }
 
   def editSettings(settings: TournamentSettings): Unit = {
@@ -51,6 +55,14 @@ trait Tournament {
   }
 
   def containsReferee(referee: User): Boolean = {
-    properties.staff.contains(referee)
+    staff.contains(referee)
+  }
+
+  def isReadyToSave = {
+    if(properties.settings.isValid && properties.term.isValid){
+      true
+    }else {
+      false
+    }
   }
 }

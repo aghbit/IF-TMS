@@ -19,8 +19,9 @@ class UserRepository extends Repository[User] {
     val usersList = super.find(query)
     if(!usersList.isEmpty) {
       throw new UserWithThisLoginExistsInDB("User with login: " + user.getProperties.login + " exists in DB!")
+    } else {
+      mongoTemplate.insert(obj, collectionName)
     }
-    mongoTemplate.insert(obj, collectionName)
   }
 
 }
