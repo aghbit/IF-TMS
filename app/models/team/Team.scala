@@ -37,4 +37,6 @@ trait Team {
   def canAddBenchWarmer: Boolean
 
   def containsMember(member: Player): Boolean
+
+  def toJson:String
 }

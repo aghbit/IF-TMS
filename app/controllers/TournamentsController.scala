@@ -45,7 +45,8 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val query = new Query(Criteria where "staff.admin" is userID)
       val tournaments = repository.find(query)
-      val tournamentsProperties = tournaments.map(tournament => tournament.properties)
-      Future.successful(Ok(Json.toJson(tournamentsProperties)))
+      println(tournaments.head._id.stringify)
+      val tournamentsJson = tournaments.map(tournament => tournament.toJson)
+      Future.successful(Ok(Json.toJson(tournamentsJson)))
   }
 }

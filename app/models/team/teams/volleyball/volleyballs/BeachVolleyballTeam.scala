@@ -12,9 +12,11 @@ class BeachVolleyballTeam(val _id: BSONObjectID,
                           val playersNumber: Int,
                           val benchWarmersNumber: Int) extends VolleyballTeams {
 
+  //def this(name:String) = this(BSONObjectID.generate, name, 2, 0)
+
 }
 
-object BeachVolleyballTeam {
+object BeachVolleyballTeam extends TeamObject{
 
   /**
    * This constructor is only for amateur tournaments, in which some bench warmers
@@ -25,7 +27,7 @@ object BeachVolleyballTeam {
     new BeachVolleyballTeam(BSONObjectID.generate, name, 2, benchWarmersNumber)
   }
 
-  def apply(name: String): BeachVolleyballTeam = {
+  override def apply(name: String): BeachVolleyballTeam = {
     apply(name, 0)
   }
 }

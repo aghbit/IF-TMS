@@ -4,9 +4,11 @@ import models.strategy.TournamentStrategy
 import models.team.Team
 import models.tournament.tournamentstate._
 import models.user.User
+import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
+import models.tournament.tournamentstate.JsonFormatTournamentProperties._
 
 /**
  * Created by: Przemek
@@ -64,5 +66,10 @@ trait Tournament {
     }else {
       false
     }
+  }
+
+  def toJson = {
+    val tournamentPropertiesJson = Json.toJson(properties)
+    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
   }
 }

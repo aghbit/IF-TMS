@@ -89,4 +89,16 @@ trait VolleyballTeams extends Team {
     case Some(captain) => true
     case _ => false
   }
+
+  override def toJson = {
+    val builder = new StringBuilder
+    builder.append("{id: ")
+    builder.append(_id)
+    builder.append(", name: ")
+    builder.append(name)
+    builder.append("players: [")
+    playersID.forEach(player => {
+      builder.append(player.toJson)
+    })
+  }
 }
