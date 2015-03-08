@@ -92,17 +92,17 @@ trait VolleyballTeams extends Team {
 
   override def toJson = {
     val builder = new StringBuilder
-    builder.append("{id: ")
+    builder.append("{\"id\": \"")
     builder.append(_id.stringify)
-    builder.append(", name: \"")
+    builder.append("\", \"name\": \"")
     builder.append(name)
-    builder.append("\", players: [")
+    builder.append("\", \"players\": [")
     builder.append(players.head.toJson)
     players.drop(1).foreach(player => {
       builder.append(", ")
       builder.append(player.toJson)
     })
-    builder.append("], benchWarmers: [")
+    builder.append("], \"benchWarmers\": [")
     if(!benchWarmers.isEmpty){
       builder.append(benchWarmers.head.toJson)
       benchWarmers.drop(1).foreach(benchWarmer => {

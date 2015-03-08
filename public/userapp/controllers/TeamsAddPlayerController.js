@@ -12,6 +12,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
                 toast("Player "+$scope.name+" was added!", 4000)
                 $scope.name = ''
                 $scope.surname = ''
+
             }).
             error(function (data, status, headers, config) {
                 window.alert("Player exists in db!")
