@@ -1,12 +1,12 @@
 package models.team.teams.volleyball
 
 import java.util
+import scala.collection.JavaConversions._
 
 import models.exceptions.TooManyMembersInTeamException
 import models.player.Player
 import models.player.players.Captain
 import models.team.Team
-import models.user.User
 import reactivemongo.bson.BSONObjectID
 
 /**
@@ -19,54 +19,54 @@ trait VolleyballTeams extends Team {
   val playersNumber: Int
   val benchWarmersNumber: Int
 
-  protected var playersID: java.util.List[BSONObjectID] = new util.ArrayList[BSONObjectID]()
-  protected var benchWarmersID: java.util.List[BSONObjectID] = new util.ArrayList[BSONObjectID]()
+  protected var players: java.util.List[Player] = new util.ArrayList[Player]()
+  protected var benchWarmers: java.util.List[Player] = new util.ArrayList[Player]()
   protected var captainID: Option[BSONObjectID] = None
 
   override def getMembersIDs: java.util.List[BSONObjectID] = {
     val result = new util.ArrayList[BSONObjectID]()
-    val iterator = playersID.iterator()
+    val iterator = players.iterator()
     while (iterator.hasNext) {
-      result.add(iterator.next())
+      result.add(iterator.next()._id)
     }
-    val iterator2 = benchWarmersID.iterator()
-    while (iterator.hasNext) {
-      result.add(iterator.next())
+    val iterator2 = benchWarmers.iterator()
+    while (iterator2.hasNext) {
+      result.add(iterator.next()._id)
     }
     result
   }
 
-  override def isComplete: Boolean = playersID.size() >= playersNumber
+  override def isComplete: Boolean = players.size() >= playersNumber
 
-  override def canAddPlayer: Boolean = playersID.size() < playersNumber
+  override def canAddPlayer: Boolean = players.size() < playersNumber
 
-  override def canAddBenchWarmer: Boolean = benchWarmersID.size() < benchWarmersNumber
+  override def canAddBenchWarmer: Boolean = benchWarmers.size() < benchWarmersNumber
 
   override def addPlayer(player: Player): Unit = {
     if (!canAddPlayer) {
       throw new TooManyMembersInTeamException("Can't add! Too many players in this team!")
     }
-    playersID.add(player._id)
+    players.add(player)
   }
 
   override def addBenchWarmer(benchWarmer: Player): Unit = {
     if (!canAddBenchWarmer) {
       throw new TooManyMembersInTeamException("Can't add! Too many bench warmers in this team!")
     }
-    benchWarmersID.add(benchWarmer._id)
+    benchWarmers.add(benchWarmer)
   }
 
   override def removePlayer(player: Player): Unit = {
-    if (!playersID.contains(player._id))
+    if (!players.contains(player))
       throw new NoSuchElementException("Can't remove absent player from the team!")
-    playersID.remove(player._id)
+    players.remove(player)
   }
 
   override def removeBenchWarmer(benchWarmer: Player): Unit = {
-    if (!benchWarmersID.contains(benchWarmer._id)) {
+    if (!benchWarmers.contains(benchWarmer)) {
       throw new NoSuchElementException("Can't remove absent bench warmer from the team!")
     }
-    benchWarmersID.remove(benchWarmer._id)
+    benchWarmers.remove(benchWarmer)
   }
 
   override def setCaptain(captain: Captain): Unit = {
@@ -82,7 +82,7 @@ trait VolleyballTeams extends Team {
   }
 
   override def containsMember(member: Player): Boolean = {
-    playersID.contains(member._id) || benchWarmersID.contains(member._id)
+    players.contains(member) || benchWarmers.contains(member)
   }
 
   override def isReadyToSave: Boolean = captainID match {
@@ -93,12 +93,24 @@ trait VolleyballTeams extends Team {
   override def toJson = {
     val builder = new StringBuilder
     builder.append("{id: ")
-    builder.append(_id)
-    builder.append(", name: ")
+    builder.append(_id.stringify)
+    builder.append(", name: \"")
     builder.append(name)
-    builder.append("players: [")
-    playersID.forEach(player => {
+    builder.append("\", players: [")
+    builder.append(players.head.toJson)
+    players.drop(1).foreach(player => {
+      builder.append(", ")
       builder.append(player.toJson)
     })
+    builder.append("], benchWarmers: [")
+    if(!benchWarmers.isEmpty){
+      builder.append(benchWarmers.head.toJson)
+      benchWarmers.drop(1).foreach(benchWarmer => {
+        builder.append(", ")
+        builder.append(benchWarmer.toJson)
+      })
+    }
+    builder.append("]}")
+    builder.toString()
   }
 }

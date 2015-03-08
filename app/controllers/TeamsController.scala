@@ -48,7 +48,7 @@ object TeamsController extends Controller {
       teamRepository.insert(team)
       playerRepository.insert(captain)
       println(team._id.stringify)
-      Future.successful(Ok("Team created, captain created!"))
+      Future.successful(Ok("{\"id\": \""+ team._id.stringify +"\"}"))
   }
 
 
@@ -69,6 +69,6 @@ object TeamsController extends Controller {
   def getTeam(id: String) = Action.async {
     val query = new Query(Criteria where "_id" is BSONObjectID(id))
     val team = teamRepository.find(query).get(0)
-    Future.successful(Ok())
+    Future.successful(Ok(team.toJson))
   }
 }

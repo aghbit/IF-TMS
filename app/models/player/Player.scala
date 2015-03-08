@@ -15,11 +15,11 @@ trait Player {
     val builder = new StringBuilder()
     builder.append("{id: ")
     builder.append(_id.stringify)
-    builder.append(", name: ")
+    builder.append(", name: \"")
     builder.append(name)
-    builder.append(", surname: ")
+    builder.append("\", surname: \"")
     builder.append(surname)
-    builder.append("}")
+    builder.append("\"}")
     builder.toString()
   }
 
