@@ -26,4 +26,9 @@ trait Repository[T] {
   def find(query: Query) = {
     mongoTemplate.find(query, clazz, collectionName)
   }
+
+  def dropCollection(): Any = {
+    mongoTemplate.dropCollection(collectionName)
+  }
+
 }
