@@ -1,7 +1,6 @@
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-        <h5 ng-if="!isLoggedIn">You have to be logged in.</h5>
-        <form ng-if="isLoggedIn" ng-submit="submit()" class="col l4 offset-l4">
+        <form ng-submit="submit()" class="col l4 offset-l4">
             <div class="row col l12">
                 <div class="input-field">
                     <input id="tournamentName" type="text" ng-model="tournamentName">
