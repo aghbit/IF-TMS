@@ -15,7 +15,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
 
             }).
             error(function (data, status, headers, config) {
-                window.alert("Player exists in db!")
+                toast("Can't add, probably too many players in team!", 4000)
             });
 
     };

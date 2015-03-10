@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.helpers.RequestHelper
+import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
 import play.api.mvc.{Action, Controller}
@@ -59,10 +60,15 @@ object TeamsController extends Controller {
       val name = RequestHelper.fromJsonRequestToString(request, "name")
       val surname = RequestHelper.fromJsonRequestToString(request, "surname")
       val player = DefaultPlayerImpl(name, surname)
-      team.addPlayer(player)
-      playerRepository.insert(player)
-      teamRepository.insert(team)
-      Future.successful(Ok("Player added!"))
+      try {
+        team.addPlayer(player)
+        playerRepository.insert(player)
+        teamRepository.insert(team)
+        Future.successful(Ok("Player added!"))
+      }catch {
+        case e:TooManyMembersInTeamException => Future.failed(e)
+        case e:Throwable => Future.failed(e)
+      }
   }
 
 
