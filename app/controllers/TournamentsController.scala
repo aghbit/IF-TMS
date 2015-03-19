@@ -10,7 +10,6 @@ import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import repositories.TournamentRepository
 import models.tournament.tournamentstate.JsonFormatTournamentProperties._
-import models.tournament.tournamentstate.JsonFormatTournamentDescription._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.collection.JavaConversions._
 
@@ -31,8 +30,10 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
       val beforeEnrollment = BeforeEnrollment(tournamentProperties, new SingleEliminationStrategy(), tournamentStaff)
+      //mały fuckup żeby sprawdzić czy działa...
+      val tournament = beforeEnrollment.startNext()
       try {
-        repository.insert(beforeEnrollment)
+        repository.insert(tournament)
         Future.successful(Created)
       } catch {
         case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
@@ -45,7 +46,6 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val query = new Query(Criteria where "staff.admin" is userID)
       val tournaments = repository.find(query)
-      println(tournaments.head._id.stringify)
       val tournamentsJson = tournaments.map(tournament => tournament.toJson)
       Future.successful(Ok(Json.toJson(tournamentsJson)))
   }

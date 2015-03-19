@@ -4,11 +4,13 @@ import controllers.helpers.RequestHelper
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
+import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.reflect.runtime.universe
+import scala.collection.JavaConversions._
 
 
 import scala.concurrent.Future
@@ -45,9 +47,11 @@ object TeamsController extends Controller {
       //Add captain
       team.addPlayer(captain)
       team.setCaptain(captain)
+      tournament.addTeam(team)
       //Insert team & captain to DB.
       teamRepository.insert(team)
       playerRepository.insert(captain)
+      tournamentRepository.insert(tournament)
       println(team._id.stringify)
       Future.successful(Ok("{\"id\": \""+ team._id.stringify +"\"}"))
   }
@@ -76,5 +80,18 @@ object TeamsController extends Controller {
     val query = new Query(Criteria where "_id" is BSONObjectID(id))
     val team = teamRepository.find(query).get(0)
     Future.successful(Ok(team.toJson))
+  }
+
+  def getTeams(id: String) = Action.async {
+    request =>
+      val query = new Query(Criteria where "_id" is BSONObjectID(id))
+      val tournament = tournamentRepository.find(query).get(0)
+      val teamsIDs = tournament.getTeams
+      val teams = teamsIDs.map(teamID => {
+        val query = new Query(Criteria where "_id" is teamID)
+        teamRepository.find(query).get(0)
+      })
+      val teamsJSON = teams.map(team => team.toJson)
+      Future.successful(Ok(Json.toJson(teamsJSON)))
   }
 }

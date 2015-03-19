@@ -1,6 +1,6 @@
 package repositories
 
-import models.tournament.tournaments.Tournament
+import models.tournament.Tournament
 
 /**
  * Created by Szymek.

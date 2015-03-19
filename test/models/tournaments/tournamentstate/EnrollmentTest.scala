@@ -2,8 +2,8 @@ package models.tournaments.tournamentstate
 
 import models.strategy.TournamentStrategy
 import models.team.Team
+import models.tournament.Tournament
 import models.tournament.tournamentfields.{BeforeEnrollment, Break}
-import models.tournament.tournaments._
 import models.tournament.tournamentstate.{TournamentProperties, TournamentSettings, TournamentStaff}
 import org.junit.runner.RunWith
 import org.mockito.Mockito
