@@ -1,10 +1,10 @@
 package models.tournaments.tournamentstate
 
+import models.strategy.TournamentStrategy
 import models.team.Team
 import models.tournament.tournamentfields.{BeforeEnrollment, Break}
 import models.tournament.tournaments._
 import models.tournament.tournamentstate.{TournamentProperties, TournamentSettings, TournamentStaff}
-import models.user.User
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
@@ -30,12 +30,12 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
     val tournamentStaffMock = mock[TournamentStaff]
+    val tournamentStrategyMock = mock[TournamentStrategy]
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
-    Mockito.when(tournamentPropertiesMock.staff).thenReturn(tournamentStaffMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStrategyMock, tournamentStaffMock)
     instance = instance.startNext()
   }
 

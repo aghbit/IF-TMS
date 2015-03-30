@@ -1,5 +1,7 @@
 package models.tournaments.tournamentstate
 
+import java.util
+
 import models.tournament.tournamentstate.TournamentStaff
 import models.user.User
 import org.junit.runner.RunWith
@@ -17,8 +19,8 @@ import scala.collection.mutable.ListBuffer
 @RunWith(classOf[JUnitRunner])
 class StaffTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   var refs: ListBuffer[User] = _
-  var memberRefs: ListBuffer[BSONObjectID] = ListBuffer()
-  var staff: TournamentStaff = new TournamentStaff(mock[User], memberRefs)
+  var memberRefs: util.ArrayList[BSONObjectID] = new util.ArrayList[BSONObjectID]()
+  var staff: TournamentStaff = new TournamentStaff(mock[BSONObjectID], memberRefs)
 
   before {
     refs = ListBuffer(mock[User], mock[User], mock[User], mock[User], mock[User], mock[User])

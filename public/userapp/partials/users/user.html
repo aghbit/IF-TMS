@@ -1,5 +1,9 @@
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-       {{testmessage}}
+        <h5 ng-if="user == null">{{message}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Login: {{user.userProperties.login}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Name: {{user.userProperties.name}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Phone: {{user.userProperties.phone}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Mail: {{user.userProperties.mail}}</h5>
     </div>
 </div>

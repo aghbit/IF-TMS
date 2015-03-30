@@ -1,15 +1,19 @@
 package models.tournament.tournamentstate
 
-import models.strategy.TournamentStrategy
+import play.api.libs.json.Json
+import models.tournament.tournamentstate.JsonFormatTournamentDescription._
+import models.tournament.tournamentstate.JsonFormatTournamentSettings._
+import models.tournament.tournamentstate.JsonFormatTournamentTerm._
 
 /**
  * Edited by: Przemek
  */
-class TournamentProperties(var description: TournamentDescription,
+case class TournamentProperties(var description: TournamentDescription,
                            var term: TournamentTerm,
-                           var settings: TournamentSettings,
-                           val strategy: TournamentStrategy,
-                           val staff: TournamentStaff) {
+                           var settings: TournamentSettings) {
 
+}
+object JsonFormatTournamentProperties {
+  implicit val tournamentPropertiesFormat = Json.format[TournamentProperties]
 }
 
