@@ -58,11 +58,5 @@ trait Tournament {
     staff.contains(referee)
   }
 
-  def isReadyToSave = {
-    if(properties.settings.isValid && properties.term.isValid){
-      true
-    }else {
-      false
-    }
-  }
+  def isReadyToSave = properties.settings.isValid && properties.term.isValid
 }
