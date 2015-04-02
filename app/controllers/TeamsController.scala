@@ -52,8 +52,7 @@ object TeamsController extends Controller {
       teamRepository.insert(team)
       playerRepository.insert(captain)
       tournamentRepository.insert(tournament)
-      println(team._id.stringify)
-      Future.successful(Ok("{\"id\": \""+ team._id.stringify +"\"}"))
+      Future.successful(Ok(Json.obj("id"->team._id.stringify)))
   }
 
 
