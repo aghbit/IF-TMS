@@ -9,8 +9,7 @@ import reactivemongo.bson.BSONObjectID
 object ApplicationController extends Controller with MongoController {
 
   def index = Action {
-    //Ok(views.html.index())
-    Ok("ls")
+    Ok(views.html.index())
   }
 
 }

@@ -1,7 +1,7 @@
 
 
-import models.strategy.TournamentStrategy
-import models.strategy.Tree.EliminationTree
+import models.Game.EliminationTree
+import models.strategy.{TournamentStrategy}
 import models.strategy.strategies.SingleEliminationStrategy
 import models.team.Team
 import org.junit.runner.RunWith
@@ -74,7 +74,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -99,7 +99,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -124,7 +124,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -150,7 +150,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -181,7 +181,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -213,7 +213,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -244,7 +244,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -276,7 +276,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
-    val x = underTest.populateTree(tree,A)
+    val x = underTest.drawTeamsInTournament(tree,A)
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){

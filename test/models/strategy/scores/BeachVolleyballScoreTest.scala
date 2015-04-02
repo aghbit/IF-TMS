@@ -2,8 +2,8 @@ package models.strategy.scores
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
+import reactivemongo.bson.BSONObjectID
 
 
 /**
@@ -12,12 +12,12 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 @RunWith(classOf[JUnitRunner])
 class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
 
-  var bvolScore1:BeachVolleyballScore = _
-  var bvolScore2:BeachVolleyballScore = _
+  var bvolScore:BeachVolleyballScore = _
+  val host = BSONObjectID.generate
+  val guest = BSONObjectID.generate
 
   before{
-    bvolScore1 = BeachVolleyballScore()
-    bvolScore2 = BeachVolleyballScore()
+    bvolScore = BeachVolleyballScore(host,guest)
   }
 
 
@@ -26,58 +26,74 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
     //given
 
     //when
-    val sets = bvolScore1.sets
+    val hostSets = bvolScore.hostSets
+    val guestSets = bvolScore.hostSets
 
     //then
-    assert(bvolScore1.maxPoints === 21, "Primary test1")
-    assert(sets.size === 1, "Primary test2")
-    assert(!bvolScore1.isEnded, "Primary test3")
+    assert(bvolScore.maxPoints === 21, "Primary test1")
+    assert(hostSets.size === 1, "Primary test2")
+    assert(guestSets.size === 1, "Primary test3")
+    assert(!bvolScore.isMatchFinished, "Primary test4")
   }
 
   test("AddPoint: FirstTest") {
 
     //given
-    for (i <- 0 until 41) bvolScore1.addPoint(bvolScore2)
+    for (i <- 0 until 41) bvolScore.addPoint(host)
 
     //when
-    val sets1 = bvolScore1.sets
-    val sets2 = bvolScore2.sets
+    val hostSets = bvolScore.hostSets
+    val guestSets = bvolScore.guestSets
 
     //then
-    assert(sets1.size === 2, "AddPoint: FirstTest1")
-    assert(sets2.size === 2, "AddPoint: FirstTest2")
-    assert(!bvolScore1.isEnded, "AddPoint: FirstTest3")
-    assert(!bvolScore2.isEnded, "AddPoint: FirstTest4")
+    assert(hostSets.size === 2, "AddPoint: FirstTest1")
+    assert(guestSets .size === 2, "AddPoint: FirstTest2")
+    assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest3")
+    assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest4")
   }
+
+  test("AddPoint: Too many points test") {
+
+    //given
+    for (i <- 0 until 42) bvolScore.addPoint(host)
+
+    //when
+
+    //then
+    intercept[MatchFinishedException] {
+      bvolScore.addPoint(host)
+    }
+  }
+
 
   test("IsEnded: Match is finished test"){
 
     //given
-    for (i <- 0 until 42) bvolScore1.addPoint(bvolScore2)
+    for (i <- 0 until 42) bvolScore.addPoint(host)
 
     //when
-    val isEnded = bvolScore1.isEnded
-    val sizeOfSets1 = bvolScore1.sets.size
-    val sizeOfSets2 = bvolScore2.sets.size
+    val isEnded = bvolScore.isMatchFinished
+    val sizeOfHostSets = bvolScore.hostSets.size
+    val sizeOfGuestSets = bvolScore.guestSets.size
 
     //then
     assert(isEnded, "IsEnded: Match is finished test1")
-    assert(sizeOfSets1 === 3, "IsEnded: Match is finished test2")
-    assert(sizeOfSets2 === 3, "IsEnded: Match is finished test3")
+    assert(sizeOfHostSets === 3, "IsEnded: Match is finished test2")
+    assert(sizeOfGuestSets === 3, "IsEnded: Match is finished test3")
   }
 
   test("IsEnded: 1 pointed advantage test") {
 
     //given
-    for (i <- 0 until 21) bvolScore2.addPoint(bvolScore1)
+    for (i <- 0 until 21) bvolScore.addPoint(host)
     for (i <- 0 until 20) {
-      bvolScore1.addPoint(bvolScore2)
-      bvolScore2.addPoint(bvolScore1)
+      bvolScore.addPoint(host)
+      bvolScore.addPoint(guest)
     }
-    bvolScore2.addPoint(bvolScore1)
+    bvolScore.addPoint(host)
 
     //when
-    val isEnded = bvolScore2.isEnded
+    val isEnded = bvolScore.isMatchFinished
 
     //then
     assert(!isEnded, "IsEnded: 1 pointed advantage test1")
@@ -86,15 +102,14 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
   test("IsEnded: draw test") {
 
     //given
-    for (i <- 0 until 21) bvolScore2.addPoint(bvolScore1)
+    for (i <- 0 until 21) bvolScore.addPoint(host)
     for (i <- 0 until 21) {
-      bvolScore1.addPoint(bvolScore2)
-      bvolScore2.addPoint(bvolScore1)
+      bvolScore.addPoint(host)
+      bvolScore.addPoint(guest)
     }
-
     //when
-    val isEnded1 = bvolScore1.isEnded
-    val isEnded2 = bvolScore2.isEnded
+    val isEnded1 = bvolScore.isMatchFinished
+    val isEnded2 = bvolScore.isMatchFinished
 
     //then
     assert(!isEnded1, "IsEnded: draw test1")
@@ -105,45 +120,33 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
   test("IsEnded: advantage finally made test"){
 
     //given
-    for (i <- 0 until 21) bvolScore2.addPoint(bvolScore1)
+    for (i <- 0 until 21) bvolScore.addPoint(host)
     for (i <- 0 until 20) {
-      bvolScore1.addPoint(bvolScore2)
-      bvolScore2.addPoint(bvolScore1)
+      bvolScore.addPoint(host)
+      bvolScore.addPoint(guest)
     }
-    bvolScore2.addPoint(bvolScore1)
-    bvolScore2.addPoint(bvolScore1)
+    bvolScore.addPoint(host)
+    bvolScore.addPoint(host)
 
-    bvolScore2.sets.foreach(vset => println(vset.points+" "+vset.won))
-    bvolScore1.sets.foreach(vset => println(vset.points+" "+vset.won))
+
+
     //when
 
 
     //then
-    assert(bvolScore2.isEnded, "IsEnded: advantage finally made test1")
+    assert(bvolScore.isMatchFinished, "IsEnded: advantage finally made test1")
 
   }
 
-  test("WinnerTest: Simple Test") {
+  test("GetWinnerLoserTest: Simple Test") {
 
     //given
-    for (i <- 0 until 42) bvolScore2.addPoint(bvolScore1)
+    for (i <- 0 until 42) bvolScore.addPoint(host)
     //when
 
     //then
-    assert(!(bvolScore1>bvolScore2), "WinnerTest1")
-    assert(bvolScore1<bvolScore2, "WinnerTest2")
+    assert(bvolScore.getWinner==Some(host), "WinnerTest")
+    assert(bvolScore.getLoser==Some(guest), "LoserTest")
   }
 
-  test("WinnerTest: match is not finished"){
-
-    //given
-
-    //when&then
-    intercept[MatchNotFinishedException] {
-      bvolScore2>bvolScore1
-    }
-    intercept[MatchNotFinishedException] {
-      bvolScore2<bvolScore1
-    }
-  }
 }

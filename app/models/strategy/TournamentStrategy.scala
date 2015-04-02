@@ -1,6 +1,6 @@
 package models.strategy
 
-import models.strategy.Tree.EliminationTree
+import models.Game.EliminationTree
 import models.team.Team
 
 /**
@@ -8,7 +8,7 @@ import models.team.Team
  */
 trait TournamentStrategy {
   def generateTree(listOfTeams:List[Team]):EliminationTree
-  def populateTree(tree:EliminationTree,listOfTeams:List[Team]):EliminationTree
+  def drawTeamsInTournament(tree:EliminationTree,listOfTeams:List[Team]):EliminationTree
   def updateTree(tree:EliminationTree):EliminationTree
 }
 
