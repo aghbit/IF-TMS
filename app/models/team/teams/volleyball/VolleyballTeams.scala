@@ -1,6 +1,8 @@
 package models.team.teams.volleyball
 
 import java.util
+import play.api.libs.json.{JsArray, Json}
+
 import scala.collection.JavaConversions._
 
 import models.exceptions.TooManyMembersInTeamException
@@ -91,26 +93,14 @@ trait VolleyballTeams extends Team {
   }
 
   override def toJson = {
-    val builder = new StringBuilder
-    builder.append("{\"id\": \"")
-    builder.append(_id.stringify)
-    builder.append("\", \"name\": \"")
-    builder.append(name)
-    builder.append("\", \"players\": [")
-    builder.append(players.head.toJson)
-    players.drop(1).foreach(player => {
-      builder.append(", ")
-      builder.append(player.toJson)
-    })
-    builder.append("], \"benchWarmers\": [")
-    if(!benchWarmers.isEmpty){
-      builder.append(benchWarmers.head.toJson)
-      benchWarmers.drop(1).foreach(benchWarmer => {
-        builder.append(", ")
-        builder.append(benchWarmer.toJson)
-      })
-    }
-    builder.append("]}")
-    builder.toString()
+    val playersJsons = players.map(player => player.toJson)
+    val benchWarmersJsons = benchWarmers.map(benchWarmer => benchWarmer.toJson)
+    Json.obj(
+    "id"->_id.stringify,
+    "name"->name,
+    "players"->JsArray(playersJsons),
+    "benchWarmers" -> JsArray(benchWarmersJsons),
+    "captain" -> players.filter(player=> player._id==getCaptainID).head.toJson
+    )
   }
 }

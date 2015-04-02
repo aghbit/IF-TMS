@@ -3,6 +3,7 @@ package models.team
 import models.player.Player
 import models.player.players.Captain
 import models.user.User
+import play.api.libs.json.JsObject
 import reactivemongo.bson.BSONObjectID
 
 /**
@@ -38,5 +39,5 @@ trait Team {
 
   def containsMember(member: Player): Boolean
 
-  def toJson:String
+  def toJson:JsObject
 }

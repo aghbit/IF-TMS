@@ -12,6 +12,7 @@ GET         /api/users/login/:login           controllers.UsersController.isLogi
 
 POST        /api/tournaments                  controllers.TournamentsController.createTournament
 GET         /api/tournaments                  controllers.TournamentsController.getMyTournaments
+GET         /api/tournaments/:id              controllers.TournamentsController.getTournament(id:String)
 
 GET         /api/teams/:id                    controllers.TeamsController.getTeam(id:String)
 POST        /api/tournaments/:id/teams        controllers.TeamsController.createTeam(id:String)

@@ -1,4 +1,4 @@
-package models.tournament.tournaments
+package models.tournament
 
 import java.util
 
@@ -64,9 +64,8 @@ trait Tournament {
 
   def isReadyToSave = properties.settings.isValid && properties.term.isValid
 
-  def getTeams = {
-    teams
-  }
+  def getTeams = teams
+
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
     tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))

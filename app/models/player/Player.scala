@@ -1,5 +1,6 @@
 package models.player
 
+import play.api.libs.json.Json
 import reactivemongo.bson.BSONObjectID
 
 /**
@@ -12,15 +13,11 @@ trait Player {
   val surname:String
 
   def toJson = {
-    val builder = new StringBuilder()
-    builder.append("{\"id\": \"")
-    builder.append(_id.stringify)
-    builder.append("\", \"name\": \"")
-    builder.append(name)
-    builder.append("\", \"surname\": \"")
-    builder.append(surname)
-    builder.append("\"}")
-    builder.toString()
+    Json.obj(
+    "id" -> _id.stringify,
+    "name" -> name,
+    "surname" -> surname
+    )
   }
 
 }

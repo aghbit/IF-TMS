@@ -1,16 +1,22 @@
 /**
  * Created by szymek on 08.03.15.
  */
-mainApp.controller('TeamsShowController', ['$scope',  '$http', '$stateParams', function ($scope, $http, $stateParams) {
-    $http.get('api/teams/' + $stateParams.id, {}).
+mainApp.controller('TeamsShowController', ['$scope',  '$http', '$stateParams', 'SessionService',
+    function ($scope, $http, $stateParams, SessionService) {
+    $http.get('api/tournaments/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
-            $scope.team = data;
+            $scope.tournament = data;
+        }).error(function(data, status, headers, config, statusText) {
+
+        });
+    $http.get('api/tournaments/' + $stateParams.id+"/teams", {}).
+        success(function(data, status, headers, config) {
+            $scope.teams = data;
             $('.collapsible').collapsible({
                 accordion : false
             });
 
         }).error(function(data, status, headers, config, statusText) {
-            alert("Something went wrong!")
         });
 
 }]);

@@ -8,6 +8,7 @@ import models.tournament.tournamentfields.BeforeEnrollment
 import models.tournament.tournamentstate.{TournamentDescription, TournamentStaff, TournamentProperties}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
+import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
 import models.tournament.tournamentstate.JsonFormatTournamentProperties._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
@@ -48,5 +49,13 @@ object TournamentsController extends Controller{
       val tournaments = repository.find(query)
       val tournamentsJson = tournaments.map(tournament => tournament.toJson)
       Future.successful(Ok(Json.toJson(tournamentsJson)))
+  }
+
+  def getTournament(id: String) = AuthorizationAction.async {
+    request =>
+      val query = new Query(Criteria where "_id" is BSONObjectID(id))
+      val tournament = repository.find(query).get(0)
+      val tournamentJson = tournament.toJson
+      Future.successful(Ok(tournamentJson));
   }
 }

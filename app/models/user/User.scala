@@ -17,15 +17,11 @@ trait User {
 
   def getProperties: UserProperties
 
-  def toJson: String = {
-    val stringBuilder = new StringBuilder
-    stringBuilder.append("{\"id\": \"")
-    stringBuilder.append(_id.stringify)
-    stringBuilder.append("\", \"userProperties\":")
-    val userPropertiesJson = Json.toJson(getProperties)
-    stringBuilder.append(userPropertiesJson.as[JsObject] - "password")
-    stringBuilder.append("}")
-    stringBuilder.result()
+  def toJson = {
+    Json.obj(
+    "id"-> _id.stringify,
+    "userProperties"-> (Json.toJson(getProperties).as[JsObject] - "password")
+    )
   }
 
   def generateToken :Token = {
