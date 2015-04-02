@@ -50,6 +50,13 @@ object TournamentsController extends Controller{
       val tournamentsJson = tournaments.map(tournament => tournament.toJson)
       Future.successful(Ok(Json.toJson(tournamentsJson)))
   }
+  def getTournaments = Action.async {
+    request =>
+      val query = new Query()
+      val tournaments = repository.find(query)
+      val tournamentsJson = tournaments.map(tournament => tournament.toJson)
+      Future.successful(Ok(Json.toJson(tournamentsJson)))
+  }
 
   def getTournament(id: String) = AuthorizationAction.async {
     request =>
