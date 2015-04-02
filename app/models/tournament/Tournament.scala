@@ -1,4 +1,4 @@
-package models.tournament
+package models.tournament.tournaments
 
 import java.util
 
@@ -9,6 +9,8 @@ import models.tournament.tournamentstate._
 import models.user.User
 import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
+
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created by: Przemek
@@ -60,13 +62,7 @@ trait Tournament {
     staff.contains(referee)
   }
 
-  def isReadyToSave = {
-    if(properties.settings.isValid && properties.term.isValid){
-      true
-    }else {
-      false
-    }
-  }
+  def isReadyToSave = properties.settings.isValid && properties.term.isValid
 
   def getTeams = {
     teams
