@@ -32,17 +32,17 @@
                         <div class="nav-wrapper indigo">
                             <div class="col s12">
                                 <a href="#/" class="brand-logo" style="padding: 0 10px; position : relative ; float : left ;">TMS</a>
-                                <ul class="left">
+                                <ul ng-show="loggedIn" class="left">
                                         <!-- Dropdown Trigger -->
                                     <li><a class="dropdown-button waves-effect waves-light" href="#" data-activates="tournamentdropdown">Tournaments
                                         <i class="mdi-navigation-arrow-drop-down right"></i> </a>
                                     </li>
                                     <li><a href="#/statistics" class="waves-effect waves-light">Statistics</a></li>
-                                    <li><a href="#/login" class="waves-effect waves-light">Log in</a></li>
                                     <li><a href="#/users" class="waves-effect waves-light">My account</a></li>
                                 </ul>
                                 <ul class="right">
-                                    <li><a class="dropdown-button waves-effect waves-light" id="optionsdropdownbutton" href="#" data-activates="optionsdropdown"><i class="mdi-navigation-menu"></i>
+                                    <li ng-hide="loggedIn"><a href="#/login" class="waves-effect waves-light">Log in</a></li>
+                                    <li ng-show="loggedIn"><a class="dropdown-button waves-effect waves-light" id="optionsdropdownbutton" href="#" data-activates="optionsdropdown"><i class="mdi-navigation-menu"></i>
                                     </a>
                                     </li>
                                 </ul>
