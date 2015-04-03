@@ -57,23 +57,7 @@ object TeamsController extends Controller {
   }
 
 
-  def createPlayer(teamId: String) = Action.async(parse.json) {
-    request =>
-      val query = new Query(Criteria where "_id" is BSONObjectID(teamId))
-      val team = teamRepository.find(query).get(0)
-      val name = request.body.\("name").validate[String].get
-      val surname = request.body.\("surname").validate[String].get
-      val player = DefaultPlayerImpl(name, surname)
-      try {
-        team.addPlayer(player)
-        playerRepository.insert(player)
-        teamRepository.insert(team)
-        Future.successful(Ok("Player added!"))
-      }catch {
-        case e:TooManyMembersInTeamException => Future.failed(e)
-        case e:Throwable => Future.failed(e)
-      }
-  }
+
 
 
   def getTeam(id: String) = Action.async {

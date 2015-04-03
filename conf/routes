@@ -18,7 +18,7 @@ GET         /api/tournaments/:id              controllers.TournamentsController.
 GET         /api/teams/:id                    controllers.TeamsController.getTeam(id:String)
 POST        /api/tournaments/:id/teams        controllers.TeamsController.createTeam(id:String)
 GET         /api/tournaments/:id/teams        controllers.TeamsController.getTeams(id:String)
-POST        /api/teams/:teamId/players        controllers.TeamsController.createPlayer(teamId:String)
+POST        /api/teams/:teamId/players        controllers.PlayersController.createPlayer(teamId:String)
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                     controllers.Assets.at(path="/public", file)
 GET         /webjars/*file                    controllers.WebJarAssets.at(file)
