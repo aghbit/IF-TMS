@@ -43,24 +43,26 @@ import scala.math._
       throw new NotEnoughTeamsException("Populating Tree failed. Empty list of teams.")}//no teams given
     def populate(root: Game) {
       //to use Game not ElminationTree
-      if (overrided_list.isEmpty) {
-        return None//End of populating, its not in Scala way, but it  ends my method
-      }
+      if (overrided_list.nonEmpty) {
+
+
         if (root.left != None)
-        populate(root.left.get) //do recursion
-        if(root.left==None) {
-        if(root.value==None)
-        root.value = Some(Match(Some(overrided_list.head), None)) // Adding leaf
-        else
-        root.value = Some(new Match(root.value.get.host,Some(overrided_list.head._id)))
-        overrided_list = overrided_list.tail//removing first element from list
+          populate(root.left.get) //do recursion
+        if (root.left == None) {
+          if (root.value == None)
+            root.value = Some(Match(Some(overrided_list.head), None)) // Adding leaf
+          else
+            root.value = Some(new Match(root.value.get.host, Some(overrided_list.head._id)))
+          overrided_list = overrided_list.tail //removing first element from list
+        }
+        if (root.parent != None && root.parent.get.right.get != root)
+          populate(root.parent.get.right.get)
       }
-      if(root.parent!=None && root.parent.get.right.get!=root)
-      populate(root.parent.get.right.get)
-  }
+    }
     while(overrided_list.length>0) {
       populate(tree.root)
     }
+
     tree
   }
 
