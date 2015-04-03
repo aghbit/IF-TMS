@@ -2,6 +2,9 @@ package models.user.userproperties
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json.Reads._
+
+import scala.util.matching.Regex
 
 
 /**
@@ -16,10 +19,10 @@ case class UserProperties(name: String,
 }
 object JsonFormat {
   implicit val userPropertiesFormat:Format[UserProperties] = (
-    (JsPath \ "name").format[String] and
-      (JsPath \ "login").format[String] and
-      (JsPath \ "password").format[String] and
-      (JsPath \ "phone").format[String] and
-      (JsPath \ "mail").format[String](email keepAnd )
+    (JsPath \ "name").format[String](minLength[String](5) andKeep maxLength[String](20)) and
+      (JsPath \ "login").format[String](minLength[String](5) andKeep maxLength[String](20)) and
+      (JsPath \ "password").format[String](minLength[String](5) andKeep maxLength[String](20)) and
+      (JsPath \ "phone").format[String](pattern(new Regex("^[0-9]+$"))) and
+      (JsPath \ "mail").format[String](email)
     )(UserProperties.apply, unlift(UserProperties.unapply))
 }
