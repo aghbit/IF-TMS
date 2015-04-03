@@ -47,8 +47,9 @@ object UsersController extends Controller{
 
   def login() = Action.async(parse.json) {
     request =>
-      val login = request.body.\("login").toString().replaceAll("\"", "")
-      val password = request.body.\("password").toString().replaceAll("\"", "")
+
+      val login = request.body.\("login").validate[String].get
+      val password = request.body.\("password").validate[String].get
       val query = new Query(Criteria where "personalData.login" is login and "personalData.password" is password)
       val users = repository.find(query)
       if(users.isEmpty){

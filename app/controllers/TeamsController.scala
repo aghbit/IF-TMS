@@ -1,6 +1,5 @@
 package controllers
 
-import controllers.helpers.RequestHelper
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
@@ -27,11 +26,11 @@ object TeamsController extends Controller {
   def createTeam(id:String) = Action.async(parse.json){
     request =>
       //Pull data from request.
-      val teamName = RequestHelper.fromJsonRequestToString(request, "teamName")
-      val captainName = RequestHelper.fromJsonRequestToString(request, "captainName")
-      val captainSurname = RequestHelper.fromJsonRequestToString(request, "captainSurname")
-      val captainPhone = RequestHelper.fromJsonRequestToString(request, "captainPhone")
-      val captainMail = RequestHelper.fromJsonRequestToString(request, "captainMail")
+      val teamName = request.body.\("teamName").validate[String].get
+      val captainName = request.body.\("captainName").validate[String].get
+      val captainSurname = request.body.\("captainSurname").validate[String].get
+      val captainPhone =request.body.\("captainPhone").validate[String].get
+      val captainMail = request.body.\("captainMail").validate[String].get
       //Create captain
       val captain = Captain(captainName, captainSurname, captainPhone, captainMail)
       //Find tournament to check discipline
@@ -60,8 +59,8 @@ object TeamsController extends Controller {
     request =>
       val query = new Query(Criteria where "_id" is BSONObjectID(teamId))
       val team = teamRepository.find(query).get(0)
-      val name = RequestHelper.fromJsonRequestToString(request, "name")
-      val surname = RequestHelper.fromJsonRequestToString(request, "surname")
+      val name = request.body.\("name").validate[String].get
+      val surname = request.body.\("surname").validate[String].get
       val player = DefaultPlayerImpl(name, surname)
       try {
         team.addPlayer(player)
