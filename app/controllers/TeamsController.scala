@@ -1,5 +1,6 @@
 package controllers
 
+import controllers.TournamentsController._
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
@@ -51,10 +52,15 @@ object TeamsController extends Controller {
       team.setCaptain(captain)
       tournament.addTeam(team)
       //Insert team & captain to DB.
-      teamRepository.insert(team)
-      playerRepository.insert(captain)
-      tournamentRepository.insert(tournament)
-      Future.successful(Ok(Json.obj("id"->team._id.stringify)))
+      try {
+        teamRepository.insert(team)
+        playerRepository.insert(captain)
+        tournamentRepository.insert(tournament)
+        Future.successful(Ok(Json.obj("id"->team._id.stringify)))
+      }catch {
+        case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
+        case e:Throwable => Future.failed(e)
+      }
   }
 
 
