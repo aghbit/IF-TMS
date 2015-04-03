@@ -3,6 +3,7 @@ package controllers
 import java.util
 
 import controllers.security.{TokenImpl, AuthorizationAction}
+import models.enums.ListEnum
 import models.strategy.strategies.SingleEliminationStrategy
 import models.tournament.tournamentfields.BeforeEnrollment
 import models.tournament.tournamentstate.{TournamentDescription, TournamentStaff, TournamentProperties}
@@ -61,7 +62,7 @@ object TournamentsController extends Controller{
   def getTournament(id: String) = AuthorizationAction.async {
     request =>
       val query = new Query(Criteria where "_id" is BSONObjectID(id))
-      val tournament = repository.find(query).get(0)
+      val tournament = repository.find(query).get(ListEnum.head)
       val tournamentJson = tournament.toJson
       Future.successful(Ok(tournamentJson));
   }

@@ -1,5 +1,6 @@
 package controllers
 
+import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
@@ -37,7 +38,7 @@ object TeamsController extends Controller {
       val captain = Captain(captainName, captainSurname, captainPhone, captainMail)
       //Find tournament to check discipline
       val query = new Query(Criteria where "_id" is BSONObjectID(id))
-      val tournament = tournamentRepository.find(query).get(0)
+      val tournament = tournamentRepository.find(query).get(ListEnum.head)
       //Create right Team Class.
       val teamClass = "models.team.teams.volleyball.volleyballs."+
                        tournament.properties.settings.discipline + "Team$"
@@ -62,18 +63,18 @@ object TeamsController extends Controller {
 
   def getTeam(id: String) = Action.async {
     val query = new Query(Criteria where "_id" is BSONObjectID(id))
-    val team = teamRepository.find(query).get(0)
+    val team = teamRepository.find(query).get(ListEnum.head)
     Future.successful(Ok(team.toJson))
   }
 
   def getTeams(id: String) = Action.async {
     request =>
       val query = new Query(Criteria where "_id" is BSONObjectID(id))
-      val tournament = tournamentRepository.find(query).get(0)
+      val tournament = tournamentRepository.find(query).get(ListEnum.head)
       val teamsIDs = tournament.getTeams
       val teams = teamsIDs.map(teamID => {
         val query = new Query(Criteria where "_id" is teamID)
-        teamRepository.find(query).get(0)
+        teamRepository.find(query).get(ListEnum.head)
       })
       val teamsJSON = teams.map(team => team.toJson)
       Future.successful(Ok(Json.toJson(teamsJSON)))

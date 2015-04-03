@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.TeamsController._
+import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.DefaultPlayerImpl
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
@@ -20,7 +21,7 @@ object PlayersController extends Controller {
   def createPlayer(teamId: String) = Action.async(parse.json) {
     request =>
       val query = new Query(Criteria where "_id" is BSONObjectID(teamId))
-      val team = teamRepository.find(query).get(0)
+      val team = teamRepository.find(query).get(ListEnum.head)
       val name = request.body.\("name").validate[String](minLength(5)).get
       val surname = request.body.\("surname").validate[String](minLength(5)).get
       val player = DefaultPlayerImpl(name, surname)
