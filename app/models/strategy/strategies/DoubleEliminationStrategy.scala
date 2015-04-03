@@ -243,6 +243,8 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
       goUp(stack, parent.parent.get)
     }
   }
+
+
   //the same as goDownInLosersQuarter but it goes down in winner's quarter
   //on the basis of goUp's stack
   private def goDown(stack:mutable.Stack[Int],game:Game):Game={
@@ -282,18 +284,19 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
   private def getLevel(game:Game):Int={     // Final has 1st level, Semis have 2nd level and so on
   def getLevel(game:Game, count:Int): Int ={
     if(game.parent==None) count
-    else getLevel(game.parent.get,count+1)
+    else getLevel(game.parent.get, count + 1)
   }
     getLevel(game,0)+1
+
   }
 
 
   /////////////////////////Methods useful in Testing/////////////////////////////////////
 
-    def checkGameByRoute(route:String,game:Game):String={
-      if(game.parent==None) route
-      else if(game.parent.get.left.get==game) checkGameByRoute("l"+route,game.parent.get)
-      else checkGameByRoute("r"+route,game.parent.get)
+    def checkGameByRoute(route:String,game:Game):String= {
+      if (game.parent == None) route
+      else if (game.parent.get.left.get == game) checkGameByRoute("l" + route, game.parent.get)
+      else checkGameByRoute("r" + route, game.parent.get)
     }
 
 

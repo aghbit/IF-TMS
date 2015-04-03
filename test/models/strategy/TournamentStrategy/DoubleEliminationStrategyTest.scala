@@ -38,7 +38,10 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
     //then
     intercept[NotEnoughTeamsException]{
-      underTest.drawTeamsInTournament(tree, listOfTeams)
+       underTest.drawTeamsInTournament(tree, listOfTeams)
+
+
+      //No assertion?
     }
   }
 

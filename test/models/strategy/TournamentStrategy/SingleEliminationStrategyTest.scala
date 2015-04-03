@@ -1,7 +1,7 @@
 
 
 import models.Game.EliminationTree
-import models.strategy.{TournamentStrategy}
+import models.strategy.TournamentStrategy
 import models.strategy.strategies.SingleEliminationStrategy
 import models.team.Team
 import org.junit.runner.RunWith
@@ -12,11 +12,12 @@ import org.scalatest.junit.JUnitRunner
 import reactivemongo.bson.BSONObjectID
 
 /**
- * Created by ludwik on 13.12.14.
+ * Created by ludwik on 13.12.14
  */
 @RunWith(classOf[JUnitRunner])
 class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with MockitoSugar {
-    var underTest: TournamentStrategy = _
+
+    var underTest: SingleEliminationStrategy = _
 
   before{
 
@@ -132,7 +133,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       tmp=tmp.left.get
     }
     tmp = tmp.parent.get
-    val condition = (tmp.value==None)
+    val condition = tmp.value==None
 
     //then
 
@@ -189,7 +190,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       tmp=tmp.left.get
     }
 
-    val condition = (tmp.value.get.host!=None &&tmp.value.get.guest!=None)
+    val condition = tmp.value.get.host!=None &&tmp.value.get.guest!=None
 
     //then
 
@@ -221,7 +222,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       tmp=tmp.right.get
     }
 
-    val condition = (tmp.value.get.host!=None &&tmp.value.get.guest==None)
+    val condition = tmp.value.get.host!=None &&tmp.value.get.guest==None
 
     //then
 
@@ -238,13 +239,20 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       Mockito.when(B._id).thenReturn(BSONObjectID.generate)
       A = B::A
     } //Added 18 teams to my list
+    //It means that tree has deph of 4
     underTest = new SingleEliminationStrategy()
     var tree = underTest.generateTree(A) //Genereting EMPTY tree (nulls inside)
 
 
     //when
 
+
     val x = underTest.drawTeamsInTournament(tree,A)
+    val my_guest1 = underTest.getGame(tree.root,"lllr").value.get.guest
+    //Going from top of a tree to lef child, then left and so on
+    val my_host1 = underTest.getGame(tree.root,"lllr").value.get.host
+    val my_host2 = underTest.getGame(tree.root,"llrl").value.get.host
+    val my_guest2 = underTest.getGame(tree.root,"llrl").value.get.guest
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -252,12 +260,12 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
       tmp=tmp.left.get
     }
 
-    val condition = (tmp.parent.get.right.get.value.get.guest!=None && tmp.parent.get.right.get.value.get.host!=None)
-    val cond2 = ( tmp.parent.get.parent.get.right.get.left.get.value.get.host!=None)
-    val cond3 = tmp.parent.get.parent.get.right.get.left.get.value.get.guest==None
+    val condition = my_guest1!=None && my_host1!=None
+    val cond2 =  my_host2!=None
+    val cond3 = my_guest2==None
     //then
 
-    assert(((condition) && (cond2) && cond3), "Populating SingleElminationStrategy Test doesnt work.")
+    assert(condition && cond2 && cond3, "Populating SingleElminationStrategy Test doesnt work.")
   }
   test("PopulateTree: Simple test 8"){
 
@@ -276,7 +284,15 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
 
     //when
 
+    //the tree has deph of 4 again
     val x = underTest.drawTeamsInTournament(tree,A)
+    val my_guest1 = underTest.getGame(tree.root,"llll").value.get.guest
+    val my_host1 = underTest.getGame(tree.root,"llll").value.get.host
+    val my_guest2 = underTest.getGame(tree.root,"lllr").value.get.guest
+    val my_host2 = underTest.getGame(tree.root,"lllr").value.get.host
+    val my_guest3 = underTest.getGame(tree.root,"llrl").value.get.guest
+    val my_host3 = underTest.getGame(tree.root,"llrl").value.get.host
+
     var tmp = x.root
     var count: Int = 0
     while(tmp.left!=None){
@@ -286,14 +302,14 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
     //I have 19 teams, so I should have 3 full matches
 
     //checking first match
-    val cond1 = tmp.value.get.guest!=None && tmp.value.get.host!=None
+    val cond1 = my_guest1!=None && my_host1!=None
     //checking second match; should be full (guest and host filled)
-    val condition = (tmp.parent.get.right.get.value.get.guest!=None && tmp.parent.get.right.get.value.get.host!=None)
+    val condition = my_guest2!=None && my_host2!=None
    //checking third match, should have only guest
-    val cond2 = (tmp.parent.get.parent.get.right.get.left.get.value.get.guest==None && tmp.parent.get.parent.get.right.get.left.get.value.get.host!=None)
+    val cond2 = my_guest3==None &&my_host3!=None
 
     //then
 
-    assert(((condition) && (cond2) && cond1), "Populating SingleElminationStrategy Test doesnt work.")
+    assert(condition && cond2 && cond1, "Populating SingleElminationStrategy Test doesnt work.")
   }
 }
