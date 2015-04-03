@@ -332,7 +332,7 @@ class DoubleEliminationStrategy () extends TournamentStrategy{
         else listOfTeams
     }
 
-    def is2ndand4thQuarterEmpty(root:Game):Boolean = isQuarterEmpty(getGame(root,"lr")) && isQuarterEmpty(getGame(root,"rr"))
+    def is2ndAnd4thQuarterEmpty(root:Game):Boolean = isQuarterEmpty(getGame(root,"lr")) && isQuarterEmpty(getGame(root,"rr"))
 
     private def isQuarterEmpty(root:Game):Boolean = {
       if(root.left==None || root.right==None)  root.value==None

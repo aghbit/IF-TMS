@@ -39,9 +39,6 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     //then
     intercept[NotEnoughTeamsException]{
        underTest.drawTeamsInTournament(tree, listOfTeams)
-
-
-      //No assertion?
     }
   }
 
@@ -57,7 +54,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     tree = underTest.drawTeamsInTournament(tree,listOfTeams)
     //when
     val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
-    val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
+    val testDrawing2:Boolean = underTest.is2ndAnd4thQuarterEmpty(tree.root)
     //then
     assert(testDrawing1,"populateTree: 2^n teams1")
     assert(testDrawing2,"populateTree: 2^n teams2")
@@ -78,7 +75,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       underTest.drawTeamsInTournament(tree,listOfTeams)
       //when
       val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
-      val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
+      val testDrawing2:Boolean = underTest.is2ndAnd4thQuarterEmpty(tree.root)
       //then
       assert(testDrawing1,"populateTree: 2^n-1 teams1")
       assert(testDrawing2,"populateTree: 2^n-1 teams2")
@@ -96,7 +93,7 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       underTest.drawTeamsInTournament(tree,listOfTeams)
       //when
       val testDrawing1:Boolean = underTest.areAllTeamsSet(tree,listOfTeams)
-      val testDrawing2:Boolean = underTest.is2ndand4thQuarterEmpty(tree.root)
+      val testDrawing2:Boolean = underTest.is2ndAnd4thQuarterEmpty(tree.root)
       //then
       assert(testDrawing1,"populateTree: 2k teams where 2^(n-1)<2k<2^n 1")
       assert(testDrawing2,"populateTree: 2k teams where 2^(n-1)<2k<2^n 2")
@@ -116,9 +113,6 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
 
 
     //when
-
-
-
     val game1 = underTest.getGame(tree.root,"lll")
     val game2 = underTest.getGame(tree.root,"llr")
     val games = List(game1,game2)
@@ -160,8 +154,6 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
     //when
-
-
 
     ////////////1st phase/////////////////
     val game1 = underTest.getGame(tree.root,"lll")
@@ -218,22 +210,6 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
     underTest=DoubleEliminationStrategy()
     tree = underTest.generateTree(listOfTeams)
     tree = underTest.drawTeamsInTournament(tree,listOfTeams)
-
-    //when
-    //score Part
-//    val VSetw = mock[VSet]
-//    val VSetl = mock[VSet]
-//    Mockito.when(VSetw.won).thenReturn(true)
-//    Mockito.when(VSetl.won).thenReturn(false)
-//
-//    val setsW = List(VSetw,VSetw,VSetw)
-//    val setsL = List(VSetl,VSetl,VSetl)
-//
-//
-//    val score:VolleyballScore = VolleyballScore()
-//    score.sets=setsW
-//    score2.sets=setsL
-
 
     ////////////1st phase/////////////////
     val game1 = underTest.getGame(tree.root,"lll")
@@ -445,8 +421,6 @@ class  DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with M
       tree = underTest.drawTeamsInTournament(tree,listOfTeams)
 
       //when
-
-
 
       ////////////1st phase/////////////////
       val game1 = underTest.getGame(tree.root,"lllll")

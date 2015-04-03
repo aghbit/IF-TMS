@@ -17,10 +17,10 @@ import scala.math._
   override def generateTree(listOfTeams:List[Team]): EliminationTree = {
      val num = attachNumberOfTeams(listOfTeams)
     def log2(x: Double) = log(x) / log(2)
-    //To get logaritm with base 2
-    val deph = log2(num.toDouble).toInt
-    //Recursion method to create tree with deph given in "deph"
-   new EliminationTree(new Game().createFullEmptyTree(deph-1))
+    //To get logarithm with base 2
+    val depth = log2(num.toDouble).toInt
+    //Recursion method to create tree with depth given in "depth"
+   new EliminationTree(new Game().createFullEmptyTree(depth-1))
   }
 
    def attachNumberOfTeams(listOfTeams:List[Team]): Int = {
@@ -37,29 +37,33 @@ import scala.math._
   the last 4 leafs will have guest part filled with null (20-16 = 4)
   */
   override def drawTeamsInTournament(tre: EliminationTree, list: List[Team]): EliminationTree = {
-    var overrided_list = list
+    var overridenList = list
     val tree = tre
     if(list.isEmpty) {
       throw new NotEnoughTeamsException("Populating Tree failed. Empty list of teams.")}//no teams given
     def populate(root: Game) {
-      //to use Game not ElminationTree
-      if (overrided_list.nonEmpty) {
+      //to use Game not EliminationTree
+      if (overridenList.nonEmpty) {
 
 
-        if (root.left != None)
+        if (root.left != None) {
           populate(root.left.get) //do recursion
-        if (root.left == None) {
-          if (root.value == None)
-            root.value = Some(Match(Some(overrided_list.head), None)) // Adding leaf
-          else
-            root.value = Some(new Match(root.value.get.host, Some(overrided_list.head._id)))
-          overrided_list = overrided_list.tail //removing first element from list
         }
-        if (root.parent != None && root.parent.get.right.get != root)
+        if (root.left == None) {
+          if (root.value == None) {
+            root.value = Some(Match(Some(overridenList.head), None)) // Adding leaf
+          }
+          else {
+            root.value = Some(new Match(root.value.get.host, Some(overridenList.head._id)))
+          }
+          overridenList = overridenList.tail //removing first element from list
+        }
+        if (root.parent != None && root.parent.get.right.get != root) {
           populate(root.parent.get.right.get)
+        }
       }
     }
-    while(overrided_list.length>0) {
+    while(overridenList.length>0) {
       populate(tree.root)
     }
 
