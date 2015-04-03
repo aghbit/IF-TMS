@@ -32,7 +32,6 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
       val beforeEnrollment = BeforeEnrollment(tournamentProperties, new SingleEliminationStrategy(), tournamentStaff)
-      //mały fuckup żeby sprawdzić czy działa...
       val tournament = beforeEnrollment.startNext()
       try {
         repository.insert(tournament)
