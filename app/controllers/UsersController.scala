@@ -1,6 +1,7 @@
 package controllers
 
 import controllers.security.{AuthorizationAction, TokenImpl, TokensKeeper}
+import models.enums.ListEnum
 import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
@@ -38,7 +39,7 @@ object UsersController extends Controller{
       if(userID.stringify == id){
         val query = new Query(Criteria where "_id" is BSONObjectID(id))
         val users = repository.find(query)
-        Future.successful(Ok(users.get(0).toJson))
+        Future.successful(Ok(users.get(ListEnum.head).toJson))
       }else {
         Future.successful(Unauthorized("You are not authorized to see this content!"))
       }
@@ -47,14 +48,15 @@ object UsersController extends Controller{
 
   def login() = Action.async(parse.json) {
     request =>
-      val login = request.body.\("login").toString().replaceAll("\"", "")
-      val password = request.body.\("password").toString().replaceAll("\"", "")
+
+      val login = request.body.\("login").validate[String].get
+      val password = request.body.\("password").validate[String].get
       val query = new Query(Criteria where "personalData.login" is login and "personalData.password" is password)
       val users = repository.find(query)
       if(users.isEmpty){
         Future.successful(Unauthorized("Wrong login or password!"))
       }else{
-        val token = users.get(0).generateToken
+        val token = users.get(ListEnum.head).generateToken
         TokensKeeper.addToken(token)
         Future.successful(Ok(token.toString))
       }

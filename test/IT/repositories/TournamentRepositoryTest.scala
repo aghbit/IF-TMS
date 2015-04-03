@@ -3,8 +3,8 @@ package IT.repositories
 import java.util
 
 import models.strategy.strategies.SingleEliminationStrategy
+import models.tournament.Tournament
 import models.tournament.tournamentfields.BeforeEnrollment
-import models.tournament.tournaments.Tournament
 import models.tournament.tournamentstate._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl

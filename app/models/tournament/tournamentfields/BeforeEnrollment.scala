@@ -1,12 +1,13 @@
 package models.tournament.tournamentfields
 
+import java.util
+
 import models.strategy.TournamentStrategy
 import models.team.Team
-import models.tournament.tournaments._
+import models.tournament.Tournament
 import models.tournament.tournamentstate._
 import reactivemongo.bson.BSONObjectID
 
-import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Przemek
@@ -18,12 +19,12 @@ class BeforeEnrollment(override val _id: BSONObjectID,
 
 
   override def startNext(): Enrollment = {
-    val newState = new Enrollment(this._id, this.properties, new ListBuffer[BSONObjectID], strategy, staff)
+    val newState = new Enrollment(this._id, this.properties, new util.ArrayList[BSONObjectID], strategy, staff)
     newState.properties.settings.canEnroll = true
     newState
   }
 
-  override var teams: ListBuffer[BSONObjectID] = _
+  override var teams: util.ArrayList[BSONObjectID] = _
 
   override def editSettings(settings: TournamentSettings): Unit = {
     this.properties.settings.numberOfPitches = settings.numberOfPitches

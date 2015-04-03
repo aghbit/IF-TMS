@@ -1,9 +1,13 @@
-package models.tournament.tournaments
+package models.tournament
+
+import java.util
 
 import models.strategy.TournamentStrategy
 import models.team.Team
+import models.tournament.tournamentstate.JsonFormatTournamentProperties._
 import models.tournament.tournamentstate._
 import models.user.User
+import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -17,7 +21,7 @@ trait Tournament {
 
   val _id: BSONObjectID
   var properties: TournamentProperties
-  var teams: ListBuffer[BSONObjectID]
+  var teams: util.ArrayList[BSONObjectID]
   val strategy: TournamentStrategy
   val staff: TournamentStaff
 
@@ -59,4 +63,11 @@ trait Tournament {
   }
 
   def isReadyToSave = properties.settings.isValid && properties.term.isValid
+
+  def getTeams = teams
+
+  def toJson = {
+    val tournamentPropertiesJson = Json.toJson(properties)
+    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
+  }
 }

@@ -1,19 +1,22 @@
 package models.tournament.tournamentfields
 
+import java.util
+
 import models.strategy.TournamentStrategy
 import models.team.Team
-import models.tournament.tournaments.Tournament
+import models.tournament.Tournament
 import models.tournament.tournamentstate.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 
 /**
  * Created by Przemek ..
  */
 class Break(override val _id: BSONObjectID,
             override var properties: TournamentProperties,
-            override var teams: ListBuffer[BSONObjectID],
+            override var teams: util.ArrayList[BSONObjectID],
             override val strategy: TournamentStrategy,
             override val staff: TournamentStaff) extends Tournament {
 
@@ -29,7 +32,7 @@ class Break(override val _id: BSONObjectID,
   override def removeTeam(team: Team): Unit = {
     if (!teams.contains(team._id))
       throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams = teams.filter(id => id != team._id)
+    teams.remove(team._id)
   }
 
   override def addTeam(team: Team): Unit = {
