@@ -29,17 +29,22 @@ object TeamsController extends Controller {
 
   def createTeam(id:String) = Action.async(parse.json){
     request =>
+
       //Pull data from request.
+
       val teamName = request.body.\("teamName").validate[String](minLength[String](5))
       val captainName = request.body.\("captainName").validate[String](minLength[String](5)).get
       val captainSurname = request.body.\("captainSurname").validate[String](minLength[String](5)).get
       val captainPhone =request.body.\("captainPhone").validate[String](pattern(new Regex("^[0-9]+$"))).get
       val captainMail = request.body.\("captainMail").validate[String](email).get
+
       //Create captain
       val captain = Captain(captainName, captainSurname, captainPhone, captainMail)
+
       //Find tournament to check discipline
       val query = new Query(Criteria where "_id" is BSONObjectID(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
+
       //Create right Team Class.
       val teamClass = "models.team.teams.volleyball.volleyballs."+
                        tournament.properties.settings.discipline + "Team$"
@@ -47,10 +52,12 @@ object TeamsController extends Controller {
       val module = runtimeMirror.staticModule(teamClass)
       val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
       val team = obj(teamName.get)
+
       //Add captain
       team.addPlayer(captain)
       team.setCaptain(captain)
       tournament.addTeam(team)
+
       //Insert team & captain to DB.
       try {
         teamRepository.insert(team)
