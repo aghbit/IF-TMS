@@ -41,6 +41,7 @@
                                     <li><a href="#/users" class="waves-effect waves-light">My account</a></li>
                                 </ul>
                                 <ul class="right">
+                                    <li><div id="notification-container"></div></li>
                                     <li ng-hide="loggedIn"><a href="#/login" class="waves-effect waves-light">Log in</a></li>
                                     <li ng-show="loggedIn"><a class="dropdown-button waves-effect waves-light" id="optionsdropdownbutton" href="#" data-activates="optionsdropdown"><i class="mdi-navigation-menu"></i>
                                     </a>
@@ -73,6 +74,7 @@
             <script>if ( ! window.jQuery ) { document.write ( '<script src="bin/jquery-2.1.1.min.js"><\/script>' ) ; }
             </script>
             <script src='@routes.Assets.at("js/materialize.js")'></script>
+            <script src='@routes.Assets.at("js/functions.js")'></script>
             <script src='@routes.Assets.at("js/init.js")'></script>
             <script src='@routes.Assets.at("js/picker.js")'></script>
             <script src='@routes.Assets.at("js/picker.time.js")'></script>

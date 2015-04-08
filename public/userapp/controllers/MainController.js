@@ -9,6 +9,7 @@ mainApp.controller('MainController', ['$scope', 'ngDialog','SessionService','$lo
     $scope.signOut = function(){
         SessionService.token = " ";
         SessionService.isLoggedIn = false;
+        notification("You have been successfully logged out.", 4000, true);
         $location.url("");
         $scope.loggedIn = SessionService.isLoggedIn;
     }
