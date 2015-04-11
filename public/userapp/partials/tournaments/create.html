@@ -1,112 +1,195 @@
+<style>
+    .active-progress {
+        background-color: green;
+        color: white;
+        opacity: 1.0;
+    }
+
+    .carousel-container {
+        width: 100%;
+        text-align: center;
+        overflow: auto;
+        opacity: 0.8;
+    }
+
+    .form-content {
+        width: 100%;
+        text-align: center;
+        min-height: 45vh;
+    }
+
+    .triangle-right {
+        width: 0;
+        height: 0;
+        border-top: 16px solid transparent;
+        border-left: 10px solid #F5F5F5;;
+        border-bottom: 16px solid transparent;
+        float: left;
+        background-color: transparent;
+    }
+
+    .triangle-left {
+        width: 0;
+        height: 0;
+        border-top: 16px solid transparent;
+        border-right: 10px solid #F5F5F5;;
+        border-bottom: 16px solid transparent;
+        float: left;
+        background-color: transparent;
+    }
+
+    .progress-text-container {
+        width: 25%;
+        height: 32px;
+        float: left;
+        border-bottom: 1px solid grey;
+        display: table;
+        transition: background-color 0.4s ease-out;
+        cursor: pointer;
+    }
+
+    .progress-text-container:hover {
+        background-color: #606ec0;
+    }
+
+    .progress-text-inner {
+        display: table-cell;
+        font-size: 20px;
+        vertical-align: middle;
+        width: 100%;
+    }
+
+</style>
+
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-        <form ng-submit="submit()" class="col l4 offset-l4">
-            <div class="row col l12">
-                <div class="input-field">
-                    <input id="tournamentName" type="text" ng-model="tournamentName">
-                    <label for="tournamentName">Tournament Name</label>
+        <div class="carousel-container">
+            <div class="progress-text-container" ng-click="registerQueue.step_activate(0)"
+                 ng-class="registerQueue.class_active[0]">
+                <div class="triangle-right"></div>
+                <span class="progress-text-inner">tournament</span>
+
+                <div class="triangle-left"></div>
+            </div>
+            <div class="progress-text-container" ng-click="registerQueue.step_activate(1)"
+                 ng-class="registerQueue.class_active[1]">
+                <div class="triangle-right"></div>
+                <span class="progress-text-inner">matches</span>
+
+                <div class="triangle-left"></div>
+            </div>
+            <div class="progress-text-container" ng-click="registerQueue.step_activate(2)"
+                 ng-class="registerQueue.class_active[2]">
+                <div class="triangle-right"></div>
+                <span class="progress-text-inner">enrollment</span>
+
+                <div class="triangle-left"></div>
+            </div>
+            <div class="progress-text-container" ng-click="registerQueue.step_activate(3)"
+                 ng-class="registerQueue.class_active[3]">
+                <div class="triangle-right"></div>
+                <span class="progress-text-inner">time</span>
+
+                <div class="triangle-left"></div>
+            </div>
+
+        </div>
+
+        <div class="form-content">
+            <div id="step0" ng-show="registerQueue.currentState === 0">
+                <div class='input-field'>
+                    <input id='tournamentName' type='text' ng-model='tournamentName'>
+                    <label for='tournamentName'>Tournament Name</label>
+                </div>
+                <div class='input-field'>
+                    <input id='tournamentPlace' type='text' ng-model='tournamentPlace'>
+                    <label for='tournamentPlace'>Tournament Place</label>
+                </div>
+                <div class='input-field'>
+                    <textarea class='materialize-textarea' id='tournamentDescription' type='text'
+                              ng-model='tournamentDescription'></textarea>
+                    <label for='tournamentDescription'>Tournament Description</label>
                 </div>
             </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <input id="tournamentPlace" type="text" ng-model="tournamentPlace">
-                    <label for="tournamentPlace">Tournament Place</label>
-                </div>
-            </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <textarea class="materialize-textarea" id="tournamentDescription" type="text" ng-model="tournamentDescription"></textarea>
-                    <label for="tournamentDescription">Tournament Description</label>
-                </div>
-            </div>
-            <div class="row col l12">
+
+
+            <div id="step1" ng-show="registerQueue.currentState === 1">
                 <div class="input-field">
                     <input id="numberOfPitches" type="number" ng-model="numberOfPitches">
                     <label for="numberOfPitches">Number of pitches</label>
                 </div>
-            </div>
-            <div class="row col l12">
                 <div class="input-field">
                     <input id="numberOfTeams" type="number" ng-model="numberOfTeams">
                     <label for="numberOfTeams">Number of teams</label>
                 </div>
-            </div>
-            <div class="row col l12">
                 <div class="input-field">
                     <input id="level" type="number" ng-model="level">
                     <label for="level">Level</label>
                 </div>
-            </div>
-            <div class="row col l12">
                 <div class="input-field">
                     <input id="discipline" type="text" ng-model="discipline">
                     <label for="discipline">Discipline</label>
                 </div>
+
             </div>
-            <div class="row col l7">
+
+
+            <div id="step2" ng-show="registerQueue.currentState === 2">
                 <div class="input-field">
                     <label for="enrollDeadline">Enroll end date</label>
                     <input id="enrollDeadline" type="date" class="datepicker" ng-model="enrollDeadline"/>
                 </div>
-            </div>
-            <div class="row col l5">
                 <div class="input-field">
                     <label for="enrollDeadlineTime">Enroll end time</label>
                     <input id="enrollDeadlineTime" type="time" class="timepicker" ng-model="enrollDeadlineTime"/>
                 </div>
             </div>
-            <div class="row col l7">
-                <div class="input-field">
-                    <label for="begin">Begin date</label>
-                    <input id="begin" type="date" class="datepicker" ng-model="begin"/>
-                </div>
-            </div>
-            <div class="row col l5">
+
+            <div id="step3" ng-show="registerQueue.currentState === 3">
                 <div class="input-field">
                     <label for="beginTime">Begin time</label>
                     <input id="beginTime" type="text" class="timepicker" ng-model="beginTime"/>
                 </div>
-            </div>
-            <div class="row col l7">
                 <div class="input-field">
                     <label for="end">End date</label>
                     <input id="end" type="date" class="datepicker" ng-model="end"/>
                 </div>
-            </div>
-            <div class="row col l5">
                 <div class="input-field">
                     <label for="endTime">End time</label>
                     <input id="endTime" type="text" class="timepicker" ng-model="endTime"/>
                 </div>
-            </div>
-            <div class="row col l7">
-                <div class="input-field">
-                    <label for="extraBegin">Extra begin date</label>
-                    <input id="extraBegin" type="date" class="datepicker" ng-model="extraBegin"/>
+                <div class="row col l3">
+
+                    <div class="input-field">
+                        <label for="extraBegin">Extra begin date</label>
+                        <input id="extraBegin" type="date" class="datepicker" ng-model="extraBegin"/>
+                    </div>
                 </div>
-            </div>
-            <div class="row col l5">
-                <div class="input-field">
-                    <label for="extraBeginTime">Extra begin time</label>
-                    <input id="extraBeginTime" type="text" class="timepicker" ng-model="extraBeginTime"/>
+                <div class="row col l3">
+                    <div class="input-field">
+                        <label for="extraBeginTime">Extra begin time</label>
+                        <input id="extraBeginTime" type="text" class="timepicker" ng-model="extraBeginTime"/>
+                    </div>
                 </div>
-            </div>
-            <div class="row col l7">
-                <div class="input-field">
-                    <label for="extraEnd">Extra end date</label>
-                    <input id="extraEnd" type="date" class="datepicker" ng-model="extraEnd"/>
+                <div class="row col l3">
+                    <div class="input-field">
+                        <label for="extraEnd">Extra end date</label>
+                        <input id="extraEnd" type="date" class="datepicker" ng-model="extraEnd"/>
+                    </div>
                 </div>
-            </div>
-            <div class="row col l5">
-                <div class="input-field">
-                    <label for="extraEndTime">Extra end time</label>
-                    <input id="extraEndTime" type="text" class="timepicker" ng-model="extraEndTime"/>
+                <div class="row col l3">
+                    <div class="input-field">
+                        <label for="extraEndTime">Extra end time</label>
+                        <input id="extraEndTime" type="text" class="timepicker" ng-model="extraEndTime"/>
+                    </div>
                 </div>
             </div>
 
 
-            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Create <i class="mdi-content-send right"></i></button>
+            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Create <i
+                    class="mdi-content-send right"></i></button>
 
-        </form>
+        </div>
+
     </div>
 </div>
