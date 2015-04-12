@@ -12,7 +12,7 @@ top:60px;
         {{message}}
             </div></div></div>
     </div>
-    <div ng-if="user!=null">
+    <div class="logged" ng-if="user!=null">
     <div class="container" style="padding-top: 50px">
     <div class="valign-wrapper">
     <div class="center">
@@ -22,10 +22,10 @@ top:60px;
         <table class="centered">
             <thead>
             <tr>
-                <th data-field="name">Name</th>
-                <th data-field="surname">Surname</th>
-                <th data-field="phone">Phone</th>
-                <th data-field="mail">Mail</th>
+                <th data-field="name"><i class="mdi-action-accessibility"></i> Name</th>
+                <th data-field="login"><i class="mdi-action-account-circle"></i> Login</th>
+                <th data-field="phone"><i class="mdi-action-settings-phone"></i> Phone</th>
+                <th data-field="mail"><i class="mdi-action-markunread-mailbox"></i> Mail</th>
             </tr>
             </thead>
 
@@ -42,9 +42,26 @@ top:60px;
         </table>
     </li>
     <li>
-        <div style="padding-top: 20px;padding-left: 20px">
-            <button  class="read-more btn-large indigo waves-effect waves-light">Edit</button>
-        </div>
+       <div class="row" style="padding-top: 30px;padding-left: 20px">
+
+
+               <a  class="waves-effect waves-light btn">
+                   <i class="mdi-action-settings left"></i>
+                   Edit Account</a>
+           <a  class="waves-effect waves-light btn">
+               Change Password
+               <i class="mdi-action-perm-identity left"></i>
+               </a>
+           <a  class="waves-effect waves-light btn">
+               Delete Account
+               <i class="mdi-action-delete left"></i>
+
+           </a>
+
+
+
+       </div>
+
 
 
     </li>
