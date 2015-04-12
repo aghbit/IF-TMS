@@ -1,9 +1,28 @@
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
-    <div class="row">
-        <h5 ng-if="user == null">{{message}}</h5>
-       <h5 ng-if="user!=null" class="col l3 ">Login: {{user.userProperties.login}}</h5>
-       <h5 ng-if="user!=null" class="col l3 ">Name: {{user.userProperties.name}}</h5>
-       <h5 ng-if="user!=null" class="col l3 ">Phone: {{user.userProperties.phone}}</h5>
-       <h5 ng-if="user!=null" class="col l3 ">Mail: {{user.userProperties.mail}}</h5>
+    <div id="panel">
+        <div class="not_logged" ng-if="user==null">
+            {{message}}
+        </div>
+        <div class="logged" ng-if="user!=null">
+            <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
+<ul>
+    <div class="name">  {{user.userProperties.name}}</div>
+    <img class="photo" src="http://vignette4.wikia.nocookie.net/jamesbond/images/6/61/Generic_Placeholder_-_Profile.jpg/revision/latest?cb=20121227201208">
+   <div style="padding-top: 13px">
+       <li style="font-size: 20px">Dane osobowe:</li>
+    <li ><b>Login</b>: {{user.userProperties.login}}</li>
+    <li  ><b>Name</b>: {{user.userProperties.name}}</li>
+    <li  ><b>Phone</b>: {{user.userProperties.phone}}</li>
+    <li   ><b>Mail</b>: {{user.userProperties.mail}}</li>
+   </div>
+    <div style="padding-top: 20px">
+    <button  class="read-more btn-large indigo waves-effect waves-light">Edit</button>
     </div>
+</ul>
+           </div>
+        </div>
+    </div>
+
+
+
 </div>
