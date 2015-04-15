@@ -59,3 +59,62 @@ footer.page-footer {
     min-width: 50px;
 }
 
+.active-progress {
+    background-color: rgba(38, 166, 154, 1);
+    color: white;
+    opacity: 1.0;
+}
+.wrong-progress{
+    color: white;
+
+    background-color: rgb(243, 47, 24);
+}
+.carousel-container {
+    width: 85%;
+    text-align: center;
+    overflow: auto;
+    margin: auto;
+    opacity: 0.8;
+}
+
+.form-content {
+    width: 100%;
+    text-align: center;
+    min-height: 45vh;
+    width: 60%;
+    margin: auto;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.0);
+    /*border: 1px dashed lightgrey;*/
+}
+
+
+
+.progress-text-inner {
+    display: table-cell;
+    font-size: 20px;
+    vertical-align: middle;
+    width: 100%;
+}
+.create-tournament-button{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+.indicator{
+    background-color: #5c6bc0 !important;
+}
+.create-tour-tab{
+    cursor: pointer;
+    color: #1a237e !important;
+}
+.create-tour-tab:hover{
+    color: #2d3dd8 !important;
+}
+.create-tour-submit{
+    background-color:  #5c6bc0;
+}
+.create-tour-submit:hover{
+    background-color: rgba(102, 118, 212, 0.80);
+}

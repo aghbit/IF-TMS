@@ -1,101 +1,16 @@
-<style>
-    .active-progress {
-        background-color: green;
-        color: white;
-        opacity: 1.0;
-    }
-
-    .carousel-container {
-        width: 100%;
-        text-align: center;
-        overflow: auto;
-        opacity: 0.8;
-    }
-
-    .form-content {
-        width: 100%;
-        text-align: center;
-        min-height: 45vh;
-    }
-
-    .triangle-right {
-        width: 0;
-        height: 0;
-        border-top: 16px solid transparent;
-        border-left: 10px solid #F5F5F5;;
-        border-bottom: 16px solid transparent;
-        float: left;
-        background-color: transparent;
-    }
-
-    .triangle-left {
-        width: 0;
-        height: 0;
-        border-top: 16px solid transparent;
-        border-right: 10px solid #F5F5F5;;
-        border-bottom: 16px solid transparent;
-        float: left;
-        background-color: transparent;
-    }
-
-    .progress-text-container {
-        width: 25%;
-        height: 32px;
-        float: left;
-        border-bottom: 1px solid grey;
-        display: table;
-        transition: background-color 0.4s ease-out;
-        cursor: pointer;
-    }
-
-    .progress-text-container:hover {
-        background-color: #606ec0;
-    }
-
-    .progress-text-inner {
-        display: table-cell;
-        font-size: 20px;
-        vertical-align: middle;
-        width: 100%;
-    }
-
-</style>
-
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-        <div class="carousel-container">
-            <div class="progress-text-container" ng-click="registerQueue.step_activate(0)"
-                 ng-class="registerQueue.class_active[0]">
-                <div class="triangle-right"></div>
-                <span class="progress-text-inner">tournament</span>
-
-                <div class="triangle-left"></div>
-            </div>
-            <div class="progress-text-container" ng-click="registerQueue.step_activate(1)"
-                 ng-class="registerQueue.class_active[1]">
-                <div class="triangle-right"></div>
-                <span class="progress-text-inner">matches</span>
-
-                <div class="triangle-left"></div>
-            </div>
-            <div class="progress-text-container" ng-click="registerQueue.step_activate(2)"
-                 ng-class="registerQueue.class_active[2]">
-                <div class="triangle-right"></div>
-                <span class="progress-text-inner">enrollment</span>
-
-                <div class="triangle-left"></div>
-            </div>
-            <div class="progress-text-container" ng-click="registerQueue.step_activate(3)"
-                 ng-class="registerQueue.class_active[3]">
-                <div class="triangle-right"></div>
-                <span class="progress-text-inner">time</span>
-
-                <div class="triangle-left"></div>
-            </div>
+        <ul class="tabs">
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(0)"><a class="active create-tour-tab">Tournament</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(1)"><a class="create-tour-tab">Matches</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(2)"><a class="create-tour-tab">Enrollment</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(3)"><a class="create-tour-tab">Time</a></li>
+        </ul>
 
         </div>
 
         <div class="form-content">
+
             <div id="step0" ng-show="registerQueue.currentState === 0">
                 <div class='input-field'>
                     <input id='tournamentName' type='text' ng-model='tournamentName'>
@@ -119,11 +34,11 @@
                     <label for="numberOfPitches">Number of pitches</label>
                 </div>
                 <div class="input-field">
-                    <input id="numberOfTeams" type="number" ng-model="numberOfTeams">
+                    <input id="numberOfTeams" type="number" min="0" ng-model="numberOfTeams">
                     <label for="numberOfTeams">Number of teams</label>
                 </div>
                 <div class="input-field">
-                    <input id="level" type="number" ng-model="level">
+                    <input id="level" type="number" min="0" ng-model="level">
                     <label for="level">Level</label>
                 </div>
                 <div class="input-field">
@@ -146,6 +61,10 @@
             </div>
 
             <div id="step3" ng-show="registerQueue.currentState === 3">
+                <div class="input-field">
+                    <label for="end">Begin date</label>
+                    <input id="begin" type="date" class="datepicker" ng-model="begin"/>
+                </div>
                 <div class="input-field">
                     <label for="beginTime">Begin time</label>
                     <input id="beginTime" type="text" class="timepicker" ng-model="beginTime"/>
@@ -186,9 +105,9 @@
             </div>
 
 
-            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Create <i
-                    class="mdi-content-send right"></i></button>
 
+            <button class="btn waves-effect waves-light create-tournament-button create-tour-submit" type="submit" id="submit" name="submit" >Create <i
+                    class="mdi-content-send right"></i></button>
         </div>
 
     </div>

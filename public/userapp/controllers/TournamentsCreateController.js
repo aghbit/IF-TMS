@@ -1,6 +1,7 @@
 mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$location', 'SessionService','$compile', function ($scope, $http, $location, SessionService, $compile) {
     //important! it loads js for datePicker.
     angular.element(document).ready(function(){
+        $('ul.tabs').tabs();
         $('select').material_select();
         $('.datepicker').pickadate({
             closeOnSelect: true,
