@@ -124,6 +124,11 @@ footer.page-footer {
     margin-left: 3rem; }
 .notification.rounded {
     border-radius: 24px; }
+
+.ngdialog-clickable {
+    cursor: pointer;
+}
+
 @media only screen and (max-width : 600px) {
     .notification {
         width: 100%;

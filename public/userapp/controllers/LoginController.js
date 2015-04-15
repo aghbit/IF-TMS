@@ -13,10 +13,19 @@ mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','
                 SessionService.isLoggedIn = true;
                 $scope.$emit("LOGIN_EVENT", true);
                 notification("You have been successfully logged in.", 4000, true);
-                history.back()
+                $scope.closeThisDialog();
             }).
             error(function(data, status, headers, config) {
                 notification("Sorry. Wrong credentials.", 4000, false);
             });
+    };
+
+    $scope.registerPopUp = function () {
+        $scope.closeThisDialog();
+        ngDialog.open({
+            template: '/assets/userapp/partials/register/register.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        });
     };
 }]);

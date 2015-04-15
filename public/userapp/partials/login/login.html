@@ -1,9 +1,15 @@
-<div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
+<div class="ngdialog-message">
+    <h3>Log in</h3>
+</div>
+
+<div class="ngdialog-buttons" ng-controller="LoginController">
         <div class="row">
             <form ng-submit="submit()">
                 <input type="text" ng-model="credentials.login" name="text" />
                 <input type="password" ng-model="credentials.password" name="text" />
-                <input type="submit" id="submit" value="Submit" />
+                <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Submit <i
+                        class="mdi-content-send right"></i></button>
             </form>
+            <a ng-click="registerPopUp()" class="ngdialog-clickable">or Sign Up</a>
         </div>
     </div>
