@@ -1,8 +1,8 @@
-mainApp.controller('MainController', ['$scope', 'ngDialog','SessionService','$location', function($scope, ngDialog,SessionService,$location) {
+mainApp.controller('MainController', ['$scope', '$rootScope', 'ngDialog', 'SessionService', '$location', function ($scope, $rootScope, ngDialog, SessionService, $location) {
 
     $scope.loggedIn = SessionService.isLoggedIn;
 
-    $scope.$on('LOGIN_EVENT', function(event) {
+    $rootScope.$on('LOGIN_EVENT', function (event) {
         $scope.loggedIn = SessionService.isLoggedIn;
     });
 
