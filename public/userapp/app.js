@@ -55,11 +55,6 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/players/show.html",
             controller: 'PlayersShowController'
         })
-        .state('login', {
-            url: "/login",
-            templateUrl: "/assets/userapp/partials/login/login.html",
-            controller: 'LoginController'
-        })
 
 });
 
