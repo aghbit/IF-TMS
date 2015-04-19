@@ -6,7 +6,7 @@ mainApp.controller('TournamentsController', ['$scope',  '$http', function ($scop
                 accordion : false
             });
         }).error(function(data, status, headers, config, statusText) {
-            alert("Error.")
+            notification("Error.", 4000, false)
         });
 
 }]);

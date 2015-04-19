@@ -13,7 +13,7 @@ mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','
                 SessionService.isLoggedIn = true;
                 $scope.$emit("LOGIN_EVENT", true);
                 notification("You have been successfully logged in.", 4000, true);
-                history.back()
+                history.back();
             }).
             error(function(data, status, headers, config) {
                 notification("Sorry. Wrong credentials.", 4000, false);

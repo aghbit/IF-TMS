@@ -35,10 +35,10 @@ mainApp.controller('TournamentsCreateController', ['$scope',  '$http', '$locatio
             "settings":{"numberOfPitches":$scope.numberOfPitches, "numberOfTeams":$scope.numberOfTeams,
                         "canEnroll": true, "level":$scope.level, "discipline":$scope.discipline}
         }).success(function(){
-            toast("Tournament created!", 4000)
+            notification("Tournament created!", 4000, true)
             $location.path("tournaments/myTournaments")
         }).error(function(){
-            toast("Wrong data, tournament can't be created!", 4000)
+            notification("Wrong data, tournament can't be created!", 4000, false)
         })
 
     }
