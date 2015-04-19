@@ -16,7 +16,9 @@
 
     newNotification.css({"top" : parseFloat(newNotification.css("top"))+35+"px",
         "opacity": 0,
-        "text-shadow": "0px 0px 3px " + (state? "green" : "red") });
+        "background-color": (state ? "transparent" : "red"),
+        "text-shadow": "0px 0px 3px white"
+    });
     newNotification.velocity({"top" : "0px",
             opacity: 1},
         {duration: 300,
