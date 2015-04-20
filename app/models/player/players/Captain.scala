@@ -11,6 +11,11 @@ case class Captain(_id:BSONObjectID,
                    surname:String,
                    phone:String,
                    mail:String) extends Player {
+
+  /*
+  Only for Spring Data. Don't use it. For more information check: TMS-76
+  */
+  def this() = this(null, null, null, null, null)
 }
 object Captain {
   def apply(name:String, surname:String, phone:String, mail:String) = {

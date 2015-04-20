@@ -4,8 +4,8 @@ import java.util
 
 import models.strategy.TournamentStrategy
 import models.team.Team
-import models.tournament.tournamentstate.JsonFormatTournamentProperties._
-import models.tournament.tournamentstate._
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
+import models.tournament.tournamentfields._
 import models.user.User
 import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
