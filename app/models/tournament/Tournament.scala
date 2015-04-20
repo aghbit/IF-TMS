@@ -33,8 +33,8 @@ trait Tournament {
 
   def editTerm(term: TournamentTerm): Unit
 
-  def generateTree() = {
-    strategy.getOrder()
+  def generateTree(teams:List[Team]) = {
+    strategy.generateTree(teams)
   }
 
   def addReferee(user: User): Unit = {
