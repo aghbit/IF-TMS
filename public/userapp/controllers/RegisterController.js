@@ -2,7 +2,7 @@
  * Created by Piotr on 2015-02-04.
  */
 
-mainApp.controller('RegisterController', ['$scope', '$http', function($scope, $http) {
+mainApp.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
 
     $scope.checkPasswordsEquality = function(){
         if($scope.password != $scope.password2){
@@ -42,13 +42,15 @@ mainApp.controller('RegisterController', ['$scope', '$http', function($scope, $h
                 "mail": $scope.mail
             }).
                 success(function (data, status, headers, config) {
-                    $scope.closeThisDialog()
+                    $scope.closeThisDialog();
+                    $location.url("/login");
+                    notification("You have been successfully registered. You may now log in.", 4000, true);
                 }).
                 error(function (data, status, headers, config) {
-                    window.alert("User exists or error occurred!")
+                    notification("Sorry. User exists or error occurred.", 4000, false);
                 });
         }else {
-            alert("You type wrong data!")
+            notification("Sorry. You have typed wrong data.", 4000, false);
         }
     };
 }]);
