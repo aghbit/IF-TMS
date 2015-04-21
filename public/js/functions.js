@@ -7,7 +7,7 @@
 
     // Select and append notification
     var container = $('#notification-container')
-    var newNotification = createNotification(message);
+    var newNotification = createNotification("<i class=\"" + (state ? "mdi-action-info-outline" : "tiny mdi-action-highlight-remove") + "\"></i>&emsp;" + message);
 
     if(!container.empty()) {
         container.pop();
@@ -16,8 +16,7 @@
 
     newNotification.css({"top" : parseFloat(newNotification.css("top"))+35+"px",
         "opacity": 0,
-        "background-color": (state ? "transparent" : "red"),
-        "text-shadow": "0px 0px 3px white"
+        "background-color": (state ? "transparent" : "red")
     });
     newNotification.velocity({"top" : "0px",
             opacity: 1},
