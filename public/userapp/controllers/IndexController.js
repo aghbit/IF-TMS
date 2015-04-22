@@ -10,5 +10,6 @@ mainApp.controller('IndexController', ['$scope', 'ngDialog', function($scope, ng
             className: 'ngdialog-theme-plain',
             closeByDocument: true
         });
-    }
+    };
+    $('.parallax-window').parallax({imageSrc: 'http://www.volleyballadvisors.com/image-files/volleyball-positions-libero.jpg'});
 }]);

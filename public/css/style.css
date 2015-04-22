@@ -9,6 +9,9 @@
 .icon-block {
   padding: 0 15px;
 }
+body{
+    font-family: 'Maven Pro', sans-serif !important;
+}
 
 .row .col#myTournaments{
   padding: 0 0;
@@ -17,8 +20,12 @@
 .content-bg {
     margin: 4%;
     position: relative;
+    margin: 0px 20px 0px;
+    height: calc(100% - 6vh);
 }
-
+.navbar-fixed{
+    background-color: red;
+}
 footer {
     background-color: #3f51b5;
     z-index: 999;
@@ -27,6 +34,7 @@ footer {
     width:100%;
 }
 footer.page-footer {
+    height: 6vh;
     background-color: #3f51b5;
 }
 
@@ -89,7 +97,9 @@ footer.page-footer {
 }
 
 
-
+.ng-scope{
+    background-color: rgba(213, 219, 255, 0.14);
+}
 .progress-text-inner {
     display: table-cell;
     font-size: 20px;
@@ -102,6 +112,23 @@ footer.page-footer {
     bottom: 0;
     left: 0;
 }
+.page-content{
+    padding: 10px 20px 10px;
+    width: 70%;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: auto;
+    min-height: calc(100% - 12vh)
+}
+.main-page{
+    padding: 0 0 0 0 !important;
+}
+.indicator-item.active{
+    background-color: #5c6bc0 !important;
+}
+.row{
+    margin: 0 0 0 0;
+}
+
 .indicator{
     background-color: #5c6bc0 !important;
 }
