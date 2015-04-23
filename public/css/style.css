@@ -12,7 +12,15 @@
 body{
     font-family: 'Maven Pro', sans-serif !important;
 }
-
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea{
+/*all text inputs in the project*/
+    border-bottom: 1px solid #3f51b5;
+    -webkit-box-shadow: 0 1px 0 0 #9FA8DA;
+    -moz-box-shadow: 0 1px 0 0 #9FA8DA;
+    box-shadow: 0 1px 0 0 ;
+}
+.input-field input[type=text]:focus + label, .input-field input[type=password]:focus + label, .input-field input[type=email]:focus + label, .input-field input[type=url]:focus + label, .input-field input[type=date]:focus + label, .input-field input[type=tel]:focus + label, .input-field input[type=number]:focus + label, .input-field input[type=search]:focus + label, .input-field textarea:focus.materialize-textarea + label {
+    color: #342FB5; }
 .row .col#myTournaments{
   padding: 0 0;
 }
@@ -23,9 +31,10 @@ body{
     margin: 0px 20px 0px;
     height: calc(100% - 6vh);
 }
-.navbar-fixed{
-    background-color: red;
+.indigo-button{
+    background-color: #3f51b5 !important;
 }
+
 footer {
     background-color: #3f51b5;
     z-index: 999;
