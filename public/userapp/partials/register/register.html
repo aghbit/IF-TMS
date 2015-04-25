@@ -8,38 +8,38 @@
     <div class="ngdialog-buttons" ng-controller="RegisterController">
         <form ng-submit="submit()" class="col s12">
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
                            ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
                     <label for="login">Login</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="name" type="text" ng-model="name">
                     <label for="name">Name</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="mail" type="email" ng-model="mail">
                     <label for="mail">Email</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="phone" type="text" ng-model="phone">
                     <label for="phone">Phone Number</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="password" type="password" ng-model="password" ng-change="checkPasswordsEquality()">
                     <label for="password">Password</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
+                <div class="input-field col s9">
                     <input id="password2" type="password" ng-model="password2"
                            ng-style="{'border-bottom' : password2BorderBottom, 'box-shadow' : password2BoxShadow}"
                            ng-change="checkPasswordsEquality()">
@@ -50,10 +50,10 @@
         </form>
     </div>
     <div class="row">
-        <div class="col s12 grid-example m8 l7"><button class="btn indigo waves-effect waves-light" type="submit" id="submit" name="submit">Register <i class="mdi-content-send right"></i></button></div>
+        <div class="col s12 grid-example m8 l7"><button class="btn indigo waves-effect waves-light" ng-click="closeThisDialog()">or Sign In</button></div>
         <div class="col s12 grid-example m5 l5">
             <form class ="right-align" action="#/login">
-                <button class="btn indigo waves-effect waves-light" ng-click="closeThisDialog()">or Sign In</button>
+                <button class="btn indigo waves-effect waves-light" type="submit" id="submit" name="submit">Register <i class="mdi-content-send right"></i></button>
             </form>
         </div>
     </div>
