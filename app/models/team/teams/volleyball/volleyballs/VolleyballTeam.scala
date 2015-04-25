@@ -11,7 +11,10 @@ class VolleyballTeam(val _id: BSONObjectID,
                      val playersNumber: Int,
                      val benchWarmersNumber: Int) extends VolleyballTeams {
 
-  //def this(name:String) = this(BSONObjectID.generate, name, 6, 6)
+   /*
+    Only for Spring Data. Don't use it. For more information check: TMS-76
+   */
+  def this() = this(null, null, 0, 0)
 
 }
 

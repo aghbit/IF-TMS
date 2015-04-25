@@ -1,4 +1,4 @@
-package models.tournament.tournamentstate
+package models.tournament.tournamentfields
 
 import org.joda.time.{DateTime, Duration, Interval}
 import play.api.libs.json.{Reads, Writes, Json}
