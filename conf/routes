@@ -2,10 +2,24 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET        /                     controllers.ApplicationController.index
+GET         /                                 controllers.ApplicationController.index
 
-POST        /token/:login/:password        controllers.ApplicationController.authenticate(login: String,password: String)
-GET         /statistics        controllers.ApplicationController.statistics(token: String)
+
+POST        /api/users                        controllers.UsersController.createUser
+GET         /api/users/:id                    controllers.UsersController.getUser(id:String)
+POST        /api/login                        controllers.UsersController.login()
+GET         /api/users/login/:login           controllers.UsersController.isLoginInUse(login: String)
+
+POST        /api/tournaments                  controllers.TournamentsController.createTournament
+GET         /api/myTournaments                controllers.TournamentsController.getMyTournaments
+GET         /api/tournaments                  controllers.TournamentsController.getTournaments
+GET         /api/tournaments/:id              controllers.TournamentsController.getTournament(id:String)
+
+GET         /api/teams/:id                    controllers.TeamsController.getTeam(id:String)
+POST        /api/tournaments/:id/teams        controllers.TeamsController.createTeam(id:String)
+GET         /api/tournaments/:id/teams        controllers.TeamsController.getTeams(id:String)
+POST        /api/teams/:teamId/players        controllers.PlayersController.createPlayer(teamId:String)
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file         controllers.Assets.at(path="/public", file)
-GET        /webjars/*file        controllers.WebJarAssets.at(file)
+GET         /assets/*file                     controllers.Assets.at(path="/public", file)
+GET         /webjars/*file                    controllers.WebJarAssets.at(file)
+

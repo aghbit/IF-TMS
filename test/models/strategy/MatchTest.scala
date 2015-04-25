@@ -16,12 +16,11 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
   var guest:Team = _
   var hostId:BSONObjectID = _
   var guestId:BSONObjectID = _
-  var scoreHost:Score = _
-  var scoreGuest:Score = _
+  var score:Score = _
+
 
   before{
-    scoreHost = mock[Score]
-    scoreGuest = mock[Score]
+    score = mock[Score]
     host = mock[Team]
     guest= mock[Team]
     hostId = BSONObjectID.generate
@@ -31,29 +30,15 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
     underTest=Match(Option(host),Option(guest))
   }
 
-  test("WinningTeam test: failure"){
 
-    //given
-
-    //when
-
-    //then
-    intercept[MatchNotFinishedException]{
-      underTest.winningTeam
-    }
-  }
 
   test("WinningTeam test: hostWins"){
 
     //given
-    Mockito.when(scoreHost.>(scoreGuest)).thenReturn(true)
-    Mockito.when(scoreHost.<(scoreGuest)).thenReturn(false)
-    Mockito.when(scoreGuest.<(scoreHost)).thenReturn(true)
-    Mockito.when(scoreGuest.>(scoreHost)).thenReturn(false)
+    Mockito.when(score.getWinner).thenReturn(Some(hostId))
+    Mockito.when(score.getLoser).thenReturn(Some(guestId))
 
-
-    underTest.scoreHost = scoreHost
-    underTest.scoreGuest = scoreGuest
+    underTest.score=Some(score)
 
     //when
 
@@ -65,12 +50,10 @@ class MatchTest extends FunSuite with BeforeAndAfter with MockitoSugar{
   test("WinningTeam test: guestWins"){
 
     //given
-    Mockito.when(scoreHost.<(scoreGuest)).thenReturn(true)
-    Mockito.when(scoreHost.>(scoreGuest)).thenReturn(false)
-    Mockito.when(scoreGuest.>(scoreHost)).thenReturn(true)
-    Mockito.when(scoreGuest.<(scoreHost)).thenReturn(false)
-    underTest.scoreHost = scoreHost
-    underTest.scoreGuest = scoreGuest
+    Mockito.when(score.getWinner).thenReturn(Some(guestId))
+    Mockito.when(score.getLoser).thenReturn(Some(hostId))
+
+    underTest.score=Some(score)
 
     //when
 

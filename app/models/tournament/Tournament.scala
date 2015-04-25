@@ -1,8 +1,13 @@
-package models.tournament.tournaments
+package models.tournament
 
+import java.util
+
+import models.strategy.TournamentStrategy
 import models.team.Team
-import models.tournament.tournamentstate._
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
+import models.tournament.tournamentfields._
 import models.user.User
+import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -13,9 +18,12 @@ import scala.collection.mutable.ListBuffer
 
 
 trait Tournament {
+
   val _id: BSONObjectID
   var properties: TournamentProperties
-  var teams: ListBuffer[BSONObjectID]
+  var teams: util.ArrayList[BSONObjectID]
+  val strategy: TournamentStrategy
+  val staff: TournamentStaff
 
   def startNext(): Tournament
 
@@ -25,16 +33,16 @@ trait Tournament {
 
   def editTerm(term: TournamentTerm): Unit
 
-  def generateTree() = {
-   // properties.strategy.getOrder()
+  def generateTree(teams:List[Team]) = {
+    strategy.generateTree(teams)
   }
 
   def addReferee(user: User): Unit = {
-    properties.staff.addReferee(user)
+    staff.addReferee(user)
   }
 
   def removeReferee(user: User): Unit = {
-    properties.staff.removeReferee(user)
+    staff.removeReferee(user)
   }
 
   def editSettings(settings: TournamentSettings): Unit = {
@@ -51,6 +59,15 @@ trait Tournament {
   }
 
   def containsReferee(referee: User): Boolean = {
-    properties.staff.contains(referee)
+    staff.contains(referee)
+  }
+
+  def isReadyToSave = properties.settings.isValid && properties.term.isValid
+
+  def getTeams = teams
+
+  def toJson = {
+    val tournamentPropertiesJson = Json.toJson(properties)
+    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
   }
 }

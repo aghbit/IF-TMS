@@ -5,32 +5,82 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
 
     $stateProvider
+        // INDEX
         .state('mainPage', {
             url: "/",
-            templateUrl: "/assets/userapp/partials/main.html",
+            templateUrl: "/assets/userapp/partials/index.html",
             controller: 'IndexController'
         })
-        .state('statistics', {
-            url: "/statistics",
-            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
-            controller: 'StatisticsController'
+
+
+        //USERS
+        .state('users', {
+            url: "/users",
+            templateUrl: "/assets/userapp/partials/users/user.html",
+            controller: 'UserController'
         })
+
+
+        // TOURNAMENTS
         .state('tournaments', {
             url: "/tournaments",
-            templateUrl: "/assets/userapp/partials/tournaments/main.html",
+            templateUrl: "/assets/userapp/partials/tournaments/tournaments.html",
             controller: 'TournamentsController'
         })
+        .state('tournaments/create', {
+            url: "/tournaments/create",
+            templateUrl: "/assets/userapp/partials/tournaments/create.html",
+            controller: 'TournamentsCreateController'
+        })
+        .state('tournaments/myTournaments', {
+            url: "/tournaments/myTournaments",
+            templateUrl: "/assets/userapp/partials/tournaments/myTournaments.html",
+            controller: 'TournamentsMyTournamentsController'
+        })
+        .state('tournaments/id/enrollment', {
+            url: "/tournaments/{id}/enrollment",
+            templateUrl: "/assets/userapp/partials/tournaments/enrollment.html",
+            controller: 'TournamentsEnrollmentController'
+        })
+        .state('tournaments/id/teams', {
+            url: "/tournaments/{id}/teams",
+            templateUrl: "/assets/userapp/partials/tournaments/showTeams.html",
+            controller: 'TournamentsTeamsShowController'
+        })
+
+
+        // TEAMS
+        .state('teams/id/addPlayer', {
+            url: "/teams/{id}/addPlayer",
+            templateUrl: "/assets/userapp/partials/teams/addPlayer.html",
+            controller: 'TeamsAddPlayerController'
+        })
+        .state('teams/id', {
+            url: "/teams/{id}",
+            templateUrl: "/assets/userapp/partials/teams/showPlayers.html",
+            controller: 'TeamsPlayersShowController'
+        })
+
+
+        // LOGIN
         .state('login', {
             url: "/login",
             templateUrl: "/assets/userapp/partials/login/login.html",
             controller: 'LoginController'
         })
 
+
+        // STATISTICS - UNUSED
+        .state('statistics', {
+            url: "/statistics",
+            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
+            controller: 'StatisticsController'
+        })
 });
 
 mainApp.factory('SessionService', function() {
     var usersCredentials = {
-        token : '12',
+        token : ' ',
         isLoggedIn : false,
         login : function () {
             ngDialog.open({
@@ -47,7 +97,7 @@ mainApp.factory('SessionService', function() {
 mainApp.factory('sessionInjector', ['SessionService', function(SessionService) {
     var sessionInjector = {
         request: function(config) {
-            config.headers['session-token'] = SessionService.token;
+            config.headers['token'] = SessionService.token;
 
             return config;
         }

@@ -1,6 +1,8 @@
 package models.team.teams.volleyball.volleyballs
 
 import models.exceptions.TooManyMembersInTeamException
+import models.player.Player
+import models.player.players.Captain
 import models.team.Team
 import models.user.User
 import org.junit.runner.RunWith
@@ -18,12 +20,15 @@ import reactivemongo.bson.BSONObjectID
 class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   var underTest: Team = _
-  var players: List[User] = _
+  var players: List[Player] = _
+  var captain: Captain = _
 
   before {
     underTest = BeachVolleyballTeam("underTest")
-    players = List(mock[User], mock[User], mock[User])
+    players = List(mock[Player], mock[Player], mock[Player])
     players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
+    captain = mock[Captain]
+    Mockito.when(captain._id).thenReturn(BSONObjectID.generate)
   }
 
   test("Constructor: Simple test") {
@@ -127,7 +132,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
 
     //when&then
     intercept[NoSuchElementException] {
-      underTest.setCaptain(players(1))
+      underTest.setCaptain(captain)
     }
 
   }
@@ -135,13 +140,13 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
   test("SetCaptain&CaptainID: Set player as captain") {
 
     //given
-    underTest.addPlayer(players(0))
+    underTest.addPlayer(captain)
 
     //when
-    underTest.setCaptain(players(0))
+    underTest.setCaptain(captain)
     val captainID = underTest.getCaptainID
     //then
-    assert(captainID === players(0)._id, "SetCaptain&CaptainID: test 1")
+    assert(captainID === captain._id, "SetCaptain&CaptainID: test 1")
   }
 
   test("isComplete: BenchWarmers") {
@@ -173,8 +178,8 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
 
     //when
-    underTest.addPlayer(players.head)
-    underTest.setCaptain(players.head)
+    underTest.addPlayer(captain)
+    underTest.setCaptain(captain)
 
     //then
     assert(underTest.isReadyToSave, "isReadyToSave: test 2")

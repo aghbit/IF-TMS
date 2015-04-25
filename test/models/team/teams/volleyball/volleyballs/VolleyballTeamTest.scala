@@ -2,6 +2,8 @@
 package models.team.teams.volleyball.volleyballs
 
 import models.exceptions.TooManyMembersInTeamException
+import models.player.Player
+import models.player.players.Captain
 import models.team.Team
 import models.user.User
 import org.junit.runner.RunWith
@@ -18,15 +20,18 @@ import reactivemongo.bson.BSONObjectID
 class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   var underTest: Team = _
-  var players: List[User] = _
-  var benchWarmers: List[User] = _
+  var players: List[Player] = _
+  var benchWarmers: List[Player] = _
+  var captains:List[Captain] = _
 
   before {
     underTest = VolleyballTeam("underTest")
-    players = List(mock[User], mock[User], mock[User], mock[User], mock[User], mock[User])
+    captains = List(mock[Captain], mock[Captain])
+    players = List(mock[Player], mock[Player], mock[Player], mock[Player], mock[Player], mock[Player])
     players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
-    benchWarmers = List(mock[User], mock[User], mock[User], mock[User], mock[User], mock[User])
+    benchWarmers = List(mock[Player], mock[Player], mock[Player], mock[Player], mock[Player], mock[Player])
     benchWarmers.foreach(benchWarmer => Mockito.when(benchWarmer._id).thenReturn(BSONObjectID.generate))
+    captains.foreach(captain => Mockito.when(captain._id).thenReturn(BSONObjectID.generate))
   }
 
   test("Constructor: Simple test") {
@@ -151,35 +156,35 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
     //when&then
     intercept[NoSuchElementException] {
-      underTest.setCaptain(players(0))
+      underTest.setCaptain(captains(0))
     }
   }
 
   test("SetCaptain&CaptainID: Captain is a player") {
 
     //given
-    underTest.addPlayer(players(1))
+    underTest.addPlayer(captains(1))
 
     //when
-    underTest.setCaptain(players(1))
+    underTest.setCaptain(captains(1))
     val captainID = underTest.getCaptainID
 
     //then
-    assert(captainID === players(1)._id, "SetCaptain&CaptainID: test 1")
+    assert(captainID === captains(1)._id, "SetCaptain&CaptainID: test 1")
 
   }
 
   test("SetCaptain&CaptainID: Captain is a bench warmer") {
 
     //given
-    underTest.addBenchWarmer(benchWarmers(0))
+    underTest.addBenchWarmer(captains(0))
 
     //when
-    underTest.setCaptain(benchWarmers(0))
+    underTest.setCaptain(captains(0))
     val captainID = underTest.getCaptainID
 
     //then
-    assert(captainID === benchWarmers(0)._id, "SetCaptain&CaptainID: test 1")
+    assert(captainID === captains(0)._id, "SetCaptain&CaptainID: test 1")
   }
 
   test("isComplete: BenchWarmers") {
@@ -210,8 +215,8 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //given
 
     //when
-    underTest.addPlayer(players.head)
-    underTest.setCaptain(players.head)
+    underTest.addPlayer(captains.head)
+    underTest.setCaptain(captains.head)
 
     //then
     assert(underTest.isReadyToSave, "isReadyToSave: test 2")

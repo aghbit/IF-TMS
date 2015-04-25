@@ -14,10 +14,13 @@ class TeamRepository extends Repository[Team] {
   override val collectionName: String = "Teams"
   override val clazz: Class[Team] = classOf[Team]
 
+  @throws[IllegalArgumentException]
   def insert(team: Team) = {
-    if (!team.isReadyToSave)
-    throw new IllegalArgumentException("Team is not ready to save!")
-    mongoTemplate.save(team, collectionName)
+    if (!team.isReadyToSave){
+      throw new IllegalArgumentException("Team is not ready to save!")
+    }else{
+      mongoTemplate.save(team, collectionName)
+    }
   }
 
 }

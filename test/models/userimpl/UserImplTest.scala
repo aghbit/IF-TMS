@@ -1,12 +1,14 @@
 package models.userimpl
 
-import models.statistics.Statistics
+import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
+import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 /**
@@ -108,4 +110,36 @@ class UserImplTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   }
 
+  test("Simple toJson test") {
+
+    //given
+    Mockito.when(userProperties.login).thenReturn("Login")
+    Mockito.when(userProperties.mail).thenReturn("Mail")
+    Mockito.when(userProperties.name).thenReturn("Name")
+    Mockito.when(userProperties.password).thenReturn("Password")
+    Mockito.when(userProperties.phone).thenReturn("Phone")
+    val userPropertiesJson = Json.toJson(userProperties)
+    val result = "{\"id\":\"" + instance._id.stringify + "\",\"userProperties\":"+ userPropertiesJson + "}"
+    val userPropertiesJsonWithoutPassword = userPropertiesJson.as[JsObject] - "password"
+    val resultWithoutPassword = "{\"id\":\"" + instance._id.stringify + "\",\"userProperties\":"+ userPropertiesJsonWithoutPassword + "}"
+
+    //when
+    val instanceResult = instance.toJson
+
+    //then
+    assert(result !== instanceResult.toString(), "toJson: test 1")
+    assert(resultWithoutPassword === instanceResult.toString(), "toJson: test2")
+  }
+
+  test("Simple generateToken test") {
+
+    //given
+
+    //when
+    val token = instance.generateToken
+
+    //then
+    assert(token.getUserID === instance._id, "generateToken: test 1")
+
+  }
 }
