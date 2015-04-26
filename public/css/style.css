@@ -24,7 +24,9 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 .row .col#myTournaments{
   padding: 0 0;
 }
-
+.btn.waves-effect.waves-light{
+    background-color: #342FB5 !important;
+}
 .content-bg {
     margin: 4%;
     position: relative;
@@ -116,7 +118,7 @@ footer.page-footer {
     width: 100%;
 }
 .create-tournament-button{
-    position: absolute;
+    margin : 20px;
     width: 100%;
     bottom: 0;
     left: 0;
