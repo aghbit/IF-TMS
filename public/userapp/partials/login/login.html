@@ -1,28 +1,15 @@
-<div class="page-content">
-        <div class="card medium">
-            <div class="card-image">
-                <img src="http://www.color-hex.com/palettes/3712.png">
-                <span class="card-title">Enter the Tournament Management System</span>
-            </div>
-            <div class="card-content">
-                <form ng-submit="submit()">
-                    <div class="col s12 m5">
-                         <input placeholder="login" type="text" ng-model="credentials.login" name="text" />
-                    </div>
-                    <div class="col s12 m5">
-                        <input placeholder="password" type="password" ng-model="credentials.password" name="text" />
-                    </div>
-                    <div class="col s12 m2">
-                        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-                            <i class="mdi-content-send right"></i>
-                        </button>
-                    </div>
+<div class="ngdialog-message">
+    <h3>Log in</h3>
+</div>
 
-                </form>
-            </div>
-            <div class="card-action">
-                <a href="#">Forgot yout password?</a>
-                <a href='#'>Not a member?</a>
-            </div>
-        </div>
+<div class="ngdialog-buttons" ng-controller="LoginController">
+    <div class="row">
+        <form ng-submit="submit()">
+            <input type="text" ng-model="credentials.login" name="text" />
+            <input type="password" ng-model="credentials.password" name="text" />
+            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Submit <i
+                    class="mdi-content-send right"></i></button>
+        </form>
+        <a ng-click="registerPopUp()" class="ngdialog-clickable">or Sign Up</a>
+    </div>
 </div>
