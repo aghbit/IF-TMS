@@ -12,5 +12,12 @@ mainApp.controller('MainController', ['$scope', 'ngDialog','SessionService','$lo
         notification("You have been successfully logged out.", 4000, true);
         $location.url("");
         $scope.loggedIn = SessionService.isLoggedIn;
-    }
+    };
+    $scope.loginPopUp = function () {
+        ngDialog.open({
+            template: '/assets/userapp/partials/login/login.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        })
+    };
 }]);
