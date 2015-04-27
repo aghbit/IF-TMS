@@ -4,16 +4,25 @@
         <a ng-click="tmp()" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
     </div>
     <div class="row">
-        <ul class="collapsible popout col l8 offset-l2" id="teams">
-            <li  ng-repeat="team in teams">
+        <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
+        <ul ng-if="teams.length != 0" class="collapsible">
+            <li ng-repeat="team in teams">
                 <div class="collapsible-header">
-                    {{team.name}}
-                    <a ng-click="tmp()" class="waves-effect right waves-teal btn-flat">Delete</a>
+                    <b>{{team.name}}</b>
+                    <a href="/#" class="right"><i class="mdi-content-clear"></i></a>
+                    <a href="/#" class="right"><i class="mdi-image-edit"></i></a>
                 </div>
                 <div class="collapsible-body">
-                    <ul class="collection col s12">
-                        <li class="collection-item active ">Captain:  {{team.captain.name + " " + team.captain.surname}}</li>
-                        <li ng-repeat="player in team.players" class="collection-item">{{player.name + " " + player.surname}}</li>
+                    <ul class="collection">
+                        <li class="collection-item active">
+                            Captain:  {{team.captain.name + " " + team.captain.surname}}
+                            <div class="right">Contact: {{team.captain.phone}}</div>
+                        </li>
+                        <li ng-repeat="player in team.players" class="collection-item">
+                            {{player.name + " " + player.surname}}
+                            <a href="/#" class="right mdi-content-clear"></a>
+                        </li>
+                        <a ng-click="addAnotherPlayer(team.id)" class="collection-item active"><i class="mdi-content-add"></i>Add Player</a>
                     </ul>
                 </div>
             </li>
