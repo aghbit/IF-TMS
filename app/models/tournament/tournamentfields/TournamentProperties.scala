@@ -1,9 +1,9 @@
-package models.tournament.tournamentstate
+package models.tournament.tournamentfields
 
 import play.api.libs.json.Json
-import models.tournament.tournamentstate.JsonFormatTournamentDescription._
-import models.tournament.tournamentstate.JsonFormatTournamentSettings._
-import models.tournament.tournamentstate.JsonFormatTournamentTerm._
+import models.tournament.tournamentfields.JsonFormatTournamentDescription._
+import models.tournament.tournamentfields.JsonFormatTournamentSettings._
+import models.tournament.tournamentfields.JsonFormatTournamentTerm._
 
 /**
  * Edited by: Przemek
