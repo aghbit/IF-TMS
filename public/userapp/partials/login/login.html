@@ -1,15 +1,41 @@
-<div class="ngdialog-message">
-    <h3>Log in</h3>
+<div class="col s12 indigo" style="padding: 20px">
+    <div class="ngdialog-message">
+        <h3>Log in</h3>
+    </div>
 </div>
 
-<div class="ngdialog-buttons" ng-controller="LoginController">
-        <div class="row">
-            <form ng-submit="submit()">
-                <input type="text" ng-model="credentials.login" name="text" />
-                <input type="password" ng-model="credentials.password" name="text" />
-                <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Submit <i
-                        class="mdi-content-send right"></i></button>
-            </form>
-            <a ng-click="registerPopUp()" class="ngdialog-clickable">or Sign Up</a>
+<div ng-controller="LoginController">
+    <form ng-submit="submit()" class="col s12">
+        <div class="ngdialog-buttons">
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="login" type="text" ng-model="credentials.login">
+                    <label for="login">Login</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="password" type="password" ng-model="credentials.password">
+                    <label for="password">Password</label>
+                </div>
+            </div>
+
         </div>
-    </div>
+
+
+        <div class="row">
+            <div class="col s12 grid-example m8 l7">
+                <a class="btn indigo waves-effect waves-light" ng-click="registerPopUp()">Sign Up</a>
+            </div>
+            <div class="col s12 grid-example m5 l5">
+                <button class="btn indigo waves-effect waves-light" type="submit" id="submit" name="submit">Login <i
+                        class="mdi-content-send right"></i></button>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>
+
+

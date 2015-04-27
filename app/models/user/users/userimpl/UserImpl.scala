@@ -11,6 +11,11 @@ import reactivemongo.bson.BSONObjectID
 class UserImpl(override val _id: BSONObjectID,
                override val personalData: UserProperties)
   extends AbstractUser(_id, personalData, isAdmin = false, isActive = false, isBanned = false) {
+
+  /*
+  Only for Spring Data. Don't use it. For more information check: TMS-76
+   */
+  def this() = this(null, null)
 }
 
 

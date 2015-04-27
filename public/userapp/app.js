@@ -5,21 +5,23 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
 
     $stateProvider
+        // INDEX
         .state('mainPage', {
             url: "/",
-            templateUrl: "/assets/userapp/partials/main.html",
+            templateUrl: "/assets/userapp/partials/index.html",
             controller: 'IndexController'
         })
-        .state('statistics', {
-            url: "/statistics",
-            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
-            controller: 'StatisticsController'
-        })
+
+
+        //USERS
         .state('users', {
             url: "/users",
             templateUrl: "/assets/userapp/partials/users/user.html",
             controller: 'UserController'
         })
+
+
+        // TOURNAMENTS
         .state('tournaments', {
             url: "/tournaments",
             templateUrl: "/assets/userapp/partials/tournaments/tournaments.html",
@@ -42,20 +44,30 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('tournaments/id/teams', {
             url: "/tournaments/{id}/teams",
-            templateUrl: "/assets/userapp/partials/teams/show.html",
-            controller: 'TeamsShowController'
+            templateUrl: "/assets/userapp/partials/tournaments/showTeams.html",
+            controller: 'TournamentsTeamsShowController'
         })
+
+
+        // TEAMS
         .state('teams/id/addPlayer', {
             url: "/teams/{id}/addPlayer",
-            templateUrl: "/assets/userapp/partials/players/addPlayer.html",
+            templateUrl: "/assets/userapp/partials/teams/addPlayer.html",
             controller: 'TeamsAddPlayerController'
         })
         .state('teams/id', {
             url: "/teams/{id}",
-            templateUrl: "/assets/userapp/partials/players/show.html",
-            controller: 'PlayersShowController'
+            templateUrl: "/assets/userapp/partials/teams/showPlayers.html",
+            controller: 'TeamsPlayersShowController'
         })
 
+
+        // STATISTICS - UNUSED
+        .state('statistics', {
+            url: "/statistics",
+            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
+            controller: 'StatisticsController'
+        })
 });
 
 mainApp.factory('SessionService', function() {
