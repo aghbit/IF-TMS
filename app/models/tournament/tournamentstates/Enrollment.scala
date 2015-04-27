@@ -1,11 +1,11 @@
-package models.tournament.tournamentfields
+package models.tournament.tournamentstates
 
 import java.util
 
 import models.strategy.TournamentStrategy
 import models.team.Team
 import models.tournament.Tournament
-import models.tournament.tournamentstate.{TournamentStaff, TournamentTerm, TournamentProperties}
+import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer

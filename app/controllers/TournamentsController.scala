@@ -5,13 +5,13 @@ import java.util
 import controllers.security.{TokenImpl, AuthorizationAction}
 import models.enums.ListEnum
 import models.strategy.strategies.SingleEliminationStrategy
-import models.tournament.tournamentfields.BeforeEnrollment
-import models.tournament.tournamentstate.{TournamentDescription, TournamentStaff, TournamentProperties}
+import models.tournament.tournamentstates.BeforeEnrollment
+import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
-import models.tournament.tournamentstate.JsonFormatTournamentProperties._
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.collection.JavaConversions._
 
