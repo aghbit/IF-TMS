@@ -5,7 +5,7 @@
     </div>
     <div class="row">
         <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
-        <ul ng-if="teams.length != 0" class="collapsible">
+        <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2" id="team-collaps">
             <li ng-repeat="team in teams">
                 <div class="collapsible-header">
                     <b>{{team.name}}</b>
@@ -22,7 +22,8 @@
                             {{player.name + " " + player.surname}}
                             <a href="/#" class="right mdi-content-clear"></a>
                         </li>
-                        <a ng-click="addAnotherPlayer(team.id)" class="collection-item active"><i class="mdi-content-add"></i>Add Player</a>
+                        <a ng-click="addAnotherPlayer(team.id)" class="collection-item active" id="add-player">
+                        <i class="mdi-content-add"></i>Add Player</a>
                     </ul>
                 </div>
             </li>
