@@ -12,11 +12,9 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
             min:[6,00],
             max:[23,00],
             closeOnSelect: true
-        });
-
-    });
-
-    $scope.isLoggedIn = SessionService.isLoggedIn;
+        })
+    })
+    $scope.isLoggedIn = SessionService.isLoggedIn
     $scope.submit = function(){
         var enrollDeadline = $('#enrollDeadline')[0].value;
         var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
@@ -40,7 +38,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
                 "canEnroll": true, "level": $scope.level, "discipline": $scope.discipline
             }
         }).success(function(){
-            notification("Tournament created!", 4000, true);
+            notification("Tournament created!", 4000, true)
             $location.path("tournaments/myTournaments")
         }).error(function(){
             notification("Wrong data, tournament can't be created!", 4000, false)
