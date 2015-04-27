@@ -9,7 +9,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         });
         $('.timepicker').pickatime({
             format:'HH:i:00',
-            min:[6,00],
+            min: [6, 00], 
             max:[23,00],
             closeOnSelect: true
         })
