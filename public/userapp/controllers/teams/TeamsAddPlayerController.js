@@ -9,13 +9,13 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
             "surname": $scope.surname
         }).
             success(function (data, status, headers, config) {
-                toast("Player "+$scope.name+" was added!", 4000)
+                notification("Player " + $scope.name + " was added!", 4000, true)
                 $scope.name = ''
                 $scope.surname = ''
 
             }).
             error(function (data, status, headers, config) {
-                toast("Can't add, probably too many players in team!", 4000)
+                notification("Can't add, probably too many players in team!", 4000, false)
             });
 
     };

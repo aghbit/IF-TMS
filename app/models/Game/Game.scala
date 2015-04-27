@@ -1,13 +1,14 @@
 package models.Game
 
 import models.strategy.Match
+
 /**
  * Created by ludwik on 13.12.14.
  */
-class Game(var right : Option[Game]=None, var left:Option[Game]=None,var parent:Option[Game]=None, var value:Option[Match]=None){
+class Game(var right: Option[Game] = None, var left: Option[Game] = None, var parent: Option[Game] = None, var value: Option[Match] = None) {
 
-  def createFullEmptyTree(height : Int):Game = {
-    if(height>0) {
+  def createFullEmptyTree(height: Int): Game = {
+    if (height > 0) {
       left = Some(Game())
       right = Some(Game())
       left = Some(left.get.createFullEmptyTree(height - 1))
@@ -20,7 +21,7 @@ class Game(var right : Option[Game]=None, var left:Option[Game]=None,var parent:
 
 }
 
-object Game{
+object Game {
   def apply() = new Game()
 }
 
