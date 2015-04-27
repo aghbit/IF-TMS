@@ -1,7 +1,7 @@
 /**
  * Created by szymek on 08.03.15.
  */
-mainApp.controller('TeamsShowController', ['$scope',  '$http', '$stateParams', 'SessionService',
+mainApp.controller('TournamentsTeamsShowController', ['$scope',  '$http', '$stateParams', 'SessionService',
     function ($scope, $http, $stateParams, SessionService) {
     $http.get('api/tournaments/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
