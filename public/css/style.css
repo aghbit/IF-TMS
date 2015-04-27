@@ -202,3 +202,21 @@ footer.page-footer {
 @media only screen and (min-width : 993px) {
     .notification {
         float: right; } }
+
+
+ .ngdialog-message {
+     font-family: Helvetica Narrow, sans-serif;
+     color: #fffffc;
+     position: relative;
+     margin-left: 10%;
+     margin-bottom: 0%;
+ }
+.ngdialog-buttons {
+    position: relative;
+    margin-left: 18%;
+    margin-bottom: 6%;
+}
+.row{
+    position:relative;
+    margin-bottom: 0%;
+}
