@@ -7,6 +7,7 @@ import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
+import play.api.libs.json.JsError
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
@@ -22,13 +23,17 @@ object UsersController extends Controller{
 
   def createUser() = Action.async(parse.json){
     request =>
-      val userProperties = request.body.validate[UserProperties]
-      val user = UserImpl(userProperties.get)
-      try {
-        repository.insert(user)
-        Future.successful(Created)
-      } catch {
-        case e:UserWithThisLoginExistsInDB => Future.failed(e)
+      val userProperties = request.body.validate[UserProperties].asEither
+      userProperties match {
+        case Right(uP) =>
+          val user = UserImpl(uP)
+          try {
+            repository.insert(user)
+            Future.successful(Created)
+          } catch {
+            case e:UserWithThisLoginExistsInDB => Future.failed(e)
+          }
+        case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
   }
 

@@ -47,6 +47,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
                     notification("You have been successfully registered. You may now log in.", 4000, true);
                 }).
                 error(function (data, status, headers, config) {
+                    alert(status);
+                    alert(data);
                     notification("Sorry. User exists or error occurred.", 4000, false);
                 });
         }else {
