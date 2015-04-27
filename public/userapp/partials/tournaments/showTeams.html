@@ -1,12 +1,30 @@
 <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
     <div class="row">
-        <ul class="collapsible col l8 offset-l2" id="teams">{{tournament.description.name}}
-            <li  ng-repeat="team in teams">
-                <div class="collapsible-header">{{team.name}}</div>
+        <p class="col s8 m7 flow-text"><b>{{tournament.description.name}} teams:</b></p>
+        <a ng-click="tmp()" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
+    </div>
+    <div class="row">
+        <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
+        <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2" id="team-collaps">
+            <li ng-repeat="team in teams">
+                <div class="collapsible-header">
+                    <b>{{team.name}}</b>
+                    <a href="/#" class="right"><i class="mdi-content-clear"></i></a>
+                    <a href="/#" class="right"><i class="mdi-image-edit"></i></a>
+                </div>
                 <div class="collapsible-body">
-                    <h5 class="col l4 offset-l1">
-                        Captain:  {{team.captain.name}} {{team.captain.surname}}
-                    </h5>
+                    <ul class="collection">
+                        <li class="collection-item active">
+                            Captain:  {{team.captain.name + " " + team.captain.surname}}
+                            <div class="right">Contact: {{team.captain.phone}}</div>
+                        </li>
+                        <li ng-repeat="player in team.players" class="collection-item">
+                            {{player.name + " " + player.surname}}
+                            <a href="/#" class="right mdi-content-clear"></a>
+                        </li>
+                        <a ng-click="addAnotherPlayer(team.id)" class="collection-item active" id="add-player">
+                        <i class="mdi-content-add"></i>Add Player</a>
+                    </ul>
                 </div>
             </li>
         </ul>

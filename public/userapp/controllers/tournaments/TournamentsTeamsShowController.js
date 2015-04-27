@@ -1,8 +1,8 @@
 /**
  * Created by szymek on 08.03.15.
  */
-mainApp.controller('TeamsShowController', ['$scope',  '$http', '$stateParams', 'SessionService',
-    function ($scope, $http, $stateParams, SessionService) {
+mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService',
+    function ($scope, $location, $http, $stateParams, SessionService) {
     $http.get('api/tournaments/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
             $scope.tournament = data;
@@ -18,5 +18,9 @@ mainApp.controller('TeamsShowController', ['$scope',  '$http', '$stateParams', '
 
         }).error(function(data, status, headers, config, statusText) {
         });
+
+    $scope.addAnotherPlayer = function(teamID){
+        $location.path('/teams/' + teamID + '/addPlayer');
+    }
 
 }]);
