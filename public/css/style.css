@@ -13,7 +13,25 @@
 .row .col#myTournaments{
   padding: 0 0;
 }
+<<<<<<< Updated upstream
 
+=======
+.my_trans{
+    background-color: rgba(200, 211, 208, 0.8);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    -moz-box-shadow:    5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    box-shadow:         5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    width:800px;
+}
+.logged{
+position:absolute;
+    margin-left: auto;
+    margin-right: auto;
+}
+>>>>>>> Stashed changes
 .content-bg {
     margin: 4%;
     position: relative;
