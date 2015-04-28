@@ -76,6 +76,13 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/statistics/statistics.html",
             controller: 'StatisticsController'
         })
+
+        //ERRORS
+        .state('400', {
+            url: "/400/{message}",
+            templateUrl: "assets/userapp/partials/errors/400.html",
+            controller: '400Controller'
+        })
 });
 
 mainApp.factory('SessionService', function() {

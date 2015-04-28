@@ -19,7 +19,7 @@ case class UserProperties(name: String,
 }
 object JsonFormat {
   implicit val userPropertiesFormat:Format[UserProperties] = (
-    (JsPath \ "name").format[String](minLength[String](5) andKeep maxLength[String](20)) and
+    (JsPath \ "name").format[String](minLength[String](3) andKeep maxLength[String](20)) and
       (JsPath \ "login").format[String](minLength[String](5) andKeep maxLength[String](20)) and
       (JsPath \ "password").format[String](minLength[String](5) andKeep maxLength[String](20)) and
       (JsPath \ "phone").format[String](pattern(new Regex("^[0-9]+$"), "error.regex")) and
