@@ -16,8 +16,6 @@ mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','
                 history.back()
             }).
             error(function(data, status, headers, config) {
-                alert(status)
-                alert(data)
                 notification("Sorry. Wrong credentials.", 4000, false);
             });
     };
