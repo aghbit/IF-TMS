@@ -31,7 +31,8 @@ object UsersController extends Controller{
             repository.insert(user)
             Future.successful(Created)
           } catch {
-            case e:UserWithThisLoginExistsInDB => Future.failed(e)
+            case e:UserWithThisLoginExistsInDB => Future.failed(new Exception("DUPA1"))
+            case e:Exception => Future.failed(new Exception("DUPA"))
           }
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }

@@ -7,15 +7,12 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
     $scope.validatePasswordField = function(){
         if($scope.password == null || $scope.password.length<5 || $scope.password.length > 20){
             $scope.passwordClass = "invalid";
-            return false;
         }else{
             $scope.passwordClass = "";
             if($scope.password2 == null || $scope.password != $scope.password2){
                 $scope.password2Class = "invalid";
-                return false;
             }else {
                 $scope.password2Class = "";
-                return true;
             }
         }
 
@@ -26,11 +23,15 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
                     $scope.loginClass = "invalid";
-                    return false;
                 }).
                 error(function (data, status, headers, config){
-                    $scope.loginClass = "";
-                    return true;
+                    if(status==404){
+                        $scope.loginClass ="";
+                    }else{
+                        $scope.closeThisDialog();
+                        $location.url(status + "/" + "Internal Server Error. ")
+                        notification("Sorry. Error occurred.", 4000, false);
+                    }
                 })
         }else{
             $scope.loginClass = "invalid";
@@ -40,10 +41,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
     $scope.validateNameField = function() {
         if($scope.name == null || $scope.name.length < 3 || $scope.name.length > 20){
             $scope.nameClass = "invalid";
-            return false;
         }else {
             $scope.nameClass = "";
-            return true;
         }
     }
 
@@ -52,10 +51,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
         var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         if(!pattern.test($scope.mail)){
             $scope.mailClass = "invalid";
-            return false;
         }else {
             $scope.mailClass = "";
-            return true;
         }
 
     }
@@ -64,10 +61,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
         var pattern= /^[0-9]+$/
         if(!pattern.test($scope.phone)){
             $scope.phoneClass = "invalid";
-            return false;
         }else {
             $scope.phoneClass = "";
-            return true;
         }
 
     }
