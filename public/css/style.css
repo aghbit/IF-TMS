@@ -207,6 +207,11 @@ footer.page-footer {
     margin-left: 3rem; }
 .notification.rounded {
     border-radius: 24px; }
+
+.ngdialog-clickable {
+    cursor: pointer;
+}
+
 @media only screen and (max-width : 600px) {
     .notification {
         width: 100%;
@@ -221,20 +226,21 @@ footer.page-footer {
     .notification {
         float: right; } }
 
+.ngdialog-message {
+    font-family: Helvetica Narrow, sans-serif;
+    color: #fffffc;
+    position: relative;
+    margin-left: 10%;
+    margin-bottom: 0%;
+}
 
- .ngdialog-message {
-     font-family: Helvetica Narrow, sans-serif;
-     color: #fffffc;
-     position: relative;
-     margin-left: 10%;
-     margin-bottom: 0%;
- }
 .ngdialog-buttons {
     position: relative;
     margin-left: 18%;
     margin-bottom: 6%;
 }
-.row{
-    position:relative;
+
+.row {
+    position: relative;
     margin-bottom: 0%;
 }

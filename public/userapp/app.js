@@ -62,14 +62,6 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
         })
 
 
-        // LOGIN
-        .state('login', {
-            url: "/login",
-            templateUrl: "/assets/userapp/partials/login/login.html",
-            controller: 'LoginController'
-        })
-
-
         // STATISTICS - UNUSED
         .state('statistics', {
             url: "/statistics",

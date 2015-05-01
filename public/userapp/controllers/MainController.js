@@ -1,8 +1,8 @@
-mainApp.controller('MainController', ['$scope', 'ngDialog','SessionService','$location', function($scope, ngDialog,SessionService,$location) {
+mainApp.controller('MainController', ['$scope', '$rootScope', 'ngDialog', 'SessionService', '$location', function ($scope, $rootScope, ngDialog, SessionService, $location) {
 
     $scope.loggedIn = SessionService.isLoggedIn;
 
-    $scope.$on('LOGIN_EVENT', function(event) {
+    $rootScope.$on('LOGIN_EVENT', function (event) {
         $scope.loggedIn = SessionService.isLoggedIn;
     });
 
@@ -12,5 +12,13 @@ mainApp.controller('MainController', ['$scope', 'ngDialog','SessionService','$lo
         notification("You have been successfully logged out.", 4000, true);
         $location.url("");
         $scope.loggedIn = SessionService.isLoggedIn;
+    }
+
+    $scope.loginPopUp = function () {
+        ngDialog.open({
+            template: '/assets/userapp/partials/login/login.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        });
     }
 }]);

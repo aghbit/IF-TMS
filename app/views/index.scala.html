@@ -42,7 +42,7 @@
                                 </ul>
                                 <ul class="right">
                                     <li><div id="notification-container"></div></li>
-                                    <li ng-hide="loggedIn"><a href="#/login" class="waves-effect waves-light">Log in</a></li>
+                                    <li ng-hide="loggedIn"><a ng-click="loginPopUp()" class="waves-effect waves-light">Log in</a></li>
                                     <li ng-show="loggedIn"><a class="dropdown-button waves-effect waves-light" id="optionsdropdownbutton" href="#" data-activates="optionsdropdown"><i class="mdi-navigation-menu"></i>
                                     </a>
                                     </li>
