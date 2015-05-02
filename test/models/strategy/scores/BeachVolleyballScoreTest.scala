@@ -10,14 +10,14 @@ import reactivemongo.bson.BSONObjectID
  * Created by Rafal on 2014-12-07.
  */
 @RunWith(classOf[JUnitRunner])
-class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
+class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter {
 
-  var bvolScore:BeachVolleyballScore = _
+  var bvolScore: BeachVolleyballScore = _
   val host = BSONObjectID.generate
   val guest = BSONObjectID.generate
 
-  before{
-    bvolScore = BeachVolleyballScore(host,guest)
+  before {
+    bvolScore = BeachVolleyballScore(host, guest)
   }
 
 
@@ -47,7 +47,7 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
 
     //then
     assert(hostSets.size === 2, "AddPoint: FirstTest1")
-    assert(guestSets .size === 2, "AddPoint: FirstTest2")
+    assert(guestSets.size === 2, "AddPoint: FirstTest2")
     assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest3")
     assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest4")
   }
@@ -66,7 +66,7 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
   }
 
 
-  test("IsEnded: Match is finished test"){
+  test("IsEnded: Match is finished test") {
 
     //given
     for (i <- 0 until 42) bvolScore.addPoint(host)
@@ -117,7 +117,7 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
 
   }
 
-  test("IsEnded: advantage finally made test"){
+  test("IsEnded: advantage finally made test") {
 
     //given
     for (i <- 0 until 21) bvolScore.addPoint(host)
@@ -145,8 +145,8 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter{
     //when
 
     //then
-    assert(bvolScore.getWinner==Some(host), "WinnerTest")
-    assert(bvolScore.getLoser==Some(guest), "LoserTest")
+    assert(bvolScore.getWinner == Some(host), "WinnerTest")
+    assert(bvolScore.getLoser == Some(guest), "LoserTest")
   }
 
 }

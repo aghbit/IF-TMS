@@ -1,4 +1,4 @@
-package models.tournament.tournamentstate
+package models.tournament.tournamentfields
 
 import org.scalatest.FunSuite
 

@@ -12,11 +12,11 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
             "captainMail": $scope.captainMail
         }).
             success(function (data, status, headers, config) {
-                toast("Team "+$scope.teamName+" was created!", 4000)
+                notification("Team " + $scope.teamName + " was created!", 4000, true)
                 $location.path("/teams/"+data.id+"/addPlayer")
             }).
             error(function (data, status, headers, config) {
-                window.alert("Team exists in db!")
+                notification("Team exists in db!", 4000, false)
             });
 
     };

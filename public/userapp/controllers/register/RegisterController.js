@@ -2,7 +2,7 @@
  * Created by Piotr on 2015-02-04.
  */
 
-mainApp.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDialog', function ($scope, $http, $location, ngDialog) {
 
     $scope.checkPasswordsEquality = function(){
         if($scope.password != $scope.password2){
@@ -53,4 +53,13 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
             notification("Sorry. You have typed wrong data.", 4000, false);
         }
     };
+
+    $scope.loginPopUp = function () {
+        $scope.closeThisDialog();
+        ngDialog.open({
+            template: '/assets/userapp/partials/login/login.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        });
+    }
 }]);

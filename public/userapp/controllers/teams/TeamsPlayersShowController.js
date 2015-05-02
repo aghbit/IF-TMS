@@ -10,7 +10,7 @@ mainApp.controller('PlayersShowController', ['$scope',  '$http', '$stateParams',
             });
 
         }).error(function(data, status, headers, config, statusText) {
-            alert("Something went wrong!")
+            notification("Something went wrong!", 4000, false)
         });
 
 }]);

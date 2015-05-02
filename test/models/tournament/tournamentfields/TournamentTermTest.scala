@@ -1,4 +1,4 @@
-package models.tournament.tournamentstate
+package models.tournament.tournamentfields
 
 import org.joda.time.DateTime
 import org.scalatest.FunSuite
