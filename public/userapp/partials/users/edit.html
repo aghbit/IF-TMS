@@ -1,0 +1,37 @@
+
+<div class="col s12 indigo" style="padding: 20px">
+    <div class="ngdialog-message">
+        <h3>Edit Account</h3>
+    </div>
+</div>
+        <div ng-controller="UserController">
+            <div class="input-field col s9">
+                <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
+                       ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                <label for="login">{{user.userProperties.login}}</label>
+            </div>
+            <div class="input-field col s9">
+                <input id="name" type="text" ng-model="name" ng-change="checkLoginAvailability()"
+                       ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                <label for="name">{{user.userProperties.name}}</label>
+            </div>
+            <div class="input-field col s9">
+                <input id="phone" type="text" ng-model="phone" ng-change="checkLoginAvailability()"
+                       ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                <label for="phone">{{user.userProperties.phone}}</label>
+            </div>
+            <div class="input-field col s9">
+                <input id="mail" type="text" ng-model="mail" ng-change="checkLoginAvailability()"
+                       ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                <label for="mail">{{user.userProperties.mail}}</label>
+            </div>
+            </div>
+            <div align="center" class="col s9">
+
+                <button class="btn waves-effect indigo waves-light" type="submit" name="action">Submit
+                    <i class="mdi-content-send right"></i>
+                </button>
+            </div>
+
+
+

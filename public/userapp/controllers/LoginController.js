@@ -3,8 +3,8 @@
  */
 mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','SessionService', function($scope,$http,$location, ngDialog, SessionService) {
     $scope.credentials = {
-        login : "Passarinho",
-        password : "Passarinho123"
+        login : "Bucq",
+        password : "idefix1."
     };
     $scope.submit = function(){
         $http.post('/api/login', {"login" : $scope.credentials.login, "password": $scope.credentials.password}).
