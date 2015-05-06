@@ -1,4 +1,4 @@
-var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog']);
+var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies']);
 mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
