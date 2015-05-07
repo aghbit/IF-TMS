@@ -40,16 +40,21 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 }
 
 .collection .collection-item.active {
-    background-color: #3f51b5
+    background-color: #3f51b5;
 }
 
 #team-collaps {
     padding: 0;
 }
 
-#add-player {
-    margin-left: 42.5%;
-    width: 17%;
+
+.clickable {
+    cursor: hand;
+    color: white;
+}
+
+.clickable.right {
+    color: #342FB5;
 }
 
 .collection {
@@ -154,6 +159,9 @@ footer.page-footer {
 .ng-scope{
     background-color: rgba(213, 219, 255, 0.14);
 }
+
+
+
 .progress-text-inner {
     display: table-cell;
     font-size: 20px;
