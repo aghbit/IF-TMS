@@ -19,7 +19,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
     };
 
     $scope.checkLoginAvailability = function(){
-        if($scope.login != null && $scope.login.length>5 && $scope.login.length<20){
+        if($scope.login != null && $scope.login.length>=5 && $scope.login.length<=20){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
                     $scope.loginClass = "invalid";
@@ -59,7 +59,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
     $scope.validatePhoneField = function() {
         //regex for email address RFC 5322
         var pattern= /^[0-9]+$/
-        if(!pattern.test($scope.phone)){
+        if(!pattern.test($scope.phone) || $scope.phone ==null || $scope.phone.length<9 || $scope.phone.length>11){
             $scope.phoneClass = "invalid";
         }else {
             $scope.phoneClass = "";
