@@ -277,6 +277,16 @@ footer.page-footer {
     position: relative;
     margin-bottom: 0%;
 }
+.inputValidationError {
+    color:#F44336;
+    font-size: 11px;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+    margin-bottom: 0px;
+}
 
 .players-list, .players-list > li {
     background-color: transparent;
