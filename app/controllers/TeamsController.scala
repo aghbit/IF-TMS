@@ -34,7 +34,7 @@ object TeamsController extends Controller {
       val teamName = request.body.\("teamName").validate[String](minLength[String](5)).asEither
       val captainName = request.body.\("captainName").validate[String](minLength[String](5)).asEither
       val captainSurname = request.body.\("captainSurname").validate[String](minLength[String](5)).asEither
-      val captainPhone = request.body.\("captainPhone").validate[String](pattern(new Regex("^[0-9]+$"))).asEither
+      val captainPhone = request.body.\("captainPhone").validate[String](pattern(new Regex("^[0-9]{9}$"))).asEither
       val captainMail = request.body.\("captainMail").validate[String](email).asEither
 
       val inputsListEither = Map(("teamName", teamName), ("captainName", captainName),
