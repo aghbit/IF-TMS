@@ -3,6 +3,18 @@
  */
 mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location',
     function ($scope, $http, $stateParams, $location) {
+
+        $http.get('api/tournaments/'+$stateParams.id, {}).
+            success(function(data, status, headers, config) {
+                $scope.tournament = data;
+                $('.collapsible').collapsible({
+                    accordion : false
+                });
+
+            }).error(function(data, status, headers, config, statusText) {
+
+            });
+
     $scope.submit = function () {
         $http.post('/api/tournaments/'+$stateParams.id+"/teams", {
             "teamName": $scope.teamName,
