@@ -9,27 +9,59 @@
 .icon-block {
   padding: 0 15px;
 }
-
+body{
+    font-family: 'Maven Pro', sans-serif !important;
+}
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea{
+/*all text inputs in the project*/
+    border-bottom: 1px solid #3f51b5;
+    -webkit-box-shadow: 0 1px 0 0 #9FA8DA;
+    -moz-box-shadow: 0 1px 0 0 #9FA8DA;
+    box-shadow: 0 1px 0 0 ;
+}
+.input-field input[type=text]:focus + label, .input-field input[type=password]:focus + label, .input-field input[type=email]:focus + label, .input-field input[type=url]:focus + label, .input-field input[type=date]:focus + label, .input-field input[type=tel]:focus + label, .input-field input[type=number]:focus + label, .input-field input[type=search]:focus + label, .input-field textarea:focus.materialize-textarea + label {
+    color: #342FB5; }
 .row .col#myTournaments{
   padding: 0 0;
 }
-.my_trans{
-    background-color: rgba(200, 211, 208, 0.8);
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    -webkit-box-shadow: 5px 3px 6px 0px rgba(37, 50, 50, 0.59);
-    -moz-box-shadow:    5px 3px 6px 0px rgba(37, 50, 50, 0.59);
-    box-shadow:         5px 3px 6px 0px rgba(37, 50, 50, 0.59);
-    width:800px;
+
+.collection .collection-item.active {
+    background-color: #3f51b5
 }
-.logged{
-    margin-left: auto;
-    margin-right: auto;
+
+#team-collaps {
+    padding: 0;
+}
+
+#add-player {
+    margin-left: 42.5%;
+    width: 17%;
+}
+
+.collection {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.btn.waves-effect.waves-light{
+    background-color: #342FB5 !important;
 }
 .content-bg {
     margin: 4%;
     position: relative;
+    margin: 0px 20px 0px;
+    height: calc(100% - 6vh);
+}
+.indigo-button{
+    background-color: #3f51b5 !important;
+}
+
+.page-content{
+    padding: 10px 20px 10px;
+    width: 70%;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: auto;
+    min-height: calc(100% - 12vh)
 }
 
 footer {
@@ -40,6 +72,7 @@ footer {
     width:100%;
 }
 footer.page-footer {
+    height: 6vh;
     background-color: #3f51b5;
 }
 
@@ -72,3 +105,185 @@ footer.page-footer {
     min-width: 50px;
 }
 
+.active-progress {
+    background-color: rgba(38, 166, 154, 1);
+    color: white;
+    opacity: 1.0;
+}
+
+.wrong-progress {
+    color: white;
+
+    background-color: rgb(243, 47, 24);
+}
+
+.carousel-container {
+    width: 85%;
+    text-align: center;
+    overflow: auto;
+    margin: auto;
+    opacity: 0.8;
+}
+
+.form-content {
+    width: 100%;
+    text-align: center;
+    min-height: 45vh;
+    width: 60%;
+    margin: auto;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.0);
+    /*border: 1px dashed lightgrey;*/
+}
+
+
+.ng-scope{
+    background-color: rgba(213, 219, 255, 0.14);
+}
+.progress-text-inner {
+    display: table-cell;
+    font-size: 20px;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.create-tournament-button{
+    margin : 20px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+.indicator {
+    background-color: #5c6bc0 !important;
+}
+
+.create-tour-tab {
+    cursor: pointer;
+    color: #1a237e !important;
+}
+
+.create-tour-tab:hover {
+    color: #2d3dd8 !important;
+}
+
+.create-tour-submit {
+    background-color: #5c6bc0;
+}
+
+.create-tour-submit:hover {
+    background-color: rgba(102, 118, 212, 0.80);
+}
+
+#notification-container {
+    display: block;
+    position: static !important;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 1001; }
+@media only screen and (max-width : 600px) {
+    #notification-container {
+        min-width: 100%;
+        bottom: initial !important;
+    } }
+@media only screen and (min-width : 601px) and (max-width : 992px) {
+    #notification-container {
+        min-width: 30%;
+        left: initial !important;
+        bottom: initial !important;
+    } }
+@media only screen and (min-width : 993px) {
+    #notification-container {
+        min-width: 8%;
+        max-width: 800px;
+        top: initial !important;
+        right: initial !important;
+    } }
+
+.notification {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-clip: padding-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    top: 0px;
+    width: auto;
+    clear: both;
+    margin-top: 10px;
+    position: relative;
+    max-width: 100%;
+    height: 48px;
+    line-height: 48px;
+    background-color: transparent !important;
+    padding: 0px 25px;
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #fff;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between; }
+.notification .btn, .notification .btn-large, .notification .btn-flat {
+    margin: 0;
+    margin-left: 3rem; }
+.notification.rounded {
+    border-radius: 24px; }
+
+.ngdialog-clickable {
+    cursor: pointer;
+}
+
+@media only screen and (max-width : 600px) {
+    .notification {
+        width: 100%;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+        background-clip: padding-box; } }
+@media only screen and (min-width : 601px) and (max-width : 992px) {
+    .notification {
+        float: left; } }
+@media only screen and (min-width : 993px) {
+    .notification {
+        float: right; } }
+
+.ngdialog-message {
+    font-family: Helvetica Narrow, sans-serif;
+    color: #fffffc;
+    position: relative;
+    margin-left: 10%;
+    margin-bottom: 0%;
+}
+
+.ngdialog-buttons {
+    position: relative;
+    margin-left: 18%;
+    margin-bottom: 6%;
+}
+
+.row {
+    position: relative;
+    margin-bottom: 0%;
+}
+.inputValidationError {
+    color:#F44336;
+    font-size: 11px;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+    margin-bottom: 0px;
+}

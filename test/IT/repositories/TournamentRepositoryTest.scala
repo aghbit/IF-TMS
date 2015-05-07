@@ -3,9 +3,9 @@ package IT.repositories
 import java.util
 
 import models.strategy.strategies.SingleEliminationStrategy
-import models.tournament.tournamentfields.BeforeEnrollment
-import models.tournament.tournaments.Tournament
-import models.tournament.tournamentstate._
+import models.tournament.Tournament
+import models.tournament.tournamentstates.BeforeEnrollment
+import models.tournament.tournamentfields._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.scalatest.mock.MockitoSugar
@@ -16,7 +16,7 @@ import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
 import org.joda.time.DateTime
 import org.springframework.data.mongodb.core.query._
-import models.tournament.tournamentstate.JsonFormatTournamentProperties._
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 
 
 /**

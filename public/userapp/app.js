@@ -1,28 +1,30 @@
-var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog']);
+var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies']);
 mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
 
 
     $stateProvider
+        // INDEX
         .state('mainPage', {
             url: "/",
-            templateUrl: "/assets/userapp/partials/main.html",
+            templateUrl: "/assets/userapp/partials/index.html",
             controller: 'IndexController'
         })
-        .state('statistics', {
-            url: "/statistics",
-            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
-            controller: 'StatisticsController'
-        })
+
+
+        //USERS
         .state('users', {
             url: "/users",
             templateUrl: "/assets/userapp/partials/users/user.html",
             controller: 'UserController'
         })
+
+
+        // TOURNAMENTS
         .state('tournaments', {
             url: "/tournaments",
-            templateUrl: "/assets/userapp/partials/tournaments/main.html",
+            templateUrl: "/assets/userapp/partials/tournaments/tournaments.html",
             controller: 'TournamentsController'
         })
         .state('tournaments/create', {
@@ -35,12 +37,49 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/tournaments/myTournaments.html",
             controller: 'TournamentsMyTournamentsController'
         })
-        .state('login', {
-            url: "/login",
-            templateUrl: "/assets/userapp/partials/login/login.html",
-            controller: 'LoginController'
+        .state('tournaments/id/enrollment', {
+            url: "/tournaments/{id}/enrollment",
+            templateUrl: "/assets/userapp/partials/tournaments/enrollment.html",
+            controller: 'TournamentsEnrollmentController'
+        })
+        .state('tournaments/id/teams', {
+            url: "/tournaments/{id}/teams",
+            templateUrl: "/assets/userapp/partials/tournaments/showTeams.html",
+            controller: 'TournamentsTeamsShowController'
         })
 
+
+        // TEAMS
+        .state('teams/id/addPlayer', {
+            url: "/teams/{id}/addPlayer",
+            templateUrl: "/assets/userapp/partials/teams/addPlayer.html",
+            controller: 'TeamsAddPlayerController'
+        })
+        .state('teams/id', {
+            url: "/teams/{id}",
+            templateUrl: "/assets/userapp/partials/teams/showPlayers.html",
+            controller: 'TeamsPlayersShowController'
+        })
+
+
+        // STATISTICS - UNUSED
+        .state('statistics', {
+            url: "/statistics",
+            templateUrl: "/assets/userapp/partials/statistics/statistics.html",
+            controller: 'StatisticsController'
+        })
+
+        //ERRORS
+        .state('400', {
+            url: "/400/{message}",
+            templateUrl: "assets/userapp/partials/errors/400.html",
+            controller: '400Controller'
+        })
+        .state('500', {
+            url: "/500/{message}",
+            templateUrl: "assets/userapp/partials/errors/500.html",
+            controller: '500Controller'
+        })
 });
 
 mainApp.factory('SessionService', function() {

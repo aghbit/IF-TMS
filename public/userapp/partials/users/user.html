@@ -1,72 +1,9 @@
-<div style="background-image: url('http://student.agh.edu.pl/~lbukowsk/TMS.png');
-position: fixed !important;
-height: 100%;width: 100%;
-background-size: cover;
-top:60px;
-">
-
-    <div class="not_logged" ng-if="user==null">
-        <div class="valign-wrapper" style="padding-top: 50px">
-            <div class="center">
-        <div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
-        {{message}}
-            </div></div></div>
+<div class="page-content">
+    <div class="row">
+        <h5 ng-if="user == null">{{message}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Login: {{user.userProperties.login}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Name: {{user.userProperties.name}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Phone: {{user.userProperties.phone}}</h5>
+       <h5 ng-if="user!=null" class="col l3 ">Mail: {{user.userProperties.mail}}</h5>
     </div>
-    <div class="logged" ng-if="user!=null">
-    <div class="container" style="padding-top: 50px">
-    <div class="valign-wrapper">
-    <div class="center">
-    <div class="my_trans">
-<ul>
-    <li>
-        <table class="centered">
-            <thead>
-            <tr>
-                <th data-field="name"><i class="mdi-action-accessibility"></i> Name</th>
-                <th data-field="login"><i class="mdi-action-account-circle"></i> Login</th>
-                <th data-field="phone"><i class="mdi-action-settings-phone"></i> Phone</th>
-                <th data-field="mail"><i class="mdi-action-markunread-mailbox"></i> Mail</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-                <td> {{user.userProperties.name}}</td>
-                <td> {{user.userProperties.login}}</td>
-                <td> {{user.userProperties.phone}}</td>
-                <td> {{user.userProperties.mail}}</td>
-            </tr>
-
-
-            </tbody>
-        </table>
-    </li>
-    <li>
-       <div class="row" style="padding-top: 30px;padding-left: 20px">
-
-
-               <a  class="waves-effect indigo waves-light btn" ng-click="editPopUp()">
-                   <i class="mdi-action-settings left"></i>
-                   Edit Account</a>
-           <a  class="waves-effect indigo waves-light btn" ng-click="passwordChangePopUp()">
-               Change Password
-               <i class="mdi-action-perm-identity left"></i>
-               </a>
-           <a  class="waves-effect indigo waves-light btn" ng-click="deletePopUp()">
-               Delete Account
-               <i class="mdi-action-delete left"></i>
-
-           </a>
-
-
-
-       </div>
-
-
-
-    </li>
-
-</ul>
-        </div>
-    </div></div></div>
 </div>

@@ -2,7 +2,7 @@ package models.tournaments.tournamentstate
 
 import java.util
 
-import models.tournament.tournamentstate.TournamentStaff
+import models.tournament.tournamentfields.TournamentStaff
 import models.user.User
 import org.junit.runner.RunWith
 import org.mockito.Mockito
