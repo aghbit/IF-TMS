@@ -29,7 +29,7 @@ object JsonFormat {
     (JsPath \ "name").format[String](minLength[String](3) andKeep maxLength[String](20)) and
       (JsPath \ "login").format[String](minLength[String](5) andKeep maxLength[String](20)) and
       (JsPath \ "password").format[String](minLength[String](5) andKeep maxLength[String](20)) and
-      (JsPath \ "phone").format[String](minLength[String](9) andKeep maxLength[String](11)
+      (JsPath \ "phone").format[String](minLength[String](9) andKeep maxLength[String](9)
         andKeep pattern(new Regex("^[0-9]+$"), "error.regex")) and
       (JsPath \ "mail").format[String](email)
     )(UserProperties.apply, unlift(UserProperties.unapply))

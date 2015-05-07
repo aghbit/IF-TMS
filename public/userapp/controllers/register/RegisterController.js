@@ -59,7 +59,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
     $scope.validatePhoneField = function() {
         //regex for email address RFC 5322
         var pattern= /^[0-9]+$/
-        if(!pattern.test($scope.phone) || $scope.phone ==null || $scope.phone.length<9 || $scope.phone.length>11){
+        if(!pattern.test($scope.phone) || $scope.phone ==null || $scope.phone.length!=9){
             $scope.phoneClass = "invalid";
         }else {
             $scope.phoneClass = "";
