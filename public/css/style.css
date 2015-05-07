@@ -277,3 +277,18 @@ footer.page-footer {
     position: relative;
     margin-bottom: 0%;
 }
+
+.players-list, .players-list > li {
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.players-list > :first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.players-list > :first-child:before {
+    content: '(C) ';
+}
+
