@@ -1,44 +1,7 @@
 <div class="page-content">
     <div class="row">
 
-        <div class="col s6">
-            <div class="row">
-            <div class="col l12" id="myTournaments">
-            <div class="collapsible-header unclickable">{{tournament.description.name}}</div>
-            <div>
-                <h5>
-                    <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
-                </h5>
-                <h5>
-                    <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
-                </h5>
-                <h5>
-                    <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
-                </h5>
-                <h5>
-                    <i class="mdi-notification-event-note"></i>End Date: {{tournament.term.end}}
-                </h5>
-                <h5 class="col l6 ">
-                    <i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}
-                </h5>
-                <h5 class="col l6 ">
-                    <i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}
-                </h5>
-                <h5 class="col l6 ">
-                    <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}
-                </h5>
-                <h5 class="col l6 ">
-                    <i class="mdi-action-polymer"></i> Discipline: {{tournament.settings.discipline}}
-                </h5>
-                <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
-            </div>
-            </div>
-            </div>
-
-        </div>
-        <div class="row col s6">
-
-        <form ng-submit="submit()" class="col l8 offset-l2">
+        <form ng-submit="submit()" class="col l4 offset-l4">
             <div class="row col l12">
                 <div class="input-field">
                     <input id="teamName" type="text" ng-model="teamName">
@@ -72,8 +35,5 @@
             <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Enroll team!<i class="mdi-content-send right"></i></button>
 
         </form>
-
-        </div>
-
     </div>
 </div>
