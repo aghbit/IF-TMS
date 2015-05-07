@@ -16,7 +16,7 @@
                     <ul class="collection">
                         <li class="collection-item active">
                             Captain:  {{team.captain.name + " " + team.captain.surname}}
-                            <div class="right">Contact: {{team.captain.phone}}</div>
+                            <div class="right">Contact: {{team.phone + ", " + team.mail}}</div>
                         </li>
                         <li ng-repeat="player in team.players" class="collection-item">
                             {{player.name + " " + player.surname}}
