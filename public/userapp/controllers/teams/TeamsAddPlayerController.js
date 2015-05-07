@@ -9,7 +9,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
             "surname": $scope.surname
         }).
             success(function (data, status, headers, config) {
-                notification("Player " + $scope.name + " was added!", 4000, true)
+                notification("Player " + $scope.name + " has been added!", 4000, true)
                 $scope.name = ''
                 $scope.surname = ''
 

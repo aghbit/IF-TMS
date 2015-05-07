@@ -245,6 +245,10 @@ footer.page-footer {
     cursor: pointer;
 }
 
+.unclickable {
+    cursor: default;
+}
+
 @media only screen and (max-width : 600px) {
     .notification {
         width: 100%;
