@@ -1,8 +1,8 @@
 /**
  * Created by Szymek on 07.03.15.
  */
-mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location',
-    function ($scope, $http, $stateParams, $location) {
+mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location', 'ErrorMessageService',
+    function ($scope, $http, $stateParams, $location, ErrorMessageService) {
     $scope.submit = function () {
         $http.post('/api/tournaments/'+$stateParams.id+"/teams", {
             "teamName": $scope.teamName,
@@ -16,6 +16,8 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
                 $location.path("/teams/"+data.id+"/addPlayer")
             }).
             error(function (data, status, headers, config) {
+                ErrorMessageService.content = data;
+                $location.url(status+"/");
                 notification("Team exists in db!", 4000, false)
             });
 
