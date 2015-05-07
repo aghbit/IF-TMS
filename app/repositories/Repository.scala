@@ -18,7 +18,6 @@ trait Repository[T] {
     mongoTemplate.remove(obj, collectionName)
   }
 
-
   def insert[T](obj: T) = {
     mongoTemplate.save(obj, collectionName)
   }

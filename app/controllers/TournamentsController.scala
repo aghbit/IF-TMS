@@ -3,14 +3,15 @@ package controllers
 import java.util
 
 import controllers.security.{TokenImpl, AuthorizationAction}
+import models.enums.ListEnum
 import models.strategy.strategies.SingleEliminationStrategy
-import models.tournament.tournamentfields.BeforeEnrollment
-import models.tournament.tournamentstate.{TournamentDescription, TournamentStaff, TournamentProperties}
+import models.tournament.tournamentstates.BeforeEnrollment
+import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, Controller}
+import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
-import models.tournament.tournamentstate.JsonFormatTournamentProperties._
-import models.tournament.tournamentstate.JsonFormatTournamentDescription._
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.collection.JavaConversions._
 
@@ -31,8 +32,9 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
       val beforeEnrollment = BeforeEnrollment(tournamentProperties, new SingleEliminationStrategy(), tournamentStaff)
+      val tournament = beforeEnrollment.startNext()
       try {
-        repository.insert(beforeEnrollment)
+        repository.insert(tournament)
         Future.successful(Created)
       } catch {
         case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
@@ -45,7 +47,22 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val query = new Query(Criteria where "staff.admin" is userID)
       val tournaments = repository.find(query)
-      val tournamentsProperties = tournaments.map(tournament => tournament.properties)
-      Future.successful(Ok(Json.toJson(tournamentsProperties)))
+      val tournamentsJson = tournaments.map(tournament => tournament.toJson)
+      Future.successful(Ok(Json.toJson(tournamentsJson)))
+  }
+  def getTournaments = Action.async {
+    request =>
+      val query = new Query()
+      val tournaments = repository.find(query)
+      val tournamentsJson = tournaments.map(tournament => tournament.toJson)
+      Future.successful(Ok(Json.toJson(tournamentsJson)))
+  }
+
+  def getTournament(id: String) = AuthorizationAction.async {
+    request =>
+      val query = new Query(Criteria where "_id" is BSONObjectID(id))
+      val tournament = repository.find(query).get(ListEnum.head)
+      val tournamentJson = tournament.toJson
+      Future.successful(Ok(tournamentJson));
   }
 }

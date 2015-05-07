@@ -1,4 +1,4 @@
-<div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
+<div class="page-content">
     <div class="row">
         <h5 ng-if="tournaments.length == 0">You don't have any tournaments.</h5>
         <ul ng-if="tournaments.length != 0" class="collapsible col l8 offset-l2" id="myTournaments">
@@ -7,6 +7,12 @@
                 <div class="collapsible-body">
                     <h5 class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
+                    </h5>
+                    <h5 class="col l4 offset-l1">
+                        <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/enrollment">Enroll me!</a>
+                    </h5>
+                    <h5 class="col l4 offset-l1">
+                        <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
                     </h5>
                     <h5 class="col l7 right-align">
                         <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}

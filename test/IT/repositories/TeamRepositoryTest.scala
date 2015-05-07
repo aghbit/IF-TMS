@@ -1,5 +1,6 @@
 package IT.repositories
 
+import models.player.players.Captain
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.VolleyballTeam
 import models.user.User
@@ -20,12 +21,11 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
   var underTest: TeamRepository = _
   var team: Team = _
-  var captain: User = _
+  var captain: Captain = _
   before {
     underTest = new TeamRepository()
     team = VolleyballTeam("Czarne ninje")
-    captain = mock[User]
-    Mockito.when(captain._id).thenReturn(BSONObjectID.generate)
+    captain = Captain("Szymek", "Seget", "923856826", "mymail@mail")
   }
 
   test("Simple test") {
