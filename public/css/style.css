@@ -288,6 +288,12 @@ footer.page-footer {
     margin-bottom: 0px;
 }
 
+.team-name {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .players-list, .players-list > li {
     background-color: transparent;
     font-size: 16px;
