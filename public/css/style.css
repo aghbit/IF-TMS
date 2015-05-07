@@ -39,6 +39,10 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
     color: white;
 }
 
+.clickable.right {
+    color: #342FB5;
+}
+
 .collection {
     margin-bottom: 0;
     margin-top: 0;

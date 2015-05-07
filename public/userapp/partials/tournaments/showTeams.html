@@ -9,21 +9,21 @@
             <li ng-repeat="team in teams">
                 <div class="collapsible-header">
                     <b>{{team.name}}</b>
-                    <a href="/#" class="right"><i class="mdi-content-clear"></i></a>
-                    <a href="/#" class="right"><i class="mdi-image-edit"></i></a>
+                    <a ng-click="deleteTeam(team.id)" class="clickable right"><i class="mdi-content-clear"></i></a>
+                    <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
                 </div>
                 <div class="collapsible-body">
                     <ul class="collection">
                         <li class="collection-item active">
                             Captain:  {{team.captain.name + " " + team.captain.surname}}
                             <div class="right indigo-button">
-                                <a ng-click="showContactInfo(team)" class = "clickable">Contact</a>
+                                <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
                             </div>
 
                         </li>
                         <li ng-repeat="player in team.players" class="collection-item">
                             {{player.name + " " + player.surname}}
-                            <a href="/#" class="right mdi-content-clear"></a>
+                            <a ng-click="deletePlayer(player.id)" class="right clickable mdi-content-clear"></a>
                         </li>
                         <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
                         <i class="mdi-content-add"></i>Add Player</a>

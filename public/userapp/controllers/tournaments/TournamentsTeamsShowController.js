@@ -3,6 +3,8 @@
  */
 mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
     function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
+
+
     $http.get('api/tournaments/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
             $scope.tournament = data;
@@ -34,5 +36,17 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
 
     $scope.addAnotherTeam = function(){
         $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
+    };
+
+    $scope.deleteTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.editTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.deletePlayer = function(id) {
+        console.log(id);
     };
 }]);
