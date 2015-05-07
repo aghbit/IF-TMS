@@ -17,13 +17,14 @@ import reactivemongo.bson.BSONObjectID
 trait VolleyballTeams extends Team {
 
   val _id: BSONObjectID
-  val name: String
   val playersNumber: Int
   val benchWarmersNumber: Int
 
   protected var players: java.util.List[Player] = new util.ArrayList[Player]()
   protected var benchWarmers: java.util.List[Player] = new util.ArrayList[Player]()
   protected var captainID: Option[BSONObjectID] = None
+  protected var phone: String = _
+  protected var mail: String = _
 
   override def getMembersIDs: java.util.List[BSONObjectID] = {
     val result = new util.ArrayList[BSONObjectID]()
@@ -76,6 +77,8 @@ trait VolleyballTeams extends Team {
       throw new NoSuchElementException("Captain has to be a team member!")
     }
     captainID = Option(captain._id)
+    phone = captain.phone
+    mail = captain.mail
   }
 
   override def getCaptainID: BSONObjectID = captainID match {
@@ -100,7 +103,9 @@ trait VolleyballTeams extends Team {
     "name"->name,
     "players"->JsArray(playersJsons),
     "benchWarmers" -> JsArray(benchWarmersJsons),
-    "captain" -> players.filter(player=> player._id==getCaptainID).head.toJson
+    "captain" -> players.filter(player=> player._id==getCaptainID).head.toJson,
+    "phone" -> phone,
+    "mail" -> mail
     )
   }
 }

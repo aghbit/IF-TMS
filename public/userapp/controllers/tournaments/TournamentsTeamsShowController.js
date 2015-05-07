@@ -1,8 +1,10 @@
 /**
  * Created by szymek on 08.03.15.
  */
-mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService',
-    function ($scope, $location, $http, $stateParams, SessionService) {
+mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
+    function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
+
+
     $http.get('api/tournaments/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
             $scope.tournament = data;
@@ -19,8 +21,32 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         }).error(function(data, status, headers, config, statusText) {
         });
 
+    $scope.showContactInfo = function(team){
+        console.log(team)
+        ngDialog.open({
+            template: '/assets/userapp/partials/teams/contactInfo.html',
+            className: 'ngdialog-theme-plain',
+            data: team,
+            closeByDocument: true
+        })
+    };
     $scope.addAnotherPlayer = function(teamID){
         $location.path('/teams/' + teamID + '/addPlayer');
-    }
+    };
 
+    $scope.addAnotherTeam = function(){
+        $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
+    };
+
+    $scope.deleteTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.editTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.deletePlayer = function(id) {
+        console.log(id);
+    };
 }]);
