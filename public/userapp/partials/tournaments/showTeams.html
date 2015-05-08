@@ -1,32 +1,36 @@
-<div class="card-panel #f5f5f5 grey lighten-4  z-depth-1 content-bg">
+<div class="page-content">
     <div class="row">
         <p class="col s8 m7 flow-text"><b>{{tournament.description.name}} teams:</b></p>
         <a download="teams.csv" ng-click="generateCSV()" ng-href="{{ url }}" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
     </div>
     <div class="row">
         <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
-        <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2" id="team-collaps">
+        <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection"  id="team-collaps">
             <li ng-repeat="team in teams">
                 <div class="collapsible-header">
                     <b>{{team.name}}</b>
-                    <a href="/#" class="right"><i class="mdi-content-clear"></i></a>
-                    <a href="/#" class="right"><i class="mdi-image-edit"></i></a>
+                    <a ng-click="deleteTeam(team.id)" class="clickable right"><i class="mdi-content-clear"></i></a>
+                    <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
                 </div>
                 <div class="collapsible-body">
                     <ul class="collection">
                         <li class="collection-item active">
                             Captain:  {{team.captain.name + " " + team.captain.surname}}
-                            <div class="right">Contact: {{team.captain.phone}}</div>
+                            <div class="right indigo-button">
+                                <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
+                            </div>
+
                         </li>
                         <li ng-repeat="player in team.players" class="collection-item">
                             {{player.name + " " + player.surname}}
-                            <a href="/#" class="right mdi-content-clear"></a>
+                            <a ng-click="deletePlayer(player.id)" class="right clickable mdi-content-clear"></a>
                         </li>
-                        <a ng-click="addAnotherPlayer(team.id)" class="collection-item active" id="add-player">
+                        <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
                         <i class="mdi-content-add"></i>Add Player</a>
                     </ul>
                 </div>
             </li>
+            <a ng-click="addAnotherTeam()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Team</a>
         </ul>
     </div>
 </div>

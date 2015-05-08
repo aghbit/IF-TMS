@@ -1,12 +1,12 @@
 /**
  * Created by szymek on 08.03.15.
  */
-mainApp.config(['$compileProvider',
-    function ($compileProvider) {
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/);
-    }]);
-mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService',
-    function ($scope, $location, $http, $stateParams, SessionService) {
+
+
+mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
+    function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
+
+
         $scope.getTournament = function(){
             $http.get('api/tournaments/' + $stateParams.id, {}).
                 success(function(data, status, headers, config) {
@@ -47,11 +47,36 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         var blob = new Blob([ document ], { type : 'text/plain' });
         $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );
     };
-
+                
+    $scope.showContactInfo = function(team){
+        console.log(team)
+        ngDialog.open({
+            template: '/assets/userapp/partials/teams/contactInfo.html',
+            className: 'ngdialog-theme-plain',
+            data: team,
+            closeByDocument: true
+        })
+    };
 
     $scope.addAnotherPlayer = function(teamID){
         $location.path('/teams/' + teamID + '/addPlayer');
     };
+    
 
 
+    $scope.addAnotherTeam = function(){
+        $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
+    };
+
+    $scope.deleteTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.editTeam = function(id) {
+        console.log(id);
+    };
+
+    $scope.deletePlayer = function(id) {
+        console.log(id);
+    };
 }]);
