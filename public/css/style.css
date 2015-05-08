@@ -24,18 +24,37 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 .row .col#myTournaments{
   padding: 0 0;
 }
+.my_trans{
+    background-color: rgba(200, 211, 208, 0.8);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    -moz-box-shadow:    5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    box-shadow:         5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    width:800px;
+}
+.logged{
+    margin-left: auto;
+    margin-right: auto;
+}
 
 .collection .collection-item.active {
-    background-color: #3f51b5
+    background-color: #3f51b5;
 }
 
 #team-collaps {
     padding: 0;
 }
 
-#add-player {
-    margin-left: 42.5%;
-    width: 17%;
+
+.clickable {
+    cursor: hand;
+    color: white;
+}
+
+.clickable.right {
+    color: #342FB5;
 }
 
 .collection {
@@ -140,6 +159,9 @@ footer.page-footer {
 .ng-scope{
     background-color: rgba(213, 219, 255, 0.14);
 }
+
+
+
 .progress-text-inner {
     display: table-cell;
     font-size: 20px;
@@ -245,6 +267,27 @@ footer.page-footer {
     cursor: pointer;
 }
 
+.picker__date-display {
+    background: #3f51b5; }
+
+.picker__weekday-display {
+    background: #303f9f; }
+
+.picker__day--highlighted {
+    color: #3f51b5; }
+
+.picker--focused .picker__day--selected {
+    background: #c5cae9; }
+
+.picker__year-display {
+    color: #c5cae9; }
+
+.picker--focused .picker__day--highlighted {
+    color: #3f51b5; }
+
+.picker__close, .picker__today {
+    color: #3f51b5; }
+
 @media only screen and (max-width : 600px) {
     .notification {
         width: 100%;
@@ -277,3 +320,34 @@ footer.page-footer {
     position: relative;
     margin-bottom: 0%;
 }
+.inputValidationError {
+    color:#F44336;
+    font-size: 11px;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+    margin-bottom: 0px;
+}
+
+.team-name {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.players-list, .players-list > li {
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.players-list > :first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.players-list > :first-child:before {
+    content: '(C) ';
+}
+
