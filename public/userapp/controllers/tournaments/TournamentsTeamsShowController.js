@@ -1,6 +1,15 @@
 /**
  * Created by szymek on 08.03.15.
  */
+//this config is important,without, it wont work genereting CSV (angular blocks 'blob' prefix as unsafe)
+mainApp.config( [
+    '$compileProvider',
+    function( $compileProvider )
+    {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|local|blob):/);
+        // Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
+    }
+]);
 
 
 mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
@@ -29,7 +38,10 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $scope.getTournament();
         $scope.getTeams();
         $scope.generateCSV = function(){
-        $scope.toParse = $scope.getTournament();
+        //Update data
+        $scope.getTournament();
+        $scope.getTeams();
+        //StringBuilder for my csv file
         var document = "";
         for(var i=0;i<$scope.teams.length;i++){
             var obj = $scope.teams[i];

@@ -15,10 +15,6 @@ trait TournamentStrategy {
 
   def updateTree(tree: EliminationTree): EliminationTree
 
-  def isReadyToSave:Boolean = {
-
-
-  }
 }
 
 
