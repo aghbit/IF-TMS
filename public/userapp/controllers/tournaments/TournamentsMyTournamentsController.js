@@ -11,4 +11,28 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
 
         });
 
+
+    $scope.startEnrollment = function(id){
+        $http.post('/api/tournaments/startEnrollment', {
+            "_id":id
+        }).success(function(){
+            notification("Tournament's enrollment started!", 4000, true)
+        }).error(function(){
+            notification("Enrollment cannot be started!", 4000, false)
+        })
+
+    };
+
+    $scope.stopEnrollment = function(id){
+        $http.post('/api/tournaments/startEnrollment', {
+            "_id":id
+        }).success(function(){
+            $scope.isEnrollmentStopped = true
+            notification("Tournament's enrollment stopped!", 4000, true)
+        }).error(function(){
+            notification("Enrollment cannot be stopped!", 4000, false)
+        })
+
+    };
+
 }]);

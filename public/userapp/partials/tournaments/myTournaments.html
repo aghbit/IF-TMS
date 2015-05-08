@@ -8,12 +8,26 @@
                     <h5 class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
                     </h5>
-                    <h5 class="col l4 offset-l1">
+                    <h5 ng-if="tournament.settings.canEnroll and !{{isEnrollmentStopped}}" class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/enrollment">Enroll me!</a>
                     </h5>
                     <h5 class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
                     </h5>
+                    <!---->
+                    <h5 ng-if="!tournament.settings.canEnroll" class="col l4 offset-l1">
+
+                        <div class="col s12 grid-example m8 l7">
+                            <a class="btn indigo waves-effect waves-light" ng-click="startEnrollment(tournament._id)">Start enrollment</a>
+                        </div>
+
+                    </h5>
+                    <h5 ng-if="tournament.settings.canEnroll" class="col l4 offset-l1">
+                        <div class="col s12 grid-example m8 l7">
+                            <a class="btn indigo waves-effect waves-light" ng-click="stopEnrollment(tournament._id)">Stop enrollment</a>
+                        </div>
+                    </h5>
+                    <!---->
                     <h5 class="col l7 right-align">
                         <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
                     </h5>
