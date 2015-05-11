@@ -14,6 +14,7 @@ trait TournamentStrategy {
   def drawTeamsInTournament(tree: EliminationTree, listOfTeams: List[Team]): EliminationTree
 
   def updateTree(tree: EliminationTree): EliminationTree
+
 }
 
 

@@ -1,0 +1,17 @@
+.not_logged{
+    text-align: center
+
+}
+.photo{
+    height: 100px;
+    width: 100px;
+
+}
+.logged{
+    padding-left: 150px;
+}
+.name{
+    padding-top: 10px;
+    font-size: 30px;
+
+}
