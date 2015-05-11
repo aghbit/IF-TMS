@@ -12,7 +12,9 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
                 });
 
             }).error(function(data, status, headers, config, statusText) {
-
+                $scope.closeThisDialog();
+                $location.url(status + "/" + data);
+                notification("Sorry. An error occured loading tournament info.", 4000, false);
             });
 
     $scope.submit = function () {
