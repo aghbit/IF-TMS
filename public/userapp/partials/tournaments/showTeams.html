@@ -1,7 +1,7 @@
 <div class="page-content">
     <div class="row">
         <p class="col s8 m7 flow-text"><b>{{tournament.description.name}} teams:</b></p>
-        <a ng-click="tmp()" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
+        <a download="teams.csv" ng-click="generateCSV()" ng-href="{{ url }}" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
     </div>
     <div class="row">
         <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
