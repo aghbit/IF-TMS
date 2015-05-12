@@ -1,6 +1,6 @@
 package controllers.security
 
-import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import reactivemongo.bson.BSONObjectID
 import repositories.TokenRepository
 import scala.collection.JavaConversions._
@@ -10,42 +10,38 @@ import scala.collection.JavaConversions._
  */
 object TokensKeeper {
 
-  private var tokens = Map[BSONObjectID, Token]()
+  private var tokens = List[Token]()
   private val repository = new TokenRepository()
 
   def addToken(token:Token) = {
-    val exists = tokens.get(token.getUserID)
-    exists match {
-      case Some(s) => removeTokenForUser(s.getUserID)
-      case None =>
+    if(tokens.exists(t => t.getUserID.equals(token.getUserID))){
+      removeTokenForUser(token.getUserID)
     }
-    tokens = tokens + ((token.getUserID, token))
+    tokens = tokens ::: List[Token](token)
     repository.insert(token)
   }
 
   def removeTokenForUser(id: BSONObjectID): Unit ={
-    val token = tokens.get(id)
-    repository.remove(token)
-    tokens = tokens.filterKeys(u => u!= id)
+    val query = new Query(Criteria where "userID" is id)
+    repository.remove(query)
+    tokens = tokens.filter(t => !t.getUserID.equals(id))
   }
 
   def containsToken(token:Token): Boolean ={
-    if(tokens.contains(token.getUserID)){
+    if(tokens.exists(t => t.getUserID.equals(token.getUserID))){
       true
-    }
-    else {
-      tokens = repository.find(new Query()).map(t => (t.getUserID, t)).toMap
-      tokens.contains(token.getUserID)
+    }else {
+      tokens = repository.find(new Query()).toList
+      tokens.exists(t => t.getUserID.equals(token.getUserID))
     }
   }
 
   def removeAllTokens() = {
-    tokens = Map[BSONObjectID, Token]()
+    tokens = List()
     repository.dropCollection()
   }
 
   def getTokensNumber = {
     tokens.size
   }
-
 }

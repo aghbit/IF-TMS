@@ -5,18 +5,13 @@ import reactivemongo.bson.BSONObjectID
 /**
  * Created by Szymek.
  */
-class TokenImpl(val token: String) extends Token {
-
-  def this(userID: BSONObjectID) = {
-    this(userID.stringify + System.nanoTime())
-  }
+case class TokenImpl(token: String, userID:BSONObjectID) extends Token {
 
   def this() = {
-    this("")
+    this(null, null)
   }
 
-
-  override def getUserID: BSONObjectID = BSONObjectID(token.substring(0, 24))
+  override def getUserID: BSONObjectID = userID
 
   override def equals(obj: Any): Boolean = obj match {
     case t: TokenImpl => t.token == this.token
@@ -32,6 +27,11 @@ class TokenImpl(val token: String) extends Token {
   }
 }
 object TokenImpl {
-  def apply(token:String) = new TokenImpl(token)
+  def apply(userID:BSONObjectID) = {
+    new TokenImpl(userID.stringify + System.nanoTime(), userID)
+  }
+  def apply(token:String) = {
+    new TokenImpl(token, BSONObjectID(token.substring(0, 24)))
+  }
 }
 
