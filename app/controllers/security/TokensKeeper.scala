@@ -1,33 +1,50 @@
 package controllers.security
 
+import org.springframework.data.mongodb.core.query.Query
+import reactivemongo.bson.BSONObjectID
+import repositories.TokenRepository
+import scala.collection.JavaConversions._
+
 /**
  * Created by Szymek.
  */
 object TokensKeeper {
 
-  private var tokens = List[Token]()
+  private var tokens = Map[BSONObjectID, Token]()
+  private val repository = new TokenRepository()
 
   def addToken(token:Token) = {
-    if(tokens.map(t => t.getUserID).contains(token.getUserID)){
-      val n = tokens.map(t => t.getUserID).indexOf(token.getUserID)
-      removeToken(tokens(n))
+    val exists = tokens.get(token.getUserID)
+    exists match {
+      case Some(s) => removeTokenForUser(s.getUserID)
+      case None =>
     }
-    tokens = tokens ::: List(token)
+    tokens = tokens + ((token.getUserID, token))
+    repository.insert(token)
   }
 
-  def removeToken(token:Token) = {
-    tokens = tokens.filter(t => t!=token)
+  def removeTokenForUser(id: BSONObjectID): Unit ={
+    val token = tokens.get(id)
+    repository.remove(token)
+    tokens = tokens.filterKeys(u => u!= id)
   }
 
   def containsToken(token:Token): Boolean ={
-    tokens.contains(token)
+    if(tokens.contains(token.getUserID)){
+      true
+    }
+    else {
+      tokens = repository.find(new Query()).map(t => (t.getUserID, t)).toMap
+      tokens.contains(token.getUserID)
+    }
   }
 
   def removeAllTokens() = {
-    tokens = List[Token]()
+    tokens = Map[BSONObjectID, Token]()
+    repository.dropCollection()
   }
 
-  def getTokensNumber() = {
+  def getTokensNumber = {
     tokens.size
   }
 

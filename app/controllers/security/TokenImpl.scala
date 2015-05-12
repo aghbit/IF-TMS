@@ -11,6 +11,11 @@ class TokenImpl(val token: String) extends Token {
     this(userID.stringify + System.nanoTime())
   }
 
+  def this() = {
+    this("")
+  }
+
+
   override def getUserID: BSONObjectID = BSONObjectID(token.substring(0, 24))
 
   override def equals(obj: Any): Boolean = obj match {
