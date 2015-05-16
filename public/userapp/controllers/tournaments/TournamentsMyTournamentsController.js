@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$cookieStore', function ($scope, $http, $cookieStore) {
+mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$cookieStore','$state', function ($scope, $http, $cookieStore, $state) {
     $scope.testmessage = "You have to be logged in to see user details!"
     $http.get('api/myTournaments', {}).
         success(function(data, status, headers, config) {
@@ -27,6 +27,7 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$c
         $http.post('/api/tournaments/startStopEnrollment', {
             "_id":id
         }).success(function(){
+            $state.reload();
             notification("Tournament's enrollment's state changed!", 4000, true)
         }).error(function(){
             notification("Enrollment state cannot be changed", 4000, false)
