@@ -32,7 +32,6 @@ object TournamentsController extends Controller{
       val userID = TokenImpl(request.headers.get("token").get).getUserID
       val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
       val beforeEnrollment = BeforeEnrollment(tournamentProperties, new SingleEliminationStrategy(), tournamentStaff)
-     // val tournament = beforeEnrollment.startNext()
       try {
         repository.insert(beforeEnrollment)
         Future.successful(Created)
@@ -42,7 +41,7 @@ object TournamentsController extends Controller{
       }
   }
 
-  def startEnrollment() = AuthorizationAction.async(parse.json) {
+  def startStopEnrollment() = AuthorizationAction.async(parse.json) {
     request =>
       val tournamentID = request.body.\("_id").validate[String].get
       val query = new Query(Criteria where "_id" is BSONObjectID(tournamentID))
@@ -50,21 +49,6 @@ object TournamentsController extends Controller{
       val enrollmentStateTournament = tournament.get(ListEnum.head).startNext()
       try {
         repository.insert(enrollmentStateTournament)
-        Future.successful(Created)
-      } catch {
-        case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Error starting enrollment!"))
-        case e:Throwable => Future.failed(e)
-      }
-  }
-
-  def stopEnrollment() = AuthorizationAction.async(parse.json) {
-    request =>
-      val tournamentID = request.body.\("_id").validate[String].get
-      val query = new Query(Criteria where "_id" is BSONObjectID(tournamentID))
-      val tournament = repository.find(query)
-      val afterEnrollmentStateTournament = tournament.get(ListEnum.head).startNext()
-      try {
-        repository.insert(afterEnrollmentStateTournament)
         Future.successful(Created)
       } catch {
         case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Error starting enrollment!"))

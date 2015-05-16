@@ -3,50 +3,50 @@
         <h5 ng-if="tournaments.length == 0">You don't have any tournaments.</h5>
         <ul ng-if="tournaments.length != 0" class="collapsible col l8 offset-l2" id="myTournaments">
             <li  ng-repeat="tournament in tournaments">
-                <div class="collapsible-header">{{tournament.description.name}}</div>
+                <div class="collapsible-header">{{tournament.properties.description.name}}</div>
                 <div class="collapsible-body">
                     <h5 class="col l4 offset-l1">
-                        <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
+                        <i class="mdi-maps-place"></i>Place: {{tournament.properties.description.place}}
                     </h5>
-                    <h5 ng-if="tournament.settings.canEnroll and !{{isEnrollmentStopped}}" class="col l4 offset-l1">
+                    <h5 ng-if="tournament.properties.settings.canEnroll" class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/enrollment">Enroll me!</a>
                     </h5>
                     <h5 class="col l4 offset-l1">
                         <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
                     </h5>
                     <!---->
-                    <h5 ng-if="!tournament.settings.canEnroll" class="col l4 offset-l1">
+                    <h5 ng-if="!tournament.properties.settings.canEnroll && !tournament.properties.settings.isEnrollmentEnded && checkOwner(tournament._id) " class="col l4 offset-l1">
 
                         <div class="col s12 grid-example m8 l7">
-                            <a class="btn indigo waves-effect waves-light" ng-click="startEnrollment(tournament._id)">Start enrollment</a>
+                            <a class="btn indigo waves-effect waves-light" ng-click="startStopEnrollment(tournament._id)">Start enrollment</a>
                         </div>
 
                     </h5>
-                    <h5 ng-if="tournament.settings.canEnroll" class="col l4 offset-l1">
+                    <h5 ng-if="tournament.properties.settings.canEnroll" class="col l4 offset-l1">
                         <div class="col s12 grid-example m8 l7">
-                            <a class="btn indigo waves-effect waves-light" ng-click="stopEnrollment(tournament._id)">Stop enrollment</a>
+                            <a class="btn indigo waves-effect waves-light" ng-click="startStopEnrollment(tournament._id)">Stop enrollment</a>
                         </div>
                     </h5>
                     <!---->
                     <h5 class="col l7 right-align">
-                        <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
+                        <i class="mdi-notification-event-note"></i>Start Date: {{tournament.properties.term.begin}}
                     </h5>
                     <h5 class="col l7 offset-l5 right-align">
-                        <i class="mdi-notification-event-note"></i>End Date: {{tournament.term.end}}
+                        <i class="mdi-notification-event-note"></i>End Date: {{tournament.properties.term.end}}
                     </h5>
                     <h5 class="col l3 ">
-                        <i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}
+                        <i class="mdi-image-healing"></i> Pitches: {{tournament.properties.settings.numberOfPitches}}
                     </h5>
                     <h5 class="col l3 ">
-                        <i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}
+                        <i class="mdi-social-people"></i> Max teams: {{tournament.properties.settings.numberOfTeams}}
                     </h5>
                     <h5 class="col l3 ">
-                        <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}
+                        <i class="mdi-social-poll"></i> Level: {{tournament.properties.settings.level}}
                     </h5>
                     <h5 class="col l3 ">
-                        <i class="mdi-action-polymer"></i> Discipline: {{tournament.settings.discipline}}
+                        <i class="mdi-action-polymer"></i> Discipline: {{tournament.properties.settings.discipline}}
                     </h5>
-                    <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
+                    <h6 class="col l12 center-align ">{{tournament.properties.description.description}}</h6>
                 </div>
             </li>
         </ul>

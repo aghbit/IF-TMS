@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', function ($scope, $http) {
+mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$cookieStore', function ($scope, $http, $cookieStore) {
     $scope.testmessage = "You have to be logged in to see user details!"
     $http.get('api/myTournaments', {}).
         success(function(data, status, headers, config) {
@@ -12,25 +12,24 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
         });
 
 
-    $scope.startEnrollment = function(id){
-        $http.post('/api/tournaments/startEnrollment', {
-            "_id":id
-        }).success(function(){
-            notification("Tournament's enrollment started!", 4000, true)
-        }).error(function(){
-            notification("Enrollment cannot be started!", 4000, false)
-        })
-
+    $scope.checkOwner = function(tid){
+        var cookie = $cookieStore.get('tms-token');
+        var id = cookie.substr(0,24)
+        for (i = 0; i < $scope.tournaments.length; i++) {
+            if($scope.tournaments[i]._id==tid) {
+                if($scope.tournaments[i].staff.admin==id) return true
+            }
+        }
+        return false
     };
 
-    $scope.stopEnrollment = function(id){
-        $http.post('/api/tournaments/startEnrollment', {
+    $scope.startStopEnrollment = function(id){
+        $http.post('/api/tournaments/startStopEnrollment', {
             "_id":id
         }).success(function(){
-            $scope.isEnrollmentStopped = true
-            notification("Tournament's enrollment stopped!", 4000, true)
+            notification("Tournament's enrollment's state changed!", 4000, true)
         }).error(function(){
-            notification("Enrollment cannot be stopped!", 4000, false)
+            notification("Enrollment state cannot be changed", 4000, false)
         })
 
     };
