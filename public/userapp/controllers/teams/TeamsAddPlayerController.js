@@ -43,5 +43,21 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
 
         $scope.endAdding = function(){
             $location.path('tournaments/myTournaments');
-        }
+        };
+
+        $scope.validateNameField = function() {
+            if($scope.name == null || $scope.name.length < 3 || $scope.name.length > 20){
+                $scope.nameClass = "invalid";
+            }else {
+                $scope.nameClass = "";
+            }
+        };
+
+        $scope.validateSurnameField = function() {
+            if($scope.surname == null || $scope.surname.length < 3 || $scope.surname.length > 20){
+                $scope.surnameClass = "invalid";
+            }else {
+                $scope.surnameClass = "";
+            }
+        };
 }]);
