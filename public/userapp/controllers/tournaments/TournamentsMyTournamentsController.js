@@ -10,5 +10,9 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
         }).error(function(data, status, headers, config, statusText) {
 
         });
-
+    $scope.rotateArrow = function(id){
+        console.log(this);
+        $(".mdi-content-send").toggleClass("rotate-clockwise");
+        $("#list-icon"+id).toggleClass("rotate-clockwise");
+    }
 }]);

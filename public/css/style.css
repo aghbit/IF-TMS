@@ -351,3 +351,12 @@ footer.page-footer {
     content: '(C) ';
 }
 
+.rotate-clockwise{
+    transition: 300ms ease all;
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+.tournaments-list{
+    /*padding-left: 5px !important;*/
+}

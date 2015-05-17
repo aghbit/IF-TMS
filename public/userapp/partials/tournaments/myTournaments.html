@@ -1,38 +1,21 @@
 <div class="page-content">
     <div class="row">
         <h5 ng-if="tournaments.length == 0">You don't have any tournaments.</h5>
-        <ul ng-if="tournaments.length != 0" class="collapsible col l8 offset-l2" id="myTournaments">
+        <ul ng-if="tournaments.length != 0" class="collapsible col l12" data-collapsible="accordion" id="myTournaments">
             <li  ng-repeat="tournament in tournaments">
-                <div class="collapsible-header">{{tournament.description.name}}</div>
+                <div class="collapsible-header" style="background-color: #303F9F; color: white" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.description.name}}</div>
                 <div class="collapsible-body">
-                    <h5 class="col l4 offset-l1">
-                        <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
-                    </h5>
-                    <h5 class="col l4 offset-l1">
-                        <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/enrollment">Enroll me!</a>
-                    </h5>
-                    <h5 class="col l4 offset-l1">
-                        <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
-                    </h5>
-                    <h5 class="col l7 right-align">
-                        <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
-                    </h5>
-                    <h5 class="col l7 offset-l5 right-align">
-                        <i class="mdi-notification-event-note"></i>End Date: {{tournament.term.end}}
-                    </h5>
-                    <h5 class="col l3 ">
-                        <i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}
-                    </h5>
-                    <h5 class="col l3 ">
-                        <i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}
-                    </h5>
-                    <h5 class="col l3 ">
-                        <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}
-                    </h5>
-                    <h5 class="col l3 ">
-                        <i class="mdi-action-polymer"></i> Discipline: {{tournament.settings.discipline}}
-                    </h5>
-                    <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
+                    <ul class="collection">
+                        <li class="collection-item" style="font-weight: 500;text-align: center; color: white; background-color: rgba(63, 81, 181, 0.4)"> <i class="mdi-notification-event-note"></i>{{tournament.term.begin}}<i class="mdi-navigation-arrow-forward"></i>End: {{tournament.term.end}} </li>
+                        <!--<li class="collection-item"><i class="mdi-notification-event-note"></i>End: {{tournament.term.end}} </li>-->
+                        <li class="collection-item">
+                            <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}</li>
+                        <!--<li class="collection-item"><i class="mdi-notification-event-note"></i>End Date: {{tournament.term.end}}</li>-->
+                        <li class="collection-item"><i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}</li>
+                        <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.settings.discipline}}</li>
+                        <li class="collection-item"><i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}</li>
+                        <li class="collection-item"><i class="mdi-social-people"></i> Max teams: {{tournament.settings.description}}</li>
+                    </ul>
                 </div>
             </li>
         </ul>
