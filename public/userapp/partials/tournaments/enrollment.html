@@ -43,35 +43,35 @@
                 <div class="input-field">
                     <input class="{{teamNameClass}}" id="teamName" type="text" ng-model="teamName" ng-blur="validateTeamNameField()">
                     <label for="teamName">Team Name</label>
-                    <span ng-if="teamNameClass == 'invalid'" class="inputValidationError">Team name must be 3-20 letters length.</span>
+                    <span ng-if="teamNameClass == 'invalid'" class="inputValidationError">Team name must be 3-20 letters long.</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
                     <input class="{{captainNameClass}}" id="captainName" type="text" ng-model="captainName" ng-blur="validateCaptainNameField()">
                     <label for="captainName">Captain Name</label>
-                    <span ng-if="captainNameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters length.</span>
+                    <span ng-if="captainNameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters long.</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
                     <input class="{{captainSurnameClass}}" id="captainSurname" type="text" ng-model="captainSurname" ng-blur="validateCaptainSurnameField()">
                     <label for="captainSurname">Captain Surname</label>
-                    <span ng-if="captainSurnameClass == 'invalid'" class="inputValidationError">Surname must be 3-20 letters length.</span>
+                    <span ng-if="captainSurnameClass == 'invalid'" class="inputValidationError">Surname must be 3-20 letters long.</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
                     <input class="{{captainPhoneClass}}" id="captainPhone" type="tel" ng-model="captainPhone" ng-blur="validateCaptainPhoneField()">
                     <label for="captainPhone">Captain Phone</label>
-                    <span ng-if="captainPhoneClass == 'invalid'" class="inputValidationError">This must be valid phone numbers. Only digits.</span>
+                    <span ng-if="captainPhoneClass == 'invalid'" class="inputValidationError">This must be a valid phone numbers. Only digits.</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
                     <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="validateCaptainMailField()">
                     <label for="captainMail">Captain Mail</label>
-                    <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be valid email address.</span>
+                    <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
                 </div>
             </div>
             <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Enroll team!<i class="mdi-content-send right"></i></button>

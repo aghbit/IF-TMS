@@ -59,6 +59,42 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         test: function () {
             $scope.registerQueue.active[0] = "carousel-element-active";
         }
+    };
+
+    $scope.validateTournamentNameField = function() {
+        if($scope.tournamentName == null || $scope.tournamentName.length < 3 || $scope.tournamentName.length > 40){
+            $scope.tournamentNameClass = "invalid";
+        }else {
+            $scope.tournamentNameClass = "";
+        }
+    };
+
+    $scope.validateTournamentPlaceField = function() {
+        if($scope.tournamentPlace == null || $scope.tournamentPlace.length < 3 || $scope.tournamentPlace.length > 40){
+            $scope.tournamentPlaceClass = "invalid";
+        }else {
+            $scope.tournamentPlaceClass = "";
+        }
+    };
+
+    $scope.validateNumberOfPitchesField = function() {
+        var pattern= /^[1-9][0-9]*$/
+        if(!pattern.test($scope.numberOfPitches)){
+            $scope.numberOfPitchesClass = "invalid";
+        }else {
+            $scope.numberOfPitchesClass = "";
+        }
+
     }
+
+    $scope.validateNumberOfTeamsField = function() {
+        var pattern= /^[2-9]$|^1[0-9]+$/
+        if(!pattern.test($scope.numberOfTeams)){
+            $scope.numberOfTeamsClass = "invalid";
+        }else {
+            $scope.numberOfTeamsClass = "";
+        }
+
+    };
 
 }]);

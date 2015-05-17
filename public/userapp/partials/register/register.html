@@ -19,14 +19,14 @@
                 <div class="input-field col s9">
                     <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
                     <label for="name">Name</label>
-                    <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters length.</span>
+                    <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters long.</span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s9">
                     <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateMailField()">
                     <label for="mail">Email</label>
-                    <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be valid email address.</span>
+                    <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
 
                 </div>
             </div>
@@ -41,7 +41,7 @@
                 <div class="input-field col s9">
                     <input class="passwordClass" id="password" type="password" ng-model="password" ng-change="validatePasswordField()">
                     <label for="password">Password</label>
-                    <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters length.</span>
+                    <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters long.</span>
                 </div>
             </div>
             <div class="row">
