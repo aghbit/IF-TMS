@@ -357,6 +357,17 @@ footer.page-footer {
     -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
     transform: rotate(90deg);
 }
-.tournaments-list{
-    /*padding-left: 5px !important;*/
+.tournaments-description{
+    text-align: center;
+    color: dimgrey;
+}
+.tournaments-header{
+    background-color: #303F9F;
+    color: white;
+}
+.tournaments-date{
+    font-weight: 500;
+    text-align: center;
+    color: white;
+    background-color: rgba(63, 81, 181, 0.4);
 }

@@ -10,9 +10,19 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
         }).error(function(data, status, headers, config, statusText) {
 
         });
+    $scope.openedTournamentItem = undefined;
     $scope.rotateArrow = function(id){
-        console.log(this);
-        $(".mdi-content-send").toggleClass("rotate-clockwise");
+        console.log("id", id);
         $("#list-icon"+id).toggleClass("rotate-clockwise");
+        if($scope.openedTournamentItem !== undefined && $scope.openedTournamentItem!== id){
+            $("#list-icon"+$scope.openedTournamentItem).toggleClass("rotate-clockwise");
+        }
+        if($scope.openedTournamentItem === id){
+            $scope.openedTournamentItem = undefined;
+            console.log("ss");
+        }
+        else{
+            $scope.openedTournamentItem = id;
+        }
     }
 }]);
