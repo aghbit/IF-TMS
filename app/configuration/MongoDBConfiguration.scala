@@ -1,6 +1,6 @@
 package configuration
 
-import com.mongodb.{MongoClient, Mongo}
+import com.mongodb.{MongoClientURI, MongoClient, Mongo}
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration
 
 /**
@@ -15,7 +15,7 @@ class MongoDBConfiguration(val databaseName: String) extends AbstractMongoConfig
     if(URI == null) {
       new MongoClient("127.0.0.1", 27017)
     } else {
-      new MongoClient(URI)
+      new MongoClient(new MongoClientURI(URI))
     }
   }
 }
