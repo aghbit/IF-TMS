@@ -1,54 +1,72 @@
 
-    <div class="ngdialog-message">
-        <h3>Create new account</h3>
+        <div class="col s12 indigo" style="padding: 20px">
+            <div class="ngdialog-message">
+                <h3>Create new account</h3>
+            </div>
+        </div>
 
-    </div>
-    <div class="ngdialog-buttons" ng-controller="RegisterController">
+    <div ng-controller="RegisterController">
         <form ng-submit="submit()" class="col s12">
+            <div class="ngdialog-buttons">
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="login" type="text" ng-model="login" ng-change="checkLoginAvailability()"
-                           ng-style="{'border-bottom' : loginBorderBottom, 'box-shadow' : loginBoxShadow}">
+                <div class="input-field col s9">
+                    <input class="{{loginClass}}" id="login" type="text" ng-model="login" ng-blur="checkLoginAvailability()">
                     <label for="login">Login</label>
+                    <span ng-if="loginClass == 'invalid'" class="inputValidationError">Login is unavailable. Please select another one.</span>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="name" type="text" ng-model="name">
+                <div class="input-field col s9">
+                    <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
                     <label for="name">Name</label>
+                    <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters length.</span>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="mail" type="email" ng-model="mail">
+                <div class="input-field col s9">
+                    <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateMailField()">
                     <label for="mail">Email</label>
+                    <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be valid email address.</span>
+
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="phone" type="text" ng-model="phone">
+                <div class="input-field col s9">
+                    <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="validatePhoneField()">
                     <label for="phone">Phone Number</label>
+                    <span ng-if="phoneClass == 'invalid'" class="inputValidationError">This must be valid phone numbers. Only digits.</span>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="password" type="password" ng-model="password" ng-change="checkPasswordsEquality()">
+                <div class="input-field col s9">
+                    <input class="passwordClass" id="password" type="password" ng-model="password" ng-change="validatePasswordField()">
                     <label for="password">Password</label>
+                    <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters length.</span>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s8">
-                    <input id="password2" type="password" ng-model="password2"
-                           ng-style="{'border-bottom' : password2BorderBottom, 'box-shadow' : password2BoxShadow}"
-                           ng-change="checkPasswordsEquality()">
+                <div class="input-field col s9">
+                    <input class="{{password2Class}}" id="password2" type="password" ng-model="password2" ng-change="validatePasswordField()">
                     <label for="password2">Confirm Password</label>
+                    <span ng-if="password2Class == 'invalid'" class="inputValidationError">Passwords don't match.</span>
+                </div>
+            </div>
+            </div>
 
+
+            <div class="row">
+                <div class="col s12 grid-example m8 l7">
+                    <a class="btn indigo waves-effect waves-light" ng-click="loginPopUp()">Sign In</a>
+                </div>
+                <div class="col s12 grid-example m5 l5">
+                    <button class="btn indigo waves-effect waves-light" type="submit" id="submit" name="submit">Register
+                        <i class="mdi-content-send right"></i></button>
                 </div>
             </div>
 
-            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Register <i class="mdi-content-send right"></i></button>
 
         </form>
-        <a ng-click="closeThisDialog()" href="#/login">or Sign In</a>
-    </div>
+
+</div>
+
 

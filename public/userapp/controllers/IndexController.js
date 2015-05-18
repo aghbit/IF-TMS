@@ -10,5 +10,5 @@ mainApp.controller('IndexController', ['$scope', 'ngDialog', function($scope, ng
             className: 'ngdialog-theme-plain',
             closeByDocument: true
         });
-    }
+    };
 }]);

@@ -1,0 +1,46 @@
+<div class="page-content">
+    <div class="row">
+
+        <div class="team-name col s12"><h2>Team {{team.name}}</h2></div>
+
+        <div class="col s6">
+            <div class="col l12">
+                <h5>
+                    <i class="mdi-social-people"></i> Players:
+                </h5>
+                <ul class="players-list">
+                    <li ng-repeat="player in team.players" >
+                        {{player.name}} {{player.surname}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col s6">
+            <form ng-submit="submit()" class="col l8 offset-l2">
+                <div class="row col l12">
+                    <div class="input-field">
+                        <input id="name" type="text" ng-model="name">
+                        <label for="name">Name</label>
+                    </div>
+                </div>
+                <div class="row col l12">
+                    <div class="input-field">
+                        <input id="surname" type="text" ng-model="surname">
+                        <label for="surname">Surname</label>
+                    </div>
+                </div>
+
+
+                <div class="row col l12">
+                    <button class="btn waves-effect waves-light right" type="submit" id="submit" name="submit">Add Player!
+                        <i class="mdi-content-send right"></i>
+                    </button>
+                </div>
+                <div class="row col l12">
+                    <a ng-show="loggedIn" class="btn indigo waves-effect waves-light right" ng-click="endAdding()">Done</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
