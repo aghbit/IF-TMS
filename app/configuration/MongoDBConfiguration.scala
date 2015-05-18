@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration
  * Created by Szymek.
  */
 
-class MongoDBConfiguration(val databaseName: String) extends AbstractMongoConfiguration {
+class MongoDBConfiguration(var databaseName: String) extends AbstractMongoConfiguration {
   override def getDatabaseName: String = databaseName
 
   override def mongo(): Mongo = {
@@ -15,6 +15,7 @@ class MongoDBConfiguration(val databaseName: String) extends AbstractMongoConfig
     if(URI == null) {
       new MongoClient("127.0.0.1", 27017)
     } else {
+      databaseName = "tms-production"
       new MongoClient(new MongoClientURI(URI))
     }
   }
