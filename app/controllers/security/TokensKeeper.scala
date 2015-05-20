@@ -27,7 +27,7 @@ object TokensKeeper {
     tokens = tokens.filter(t => !t.getUserID.equals(id))
   }
 
-  def containsToken(token:Token): Boolean ={
+  def containsToken(token:Token): Boolean = {
     if(tokens.exists(t => t.getUserID.equals(token.getUserID))){
       true
     }else {

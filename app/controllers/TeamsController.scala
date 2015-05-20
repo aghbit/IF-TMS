@@ -9,6 +9,7 @@ import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
+import utils.Validators
 import scala.reflect.runtime.universe
 import scala.collection.JavaConversions._
 import play.api.libs.functional.syntax._
@@ -31,21 +32,46 @@ object TeamsController extends Controller {
 
       //Pull data from request.
 
-      val teamName = request.body.\("teamName").validate[String](minLength[String](5)).asEither
-      val captainName = request.body.\("captainName").validate[String](minLength[String](5)).asEither
-      val captainSurname = request.body.\("captainSurname").validate[String](minLength[String](5)).asEither
-      val captainPhone = request.body.\("captainPhone").validate[String](pattern(new Regex("^[0-9]{9}$"))).asEither
+      val teamName = request.body.\("teamName").validate[String](
+        minLength[String](Validators.TEAM_NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.TEAM_NAME_MAX_LENGTH)
+      ).asEither
+
+      val captainName = request.body.\("captainName").validate[String](
+        minLength[String](Validators.NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.NAME_MAX_LENGTH)
+      ).asEither
+
+      val captainSurname = request.body.\("captainSurname").validate[String](
+        minLength[String](Validators.SURNAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.SURNAME_MAX_LENGTH)
+      ).asEither
+
+      val captainPhone = request.body.\("captainPhone").validate[String](
+        pattern(new Regex(Validators.PHONE_REGEX))
+      ).asEither
+
       val captainMail = request.body.\("captainMail").validate[String](email).asEither
 
-      val inputsListEither = Map(("teamName", teamName), ("captainName", captainName),
-        ("captainSurname", captainSurname), ("captainPhone", captainPhone), ("captainMail", captainMail))
+      val inputsListEither = Map(
+        "teamName" -> teamName,
+        "captainName" -> captainName,
+        "captainSurname" -> captainSurname,
+        "captainPhone" -> captainPhone,
+        "captainMail" -> captainMail
+      )
 
-      val inputsList = inputsListEither.collect { case (s, Right(i)) => (s, i) }
-      val errors = inputsListEither.collect { case (s, Left(e)) => e}
+      val (errors, data) = Validators.simplifyEithers(inputsListEither)
 
       if(errors.isEmpty){
-        val captain = Captain(inputsList.getOrElse("captainName", ""), inputsList.getOrElse("captainSurname",""),
-          inputsList.getOrElse("captainPhone",""), inputsList.getOrElse("captainMail",""))
+
+        val captain = Captain(
+          data.get("captainName").get,
+          data.get("captainSurname").get,
+          data.get("captainPhone").get,
+          data.get("captainMail").get
+        )
+
         //Find tournament to check discipline
         val query = new Query(Criteria where "_id" is BSONObjectID(id))
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
@@ -56,7 +82,7 @@ object TeamsController extends Controller {
         val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
         val module = runtimeMirror.staticModule(teamClass)
         val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
-        val team = obj(inputsList.getOrElse("teamName", ""))
+        val team = obj(data.getOrElse("teamName", ""))
 
         //Add captain
         team.addPlayer(captain)
@@ -74,14 +100,10 @@ object TeamsController extends Controller {
           case e:Throwable => Future.failed(e)
         }
       }else {
-        val JsErrors = errors.map( e => JsError.toFlatJson(e))
-        Future.successful(BadRequest("Detected error: " + JsErrors))
+        val jsErrors = errors.map(e => JsError.toFlatJson(e))
+        Future.successful(BadRequest("Detected error: " + jsErrors))
       }
   }
-
-
-
-
 
   def getTeam(id: String) = Action.async {
     val query = new Query(Criteria where "_id" is BSONObjectID(id))
