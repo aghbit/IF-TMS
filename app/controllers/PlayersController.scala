@@ -55,7 +55,7 @@ object PlayersController extends Controller {
           Future.successful(Created("Player added!"))
 
         }catch {
-          case e:TooManyMembersInTeamException => Future.successful(UnprocessableEntity(e))
+          case e:TooManyMembersInTeamException => Future.successful(UnprocessableEntity(e.getMessage))
           case e:Throwable => Future.failed(e)
         }
       }else {
