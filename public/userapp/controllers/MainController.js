@@ -1,4 +1,4 @@
-mainApp.controller('MainController', ['$scope', '$rootScope', 'ngDialog', 'SessionService', '$location','$cookieStore' , function ($scope, $rootScope, ngDialog, SessionService, $location, $cookieStore) {
+mainApp.controller('MainController', ['$scope','$http', '$rootScope', 'ngDialog', 'SessionService', '$location', function ($scope,$http, $rootScope, ngDialog, SessionService, $location) {
 
     $scope.loggedIn = SessionService.isLoggedIn;
 
@@ -9,7 +9,7 @@ mainApp.controller('MainController', ['$scope', '$rootScope', 'ngDialog', 'Sessi
     $scope.signOut = function(){
         SessionService.token = " ";
         SessionService.isLoggedIn = false;
-        $cookieStore.remove("tms-token");
+        $.removeCookie('tms-token');
         notification("You have been successfully logged out.", 4000, true);
         $location.url("");
         $scope.loggedIn = SessionService.isLoggedIn;
@@ -23,14 +23,20 @@ mainApp.controller('MainController', ['$scope', '$rootScope', 'ngDialog', 'Sessi
         });
     };
     $scope.checkCookie = function () {
-        var cookie = $cookieStore.get('tms-token');
+        var cookie = $.cookie('tms-token');
         console.log(cookie);
         if(cookie !== undefined){
-           console.log("ok");
             SessionService.token = cookie;
-            SessionService.isLoggedIn = true;
-            $rootScope.$emit("LOGIN_EVENT", true);
-            notification("Session kept.", 4000, true);
+            $http.get('api/tournaments', {}).//check server's response.
+                success(function(data, status, headers, config) {
+                    SessionService.isLoggedIn = true;
+                    $rootScope.$emit("LOGIN_EVENT", true);
+                    notification("Session kept.", 4000, true);
+                })
+                .error(function () {
+                    SessionService.isLoggedIn = false;
+                    notification("Session expired.", 4000, true);
+                });
         }
     };
     $scope.checkCookie();
