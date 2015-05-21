@@ -36,21 +36,21 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
     };
 
         $scope.validateTeamNameField = function() {
-            if($scope.teamName == null || $scope.teamName.length < 3 || $scope.teamName.length > 20){
+            if($scope.teamName == null || $scope.teamName.length < 5 || $scope.teamName.length > 40){
                 $scope.teamNameClass = "invalid";
             }else {
                 $scope.teamNameClass = "";
             }
         };
         $scope.validateCaptainNameField = function() {
-            if($scope.captainName == null || $scope.captainName.length < 3 || $scope.captainName.length > 20){
+            if($scope.captainName == null || $scope.captainName.length < 5 || $scope.captainName.length > 40){
                 $scope.captainNameClass = "invalid";
             }else {
                 $scope.captainNameClass = "";
             }
         };
         $scope.validateCaptainSurnameField = function() {
-            if($scope.captainSurname == null || $scope.captainSurname.length < 3 || $scope.captainSurname.length > 20){
+            if($scope.captainSurname == null || $scope.captainSurname.length < 5 || $scope.captainSurname.length > 40){
                 $scope.captainSurnameClass = "invalid";
             }else {
                 $scope.captainSurnameClass = "";

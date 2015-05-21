@@ -46,7 +46,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
         };
 
         $scope.validateNameField = function() {
-            if($scope.name == null || $scope.name.length < 3 || $scope.name.length > 20){
+            if($scope.name == null || $scope.name.length < 5 || $scope.name.length > 40){
                 $scope.nameClass = "invalid";
             }else {
                 $scope.nameClass = "";
@@ -54,7 +54,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
         };
 
         $scope.validateSurnameField = function() {
-            if($scope.surname == null || $scope.surname.length < 3 || $scope.surname.length > 20){
+            if($scope.surname == null || $scope.surname.length < 5 || $scope.surname.length > 40){
                 $scope.surnameClass = "invalid";
             }else {
                 $scope.surnameClass = "";
