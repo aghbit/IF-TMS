@@ -43,8 +43,9 @@
                     <span ng-if="numberOfTeamsClass == 'invalid'" class="inputValidationError">Must be a number, at least 2.</span>
                 </div>
                 <div class="input-field">
-                    <input id="level" type="number" min="0" ng-model="level">
+                    <input class="{{levelClass}}" id="level" type="number" min="0" ng-model="level" ng-blur="validateLevelField()">
                     <label for="level">Level</label>
+                    <span ng-if="levelClass == 'invalid'" class="inputValidationError">Must be a number.</span>
                 </div>
                 <div class="input-field">
                     <input id="discipline" type="text" ng-model="discipline">
@@ -57,54 +58,64 @@
             <div id="step2" ng-show="registerQueue.currentState === 2">
                 <div class="input-field">
                     <label for="enrollDeadline">Enroll end date</label>
-                    <input id="enrollDeadline" type="date" class="datepicker" ng-model="enrollDeadline"/>
+                    <input class="{{enrollDeadlineClass}} datepicker" id="enrollDeadline" type="date" ng-model="enrollDeadline"/>
+                    <span ng-if="enrollDeadlineClass == 'invalid'" class="inputValidationError">You must finish enrollment before the tournament begins.</span>
                 </div>
                 <div class="input-field">
                     <label for="enrollDeadlineTime">Enroll end time</label>
-                    <input id="enrollDeadlineTime" type="time" class="timepicker" ng-model="enrollDeadlineTime"/>
+                    <input class="{{enrollDeadlineTimeClass}} timepicker" id="enrollDeadlineTime" type="text" ng-model="enrollDeadlineTime"/>
+                    <span ng-if="enrollDeadlineTimeClass == 'invalid'" class="inputValidationError">You must finish enrollment before the tournament begins.</span>
                 </div>
             </div>
 
             <div id="step3" ng-show="registerQueue.currentState === 3">
                 <div class="input-field">
-                    <label for="end">Begin date</label>
-                    <input id="begin" type="date" class="datepicker" ng-model="begin"/>
+                    <label for="begin">Begin date</label>
+                    <input class="{{beginClass}} datepicker" id="begin" type="date" ng-model="begin"/>
+                    <span ng-if="beginClass == 'invalid'" class="inputValidationError">You must finish enrollment before the tournament begins.</span>
                 </div>
                 <div class="input-field">
                     <label for="beginTime">Begin time</label>
-                    <input id="beginTime" type="text" class="timepicker" ng-model="beginTime"/>
+                    <input class="{{beginTimeClass}} timepicker" id="beginTime" type="text" ng-model="beginTime"/>
+                    <span ng-if="beginTimeClass == 'invalid'" class="inputValidationError">You must finish enrollment before the tournament begins.</span>
                 </div>
                 <div class="input-field">
                     <label for="end">End date</label>
-                    <input id="end" type="date" class="datepicker" ng-model="end"/>
+                    <input class="{{endClass}} datepicker" id="end" type="date" ng-model="begin"/>
+                    <span ng-if="endClass == 'invalid'" class="inputValidationError">Sorry, this can't be done without a time machine.</span>
                 </div>
                 <div class="input-field">
                     <label for="endTime">End time</label>
-                    <input id="endTime" type="text" class="timepicker" ng-model="endTime"/>
+                    <input class="{{endTimeClass}} timepicker" id="endTime" type="text" ng-model="endTime"/>
+                    <span ng-if="endTimeClass == 'invalid'" class="inputValidationError">Sorry, this can't be done without a time machine.</span>
                 </div>
                 <div class="row col l6">
 
                     <div class="input-field">
                         <label for="extraBegin">Extra begin date</label>
-                        <input id="extraBegin" type="date" class="datepicker" ng-model="extraBegin"/>
+                        <input class="{{extraBeginClass}} datepicker" id="extraBegin" type="date" ng-model="extraBegin"/>
+                        <span ng-if="extraBeginClass == 'invalid'" class="inputValidationError">Extra dates must be later than the standard begin date.</span>
                     </div>
                 </div>
                 <div class="row col l6">
                     <div class="input-field">
                         <label for="extraBeginTime">Extra begin time</label>
-                        <input id="extraBeginTime" type="text" class="timepicker" ng-model="extraBeginTime"/>
+                        <input class="{{extraBeginTimeClass}} timepicker" id="extraBeginTime" type="text"/>
+                        <span ng-if="extraBeginTimeClass == 'invalid'" class="inputValidationError">Extra dates must be later than the standard begin date.</span>
                     </div>
                 </div>
                 <div class="row col l6">
                     <div class="input-field">
                         <label for="extraEnd">Extra end date</label>
-                        <input id="extraEnd" type="date" class="datepicker" ng-model="extraEnd"/>
+                        <input class="{{extraEndClass}} datepicker" id="extraEnd" type="date" ng-model="extraEnd"/>
+                        <span ng-if="extraEndClass == 'invalid'" class="inputValidationError">Extra dates must be later than the standard begin date.</span>
                     </div>
                 </div>
                 <div class="row col l6">
                     <div class="input-field">
                         <label for="extraEndTime">Extra end time</label>
-                        <input id="extraEndTime" type="text" class="timepicker" ng-model="extraEndTime"/>
+                        <input class="{{extraEndTimeClass}} timepicker" id="extraEndTime" type="text" ng-model="extraEndTime"/>
+                        <span ng-if="extraEndTimeClass == 'invalid'" class="inputValidationError">Extra dates must be later than the standard begin date.</span>
                     </div>
                 </div>
             </div>

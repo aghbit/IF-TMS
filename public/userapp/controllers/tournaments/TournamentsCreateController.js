@@ -16,6 +16,9 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
     })
     $scope.isLoggedIn = SessionService.isLoggedIn
     $scope.submit = function(){
+
+        $scope.validateDates();
+
         var enrollDeadline = $('#enrollDeadline')[0].value;
         var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
         var begin = $('#begin')[0].value;
@@ -84,8 +87,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }else {
             $scope.numberOfPitchesClass = "";
         }
-
-    }
+    };
 
     $scope.validateNumberOfTeamsField = function() {
         var pattern= /^[2-9]$|^1[0-9]+$/
@@ -94,7 +96,101 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }else {
             $scope.numberOfTeamsClass = "";
         }
-
     };
+
+    $scope.validateLevelField = function() {
+        var pattern= /^[0-9]*$/
+        if(!pattern.test($scope.level)){
+            $scope.levelClass = "invalid";
+        }else {
+            $scope.levelClass = "";
+        }
+    };
+
+
+
+    $scope.validateEnrollmentTimeBeforeBegin = function() {
+
+        var enrollDeadline = $('#enrollDeadline')[0].value;
+        var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
+        var begin = $('#begin')[0].value;
+        var beginTime = $('#beginTime')[0].value;
+
+        if(begin != null && enrollDeadline != null && Date.parse(enrollDeadline)>Date.parse(begin)) {
+            $scope.enrollDeadlineClass = "invalid";
+            $scope.beginClass = "invalid";
+        } else if(begin != null && enrollDeadline != null && beginTime != "" && enrollDeadlineTime != ""
+                        && enrollDeadline==begin && Date.parse("01/01/1970 "+enrollDeadlineTime)>=Date.parse("01/01/1970 "+beginTime)) {
+            $scope.enrollDeadlineClass = "";
+            $scope.beginClass = "";
+            $scope.enrollDeadlineTimeClass = "invalid";
+            $scope.beginTimeClass = "invalid";
+        } else {
+            $scope.enrollDeadlineTimeClass = "";
+            $scope.beginTimeClass = "";
+        }
+    };
+
+    $scope.validateBeginTimeBeforeEnd = function() {
+
+        var end = $('#end')[0].value;
+        var endTime = $('#endTime')[0].value;
+        var begin = $('#begin')[0].value;
+        var beginTime = $('#beginTime')[0].value;
+
+        if(begin != null && end != null && Date.parse(begin)>Date.parse(end)) {
+            $scope.endClass = "invalid";
+        } else if(begin != null && end != null && beginTime != "" && endTime != ""
+                        && end==begin && Date.parse("01/01/1970 "+beginTime)>=Date.parse("01/01/1970 "+endTime)) {
+            $scope.endClass = "";
+            $scope.endTimeClass = "invalid";
+        } else {
+            $scope.endTimeClass = "";
+        }
+    };
+
+    $scope.validateExtraBeginTimeBeforeExtraEnd = function() {
+
+        var extraEnd = $('#extraEnd')[0].value;
+        var extraEndTime = $('#extraEndTime')[0].value;
+        var extraBegin = $('#extraBegin')[0].value;
+        var extraBeginTime = $('#extraBeginTime')[0].value;
+
+        if(extraBegin != null && extraEnd != null && Date.parse(extraBegin)>Date.parse(extraEnd)) {
+            $scope.extraEndClass = "invalid";
+        } else if(extraBegin != null && extraEnd != null && extraBeginTime != "" && extraEndTime != ""
+                        && extraEnd==extraBegin && Date.parse("01/01/1970 "+extraBeginTime)>=Date.parse("01/01/1970 "+extraEndTime)) {
+            $scope.extraEndClass = "";
+            $scope.extraEndTimeClass = "invalid";
+        } else {
+            $scope.extraEndTimeClass = "";
+        }
+    };
+
+    $scope.validateBeginTimeBeforeExtraBegin = function() {
+
+        var begin = $('#begin')[0].value;
+        var beginTime = $('#beginTime')[0].value;
+        var extraBegin = $('#extraBegin')[0].value;
+        var extraBeginTime = $('#extraBeginTime')[0].value;
+
+        if(extraBegin != null && begin != null && Date.parse(begin)>Date.parse(extraBegin)) {
+            $scope.extraBeginClass = "invalid";
+        } else if(extraBegin != null && begin != null && extraBeginTime != "" && beginTime != ""
+                        && begin==extraBegin && Date.parse("01/01/1970 "+beginTime)>=Date.parse("01/01/1970 "+extraBeginTime)) {
+            $scope.extraBeginClass = "";
+            $scope.extraBeginTimeClass = "invalid";
+        } else {
+            $scope.extraBeginTimeClass = "";
+        }
+    };
+
+    $scope.validateDates = function() {
+        $scope.validateEnrollmentTimeBeforeBegin();
+        $scope.validateBeginTimeBeforeEnd();
+        $scope.validateExtraBeginTimeBeforeExtraEnd();
+        $scope.validateBeginTimeBeforeExtraBegin();
+    }
+
 
 }]);
