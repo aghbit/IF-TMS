@@ -13,6 +13,7 @@ import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
 import play.api.libs.functional.syntax._
+import utils.Validators
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -62,29 +63,34 @@ object UsersController extends Controller{
 
   def login() = Action.async(parse.json) {
     request =>
-      val login = request.body.\("login").validate[String](minLength[String](5)
-                                                          andKeep maxLength[String](20)).asEither
-      val password = request.body.\("password").validate[String](minLength[String](5)
-                                                                andKeep maxLength[String](20)).asEither
-      (login, password) match {
-        case(Right(l), Right(p)) =>
-          val query = new Query(Criteria where "personalData.login" is l and
-            "personalData.password" is p)
-          val users = repository.find(query)
-          if(users.isEmpty){
-            Future.successful(Unauthorized("Wrong login or password!"))
-          }else{
-            val token = users.get(ListEnum.head).generateToken
-            TokensKeeper.addToken(token)
-            Future.successful(Ok(token.toString))
-          }
-        case (Right(l), Left(p)) =>
-          Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(p)))
-        case (Left(l), Right(p)) =>
-          Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(l)))
-        case (Left(l), Left(p)) =>
-          Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(l) + " "
-                                        + JsError.toFlatJson(p)))
+      val login = request.body.\("login").validate[String](
+        minLength[String](Validators.LOGIN_MIN_LENGTH) andKeep
+        maxLength[String](Validators.LOGIN_MAX_LENGTH)
+      ).asEither
+
+      val password = request.body.\("password").validate[String](
+        minLength[String](Validators.PASSWORD_MIN_LENGTH) andKeep
+          maxLength[String](Validators.PASSWORD_MAX_LENGTH)
+      ).asEither
+
+      val inputsListEither = Map("login" -> login, "password" -> password)
+
+      val (errors, data) = Validators.simplifyEithers(inputsListEither)
+
+      if(errors.isEmpty){
+        val query = new Query(Criteria where "personalData.login" is data.get("login").get and
+          "personalData.password" is data.get("password").get)
+        val users = repository.find(query)
+        if(users.isEmpty){
+          Future.successful(Unauthorized("Wrong login or password!"))
+        }else{
+          val token = users.get(ListEnum.head).generateToken
+          TokensKeeper.addToken(token)
+          Future.successful(Ok(token.toString))
+        }
+      }else {
+        val jsErrors = errors.map(e=> JsError.toFlatJson(e))
+        Future.successful(BadRequest("Detected error: " + jsErrors))
       }
   }
 
