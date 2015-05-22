@@ -11,7 +11,7 @@ POST        /api/login                              controllers.UsersController.
 GET         /api/users/login/:login                 controllers.UsersController.isLoginInUse(login: String)
 
 POST        /api/tournaments                        controllers.TournamentsController.createTournament
-POST        /api/tournaments/startStopEnrollment    controllers.TournamentsController.startStopEnrollment
+POST        /api/tournaments/nextEnrollmentState    controllers.TournamentsController.nextEnrollmentState
 GET         /api/myTournaments                      controllers.TournamentsController.getMyTournaments
 GET         /api/tournaments                        controllers.TournamentsController.getTournaments
 GET         /api/tournaments/:id                    controllers.TournamentsController.getTournament(id:String)

@@ -13,7 +13,7 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$c
 
 
     $scope.checkOwner = function(tid){
-        var cookie = $cookieStore.get('tms-token');
+        var cookie = $.cookie('tms-token');
         var id = cookie.substr(0,24)
         for (i = 0; i < $scope.tournaments.length; i++) {
             if($scope.tournaments[i]._id==tid) {
@@ -23,8 +23,8 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$c
         return false
     };
 
-    $scope.startStopEnrollment = function(id){
-        $http.post('/api/tournaments/startStopEnrollment', {
+    $scope.nextEnrollmentState = function(id){
+        $http.post('/api/tournaments/nextEnrollmentState', {
             "_id":id
         }).success(function(){
             $state.reload();

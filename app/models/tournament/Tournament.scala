@@ -68,11 +68,11 @@ trait Tournament {
 
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
-//    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
     Json.obj(
       "_id"->_id.stringify,
       "properties"->tournamentPropertiesJson,
-      "staff"->staff.toJson
+      "staff"->staff.toJson,
+      "class"->this.getClass.toString
     )
   }
 }

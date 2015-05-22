@@ -7,7 +7,7 @@ import models.enums.ListEnum
 import models.strategy.strategies.SingleEliminationStrategy
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
-import play.api.libs.json.{JsError, Json}
+import play.api.libs.json.{JsBoolean, JsError, Json}
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
@@ -34,9 +34,8 @@ object TournamentsController extends Controller{
           val userID = TokenImpl(request.headers.get("token").get).getUserID
           val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
           val beforeEnrollment = BeforeEnrollment(properties, new SingleEliminationStrategy(), tournamentStaff)
-          val tournament = beforeEnrollment.startNext()
           try {
-            repository.insert(tournament)
+            repository.insert(beforeEnrollment)
             Future.successful(Created)
           } catch {
             case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
@@ -45,7 +44,7 @@ object TournamentsController extends Controller{
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
   }
-  def startStopEnrollment() = AuthorizationAction.async(parse.json) {
+  def nextEnrollmentState() = AuthorizationAction.async(parse.json) {
     request =>
       val tournamentID = request.body.\("_id").validate[String].asEither
       tournamentID match {

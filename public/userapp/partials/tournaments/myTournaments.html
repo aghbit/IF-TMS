@@ -15,16 +15,16 @@
                         <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
                     </h5>
                     <!---->
-                    <h5 ng-if="!tournament.properties.settings.canEnroll && !tournament.properties.settings.isEnrollmentEnded && checkOwner(tournament._id) " class="col l4 offset-l1">
+                    <h5 ng-if="tournament.class=='class models.tournament.tournamentstates.BeforeEnrollment' && checkOwner(tournament._id) " class="col l4 offset-l1">
 
                         <div class="col s12 grid-example m8 l7">
-                            <a class="btn indigo waves-effect waves-light" ng-click="startStopEnrollment(tournament._id)">Start enrollment</a>
+                            <a class="btn indigo waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Start enrollment</a>
                         </div>
 
                     </h5>
-                    <h5 ng-if="tournament.properties.settings.canEnroll" class="col l4 offset-l1">
+                    <h5 ng-if="tournament.class=='class models.tournament.tournamentstates.Enrollment'" class="col l4 offset-l1">
                         <div class="col s12 grid-example m8 l7">
-                            <a class="btn indigo waves-effect waves-light" ng-click="startStopEnrollment(tournament._id)">Stop enrollment</a>
+                            <a class="btn indigo waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Stop enrollment</a>
                         </div>
                     </h5>
                     <!---->

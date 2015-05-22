@@ -10,8 +10,7 @@ case class TournamentSettings(var numberOfPitches: Int,
                          var numberOfTeams: Int,
                          var canEnroll: Boolean,
                          var level: Int,
-                         var discipline: String,
-                         var isEnrollmentEnded:Boolean) {
+                         var discipline: String) {
 
   def isValid = numberOfTeams>1 && numberOfPitches>0
 

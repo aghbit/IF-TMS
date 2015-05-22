@@ -23,7 +23,6 @@ class Enrollment(override val _id: BSONObjectID,
   override def startNext(): Break = {
     val newState = new Break(this._id, this.properties, this.teams, strategy, staff)
     newState.properties.settings.canEnroll = false
-    newState.properties.settings.isEnrollmentEnded = true
     newState
   }
 
