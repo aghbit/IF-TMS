@@ -16,8 +16,12 @@ class TokensKeeper$Test extends FunSuite with MockitoSugar with BeforeAndAfter{
   var tokens:List[Token] = _
 
   before{
-    tokens = List(mock[Token], mock[Token], mock[Token])
-    tokens.foreach(token => Mockito.when(token.getUserID).thenReturn(BSONObjectID.generate))
+    tokens = List(
+      TokenImpl(BSONObjectID.generate),
+      TokenImpl(BSONObjectID.generate),
+      TokenImpl(BSONObjectID.generate)
+    )
+
   }
 
   after {
@@ -66,7 +70,7 @@ class TokensKeeper$Test extends FunSuite with MockitoSugar with BeforeAndAfter{
 
     //when
     val containsResultBeforeRemove = underTest.containsToken(tokens.head)
-    underTest.removeToken(tokens.head)
+    underTest.removeTokenForUser(tokens.head.getUserID)
     val containsResultAfterRemove = underTest.containsToken(tokens.head)
 
     //then
@@ -81,7 +85,7 @@ class TokensKeeper$Test extends FunSuite with MockitoSugar with BeforeAndAfter{
     underTest.addToken(tokens.head)
 
     //when
-    val tokensNumber = underTest.getTokensNumber()
+    val tokensNumber = underTest.getTokensNumber
 
     //then
     assert(tokensNumber == 1, "AddToken: test 1")

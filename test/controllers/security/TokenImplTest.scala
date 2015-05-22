@@ -15,17 +15,17 @@ class TokenImplTest extends FunSuite with BeforeAndAfter {
 
 
   before {
-    tokenX = new TokenImpl(BSONObjectID.generate)
-    tokenY = new TokenImpl(tokenX.token)
-    tokenZ = new TokenImpl(tokenX.token)
-    tokenNotX = new TokenImpl(BSONObjectID.generate)
+    tokenX = TokenImpl(BSONObjectID.generate)
+    tokenY = TokenImpl(tokenX.token)
+    tokenZ = TokenImpl(tokenX.token)
+    tokenNotX = TokenImpl(BSONObjectID.generate)
   }
 
   test("Simple test"){
 
     //given
     val id = BSONObjectID.generate
-    val token = new TokenImpl(id)
+    val token = TokenImpl(id)
 
     //when
     val returnedID = token.getUserID

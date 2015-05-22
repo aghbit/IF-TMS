@@ -1,9 +1,8 @@
 /**
  * Created by Szymek on 07.03.15.
  */
-mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location',
-    function ($scope, $http, $stateParams, $location) {
-
+mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location', 'ErrorMessageService',
+    function ($scope, $http, $stateParams, $location, ErrorMessageService) {
         $http.get('api/tournaments/'+$stateParams.id, {}).
             success(function(data, status, headers, config) {
                 $scope.tournament = data;
@@ -16,7 +15,7 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
                 $location.url(status + "/" + data);
                 notification("Sorry. An error occured loading tournament info.", 4000, false);
             });
-
+        
     $scope.submit = function () {
         $http.post('/api/tournaments/'+$stateParams.id+"/teams", {
             "teamName": $scope.teamName,
@@ -30,6 +29,8 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
                 $location.path("/teams/"+data.id+"/addPlayer")
             }).
             error(function (data, status, headers, config) {
+                ErrorMessageService.content = data;
+                $location.url(status+"/");
                 notification("Team exists in db!", 4000, false)
             });
 
