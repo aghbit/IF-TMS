@@ -8,34 +8,70 @@
     <form ng-submit="submit()" class="col s12">
         <div class="ngdialog-buttons">
             <div class="row">
-                <div class="input-field col s9">
-                    <input id="login" type="text" >
-                    <label for="login">New Login</label>
+                <div class="col">
+                    <div style="padding-top: 30">
+                        <th data-field="name"><i class="mdi-action-account-circle"></i> <b>Login: </b> </th>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s9">
-                    <input id="name" type="text" >
-                    <label for="name">New Name</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s9">
-                    <input id="surname" type="text" >
-                    <label for="surname">New Surname</label>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="input-field col s9">
-                    <input id="phone" type="text" >
-                    <label for="phone">New Phone</label>
+                <div class=" col m9">
+                    <div class="input-field col s10">
+                        <input class="{{loginClass}}" id="login" type="text" ng-model="login" ng-blur="checkLoginAvailability()">
+                        <label>{{user.userProperties.login}}</label>
+                        <span ng-if="loginClass == 'invalid'" class="inputValidationError">Login is unavailable. Please select another one.</span>
+
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s9">
-                    <input id="mail" type="text" >
-                    <label for="login">New Mail</label>
+                <div class="col">
+
+                        <div style="padding-top: 30">
+                            <th data-field="name"><i class="mdi-action-accessibility"></i> <b>Name: </b> </th>
+                        </div>
+                    </div>
+
+
+                <div class=" col m9">
+                    <div class="input-field col s10">
+                        <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
+                        <label>{{user.userProperties.name}}</label>
+                        <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name should be 3 - 20 letters long.</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div style="padding-top: 30">
+                        <th data-field="phone"><i class="mdi-action-settings-phone"></i><b>Phone: </b>  </th>
+                    </div>
+                </div>
+
+                <div class=" col m9">
+                    <div class="input-field col s10">
+                        <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="validatePhoneField()">
+                        <label>{{user.userProperties.phone}}</label>
+                        <span ng-if="phoneClass == 'invalid'" class="inputValidationError">There should be nine digit long number.</span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div style="padding-top: 30">
+                        <th data-field="mail"><i class="mdi-action-markunread-mailbox"></i> <b> Mail     :</b></th>
+                    </div>
+                </div>
+
+                <div class=" col m9">
+                    <div class="input-field col s10">
+                        <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateMailField()">
+                        <label>{{user.userProperties.mail}}</label>
+                        <span ng-if="mailClass == 'invalid'" class="inputValidationError">This should be valid mail address.</span>
+
+
+                    </div>
                 </div>
             </div>
 

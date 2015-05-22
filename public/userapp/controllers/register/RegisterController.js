@@ -55,7 +55,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
             $scope.mailClass = "";
         }
 
-    }
+    };
     $scope.validatePhoneField = function() {
         //regex for email address RFC 5322
         var pattern= /^[0-9]{9}$/
@@ -65,7 +65,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
             $scope.phoneClass = "";
         }
 
-    }
+    };
 
     $scope.checkForm = function() {
         return $scope.mailClass == "" &&
@@ -74,7 +74,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
             $scope.mailClass == "" &&
             $scope.phoneClass == "" &&
             $scope.loginClass == ""
-    }
+    };
 
     $scope.submit = function(){
         if($scope.checkForm()) {

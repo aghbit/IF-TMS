@@ -31,6 +31,7 @@ object UsersController extends Controller{
           val user = UserImpl(uP)
           try {
             repository.insert(user)
+            repository.delete(user);
             Future.successful(Created)
           } catch {
             case e:UserWithThisLoginExistsInDB => Future.failed(e)
@@ -38,7 +39,22 @@ object UsersController extends Controller{
           }
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
-  }
+//  }
+//  def modifyUser() =  Action.async(parse.json){
+//    request =>
+//      val userProperties = request.body.validate[UserProperties].asEither
+//      userProperties match {
+//        case Right(uP) =>
+//          val user = UserImpl(uP)
+//          try {
+//        //    repository.insert(user)
+//            Future.successful(Created)
+//          } catch {
+//            case e:UserWithThisLoginExistsInDB => Future.failed(e)
+//            case e:Exception => Future.failed(e)
+//          }
+//        case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
+//      }
 
   def getUser(id: String) = AuthorizationAction.async {
     request => {
@@ -54,7 +70,7 @@ object UsersController extends Controller{
             case _ =>
               Future.successful(Unauthorized("You are not authorized to see this content!"))
           }
-          //This should never execute, because AuthorizationAction checked the token.
+        //This should never execute, because AuthorizationAction checked the token.
         case None => Future.successful(NotFound("User with this ID was not found!"))
       }
     }
@@ -63,13 +79,13 @@ object UsersController extends Controller{
   def login() = Action.async(parse.json) {
     request =>
       val login = request.body.\("login").validate[String](minLength[String](5)
-                                                          andKeep maxLength[String](20)).asEither
+      andKeep maxLength[String](20)).asEither
       val password = request.body.\("password").validate[String](minLength[String](5)
-                                                                andKeep maxLength[String](20)).asEither
+      andKeep maxLength[String](20)).asEither
       (login, password) match {
         case(Right(l), Right(p)) =>
           val query = new Query(Criteria where "personalData.login" is l and
-            "personalData.password" is p)
+          "personalData.password" is p)
           val users = repository.find(query)
           if(users.isEmpty){
             Future.successful(Unauthorized("Wrong login or password!"))
@@ -84,7 +100,7 @@ object UsersController extends Controller{
           Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(l)))
         case (Left(l), Left(p)) =>
           Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(l) + " "
-                                        + JsError.toFlatJson(p)))
+          + JsError.toFlatJson(p)))
       }
   }
 
@@ -98,4 +114,5 @@ object UsersController extends Controller{
         Future(Ok("Login is in use."))
       }
   }
+
 }
