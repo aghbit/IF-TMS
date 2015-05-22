@@ -1,7 +1,7 @@
 /**
  * Created by Piotr on 2015-02-04.
  */
-mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','SessionService', function($scope,$http,$location, ngDialog, SessionService) {
+mainApp.controller('LoginController', ['$scope', '$rootScope', '$http', '$location', 'ngDialog', 'SessionService', function ($scope, $rootScope, $http, $location, ngDialog, SessionService) {
     $scope.credentials = {
         login : "",
         password : ""
@@ -11,12 +11,22 @@ mainApp.controller('LoginController', ['$scope','$http','$location','ngDialog','
             success(function(data, status, headers, config) {
                 SessionService.token = data;
                 SessionService.isLoggedIn = true;
-                $scope.$emit("LOGIN_EVENT", true);
+                $rootScope.$emit("LOGIN_EVENT", true);
                 notification("You have been successfully logged in.", 4000, true);
-                history.back()
+                $scope.closeThisDialog();
+                $.cookie('tms-token', SessionService.token, { expires: 1 });
             }).
             error(function(data, status, headers, config) {
                 notification("Sorry. Wrong credentials.", 4000, false);
             });
     };
+
+    $scope.registerPopUp = function () {
+        $scope.closeThisDialog();
+        ngDialog.open({
+            template: '/assets/userapp/partials/register/register.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        });
+    }
 }]);

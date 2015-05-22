@@ -1,4 +1,5 @@
-var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog']);
+var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies']);
+
 mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
@@ -62,19 +63,23 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
         })
 
 
-        // LOGIN
-        .state('login', {
-            url: "/login",
-            templateUrl: "/assets/userapp/partials/login/login.html",
-            controller: 'LoginController'
-        })
-
-
         // STATISTICS - UNUSED
         .state('statistics', {
             url: "/statistics",
             templateUrl: "/assets/userapp/partials/statistics/statistics.html",
             controller: 'StatisticsController'
+        })
+
+        //ERRORS
+        .state('400', {
+            url: "/400/{message}",
+            templateUrl: "assets/userapp/partials/errors/400.html",
+            controller: '400Controller'
+        })
+        .state('500', {
+            url: "/500/{message}",
+            templateUrl: "assets/userapp/partials/errors/500.html",
+            controller: '500Controller'
         })
 });
 
@@ -92,7 +97,6 @@ mainApp.factory('SessionService', function() {
     };
     return usersCredentials;
 });
-
 //token always in headers
 mainApp.factory('sessionInjector', ['SessionService', function(SessionService) {
     var sessionInjector = {
@@ -126,3 +130,11 @@ var httpInterceptor = function ($provide, $httpProvider) {
     $httpProvider.interceptors.push('httpInterceptor');
 };
 mainApp.config(httpInterceptor);
+
+mainApp.factory('ErrorMessageService', function() {
+    var message = {
+        content : ' '
+    };
+    return message;
+
+});

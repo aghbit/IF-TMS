@@ -26,6 +26,10 @@ trait Repository[T] {
     mongoTemplate.find(query, clazz, collectionName)
   }
 
+  def remove(query: Query) = {
+    mongoTemplate.remove(query, clazz, collectionName)
+  }
+
   def dropCollection(): Any = {
     mongoTemplate.dropCollection(collectionName)
   }

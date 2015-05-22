@@ -5,8 +5,9 @@ package models.strategy
  */
 class VSet() {
   var points = 0
-  var won:Boolean = false
+  var won: Boolean = false
 }
-object VSet{
+
+object VSet {
   def apply() = new VSet()
 }

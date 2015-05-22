@@ -1,15 +1,15 @@
 package controllers
 
-import controllers.TournamentsController._
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, Json}
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
+import utils.Validators
 import scala.reflect.runtime.universe
 import scala.collection.JavaConversions._
 import play.api.libs.functional.syntax._
@@ -32,47 +32,78 @@ object TeamsController extends Controller {
 
       //Pull data from request.
 
-      val teamName = request.body.\("teamName").validate[String](minLength[String](5))
-      val captainName = request.body.\("captainName").validate[String](minLength[String](5)).get
-      val captainSurname = request.body.\("captainSurname").validate[String](minLength[String](5)).get
-      val captainPhone =request.body.\("captainPhone").validate[String](pattern(new Regex("^[0-9]+$"))).get
-      val captainMail = request.body.\("captainMail").validate[String](email).get
+      val teamName = request.body.\("teamName").validate[String](
+        minLength[String](Validators.TEAM_NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.TEAM_NAME_MAX_LENGTH)
+      ).asEither
 
-      //Create captain
-      val captain = Captain(captainName, captainSurname, captainPhone, captainMail)
+      val captainName = request.body.\("captainName").validate[String](
+        minLength[String](Validators.NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.NAME_MAX_LENGTH)
+      ).asEither
 
-      //Find tournament to check discipline
-      val query = new Query(Criteria where "_id" is BSONObjectID(id))
-      val tournament = tournamentRepository.find(query).get(ListEnum.head)
+      val captainSurname = request.body.\("captainSurname").validate[String](
+        minLength[String](Validators.SURNAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.SURNAME_MAX_LENGTH)
+      ).asEither
 
-      //Create right Team Class.
-      val teamClass = "models.team.teams.volleyball.volleyballs."+
-                       tournament.properties.settings.discipline + "Team$"
-      val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
-      val module = runtimeMirror.staticModule(teamClass)
-      val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
-      val team = obj(teamName.get)
+      val captainPhone = request.body.\("captainPhone").validate[String](
+        pattern(new Regex(Validators.PHONE_REGEX))
+      ).asEither
 
-      //Add captain
-      team.addPlayer(captain)
-      team.setCaptain(captain)
-      tournament.addTeam(team)
+      val captainMail = request.body.\("captainMail").validate[String](email).asEither
 
-      //Insert team & captain to DB.
-      try {
-        teamRepository.insert(team)
-        playerRepository.insert(captain)
-        tournamentRepository.insert(tournament)
-        Future.successful(Ok(Json.obj("id"->team._id.stringify)))
-      }catch {
-        case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
-        case e:Throwable => Future.failed(e)
+      val inputsListEither = Map(
+        "teamName" -> teamName,
+        "captainName" -> captainName,
+        "captainSurname" -> captainSurname,
+        "captainPhone" -> captainPhone,
+        "captainMail" -> captainMail
+      )
+
+      val (errors, data) = Validators.simplifyEithers(inputsListEither)
+
+      if(errors.isEmpty){
+
+        val captain = Captain(
+          data.get("captainName").get,
+          data.get("captainSurname").get,
+          data.get("captainPhone").get,
+          data.get("captainMail").get
+        )
+
+        //Find tournament to check discipline
+        val query = new Query(Criteria where "_id" is BSONObjectID(id))
+        val tournament = tournamentRepository.find(query).get(ListEnum.head)
+
+        //Create right Team Class.
+        val teamClass = "models.team.teams.volleyball.volleyballs."+
+          tournament.properties.settings.discipline + "Team$"
+        val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
+        val module = runtimeMirror.staticModule(teamClass)
+        val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
+        val team = obj(data.getOrElse("teamName", ""))
+
+        //Add captain
+        team.addPlayer(captain)
+        team.setCaptain(captain)
+        tournament.addTeam(team)
+
+        //Insert team & captain to DB.
+        try {
+          teamRepository.insert(team)
+          playerRepository.insert(captain)
+          tournamentRepository.insert(tournament)
+          Future.successful(Ok(Json.obj("id"->team._id.stringify)))
+        }catch {
+          case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
+          case e:Throwable => Future.failed(e)
+        }
+      }else {
+        val jsErrors = errors.map(e => JsError.toFlatJson(e))
+        Future.successful(BadRequest("Detected error: " + jsErrors))
       }
   }
-
-
-
-
 
   def getTeam(id: String) = Action.async {
     val query = new Query(Criteria where "_id" is BSONObjectID(id))

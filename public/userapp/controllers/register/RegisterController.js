@@ -2,38 +2,83 @@
  * Created by Piotr on 2015-02-04.
  */
 
-mainApp.controller('RegisterController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDialog', 'ErrorMessageService',
+    function ($scope, $http, $location, ngDialog, ErrorMessageService) {
 
-    $scope.checkPasswordsEquality = function(){
-        if($scope.password != $scope.password2){
-            $scope.password2BorderBottom = "1px solid #f42334"
-            $scope.password2BoxShadow = "0 1px 0 0 #f42334"
-        }else {
-            $scope.password2BorderBottom = ""
-            $scope.password2BoxShadow = ""
+    $scope.validatePasswordField = function(){
+        if($scope.password == null || $scope.password.length<5 || $scope.password.length > 20){
+            $scope.passwordClass = "invalid";
+        }else{
+            $scope.passwordClass = "";
+            if($scope.password2 == null || $scope.password != $scope.password2){
+                $scope.password2Class = "invalid";
+            }else {
+                $scope.password2Class = "";
+            }
         }
+
     };
 
     $scope.checkLoginAvailability = function(){
-        if($scope.login != ""){
+        if($scope.login != null && $scope.login.length>=5 && $scope.login.length<=20){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
-                    $scope.loginBorderBottom = "1px solid #f42334"
-                    $scope.loginBoxShadow = "0 1px 0 0 #f42334"
+                    $scope.loginClass = "invalid";
                 }).
                 error(function (data, status, headers, config){
-                    $scope.loginBorderBottom = ""
-                    $scope.loginBoxShadow = ""
+                    if(status==404){
+                        $scope.loginClass ="";
+                    }else{
+                        $scope.closeThisDialog();
+                        $location.url(status + "/" + "Internal Server Error. ")
+                        notification("Sorry. Error occurred.", 4000, false);
+                    }
                 })
+        }else{
+            $scope.loginClass = "invalid";
         }
     }
 
-    function checkForm($scope) {
-        return $scope.password == $scope.password2
+    $scope.validateNameField = function() {
+        if($scope.name == null || $scope.name.length < 3 || $scope.name.length > 20){
+            $scope.nameClass = "invalid";
+        }else {
+            $scope.nameClass = "";
+        }
+    }
+
+    $scope.validateMailField = function() {
+        //regex for email address RFC 5322
+        var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+        if(!pattern.test($scope.mail)){
+            $scope.mailClass = "invalid";
+        }else {
+            $scope.mailClass = "";
+        }
+
+    }
+    $scope.validatePhoneField = function() {
+        //regex for email address RFC 5322
+        var pattern= /^[0-9]{9}$/
+        if(!pattern.test($scope.phone)){
+            $scope.phoneClass = "invalid";
+        }else {
+            $scope.phoneClass = "";
+        }
+
+    }
+
+    $scope.checkForm = function() {
+        return $scope.mailClass == "" &&
+            $scope.nameClass == "" &&
+            $scope.passwordClass == "" &&
+            $scope.mailClass == "" &&
+            $scope.phoneClass == "" &&
+            $scope.loginClass == ""
     }
 
     $scope.submit = function(){
-        if(checkForm($scope)) {
+        if($scope.checkForm()) {
             $http.post('/api/users', {
                 "name": $scope.name,
                 "login": $scope.login,
@@ -47,10 +92,22 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', functi
                     notification("You have been successfully registered. You may now log in.", 4000, true);
                 }).
                 error(function (data, status, headers, config) {
-                    notification("Sorry. User exists or error occurred.", 4000, false);
+                    $scope.closeThisDialog();
+                    ErrorMessageService.content = data;
+                    $location.url(status+"/");
+                    notification("Sorry. Error occurred.", 4000, false);
                 });
         }else {
             notification("Sorry. You have typed wrong data.", 4000, false);
         }
     };
+
+    $scope.loginPopUp = function () {
+        $scope.closeThisDialog();
+        ngDialog.open({
+            template: '/assets/userapp/partials/login/login.html',
+            className: 'ngdialog-theme-plain',
+            closeByDocument: true
+        });
+    }
 }]);

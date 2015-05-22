@@ -7,16 +7,14 @@
 
     // Select and append notification
     var container = $('#notification-container')
-    var newNotification = createNotification(message);
+    var newNotification = createNotification("<i class=\"" + (state ? "mdi-action-info-outline" : "tiny mdi-action-highlight-remove") + "\"></i>&emsp;" + message);
 
     if(!container.empty()) {
         container.pop();
     }
     container.append(newNotification);
 
-    newNotification.css({"top" : parseFloat(newNotification.css("top"))+35+"px",
-        "opacity": 0,
-        "text-shadow": "0px 0px 3px " + (state? "green" : "red") });
+    newNotification.css({"top": parseFloat(newNotification.css("top")) + 35 + "px"});
     newNotification.velocity({"top" : "0px",
             opacity: 1},
         {duration: 300,
@@ -54,6 +52,7 @@
     function createNotification(html) {
         var notification = $("<div class='notification'></div>")
             .addClass(className)
+            .addClass((state ? "" : "red accent-2"))
             .html(html);
         // Bind hammer
         notification.hammer({prevent_default:false

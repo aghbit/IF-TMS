@@ -9,14 +9,78 @@
 .icon-block {
   padding: 0 15px;
 }
-
+body{
+    font-family: 'Maven Pro', sans-serif !important;
+}
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea{
+/*all text inputs in the project*/
+    border-bottom: 1px solid #3f51b5;
+    -webkit-box-shadow: 0 1px 0 0 #9FA8DA;
+    -moz-box-shadow: 0 1px 0 0 #9FA8DA;
+    box-shadow: 0 1px 0 0 ;
+}
+.input-field input[type=text]:focus + label, .input-field input[type=password]:focus + label, .input-field input[type=email]:focus + label, .input-field input[type=url]:focus + label, .input-field input[type=date]:focus + label, .input-field input[type=tel]:focus + label, .input-field input[type=number]:focus + label, .input-field input[type=search]:focus + label, .input-field textarea:focus.materialize-textarea + label {
+    color: #342FB5; }
 .row .col#myTournaments{
   padding: 0 0;
 }
+.my_trans{
+    background-color: rgba(200, 211, 208, 0.8);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    -moz-box-shadow:    5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    box-shadow:         5px 3px 6px 0px rgba(37, 50, 50, 0.59);
+    width:800px;
+}
+.logged{
+    margin-left: auto;
+    margin-right: auto;
+}
 
+.collection .collection-item.active {
+    background-color: #3f51b5;
+}
+
+#team-collaps {
+    padding: 0;
+}
+
+
+.clickable {
+    cursor: hand;
+    color: white;
+}
+
+.clickable.right {
+    color: #342FB5;
+}
+
+.collection {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.btn.waves-effect.waves-light{
+    background-color: #342FB5 !important;
+}
 .content-bg {
     margin: 4%;
     position: relative;
+    margin: 0px 20px 0px;
+    height: calc(100% - 6vh);
+}
+.indigo-button{
+    background-color: #3f51b5 !important;
+}
+
+.page-content{
+    padding: 10px 20px 10px;
+    width: 70%;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: auto;
+    min-height: calc(100% - 12vh)
 }
 
 footer {
@@ -27,6 +91,7 @@ footer {
     width:100%;
 }
 footer.page-footer {
+    height: 6vh;
     background-color: #3f51b5;
 }
 
@@ -64,11 +129,13 @@ footer.page-footer {
     color: white;
     opacity: 1.0;
 }
-.wrong-progress{
+
+.wrong-progress {
     color: white;
 
     background-color: rgb(243, 47, 24);
 }
+
 .carousel-container {
     width: 85%;
     text-align: center;
@@ -89,6 +156,11 @@ footer.page-footer {
 }
 
 
+.ng-scope{
+    background-color: rgba(213, 219, 255, 0.14);
+}
+
+
 
 .progress-text-inner {
     display: table-cell;
@@ -96,28 +168,36 @@ footer.page-footer {
     vertical-align: middle;
     width: 100%;
 }
+
 .create-tournament-button{
-    position: absolute;
+    margin : 20px;
     width: 100%;
     bottom: 0;
     left: 0;
 }
-.indicator{
+
+.indicator {
     background-color: #5c6bc0 !important;
 }
-.create-tour-tab{
+
+.create-tour-tab {
     cursor: pointer;
     color: #1a237e !important;
 }
-.create-tour-tab:hover{
+
+.create-tour-tab:hover {
     color: #2d3dd8 !important;
 }
-.create-tour-submit{
-    background-color:  #5c6bc0;
+
+.create-tour-submit {
+    background-color: #5c6bc0;
 }
-.create-tour-submit:hover{
+
+.create-tour-submit:hover {
     background-color: rgba(102, 118, 212, 0.80);
-}#notification-container {
+}
+
+#notification-container {
     display: block;
     position: static !important;
     white-space: nowrap;
@@ -182,6 +262,32 @@ footer.page-footer {
     margin-left: 3rem; }
 .notification.rounded {
     border-radius: 24px; }
+
+.ngdialog-clickable {
+    cursor: pointer;
+}
+
+.picker__date-display {
+    background: #3f51b5; }
+
+.picker__weekday-display {
+    background: #303f9f; }
+
+.picker__day--highlighted {
+    color: #3f51b5; }
+
+.picker--focused .picker__day--selected {
+    background: #c5cae9; }
+
+.picker__year-display {
+    color: #c5cae9; }
+
+.picker--focused .picker__day--highlighted {
+    color: #3f51b5; }
+
+.picker__close, .picker__today {
+    color: #3f51b5; }
+
 @media only screen and (max-width : 600px) {
     .notification {
         width: 100%;
@@ -195,3 +301,53 @@ footer.page-footer {
 @media only screen and (min-width : 993px) {
     .notification {
         float: right; } }
+
+.ngdialog-message {
+    font-family: Helvetica Narrow, sans-serif;
+    color: #fffffc;
+    position: relative;
+    margin-left: 10%;
+    margin-bottom: 0%;
+}
+
+.ngdialog-buttons {
+    position: relative;
+    margin-left: 18%;
+    margin-bottom: 6%;
+}
+
+.row {
+    position: relative;
+    margin-bottom: 0%;
+}
+.inputValidationError {
+    color:#F44336;
+    font-size: 11px;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #F44336;
+    box-shadow: 0 1px 0 0 #F44336;
+    margin-bottom: 0px;
+}
+
+.team-name {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.players-list, .players-list > li {
+    background-color: transparent;
+    font-size: 16px;
+}
+
+.players-list > :first-child {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.players-list > :first-child:before {
+    content: '(C) ';
+}
+

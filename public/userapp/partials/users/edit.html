@@ -1,0 +1,61 @@
+<div class="col s12 indigo" style="padding: 20px">
+    <div class="ngdialog-message">
+        <h3>Edit Account</h3>
+    </div>
+</div>
+
+<div ng-controller="UserController">
+    <form ng-submit="submit()" class="col s12">
+        <div class="ngdialog-buttons">
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="login" type="text" >
+                    <label for="login">New Login</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="name" type="text" >
+                    <label for="name">New Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="surname" type="text" >
+                    <label for="surname">New Surname</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="phone" type="text" >
+                    <label for="phone">New Phone</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s9">
+                    <input id="mail" type="text" >
+                    <label for="login">New Mail</label>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+        <div align="center" class="col s9">
+
+            <button class="btn waves-effect indigo waves-light" type="submit" name="action">Submit
+                <i class="mdi-content-send right"></i>
+            </button>
+        </div>
+
+
+    </form>
+
+</div>
+
+

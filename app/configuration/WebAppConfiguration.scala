@@ -11,7 +11,7 @@ object WebAppConfiguration {
 
   def mongoTemplate: MongoTemplate = {
     val mongoDBConfiguration: MongoDBConfiguration = new MongoDBConfiguration(databaseName)
-    new MongoTemplate(mongoDBConfiguration.mongo(), databaseName)
+    new MongoTemplate(mongoDBConfiguration.mongo(), mongoDBConfiguration.databaseName)
   }
 
 }
