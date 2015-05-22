@@ -12,7 +12,7 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
         });
     $scope.openedTournamentItem = undefined;
     $scope.rotateArrow = function(id){
-        $("#list-icon"+id).toggleClass("rotate-clockwise");
+        $bit("#list-icon"+id).toggleClass("rotate-clockwise");
         if($scope.openedTournamentItem !== undefined && $scope.openedTournamentItem!== id){
             $("#list-icon"+$scope.openedTournamentItem).toggleClass("rotate-clockwise");
         }
