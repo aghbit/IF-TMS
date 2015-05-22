@@ -30,8 +30,7 @@ object UsersController extends Controller{
         case Right(uP) =>
           val user = UserImpl(uP)
           try {
-            repository.insert(user)
-            repository.delete(user);
+          //  repository.insert(user)
             Future.successful(Created)
           } catch {
             case e:UserWithThisLoginExistsInDB => Future.failed(e)
@@ -39,7 +38,7 @@ object UsersController extends Controller{
           }
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
-//  }
+ }
 //  def modifyUser() =  Action.async(parse.json){
 //    request =>
 //      val userProperties = request.body.validate[UserProperties].asEither

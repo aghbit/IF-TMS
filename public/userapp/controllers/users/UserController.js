@@ -83,28 +83,28 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     };
 
     $scope.submit = function(){
-        if($scope.checkForm()) {
-            $http.put
-//            $http.post('/api/users', {
-//                "name": $scope.name,
-//                "login": $scope.login,
-//                "password": $scope.password,
-//                "phone": $scope.phone,
-//                "mail": $scope.mail
-            }).
-                success(function (data, status, headers, config) {
-                    $scope.closeThisDialog();
-                    $location.url("/login");
-                    notification("You have successfully edited your account.", 4000, true);
-                }).
-                error(function (data, status, headers, config) {
-                    $scope.closeThisDialog();
-                    $location.url(status + "/" + data);
-                    notification("Sorry. Error occurred.", 4000, false);
-                });
-        }else {
-            notification("Sorry. You have typed wrong data.", 4000, false);
-        }
+//        if($scope.checkForm()) {
+//        //    $http.put
+////            $http.post('/api/users', {
+////                "name": $scope.name,
+////                "login": $scope.login,
+////                "password": $scope.password,
+////                "phone": $scope.phone,
+////                "mail": $scope.mail
+//            }).
+//                success(function (data, status, headers, config) {
+//                    $scope.closeThisDialog();
+//                    $location.url("/login");
+//                    notification("You have successfully edited your account.", 4000, true);
+//                }).
+//                error(function (data, status, headers, config) {
+//                    $scope.closeThisDialog();
+//                    $location.url(status + "/" + data);
+//                    notification("Sorry. Error occurred.", 4000, false);
+//                });
+//        }else {
+//            notification("Sorry. You have typed wrong data.", 4000, false);
+//        }
     };
 
 
