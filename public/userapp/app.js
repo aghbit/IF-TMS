@@ -1,4 +1,5 @@
 var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies']);
+
 mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
@@ -96,7 +97,6 @@ mainApp.factory('SessionService', function() {
     };
     return usersCredentials;
 });
-
 //token always in headers
 mainApp.factory('sessionInjector', ['SessionService', function(SessionService) {
     var sessionInjector = {
@@ -130,3 +130,11 @@ var httpInterceptor = function ($provide, $httpProvider) {
     $httpProvider.interceptors.push('httpInterceptor');
 };
 mainApp.config(httpInterceptor);
+
+mainApp.factory('ErrorMessageService', function() {
+    var message = {
+        content : ' '
+    };
+    return message;
+
+});

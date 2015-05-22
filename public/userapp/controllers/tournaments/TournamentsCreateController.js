@@ -1,4 +1,5 @@
-mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location', 'SessionService', '$compile', function ($scope, $http, $location, SessionService, $compile) {
+mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location', 'SessionService', 'ErrorMessageService', '$compile',
+    function ($scope, $http, $location, SessionService, ErrorMessageService, $compile) {
     //important! it loads js for datePicker.
     angular.element(document).ready(function(){
         $('ul.tabs').tabs();
@@ -14,7 +15,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
             closeOnSelect: true
         })
     })
-    $scope.isLoggedIn = SessionService.isLoggedIn
+    $scope.isLoggedIn = SessionService.isLoggedIn;
     $scope.submit = function(){
         var enrollDeadline = $('#enrollDeadline')[0].value;
         var enrollDeadlineTime = $('#enrollDeadlineTime')[0].value;
@@ -40,7 +41,9 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }).success(function(){
             notification("Tournament created!", 4000, true)
             $location.path("tournaments/myTournaments")
-        }).error(function(){
+        }).error(function(data, status){
+            ErrorMessageService.content = data;
+            $location.url(status+"/");
             notification("Wrong data, tournament can't be created!", 4000, false)
         })
 
