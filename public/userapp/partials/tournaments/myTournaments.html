@@ -6,8 +6,13 @@
                 <div class="collapsible-header tournaments-header" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.description.name}}</div>
                 <div class="collapsible-body">
                     <ul class="collection">
-                        <li class="collection-item tournaments-date"><a  class="btn waves-effect waves-light" ui-sref="tournaments/id/teams({id : tournament._id})">Show teams</a> <a class="btn waves-effect waves-light" ui-sref="#/tournaments/id/enrollment({id: tournament._id})">Enroll me</a></li>
-                        <li class="collection-item tournaments-date"> <i class="mdi-notification-event-note"></i>{{tournament.term.begin}}<i class="mdi-navigation-arrow-forward"></i>End: {{tournament.term.end}} </li>
+                        <li class="collection-item tournaments-date">
+                            <a class="btn waves-effect waves-light" ui-sref="tournaments/id/teams({id : tournament._id})">Show teams</a>
+                            <a class="btn waves-effect waves-light" ui-sref="#/tournaments/id/enrollment({id: tournament._id})">Enroll me</a></li>
+                        <li class="collection-item tournaments-date">
+                            <i class="mdi-notification-event-note"></i>{{tournament.term.begin}}
+                            <i class="mdi-navigation-arrow-forward"></i>End: {{tournament.term.end}}
+                        </li>
                         <li class="collection-item"><i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}</li>
                         <li class="collection-item"><i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}</li>
                         <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.settings.discipline}}</li>
