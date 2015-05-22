@@ -1,8 +1,8 @@
 /**
  * Created by Szymek on 07.03.15.
  */
-mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams', 'SessionService', '$location',
-    function ($scope, $http, $stateParams, SessionService, $location) {
+mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams', 'SessionService', '$location', 'ErrorMessageService',
+    function ($scope, $http, $stateParams, SessionService, $location, ErrorMessageService) {
 
         $scope.loggedIn = SessionService.isLoggedIn;
 
@@ -26,6 +26,8 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
 
                 }).
                 error(function (data, status, headers, config) {
+                    ErrorMessageService.content = data;
+                    $location.url(status+"/");
                     notification("Can't add, probably too many players in team!", 4000, false)
                 });
 

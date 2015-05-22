@@ -2,7 +2,8 @@
  * Created by Piotr on 2015-02-04.
  */
 
-mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDialog', function ($scope, $http, $location, ngDialog) {
+mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDialog', 'ErrorMessageService',
+    function ($scope, $http, $location, ngDialog, ErrorMessageService) {
 
     $scope.validatePasswordField = function(){
         if($scope.password == null || $scope.password.length<5 || $scope.password.length > 20){
@@ -92,7 +93,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
                 }).
                 error(function (data, status, headers, config) {
                     $scope.closeThisDialog();
-                    $location.url(status + "/" + data);
+                    ErrorMessageService.content = data;
+                    $location.url(status+"/");
                     notification("Sorry. Error occurred.", 4000, false);
                 });
         }else {
