@@ -36,7 +36,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
                 "extraEnd": extraEnd + " " + extraEndTime
             },
             "settings":{"numberOfPitches":$scope.numberOfPitches, "numberOfTeams":$scope.numberOfTeams,
-                "canEnroll": false, "level": $scope.level, "discipline": $scope.discipline, "isEnrollmentEnded": false
+                "canEnroll": false, "level": $scope.level, "discipline": $scope.discipline
             }
         }).success(function(){
             notification("Tournament created!", 4000, true)
