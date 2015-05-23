@@ -80,15 +80,58 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
     };
 
-    $scope.deleteTeam = function(id) {
-        console.log(id);
+    $scope.deleteTeam = function(teamId) {
+        $http({
+            url: '/api/tournaments/' + $stateParams.id + "/" + teamId,
+            dataType: 'json',
+            method: 'DELETE',
+            data: {
+                tournamentId: $stateParams.id,
+                teamId: teamId
+            },
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).
+            success(function(data, status, headers, config) {
+                setTimeout( function() {
+                        $scope.getTournament();
+                        $scope.getTeams();
+                    }
+                    ,250);
+                notification("Team removed!", 4000, true);
+            }).
+            error(function(data, status, headers, config, statusText) {
+                notification("Something went wrong!", 4000, false)
+            });
     };
 
     $scope.editTeam = function(id) {
         console.log(id);
     };
 
-    $scope.deletePlayer = function(id) {
-        console.log(id);
+    $scope.deletePlayer = function(teamId,playerId) {
+        $http({
+            url: '/api/teams/' + teamId + "/" + playerId,
+            dataType: 'json',
+            method: 'DELETE',
+            data: {
+                teamId: teamId,
+                playerId: playerId
+            },
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).
+            success(function(data, status, headers, config) {
+                setTimeout( function() {
+                        $scope.getTeams();
+                    }
+                    ,250);
+                notification("Player removed!", 4000, true);
+            }).
+            error(function(data, status, headers, config, statusText) {
+                notification("Something went wrong!", 4000, false)
+            });
     };
 }]);
