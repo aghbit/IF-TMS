@@ -25,7 +25,7 @@ trait User {
   }
 
   def generateToken :Token = {
-     new TokenImpl(_id)
+     TokenImpl(_id)
   }
 
 }

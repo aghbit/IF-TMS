@@ -13,7 +13,7 @@ case class Authorization[A](action: Action[A]) extends Action[A] with Controller
   def apply(request: Request[A]):Future[Result] = {
     request.headers.get("token") match {
       case Some(t) => {
-        val token = new TokenImpl(t)
+        val token = TokenImpl(t)
         if(TokensKeeper.containsToken(token)){
           action(request)
         }else {

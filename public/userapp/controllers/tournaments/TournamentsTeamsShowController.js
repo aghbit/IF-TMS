@@ -48,8 +48,8 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
             var teamName = obj.name;
             document = document+ teamName+",";
             document = document + obj.captain.name+ ","+obj.captain.surname+",";
-            document = document + obj.captain.phone+",";
-            document = document + obj.captain.mail+",";
+            document = document + obj.phone+",";
+            document = document + obj.mail+",";
             for(var j=0;j<obj.players.length-1;j++){
                 document +=obj.players[j].name+ ","+ obj.players[j].surname+",";
             }
