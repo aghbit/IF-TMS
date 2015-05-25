@@ -110,6 +110,14 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }
     };
 
+        $scope.validateDisciplineField = function() {
+            if($scope.discipline != "Volleyball" && $scope.discipline != "BeachVolleyball"){
+                $scope.disciplineClass = "invalid";
+            }else {
+                $scope.disciplineClass = "";
+            }
+        };
+
 
 
     $scope.validateEnrollmentTimeBeforeBegin = function() {

@@ -48,8 +48,9 @@
                     <span ng-if="levelClass == 'invalid'" class="inputValidationError">Must be a number.</span>
                 </div>
                 <div class="input-field">
-                    <input id="discipline" type="text" ng-model="discipline">
+                    <input class="{{disciplineClass}}" id="discipline" type="text" ng-model="discipline" ng-blur="validateDisciplineField()">
                     <label for="discipline">Discipline</label>
+                    <span ng-if="disciplineClass == 'invalid'" class="inputValidationError">Either Volleyball of BeachVolleyball</span>
                 </div>
 
             </div>
