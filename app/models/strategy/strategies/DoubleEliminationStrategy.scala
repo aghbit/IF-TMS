@@ -9,4 +9,8 @@ import models.team.Team
  */
 
 object DoubleEliminationStrategy extends EliminationStrategy{
+
+  def init(teams : List[Team]) = {
+
+  }
 }

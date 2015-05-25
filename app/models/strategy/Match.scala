@@ -2,6 +2,7 @@ package models.strategy
 
 import models.strategy.scores.BeachVolleyballScore
 import models.team.Team
+import models.tournament.tournamenttype.TournamentType
 import play.api.libs.json.{Json, JsObject}
 import reactivemongo.bson.BSONObjectID
 
@@ -50,7 +51,7 @@ class Match (val id:BSONObjectID,
 
 }
 object Match {
-  def beachVolleyball(host:Option[Team], guest:Option[Team]) = {
-    new Match(BSONObjectID.generate, host, guest, BeachVolleyballScore())
+  def apply(host:Option[Team], guest:Option[Team], tournamentType: TournamentType) = {
+    new Match(BSONObjectID.generate, host, guest, tournamentType.getNewScore())
   }
 }

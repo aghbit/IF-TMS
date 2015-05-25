@@ -3,6 +3,7 @@ package IT.repositories
 import java.util
 
 import models.strategy.EliminationTree
+import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.SingleEliminationStrategy
 import models.tournament.Tournament
 import models.tournament.tournamentstates.BeforeEnrollment
@@ -34,7 +35,7 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
     new DateTime(2014, 3, 27, 8, 0, 0, 0),
     new DateTime(2014, 3, 27, 16, 0, 0, 0))
   val tournamentSettings = new TournamentSettings(2, 16, true, 1, "Volleyball")
-  val tournamentStrategy = new EliminationTree()
+  val tournamentStrategy = new DoubleEliminationTree()
   val tournamentStaff = new TournamentStaff(BSONObjectID.generate, new util.ArrayList[BSONObjectID]())
   val tournamentProperties = new TournamentProperties(tournamentDescription, tournamentTerms, tournamentSettings)
   before {

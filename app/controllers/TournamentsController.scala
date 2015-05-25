@@ -6,6 +6,7 @@ import controllers.UsersController._
 import controllers.security.{TokenImpl, AuthorizationAction}
 import models.enums.ListEnum
 import models.strategy.EliminationTree
+import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.SingleEliminationStrategy
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
@@ -35,7 +36,7 @@ object TournamentsController extends Controller{
         case Right(properties) =>
           val userID = TokenImpl(request.headers.get("token").get).getUserID
           val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
-          val beforeEnrollment = BeforeEnrollment(properties, new EliminationTree(), tournamentStaff)
+          val beforeEnrollment = BeforeEnrollment(properties, new DoubleEliminationTree(), tournamentStaff)
           val tournament = beforeEnrollment.startNext()
           try {
             repository.insert(tournament)
