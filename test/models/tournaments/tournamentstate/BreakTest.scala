@@ -1,6 +1,6 @@
 package models.tournaments.tournamentstate
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentstates.{BeforeEnrollment, DuringTournament}
@@ -29,13 +29,13 @@ class BreakTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
-    val tournamentStrategyMock = mock[TournamentStrategy]
+    val eliminationTreeMock = mock[EliminationTree]
     val tournamentStaffMock = mock[TournamentStaff]
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStrategyMock, tournamentStaffMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, eliminationTreeMock, tournamentStaffMock)
     instance = instance.startNext().startNext()
   }
 

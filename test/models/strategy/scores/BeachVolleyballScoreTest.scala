@@ -1,152 +1,110 @@
 package models.strategy.scores
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
-
+import play.api.libs.json.Json
 
 /**
- * Created by Rafal on 2014-12-07.
+ * Created by Szymek Seget on 24.05.15.
  */
-@RunWith(classOf[JUnitRunner])
-class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter {
+class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter with MockitoSugar {
 
-  var bvolScore: BeachVolleyballScore = _
-  val host = BSONObjectID.generate
-  val guest = BSONObjectID.generate
+  var underTest:BeachVolleyballScore = _
 
   before {
-    bvolScore = BeachVolleyballScore(host, guest)
+    underTest = BeachVolleyballScore()
   }
 
-
-  test("Primary test") {
+  test("Simple test"){
 
     //given
 
     //when
-    val hostSets = bvolScore.hostSets
-    val guestSets = bvolScore.hostSets
+    underTest = underTest.firstSetHostScore(21)
+                         .firstSetGuestScore(19)
+                         .secondSetHostScore(22)
+                         .secondSetGuestScore(20)
+                         .thirdSetHostScore(15)
+                         .thirdSetGuestScore(10)
+
 
     //then
-    assert(bvolScore.maxPoints === 21, "Primary test1")
-    assert(hostSets.size === 1, "Primary test2")
-    assert(guestSets.size === 1, "Primary test3")
-    assert(!bvolScore.isMatchFinished, "Primary test4")
+    assert(underTest.isMatchFinished, "Something went wrong!")
   }
 
-  test("AddPoint: FirstTest") {
+  test("Sets second set score, during first set") {
 
     //given
-    for (i <- 0 until 41) bvolScore.addPoint(host)
 
     //when
-    val hostSets = bvolScore.hostSets
-    val guestSets = bvolScore.guestSets
+    underTest = underTest.firstSetHostScore(21)
 
-    //then
-    assert(hostSets.size === 2, "AddPoint: FirstTest1")
-    assert(guestSets.size === 2, "AddPoint: FirstTest2")
-    assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest3")
-    assert(!bvolScore.isMatchFinished, "AddPoint: FirstTest4")
+    intercept[IllegalArgumentException] {
+      underTest.secondSetGuestScore(4)
+    }
+
   }
 
-  test("AddPoint: Too many points test") {
+  test("Sets third set score, during second set") {
 
     //given
-    for (i <- 0 until 42) bvolScore.addPoint(host)
 
     //when
-
+    underTest.firstSetHostScore(21)
+      .firstSetGuestScore(19)
+      .secondSetHostScore(21)
+      .secondSetGuestScore(20)
     //then
-    intercept[MatchFinishedException] {
-      bvolScore.addPoint(host)
+
+    intercept[IllegalArgumentException] {
+      underTest.thirdSetGuestScore(4)
     }
   }
 
-
-  test("IsEnded: Match is finished test") {
-
+  test("Sets negative score") {
     //given
-    for (i <- 0 until 42) bvolScore.addPoint(host)
 
     //when
-    val isEnded = bvolScore.isMatchFinished
-    val sizeOfHostSets = bvolScore.hostSets.size
-    val sizeOfGuestSets = bvolScore.guestSets.size
 
-    //then
-    assert(isEnded, "IsEnded: Match is finished test1")
-    assert(sizeOfHostSets === 3, "IsEnded: Match is finished test2")
-    assert(sizeOfGuestSets === 3, "IsEnded: Match is finished test3")
-  }
-
-  test("IsEnded: 1 pointed advantage test") {
-
-    //given
-    for (i <- 0 until 21) bvolScore.addPoint(host)
-    for (i <- 0 until 20) {
-      bvolScore.addPoint(host)
-      bvolScore.addPoint(guest)
+    intercept[IllegalArgumentException] {
+      underTest.firstSetGuestScore(-2)
     }
-    bvolScore.addPoint(host)
-
-    //when
-    val isEnded = bvolScore.isMatchFinished
-
-    //then
-    assert(!isEnded, "IsEnded: 1 pointed advantage test1")
   }
 
-  test("IsEnded: draw test") {
+  test("Sets set score - advantages") {
+    //given
+
+    //when
+    underTest = underTest.firstSetGuestScore(32)
+      .firstSetHostScore(30)
+      .secondSetHostScore(23)
+      .secondSetGuestScore(21)
+      .thirdSetGuestScore(18)
+      .thirdSetHostScore(16)
+
+    //then
+    assert(underTest.isMatchFinished, "Something went wrong!")
+  }
+
+  test("toJson test") {
 
     //given
-    for (i <- 0 until 21) bvolScore.addPoint(host)
-    for (i <- 0 until 21) {
-      bvolScore.addPoint(host)
-      bvolScore.addPoint(guest)
-    }
-    //when
-    val isEnded1 = bvolScore.isMatchFinished
-    val isEnded2 = bvolScore.isMatchFinished
-
-    //then
-    assert(!isEnded1, "IsEnded: draw test1")
-    assert(!isEnded2, "IsEnded: draw test2")
-
-  }
-
-  test("IsEnded: advantage finally made test") {
-
-    //given
-    for (i <- 0 until 21) bvolScore.addPoint(host)
-    for (i <- 0 until 20) {
-      bvolScore.addPoint(host)
-      bvolScore.addPoint(guest)
-    }
-    bvolScore.addPoint(host)
-    bvolScore.addPoint(host)
-
-
+    val rightJson = Json.parse(
+      """{ "score" : { "sets" : [
+        |{"1" : { "host" : 21 , "guest" : 15 }},
+        |{"2": { "host" : 19, "guest" : 21}},
+        |{"3": { "host" : 17, "guest" : 15}}]}}""".stripMargin)
 
     //when
-
-
-    //then
-    assert(bvolScore.isMatchFinished, "IsEnded: advantage finally made test1")
-
-  }
-
-  test("GetWinnerLoserTest: Simple Test") {
-
-    //given
-    for (i <- 0 until 42) bvolScore.addPoint(host)
-    //when
+    underTest = underTest.firstSetHostScore(21)
+    .firstSetGuestScore(15)
+    .secondSetHostScore(19)
+    .secondSetGuestScore(21)
+    .thirdSetHostScore(17)
+    .thirdSetGuestScore(15)
+    val underTestJson = underTest.toJson
 
     //then
-    assert(bvolScore.getWinner == Some(host), "WinnerTest")
-    assert(bvolScore.getLoser == Some(guest), "LoserTest")
+    assert(rightJson.equals(underTestJson), "Json generation went wrong")
   }
-
 }

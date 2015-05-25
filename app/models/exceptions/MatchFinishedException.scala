@@ -1,4 +1,4 @@
-package models.strategy.scores
+package models.exceptions
 
 /**
  * Created by Rafal on 2015-02-23.

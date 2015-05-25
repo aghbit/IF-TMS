@@ -1,47 +1,56 @@
 package models.strategy
 
+import models.strategy.scores.BeachVolleyballScore
 import models.team.Team
+import play.api.libs.json.{Json, JsObject}
 import reactivemongo.bson.BSONObjectID
 
 /**
- * Created by Rafal on 2014-12-02.
+ * Created by Szymek Seget on 2014-12-02.
  */
-class Match(val host: Option[BSONObjectID],
-            val guest: Option[BSONObjectID]) {
+class Match (val id:BSONObjectID,
+             var host:Option[Team],
+             var guest:Option[Team],
+             var score:Score) {
 
-  var score: Option[Score] = None
-
-  def isMatchFinished: Boolean = (host, guest, score) match {
-    case (None, _, _) => true
-    case (_, None, _) => true
-    case (_, _, None) => false
-    case (_, _, score) => score.get.isMatchFinished
+  /**
+   * Returns json version of this match.
+   * Json e.g.
+   * {"_id": BSONObjectID.stringify,
+   *  "host": {
+   *            "id":BSONObjectID.stringify,
+   *            "name":"teamName"},
+   *  "guest": {
+   *             "id":BSONObjectID.stringify,
+   *             "name":"teamName"},
+   *  "score": {
+   *            sets: [{"1": {
+   *                        "host":21,
+   *                        "guest":15}},
+   *                   {"2": {
+   *                        "host":21,
+   *                        "guest":10}},
+   *                   {"3": {
+   *                        "host":null,
+   *                        "guest":null}}
+   *                   ]
+   *             }
+   * }
+   *
+   * @return jsObject
+   */
+  def toJson:JsObject = {
+    Json.obj("_id" -> id.stringify,
+    "host" -> Json.obj("_id" -> host.orNull._id.stringify, "name" -> host.orNull.name),
+    "guest" -> Json.obj("_id" -> guest.orNull._id.stringify, "name" -> guest.orNull.name))
+    .++(score.toJson)
   }
 
-  def losingTeam: Option[BSONObjectID] =
-    if (guest == None) {
-      guest
-    } else
-    if (host == None) {
-      host
-    } else {
-      score.get.getLoser
-    }
 
 
-  def winningTeam: Option[BSONObjectID] =
-    if (losingTeam == host) {
-      guest
-    } else {
-      host
-    }
 }
-
 object Match {
-  def apply(host: Option[Team], guest: Option[Team]) = (host, guest) match {
-    case (None, None) => new Match(None, None)
-    case (None, Some(guest)) => new Match(None, Some(guest._id))
-    case (Some(host), None) => new Match(Some(host._id), None)
-    case (Some(host), Some(guest)) => new Match(Some(host._id), Some(guest._id))
+  def beachVolleyball(host:Option[Team], guest:Option[Team]) = {
+    new Match(BSONObjectID.generate, host, guest, BeachVolleyballScore())
   }
 }

@@ -2,7 +2,7 @@ package models.tournament.tournamentstates
 
 import java.util
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties}
@@ -17,11 +17,11 @@ import scala.collection.JavaConversions._
 class Enrollment(override val _id: BSONObjectID,
                  override var properties: TournamentProperties,
                  override var teams: util.ArrayList[BSONObjectID],
-                 override val strategy: TournamentStrategy,
+                 override val tree: EliminationTree,
                  override val staff: TournamentStaff) extends Tournament {
 
   override def startNext(): Break = {
-    val newState = new Break(this._id, this.properties, this.teams, strategy, staff)
+    val newState = new Break(this._id, this.properties, this.teams, tree, staff)
     newState.properties.settings.canEnroll = false
     newState
   }

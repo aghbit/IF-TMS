@@ -2,7 +2,7 @@ package models.tournament
 
 import java.util
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
@@ -22,7 +22,7 @@ trait Tournament {
   val _id: BSONObjectID
   var properties: TournamentProperties
   var teams: util.ArrayList[BSONObjectID]
-  val strategy: TournamentStrategy
+  val tree: EliminationTree
   val staff: TournamentStaff
 
   def startNext(): Tournament
@@ -34,7 +34,7 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   def generateTree(teams: List[Team]) = {
-    strategy.generateTree(teams)
+    tree.init(teams)
   }
 
   def addReferee(user: User): Unit = {
