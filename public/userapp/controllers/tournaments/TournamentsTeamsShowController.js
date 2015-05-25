@@ -80,6 +80,19 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
     };
 
+
+        $scope.deleteTeamPopUp = function(team) {
+            //  $scope.closeThisDialog();
+            ngDialog.open({
+                template: '/assets/userapp/partials/tournaments/deleteTeamDialog.html',
+                className: 'ngdialog-theme-plain',
+                data: team,
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
+
     $scope.deleteTeam = function(teamId) {
         $http({
             url: '/api/tournaments/' + $stateParams.id + "/" + teamId,
@@ -109,6 +122,30 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
     $scope.editTeam = function(id) {
         console.log(id);
     };
+
+        $scope.deletePlayerCheck = function(teamId,playerId) {
+            for(var i=0;i<$scope.teams.length;i++){
+                if ($scope.teams[i].id === teamId &&  $scope.teams[i].players[0].id === playerId) {
+                    $scope.deleteCaptainPopUp($scope.teams[i]);
+                    break;
+                }
+                else {
+                    $scope.deletePlayer(teamId,playerId);
+                    break;
+                }
+            }
+        };
+
+        $scope.deleteCaptainPopUp = function(team) {
+            //  $scope.closeThisDialog();
+            ngDialog.open({
+                template: '/assets/userapp/partials/tournaments/deleteCaptainDialog.html',
+                className: 'ngdialog-theme-plain',
+                data: team,
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
 
     $scope.deletePlayer = function(teamId,playerId) {
         $http({

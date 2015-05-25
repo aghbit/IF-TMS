@@ -9,7 +9,7 @@
             <li ng-repeat="team in teams">
                 <div class="collapsible-header">
                     <b>{{team.name}}</b>
-                    <a ng-click="deleteTeam(team.id)" class="clickable right"><i class="mdi-content-clear"></i></a>
+                    <a ng-click="deleteTeamPopUp(team)" class="clickable right"><i class="mdi-content-clear"></i></a>
                     <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
                 </div>
                 <div class="collapsible-body">
@@ -23,7 +23,7 @@
                         </li>
                         <li ng-repeat="player in team.players" class="collection-item">
                             {{player.name + " " + player.surname}}
-                            <a ng-click="deletePlayer(team.id,player.id)" class="right clickable mdi-content-clear"></a>
+                            <a ng-click="deletePlayerCheck(team.id,player.id)" class="right clickable mdi-content-clear"></a>
                         </li>
                         <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
                         <i class="mdi-content-add"></i>Add Player</a>
