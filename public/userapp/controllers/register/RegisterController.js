@@ -58,7 +58,6 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
 
     }
     $scope.validatePhoneField = function() {
-        //regex for email address RFC 5322
         var pattern= /^[0-9]{9}$/
         if(!pattern.test($scope.phone)){
             $scope.phoneClass = "invalid";
@@ -95,7 +94,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
                     $scope.closeThisDialog();
                     ErrorMessageService.content = data;
                     $location.url(status+"/");
-                    notification("Sorry. Error occurred.", 4000, false);
+                    notification("Sorry. An error occurred.", 4000, false);
                 });
         }else {
             notification("Sorry. You have typed wrong data.", 4000, false);

@@ -68,7 +68,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
     };
 
     $scope.validateTournamentNameField = function() {
-        if($scope.tournamentName == null || $scope.tournamentName.length < 3 || $scope.tournamentName.length > 40){
+        if($scope.tournamentName == null || $scope.tournamentName.length < 3 || $scope.tournamentName.length > 20){
             $scope.tournamentNameClass = "invalid";
         }else {
             $scope.tournamentNameClass = "";
@@ -76,7 +76,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
     };
 
     $scope.validateTournamentPlaceField = function() {
-        if($scope.tournamentPlace == null || $scope.tournamentPlace.length < 3 || $scope.tournamentPlace.length > 40){
+        if($scope.tournamentPlace == null || $scope.tournamentPlace.length < 3 || $scope.tournamentPlace.length > 20){
             $scope.tournamentPlaceClass = "invalid";
         }else {
             $scope.tournamentPlaceClass = "";

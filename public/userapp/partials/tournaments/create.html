@@ -16,12 +16,12 @@
                 <div class='input-field'>
                     <input class="{{tournamentNameClass}}" id='tournamentName' type='text' ng-model='tournamentName' ng-blur="validateTournamentNameField()">
                     <label for='tournamentName'>Tournament Name</label>
-                    <span ng-if="tournamentNameClass == 'invalid'" class="inputValidationError">Tournament name must be 3-40 letters long.</span>
+                    <span ng-if="tournamentNameClass == 'invalid'" class="inputValidationError">Tournament name must be 3-20 letters long.</span>
                 </div>
                 <div class='input-field'>
                     <input class="{{tournamentPlaceClass}}" id='tournamentPlace' type='text' ng-model='tournamentPlace' ng-blur="validateTournamentPlaceField()">
                     <label for='tournamentPlace'>Tournament Place</label>
-                    <span ng-if="tournamentPlaceClass == 'invalid'" class="inputValidationError">Tournament place must be 3-40 letters long.</span>
+                    <span ng-if="tournamentPlaceClass == 'invalid'" class="inputValidationError">Tournament place must be 3-20 letters long.</span>
                 </div>
                 <div class='input-field'>
                     <textarea class='materialize-textarea' id='tournamentDescription' type='text'
