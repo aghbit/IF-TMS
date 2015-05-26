@@ -51,7 +51,9 @@ object TeamsController extends Controller {
         pattern(new Regex(Validators.PHONE_REGEX))
       ).asEither
 
-      val captainMail = request.body.\("captainMail").validate[String](email).asEither
+      val captainMail = request.body.\("captainMail").validate[String](
+        pattern(new Regex(Validators.EMAIL_REGEX))
+      ).asEither
 
       val inputsListEither = Map(
         "teamName" -> teamName,

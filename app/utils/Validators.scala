@@ -10,6 +10,7 @@ object Validators {
   val SURNAME_MIN_LENGTH  = 5
   val PASSWORD_MIN_LENGTH = 5
   val PHONE_REGEX = "^[0-9]{9}$"
+  val EMAIL_REGEX = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
   val LOGIN_MAX_LENGTH = 20
   val NAME_MAX_LENGTH = 20
   val SURNAME_MAX_LENGTH  = 30

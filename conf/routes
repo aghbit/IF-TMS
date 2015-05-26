@@ -6,10 +6,10 @@ GET         /                                 controllers.ApplicationController.
 
 
 POST        /api/users                        controllers.UsersController.createUser
-#PUT        /api/users                         controllers.UsersController.modifyUser
+PUT         /api/users/:id                    controllers.UsersController.removeUser(id:String)
 GET         /api/users/:id                    controllers.UsersController.getUser(id:String)
 POST        /api/login                        controllers.UsersController.login()
-GET         /api/users/login/:login           controllers.UsersController.isLoginInUse(login: String)
+GET         /api/users/login/:login           controllers.UsersController.getUserByLogin(login: String)
 
 POST        /api/tournaments                  controllers.TournamentsController.createTournament
 GET         /api/myTournaments                controllers.TournamentsController.getMyTournaments

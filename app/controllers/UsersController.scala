@@ -1,22 +1,25 @@
 package controllers
 
+import controllers.PlayersController._
+import controllers.TeamsController._
 import controllers.security.{AuthorizationAction, TokenImpl, TokensKeeper}
 import models.enums.ListEnum
-import models.exceptions.UserWithThisLoginExistsInDB
-import models.user.userproperties.JsonFormat._
-import models.user.userproperties.UserProperties
+import models.exceptions.{NoUserWithThisLoginInDB, UserWithThisLoginExistsInDB}
+import models.player.players.DefaultPlayerImpl
+import models.user.userproperties.{LightUserProperties, UserProperties}
 import models.user.users.userimpl.UserImpl
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
-import play.api.libs.json.JsError
+import play.api.libs.json.{JsPath, JsError}
 import play.api.libs.json.Reads._
 import play.api.mvc.{Action, Controller}
 import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
 import play.api.libs.functional.syntax._
+import utils.Validators
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-
+import scala.util.matching.Regex
 
 
 object UsersController extends Controller{
@@ -30,7 +33,7 @@ object UsersController extends Controller{
         case Right(uP) =>
           val user = UserImpl(uP)
           try {
-          //  repository.insert(user)
+            repository.insert(user)
             Future.successful(Created)
           } catch {
             case e:UserWithThisLoginExistsInDB => Future.failed(e)
@@ -39,21 +42,57 @@ object UsersController extends Controller{
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
  }
-//  def modifyUser() =  Action.async(parse.json){
-//    request =>
-//      val userProperties = request.body.validate[UserProperties].asEither
-//      userProperties match {
-//        case Right(uP) =>
-//          val user = UserImpl(uP)
-//          try {
-//        //    repository.insert(user)
-//            Future.successful(Created)
-//          } catch {
-//            case e:UserWithThisLoginExistsInDB => Future.failed(e)
-//            case e:Exception => Future.failed(e)
-//          }
-//        case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
-//      }
+
+
+  def removeUser(id: String) = Action.async(parse.json){
+    request =>
+
+      val name = request.body.\("name").validate[String](
+        minLength[String](Validators.NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.NAME_MAX_LENGTH)
+      ).asEither
+
+      val login = request.body.\("login").validate[String](
+        minLength[String](Validators.LOGIN_MIN_LENGTH) andKeep
+          maxLength[String](Validators.LOGIN_MAX_LENGTH)
+      ).asEither
+
+      val phone = request.body.\("phone").validate[String](
+        pattern(new Regex(Validators.PHONE_REGEX))
+      ).asEither
+
+      val mail = request.body.\("mail").validate[String](
+        pattern(new Regex(Validators.EMAIL_REGEX))
+      ).asEither
+
+      val mapEither = Map(
+        "name" -> name,
+        "login" -> login,
+        "phone" -> phone,
+        "mail" ->mail
+      )
+
+      val (errors, data) = Validators.simplifyEithers(mapEither)
+
+      if(errors.isEmpty){
+        val query = new Query(Criteria where "_id" is BSONObjectID(id))
+        var user = repository.find(query).get(ListEnum.head)
+        
+
+
+
+          try {
+            //repository.insert(user);
+            Future.successful(Created)
+          } catch {
+            case e:NoUserWithThisLoginInDB => Future.failed(e)
+            case e:Exception => Future.failed(e)
+          }
+      }else{
+        val jsErrors = errors.map(e => JsError.toFlatJson(e))
+        Future.successful(BadRequest("Detected error: " + jsErrors))
+      }
+  }
 
   def getUser(id: String) = AuthorizationAction.async {
     request => {
@@ -113,5 +152,15 @@ object UsersController extends Controller{
         Future(Ok("Login is in use."))
       }
   }
-
+  def getUserByLogin(login: String) = Action.async{
+    request =>
+      val query = new Query(Criteria where "personalData.login" is login)
+      val users = repository.find(query)
+      if(users.isEmpty){
+        Future(NotFound("Login is not in use."))
+      }else {
+        //
+        Future(Ok( users.get(ListEnum.head).toJson))
+      }
+  }
 }

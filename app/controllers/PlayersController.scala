@@ -40,7 +40,6 @@ object PlayersController extends Controller {
       val (errors, data) = Validators.simplifyEithers(mapEither)
 
       if(errors.isEmpty){
-
         val query = new Query(Criteria where "_id" is BSONObjectID(teamId))
         val team = teamRepository.find(query).get(ListEnum.head)
         val player = DefaultPlayerImpl(

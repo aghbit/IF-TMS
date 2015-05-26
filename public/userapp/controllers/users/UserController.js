@@ -7,20 +7,37 @@ RegisterController
  */
 
 mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$location', 'ngDialog', 'SessionService', function ($scope, $rootScope, $http, $location, ngDialog, SessionService){
-    $scope.message = "You have to be logged in to see user details!"
-        $http.get('api/users/'+SessionService.token.substr(0,24), {}).
-        success(function(data, status, headers, config) {
+    $scope.message = "You have to be logged in to see user details!";
+    $scope.nameClass = "";
+    $scope.loginClass = "";
+    $scope.phoneClass = "";
+    $scope.mailClass = "";
+    $scope.refresh = function() {
+        $http.get('api/users/' + SessionService.token.substr(0, 24), {}).
+            success(function (data, status, headers, config) {
                 $scope.user = data;
+                $scope.login = $scope.user.userProperties.login;
+                $scope.loginSave = $scope.user.userProperties.login;
+                $scope.name = $scope.user.userProperties.name;
+                $scope.phone = $scope.user.userProperties.phone;
+                $scope.mail = $scope.user.userProperties.mail;
 
-        }).error(function(data, status, headers, config, statusText) {
 
-        });
+            }).error(function (data, status, headers, config, statusText) {
+
+            });
+    }
+    $scope.refresh();
 
     $scope.checkLoginAvailability = function(){
+        $scope.refresh();
         if($scope.login == null ||( ($scope.login.length>=5 && $scope.login.length<=20)) ){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
+                    if(data.userProperties.login!=$scope.loginSave)
                     $scope.loginClass = "invalid";
+                    else
+                        $scope.loginClass = "";
                 }).
                 error(function (data, status, headers, config){
                     if(status==404){
@@ -76,35 +93,31 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     $scope.checkForm = function() {
         return $scope.mailClass == "" &&
             $scope.nameClass == "" &&
-            $scope.passwordClass == "" &&
-            $scope.mailClass == "" &&
             $scope.phoneClass == "" &&
             $scope.loginClass == ""
     };
 
     $scope.submit = function(){
-//        if($scope.checkForm()) {
-//        //    $http.put
-////            $http.post('/api/users', {
-////                "name": $scope.name,
-////                "login": $scope.login,
-////                "password": $scope.password,
-////                "phone": $scope.phone,
-////                "mail": $scope.mail
-//            }).
-//                success(function (data, status, headers, config) {
-//                    $scope.closeThisDialog();
-//                    $location.url("/login");
-//                    notification("You have successfully edited your account.", 4000, true);
-//                }).
-//                error(function (data, status, headers, config) {
-//                    $scope.closeThisDialog();
-//                    $location.url(status + "/" + data);
-//                    notification("Sorry. Error occurred.", 4000, false);
-//                });
-//        }else {
-//            notification("Sorry. You have typed wrong data.", 4000, false);
-//        }
+        if($scope.checkForm()) {
+            $http.put('/api/users/' + SessionService.token.substr(0, 24), {
+                "name": $scope.name,
+                "login": $scope.login,
+                "phone": $scope.phone,
+                "mail": $scope.mail
+            }).
+                success(function (data, status, headers, config) {
+                    $scope.closeThisDialog();
+                    $location.url("/users");
+                    notification("You have successfully edited your account.", 4000, true);
+                }).
+                error(function (data, status, headers, config) {
+                    $scope.closeThisDialog();
+                    $location.url(status + "/" + data);
+                    notification("Sorry. Error occurred.", 4000, false);
+                });
+        }else {
+            notification("Sorry. You have typed wrong data.", 4000, false);
+        }
     };
 
 

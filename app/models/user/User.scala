@@ -4,7 +4,6 @@ import controllers.security.{TokenImpl, Token}
 import models.user.userproperties.UserProperties
 import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
-import models.user.userproperties.JsonFormat._
 
 /**
  * Created by Szymek.

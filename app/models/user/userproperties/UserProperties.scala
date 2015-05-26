@@ -26,7 +26,7 @@ case class UserProperties(name: String,
 
 
 }
-object JsonFormat {
+object UserProperties {
   implicit val userPropertiesFormat:Format[UserProperties] = (
     (JsPath \ "name").format[String](minLength[String](Validators.NAME_MIN_LENGTH) andKeep
                                                         maxLength[String](Validators.NAME_MAX_LENGTH)) and
@@ -35,6 +35,6 @@ object JsonFormat {
       (JsPath \ "password").format[String](minLength[String](Validators.PASSWORD_MIN_LENGTH) andKeep
                                                               maxLength[String](Validators.PASSWORD_MAX_LENGTH)) and
       (JsPath \ "phone").format[String](pattern(new Regex(Validators.PHONE_REGEX), "error.regex")) and
-      (JsPath \ "mail").format[String](email)
+      (JsPath \ "mail").format[String](pattern(new Regex(Validators.EMAIL_REGEX)))
     )(UserProperties.apply, unlift(UserProperties.unapply))
 }
