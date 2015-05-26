@@ -12,8 +12,9 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     $scope.loginClass = "";
     $scope.phoneClass = "";
     $scope.mailClass = "";
+    $scope.user_id = SessionService.token.substr(0, 24);
     $scope.refresh = function() {
-        $http.get('api/users/' + SessionService.token.substr(0, 24), {}).
+        $http.get('api/users/' + $scope.user_id, {}).
             success(function (data, status, headers, config) {
                 $scope.user = data;
                 $scope.login = $scope.user.userProperties.login;
@@ -30,7 +31,7 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     $scope.refresh();
 
     $scope.checkLoginAvailability = function(){
-        $scope.refresh();
+
         if($scope.login == null ||( ($scope.login.length>=5 && $scope.login.length<=20)) ){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
