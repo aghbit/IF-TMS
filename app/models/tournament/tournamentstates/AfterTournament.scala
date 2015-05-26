@@ -18,8 +18,9 @@ import reactivemongo.bson.BSONObjectID
 class AfterTournament(override val _id: BSONObjectID,
                       override var properties: TournamentProperties,
                       override var teams: util.ArrayList[BSONObjectID],
-                      override val tree: EliminationTree,
-                      override val staff: TournamentStaff) extends Tournament {
+                      override val staff: TournamentStaff,
+                      override var strategy: EliminationStrategy) extends Tournament {
+
   override def addReferee(user: User): Unit = {
     throw new IllegalStateException("Can't add referee during this tournament state")
   }

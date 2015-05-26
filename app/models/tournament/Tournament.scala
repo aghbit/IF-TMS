@@ -6,6 +6,8 @@ import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
+import models.tournament.tournamenttype.TournamentType
+import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import models.user.User
 import play.api.libs.json.{JsObject, Json}
 import reactivemongo.bson.BSONObjectID
@@ -22,8 +24,9 @@ trait Tournament {
   val _id: BSONObjectID
   var properties: TournamentProperties
   var teams: util.ArrayList[BSONObjectID]
-  val tree: EliminationTree
+  var tree: EliminationTree = _
   val staff: TournamentStaff
+  var strategy:EliminationStrategy
 
   def startNext(): Tournament
 
@@ -34,7 +37,7 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   def generateTree(teams: List[Team]) = {
-    tree.init(teams)
+    tree = strategy.generateTree(teams, BeachVolleyball)
   }
 
   def addReferee(user: User): Unit = {

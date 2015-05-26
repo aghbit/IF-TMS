@@ -1,123 +1,56 @@
 package models.strategy.scores
 
 import models.strategy.Score
-import play.api.libs.json.{Json, JsObject}
+import play.api.libs.json.{JsNull, Json, JsObject}
+
 
 /**
  * Created by Szymek Seget on 24.05.15.
  */
-class BeachVolleyballScore(
-                          var firstSetHostScore:Option[Int],
-                          var firstSetGuestScore:Option[Int],
-                          var secondSetHostScore:Option[Int],
-                          var secondSetGuestScore:Option[Int],
-                          var thirdSetHostScore:Option[Int],
-                          var thirdSetGuestScore:Option[Int]) extends Score{
-
-  def firstSetHostScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    firstSetHostScore = Some(points)
-    this
-  }
-
-  def firstSetGuestScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    firstSetGuestScore = Some(points)
-    this
-  }
+class BeachVolleyballScore extends Score{
 
   /**
-   * Checks first set state. If first set has finished, returns true, otherwise
-   * returns false
-   * @return Boolean
+   * Stores scores in every set as tuple. Tuple structure:
+   * (hostScore, guestScore)
    */
-  private def isFirstSetFinished:Boolean = {
-    (firstSetGuestScore, firstSetHostScore) match {
-      case (Some(g), Some(h)) => isSetFinished(h,g)
-      case _ => false
-    }
-  }
-
-  def secondSetHostScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    if(!isFirstSetFinished){
-      throw new IllegalArgumentException("Can't set second set score, while first has not finished.")
-    }
-    secondSetHostScore = Some(points)
-    this
-  }
-
-  def secondSetGuestScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    if(!isFirstSetFinished){
-      throw new IllegalArgumentException("Can't set second set score, while first has not finished.")
-    }
-    secondSetGuestScore = Some(points)
-    this
-  }
+  var sets = scala.collection.mutable.Map[Int, (Int, Int)]()
+  var numberOfSets = 0
 
   /**
-   * Checks second set state. If second set has finished, returns true, otherwise
-   * returns false
-   * @return Boolean
+   * Adds new set with start score 0:0 to end of the sets list.
    */
-  private def isSecondSetFinished:Boolean = {
-    if(!isFirstSetFinished){
+  override def addSet() = {
+    if(numberOfSets==3)
+      throw new IllegalStateException("Can't add forth set in beach volleyball match. ")
+    numberOfSets = numberOfSets + 1
+    sets += (numberOfSets -> (0, 0))
+  }
+
+  override def setScoreInLastSet(hostScore:Int, guestScore:Int) = {
+    sets.remove(numberOfSets)
+    sets += (numberOfSets -> (hostScore, guestScore))
+  }
+
+  private def isHostWinnerOfNthSet(n:Int): Boolean = {
+    require(n<=numberOfSets && n>=1, "Wrong number of set")
+    val hostScore = sets.get(n).get._1
+    val guestScore = sets.get(n).get._2
+    if(n<3){
+      (hostScore == 21 && guestScore<=19) || (hostScore>21 && guestScore == hostScore-2)
+    }else{
+      (hostScore == 15 && guestScore<=13) || (hostScore>15 && guestScore == hostScore-2)
+    }
+  }
+
+  override def isHostWinner():Boolean = {
+    if(isHostWinnerOfNthSet(1) && isHostWinnerOfNthSet(2)){
+      true
+    }else if(!isHostWinnerOfNthSet(1) && !isHostWinnerOfNthSet(2)){
       false
-    }else {
-      (secondSetHostScore, secondSetGuestScore) match {
-        case (Some(h), Some(g)) => isSetFinished(h,g)
-        case _ => false
-      }
+    }else{
+      isHostWinnerOfNthSet(3)
     }
   }
-
-  def thirdSetHostScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    if(!isSecondSetFinished){
-      throw new IllegalArgumentException("Can't set second set score, while first has not finished.")
-    }
-    thirdSetHostScore = Some(points)
-    this
-  }
-
-  def thirdSetGuestScore(points:Int):BeachVolleyballScore = {
-    require(validPoints(points), "Number of points has to be positive.")
-    if(!isSecondSetFinished){
-      throw new IllegalArgumentException("Can't set second set score, while first has not finished.")
-    }
-    thirdSetGuestScore = Some(points)
-    this
-  }
-
-  /**
-   * Checks points. Returns true if points belong to [0;21]
-   * @param points - Int
-   * @return true if valid or false
-   */
-  def validPoints(points:Int) = {
-    points>=0
-  }
-
-  /**
-   * Returns true, if match has finished. Otherwise returns false.
-   * @return Boolean
-   */
-  def isMatchFinished:Boolean = {
-    if(!isSecondSetFinished){
-      false
-    }else {
-      (thirdSetGuestScore, thirdSetHostScore) match {
-        case (Some(g), Some(h)) => isTieBreakFinished(h,g)
-        case _ => false
-      }
-    }
-  }
-
-  private def isSetFinished(h: Int, g: Int): Boolean = (h>=21 && g<=h-2) || (g>=21 && h<=g-2)
-
-  private def isTieBreakFinished(h: Int, g: Int): Boolean = (h>=15 && g<=h-2) || (g>=15 && h<=g-2)
-
   /**
    * Return JsObject representation. e.g.
    * {"score": {
@@ -138,20 +71,31 @@ class BeachVolleyballScore(
   override def toJson: JsObject = {
     Json.obj("score" ->
       Json.obj("sets" ->
-      Json.arr(Json.obj("1" ->
-        Json.obj("host" -> firstSetHostScore,
-                 "guest" -> firstSetGuestScore)),
-      Json.obj("2" ->
-        Json.obj("host" -> secondSetHostScore,
-                 "guest" -> secondSetGuestScore)),
-      Json.obj("3" ->
-        Json.obj("host" -> thirdSetHostScore,
-                 "guest" -> thirdSetGuestScore)
-      )))
+      Json.arr(Json.obj("1" -> (sets.get(1) match {
+        case Some(x:(Int,Int)) => {
+          Json.obj("host" -> x._1,
+                    "guest" -> x._2)
+        }
+        case None => Json.obj("host"-> JsNull, "guest"->JsNull)
+      })),
+        Json.obj("2" -> (sets.get(2) match {
+          case Some(x:(Int,Int)) => {
+            Json.obj("host" -> x._1,
+              "guest" -> x._2)
+          }
+          case None => Json.obj("host"-> JsNull, "guest"->JsNull)
+        })),
+        Json.obj("3" -> (sets.get(3) match {
+          case Some(x:(Int,Int)) => {
+            Json.obj("host" -> x._1,
+              "guest" -> x._2)
+          }
+          case None => Json.obj("host"-> JsNull, "guest"->JsNull)
+        }))))
     )
   }
 }
 
 object BeachVolleyballScore {
-  def apply() = new BeachVolleyballScore(None, None, None, None, None, None)
+  def apply() = new BeachVolleyballScore()
 }

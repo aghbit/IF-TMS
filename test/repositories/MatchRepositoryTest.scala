@@ -5,6 +5,7 @@ import com.mongodb.casbah.commons.MongoDBObject
 import models.strategy.Match
 import models.strategy.scores.BeachVolleyballScore
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
+import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
@@ -24,8 +25,11 @@ class MatchRepositoryTest extends FunSuite with BeforeAndAfter with MockitoSugar
     //given
 
     //when
-    val m = Match.beachVolleyball(Some(BeachVolleyballTeam("ninje")), Some(BeachVolleyballTeam("czad")))
-    m.score = BeachVolleyballScore().firstSetHostScore(20).firstSetGuestScore(18)
+    val m = Match(Some(BeachVolleyballTeam("ninje")), Some(BeachVolleyballTeam("czad")), BeachVolleyball)
+    m.score = BeachVolleyballScore()
+    m.score.addSet()
+    m.score.setScoreInLastSet(21, 19)
+
     underTest.insert(m)
 
     val u = underTest.findOne(new BasicDBObject())

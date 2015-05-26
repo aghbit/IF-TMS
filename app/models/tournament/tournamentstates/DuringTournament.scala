@@ -17,11 +17,11 @@ import scala.collection.mutable.ListBuffer
 class DuringTournament(override val _id: BSONObjectID,
                        override var properties: TournamentProperties,
                        override var teams: util.ArrayList[BSONObjectID],
-                       override val tree: EliminationTree,
-                       override val staff: TournamentStaff) extends Tournament {
+                       override val staff: TournamentStaff,
+                       override var strategy: EliminationStrategy) extends Tournament {
 
   override def startNext(): AfterTournament = {
-    val newState = new AfterTournament(this._id, this.properties, this.teams, tree, staff)
+    val newState = new AfterTournament(this._id, this.properties, this.teams, staff, strategy)
     newState
   }
 

@@ -30,12 +30,12 @@ class EnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfter {
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
     val tournamentStaffMock = mock[TournamentStaff]
-    val eliminationTreeMock = mock[EliminationTree]
+    val strategyMock = mock[EliminationStrategy]
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock, eliminationTreeMock, tournamentStaffMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStaffMock, strategyMock)
     instance = instance.startNext()
   }
 

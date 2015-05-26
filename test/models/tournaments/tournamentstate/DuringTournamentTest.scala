@@ -29,13 +29,14 @@ class DuringTournamentTest extends FunSuite with MockitoSugar with BeforeAndAfte
 
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
-    val eliminationTreeMock = mock[EliminationTree]
     val tournamentStaffMock = mock[TournamentStaff]
+    val strategyMock = mock[EliminationStrategy]
+
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock, eliminationTreeMock, tournamentStaffMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStaffMock, strategyMock)
     instance = instance.startNext().startNext().startNext()
   }
 

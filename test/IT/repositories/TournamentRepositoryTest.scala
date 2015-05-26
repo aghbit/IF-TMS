@@ -4,7 +4,7 @@ import java.util
 
 import models.strategy.EliminationTree
 import models.strategy.eliminationtrees.DoubleEliminationTree
-import models.strategy.strategies.SingleEliminationStrategy
+import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.tournament.Tournament
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields._
@@ -35,12 +35,11 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
     new DateTime(2014, 3, 27, 8, 0, 0, 0),
     new DateTime(2014, 3, 27, 16, 0, 0, 0))
   val tournamentSettings = new TournamentSettings(2, 16, true, 1, "Volleyball")
-  val tournamentStrategy = new DoubleEliminationTree()
   val tournamentStaff = new TournamentStaff(BSONObjectID.generate, new util.ArrayList[BSONObjectID]())
   val tournamentProperties = new TournamentProperties(tournamentDescription, tournamentTerms, tournamentSettings)
   before {
     underTest = new TournamentRepository()
-    tournament = BeforeEnrollment(tournamentProperties, tournamentStrategy, tournamentStaff)
+    tournament = BeforeEnrollment(tournamentProperties, tournamentStaff, DoubleEliminationStrategy)
   }
 
   after {

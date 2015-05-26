@@ -17,11 +17,11 @@ import scala.collection.JavaConversions._
 class Enrollment(override val _id: BSONObjectID,
                  override var properties: TournamentProperties,
                  override var teams: util.ArrayList[BSONObjectID],
-                 override val tree: EliminationTree,
-                 override val staff: TournamentStaff) extends Tournament {
+                 override val staff: TournamentStaff,
+                  override var strategy: EliminationStrategy) extends Tournament {
 
   override def startNext(): Break = {
-    val newState = new Break(this._id, this.properties, this.teams, tree, staff)
+    val newState = new Break(this._id, this.properties, this.teams, staff, strategy)
     newState.properties.settings.canEnroll = false
     newState
   }

@@ -9,6 +9,9 @@ import reactivemongo.bson.BSONObjectID
  */
 trait Score {
 
+  def isHostWinner():Boolean
+  def addSet():Unit
+  def setScoreInLastSet(hostScore:Int, guestScore:Int):Unit
   /**
    * Return JsObject representation. e.g.
    * {"score": {

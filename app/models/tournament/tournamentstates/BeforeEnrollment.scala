@@ -14,12 +14,16 @@ import reactivemongo.bson.BSONObjectID
  */
 class BeforeEnrollment(override val _id: BSONObjectID,
                        override var properties: TournamentProperties,
-                       override val tree: EliminationTree,
-                       override val staff: TournamentStaff) extends Tournament {
+                       override val staff: TournamentStaff,
+                       override var strategy: EliminationStrategy) extends Tournament {
 
 
   override def startNext(): Enrollment = {
-    val newState = new Enrollment(this._id, this.properties, new util.ArrayList[BSONObjectID], tree, staff)
+    val newState = new Enrollment(this._id,
+      this.properties,
+      new util.ArrayList[BSONObjectID],
+      staff,
+      strategy)
     newState.properties.settings.canEnroll = true
     newState
   }
@@ -51,8 +55,13 @@ class BeforeEnrollment(override val _id: BSONObjectID,
 }
 
 object BeforeEnrollment {
-  def apply(properties: TournamentProperties, tree: EliminationTree, staff: TournamentStaff): Tournament = {
-    val newTournament = new BeforeEnrollment(BSONObjectID.generate, properties, tree, staff)
+  def apply(properties: TournamentProperties,
+            staff: TournamentStaff,
+            strategy: EliminationStrategy): Tournament = {
+    val newTournament = new BeforeEnrollment(BSONObjectID.generate,
+      properties,
+      staff,
+      strategy)
     newTournament.properties.settings.canEnroll = false
     newTournament
   }
