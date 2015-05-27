@@ -21,6 +21,10 @@ class MatchRepositoryTest extends FunSuite with BeforeAndAfter with MockitoSugar
 
   }
 
+  after {
+    underTest.dropCollection()
+  }
+
   test("Simple test") {
     //given
 

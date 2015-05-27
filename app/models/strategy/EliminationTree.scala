@@ -7,10 +7,9 @@ import models.team.Team
 /**
  * Created by Szymek Seget on 2015-02-22.
  */
-trait EliminationTree {
+trait EliminationTree extends Iterable[TreeNode]{
+
   var firstQF:TreeNode = _
-
-
   var secondQF:TreeNode = _
   var thirdQF:TreeNode = _
   var forthQF:TreeNode = _

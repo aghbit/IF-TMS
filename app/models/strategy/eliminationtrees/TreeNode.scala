@@ -41,6 +41,32 @@ class TreeNode(var left:Option[TreeNode],
     }
     result
   }
+  /**
+   * Returns true when given match is a node in subtree, which root is this object.
+   * Otherwise returns false.
+   * @param m - match
+   * @return Boolean
+   */
+  def contains(m: Match):Boolean = {
+    val stack = new mutable.Stack[TreeNode]()
+    stack.push(this)
+    var result = false
+    while (stack.nonEmpty && !result) {
+      val tmp = stack.pop()
+      tmp.right match {
+        case Some(r) => stack.push(r)
+        case None =>
+      }
+      tmp.left match {
+        case Some(l) => stack.push(l)
+        case None =>
+      }
+      if(tmp.value.id == m.id){
+        result = true
+      }
+    }
+    result
+  }
 
   override def toString: String = {
     val builder = new StringBuilder()

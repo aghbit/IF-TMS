@@ -104,6 +104,19 @@ class DoubleEliminationTree(teams: List[Team],
     helper(n, Some(root))
   }
 
+  private def getNodesInNthRound(n:Int):List[TreeNode] = {
+    def helper(n:Int, root:Option[TreeNode]): List[TreeNode] ={
+      if(root.isEmpty) {
+        List()
+      }else if(n==0){
+        List(root.get)
+      }else {
+        helper(n-1, root.get.left) ::: helper(n-1, root.get.right)
+      }
+    }
+    helper(n, Some(root))
+  }
+
   private def foreachTreeNodes(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
@@ -127,7 +140,34 @@ class DoubleEliminationTree(teams: List[Team],
     builder.result()
   }
 
-  override def getNode(matchID: Int): TreeNode = ???
+  override def getNode(matchID: Int): TreeNode = {
+    val stack = new mutable.Stack[TreeNode]()
+    stack.push(root)
+    var loop = true
+    var tmp:TreeNode = root
+    while (stack.nonEmpty && loop) {
+      tmp = stack.pop()
+      tmp.right match {
+        case Some(i) => {
+          stack.push(i)
+          i.parent=Some(tmp)
+        }
+        case None =>
+      }
+      tmp.left match {
+        case Some(i) => {
+          stack.push(i)
+          i.parent=Some(tmp)
+        }
+        case None =>
+      }
+
+      if(tmp.value.id == matchID){
+        loop = false
+      }
+    }
+    tmp
+  }
 
   override def setQFs(first: TreeNode, second: TreeNode, third: TreeNode, forth: TreeNode): Unit = {
     firstQF = first
@@ -150,5 +190,29 @@ class DoubleEliminationTree(teams: List[Team],
       places = places.tail
     }
     places.head.addTeam(loser)
+  }
+
+  private def isInWinnerPart(m:Match): Boolean = {
+    firstQF.contains(m) || forthQF.contains(m)
+  }
+
+  override def iterator: Iterator[TreeNode] = {
+    var i = winnersTreeDepth
+    var list:List[TreeNode] = List()
+    while(i>=3){
+      val tmpWinners = getNodesInNthRound(i).filter(n => isInWinnerPart(n.value))
+      list = list ::: tmpWinners
+      val tmpLosers = getNodesInNthRound(i + losersTreeDepth-winnersTreeDepth).filter(n => !isInWinnerPart(n.value))
+      list = list ::: tmpLosers
+      i=i-1
+    }
+    i= 3 + losersTreeDepth - winnersTreeDepth  - 1
+    while(i>=3){
+      val tmpLosers = getNodesInNthRound(i).filter(n => !isInWinnerPart(n.value))
+      list = list ::: tmpLosers
+      i=i-1
+    }
+    list =  list ::: List(firstQF, forthQF, secondQF, thirdQF, root.left.get, root.right.get, root)
+    list.iterator
   }
 }

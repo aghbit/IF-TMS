@@ -37,4 +37,5 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter with Mockito
     assert(underTest.isHostWinner(), "Something went!")
     assert(rightJson.equals(underTestJson), "Json generation went wrong")
   }
+
 }

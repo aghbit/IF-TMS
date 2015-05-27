@@ -27,4 +27,8 @@ class MatchRepository{
       case None => None
     }
   }
+
+  def dropCollection() = {
+    collection.dropCollection()
+  }
 }

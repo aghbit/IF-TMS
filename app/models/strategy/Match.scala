@@ -11,6 +11,8 @@ class Match (var id:Int,
              var host:Option[Team],
              var guest:Option[Team],
              var score:Score) {
+
+
   /**
    * Adds team to this match. First check canAddTeam(), if this return false throw IllegalStateException.
    * Otherwise adds team (passed as argument) to this team. First add as host, if host exists add as guest.
@@ -21,12 +23,13 @@ class Match (var id:Int,
       throw new IllegalStateException("Can't add team to this Match!!")
     }
     host match {
-      case Some(i) =>
+      case Some(i) => {
+        guest match {
+          case Some(g) =>
+          case None => guest = team
+        }
+      }
       case None => host = team
-    }
-    guest match {
-      case Some(i) =>
-      case None => guest = team
     }
   }
 

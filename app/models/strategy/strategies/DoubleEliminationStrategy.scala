@@ -27,7 +27,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     }
     if(eliminationTree.firstQF.contains(node)){
       eliminationTree.addLoserToThirdQF(loser, node.depth)
-    }else if(eliminationTree.thirdQF.contains(node)){
+    }else if(eliminationTree.forthQF.contains(node)){
       eliminationTree.addLoserToSecondQF(loser, node.depth)
     }
     eliminationTree
