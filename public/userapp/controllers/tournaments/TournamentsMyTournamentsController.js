@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', function ($scope, $http) {
+mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$state', function ($scope, $http,$state) {
     $scope.testmessage = "You have to be logged in to see user details!"
     $http.get('api/myTournaments', {}).
         success(function(data, status, headers, config) {

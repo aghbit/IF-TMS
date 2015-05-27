@@ -3,21 +3,24 @@
         <h5 ng-if="tournaments.length == 0">You don't have any tournaments.</h5>
         <ul ng-if="tournaments.length != 0" class="collapsible col l12" data-collapsible="accordion" id="myTournaments">
             <li  ng-repeat="tournament in tournaments">
-                <div class="collapsible-header tournaments-header" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.description.name}}</div>
+                <div class="collapsible-header tournaments-header" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.properties.description.name}}</div>
                 <div class="collapsible-body">
                     <ul class="collection">
                         <li class="collection-item tournaments-date">
                             <a class="btn waves-effect waves-light" ui-sref="tournaments/id/teams({id : tournament._id})">Show teams</a>
-                            <a class="btn waves-effect waves-light" ui-sref="#/tournaments/id/enrollment({id: tournament._id})">Enroll me</a></li>
+                            <a ng-if="tournament.properties.settings.canEnroll" class="btn waves-effect waves-light" ui-sref="#/tournaments/id/enrollment({id: tournament._id})">Enroll me</a>
+                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.BeforeEnrollment' && checkOwner(tournament._id) " class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Start enrollment</a>
+                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.Enrollment'" class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Stop enrollment</a></li>
+
                         <li class="collection-item tournaments-date">
-                            <i class="mdi-notification-event-note"></i>{{tournament.term.begin}}
-                            <i class="mdi-navigation-arrow-forward"></i>End: {{tournament.term.end}}
+                            <i class="mdi-notification-event-note"></i>{{tournament.properties.term.begin}}
+                            <i class="mdi-navigation-arrow-forward"></i>End: {{tournament.properties.term.end}}
                         </li>
-                        <li class="collection-item"><i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}</li>
-                        <li class="collection-item"><i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}</li>
-                        <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.settings.discipline}}</li>
-                        <li class="collection-item"><i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}</li>
-                        <li class="collection-item tournaments-description">{{tournament.description.description}}</li>
+                        <li class="collection-item"><i class="mdi-social-poll"></i> Level: {{tournament.properties.settings.level}}</li>
+                        <li class="collection-item"><i class="mdi-image-healing"></i> Pitches: {{tournament.properties.settings.numberOfPitches}}</li>
+                        <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.properties.settings.discipline}}</li>
+                        <li class="collection-item"><i class="mdi-social-people"></i> Max teams: {{tournament.properties.settings.numberOfTeams}}</li>
+                        <li class="collection-item tournaments-description">{{tournament.properties.description.description}}</li>
                     </ul>
                 </div>
             </li>
