@@ -93,7 +93,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
     };
 
     $scope.validateNumberOfTeamsField = function() {
-        var pattern= /^[2-9]$|^1[0-9]+$/
+        var pattern= /^[2-9][0-9]*$|^1[0-9]+$/
         if(!pattern.test($scope.numberOfTeams)){
             $scope.numberOfTeamsClass = "invalid";
         }else {
