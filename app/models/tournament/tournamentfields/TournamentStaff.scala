@@ -1,15 +1,15 @@
 package models.tournament.tournamentfields
 
-import java.util
 
 import models.user.User
+import play.api.libs.json.{JsArray, JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by Przemek.
  */
 class TournamentStaff(val admin: BSONObjectID,
-                      var Referees: util.ArrayList[BSONObjectID]) {
+                      val Referees: java.util.List[BSONObjectID]) {
 
   def addReferee(newRef: User): Unit = {
     Referees.add(newRef._id)
@@ -24,5 +24,9 @@ class TournamentStaff(val admin: BSONObjectID,
   def contains(referee: User): Boolean = {
     Referees.contains(referee._id)
   }
-
+  def toJson = {
+    Json.obj(
+      "admin"->admin.stringify
+    )
+  }
 }

@@ -2,6 +2,7 @@ package models.strategy.strategies
 
 
 import models.Game.{Game, EliminationTree}
+import models.exceptions._
 import models.strategy.{Match, TournamentStrategy}
 import models.team.Team
 

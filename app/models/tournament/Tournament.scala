@@ -7,7 +7,7 @@ import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
 import models.user.User
-import play.api.libs.json.{JsObject, Json}
+import play.api.libs.json.{JsArray, JsObject, Json}
 import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
@@ -68,6 +68,11 @@ trait Tournament {
 
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
-    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
+    Json.obj(
+      "_id"->_id.stringify,
+      "properties"->tournamentPropertiesJson,
+      "staff"->staff.toJson,
+      "class"->this.getClass.toString
+    )
   }
 }

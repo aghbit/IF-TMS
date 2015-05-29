@@ -1,6 +1,6 @@
 package models.strategy
 
-import models.strategy.scores.MatchNotFinishedException
+import models.exceptions.MatchNotFinishedException
 import models.team.Team
 import org.mockito.Mockito
 import org.scalatest.mock.MockitoSugar

@@ -1,9 +1,10 @@
 
 
 import models.Game.EliminationTree
+import models.exceptions.NotEnoughTeamsException
 import models.strategy.VSet
 import models.strategy.scores.VolleyballScore
-import models.strategy.strategies.{DoubleEliminationStrategy, NotEnoughTeamsException}
+import models.strategy.strategies.DoubleEliminationStrategy
 import models.team.Team
 import org.junit.runner.RunWith
 import org.mockito.Mockito
