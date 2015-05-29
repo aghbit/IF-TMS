@@ -14,12 +14,12 @@
 
             <div id="step0" ng-show="registerQueue.currentState === 0">
                 <div class='input-field'>
-                    <input class="{{tournamentNameClass}}" id='tournamentName' type='text' ng-model='tournamentName' ng-blur="validateTournamentNameField()">
+                   <input class="{{tournamentNameClass}}" id='tournamentName' type='text' ng-model='tournamentName' ng-blur="tournamentNameClass = validateLength(tournamentName, 3, 20)">
                     <label for='tournamentName'>Tournament Name</label>
                     <span ng-if="tournamentNameClass == 'invalid'" class="inputValidationError">Tournament name must be 3-20 letters long.</span>
                 </div>
                 <div class='input-field'>
-                    <input class="{{tournamentPlaceClass}}" id='tournamentPlace' type='text' ng-model='tournamentPlace' ng-blur="validateTournamentPlaceField()">
+                    <input class="{{tournamentPlaceClass}}" id='tournamentPlace' type='text' ng-model='tournamentPlace' ng-blur="tournamentPlaceClass = validateLength(tournamentPlace, 3, 20)">
                     <label for='tournamentPlace'>Tournament Place</label>
                     <span ng-if="tournamentPlaceClass == 'invalid'" class="inputValidationError">Tournament place must be 3-20 letters long.</span>
                 </div>
@@ -33,19 +33,19 @@
 
             <div id="step1" ng-show="registerQueue.currentState === 1">
                 <div class="input-field">
-                    <input class="{{numberOfPitchesClass}}" id="numberOfPitches" type="number" ng-model="numberOfPitches" ng-blur="validateNumberOfPitchesField()">
+                    <input class="{{numberOfPitchesClass}}" id="numberOfPitches" type="number" ng-model="numberOfPitches" ng-blur="numberOfPitchesClass = validatePattern(numberOfPitches, '^[1-9][0-9]*$' )">
                     <label for="numberOfPitches">Number of pitches</label>
                     <span ng-if="numberOfPitchesClass == 'invalid'" class="inputValidationError">Must be a number, at least 1.</span>
                 </div>
                 <div class="input-field">
-                    <input class="{{numberOfTeamsClass}}" id="numberOfTeams" type="number" min="0" ng-model="numberOfTeams" ng-blur="validateNumberOfTeamsField()">
+                    <input class="{{numberOfTeamsClass}}" id="numberOfTeams" type="number" min="0" ng-model="numberOfTeams" ng-blur="numberOfTeamsClass = validatePattern(numberOfTeams, '^[2-9][0-9]*$|^1[0-9]+$' )">
                     <label for="numberOfTeams">Number of teams</label>
                     <span ng-if="numberOfTeamsClass == 'invalid'" class="inputValidationError">Must be a number, at least 2.</span>
                 </div>
                 <div class="input-field">
-                    <input class="{{levelClass}}" id="level" type="number" min="0" ng-model="level" ng-blur="validateLevelField()">
+                    <input class="{{levelClass}}" id="level" type="number" min="0" ng-model="level" ng-blur="levelClass = validatePattern(level, '^[1-9][0-9]*$' )">
                     <label for="level">Level</label>
-                    <span ng-if="levelClass == 'invalid'" class="inputValidationError">Must be a number.</span>
+                    <span ng-if="levelClass == 'invalid'" class="inputValidationError">Must be a number, at least 1..</span>
                 </div>
                 <div class="input-field">
                     <select name="discipline" id="discipline" ng-model="discipline" ng-init="discipline='Volleyball'">

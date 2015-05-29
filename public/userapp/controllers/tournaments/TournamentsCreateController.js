@@ -67,57 +67,22 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }
     };
 
-    $scope.validateTournamentNameField = function() {
-        if($scope.tournamentName == null || $scope.tournamentName.length < 3 || $scope.tournamentName.length > 20){
-            $scope.tournamentNameClass = "invalid";
-        }else {
-            $scope.tournamentNameClass = "";
+    $scope.validateLength = function(value, min, max) {
+        if(value == null || value.length < min || value.length > max) {
+            return "invalid";
+        } else {
+            return "";
         }
     };
 
-    $scope.validateTournamentPlaceField = function() {
-        if($scope.tournamentPlace == null || $scope.tournamentPlace.length < 3 || $scope.tournamentPlace.length > 20){
-            $scope.tournamentPlaceClass = "invalid";
+    $scope.validatePattern = function(value, pattern) {
+        var regex = new RegExp(pattern, 'g');
+        if(!regex.test(value)){
+            return "invalid";
         }else {
-            $scope.tournamentPlaceClass = "";
+            return "";
         }
     };
-
-    $scope.validateNumberOfPitchesField = function() {
-        var pattern= /^[1-9][0-9]*$/
-        if(!pattern.test($scope.numberOfPitches)){
-            $scope.numberOfPitchesClass = "invalid";
-        }else {
-            $scope.numberOfPitchesClass = "";
-        }
-    };
-
-    $scope.validateNumberOfTeamsField = function() {
-        var pattern= /^[2-9][0-9]*$|^1[0-9]+$/
-        if(!pattern.test($scope.numberOfTeams)){
-            $scope.numberOfTeamsClass = "invalid";
-        }else {
-            $scope.numberOfTeamsClass = "";
-        }
-    };
-
-    $scope.validateLevelField = function() {
-        var pattern= /^[0-9]*$/
-        if(!pattern.test($scope.level)){
-            $scope.levelClass = "invalid";
-        }else {
-            $scope.levelClass = "";
-        }
-    };
-
-        $scope.validateDisciplineField = function() {
-            if($scope.discipline != "Volleyball" && $scope.discipline != "BeachVolleyball"){
-                $scope.disciplineClass = "invalid";
-            }else {
-                $scope.disciplineClass = "";
-            }
-        };
-
 
 
     $scope.validateEnrollmentTimeBeforeBegin = function() {
