@@ -23,7 +23,7 @@
                         </li>
                         <li ng-repeat="player in team.players" class="collection-item">
                             {{player.name + " " + player.surname}}
-                            <a ng-click="deletePlayerCheck(team.id,player.id)" class="right clickable mdi-content-clear"></a>
+                            <a ng-click="deletePlayerCheck(team,player)" class="right clickable mdi-content-clear"></a>
                         </li>
                         <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
                         <i class="mdi-content-add"></i>Add Player</a>

@@ -92,25 +92,20 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         };
 
 
-    $scope.deleteTeam = function(teamId) {
+    $scope.deleteTeam = function(team) {
         ngDialog.close();
 
-        for(var i=0;i<$scope.teams.length;i++){
-            if ($scope.teams[i].id === teamId) {
-                var team = $scope.teams[i];
-                for (var j = 0; j < team.players.length - 1; j++) {
-                    $scope.deletePlayer(teamId,team.players[j].id,false);
-                }
-            }
+        for (var i=0; i<team.players.length-1; i++) {
+            $scope.deletePlayer(team.id,team.players[i].id,false);
         }
 
         $http({
-            url: '/api/tournaments/' + $stateParams.id + "/" + teamId,
+            url: '/api/tournaments/' + $stateParams.id + "/" + team.id,
             dataType: 'json',
             method: 'DELETE',
             data: {
                 tournamentId: $stateParams.id,
-                teamId: teamId
+                teamId: team.id
             },
             headers: {
                 "Content-Type": "application/json"
@@ -133,18 +128,12 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         console.log(id);
     };
 
-        $scope.deletePlayerCheck = function(teamId,playerId) {
-            for(var i=0;i<$scope.teams.length;i++){
-                if ($scope.teams[i].id == teamId) {
-                    if ($scope.teams[i].players[0].id == playerId) {
-                        $scope.deleteCaptainPopUp($scope.teams[i]);
-                        return;
-                    }
-                    else {
-                        $scope.deletePlayer(teamId,playerId);
-                        return;
-                    }
-                }
+        $scope.deletePlayerCheck = function(team,player) {
+            if (team.captain.id == player.id) {
+                $scope.deleteCaptainPopUp(team);
+            }
+            else {
+                $scope.deletePlayer(team.id, player.id);
             }
         };
 
@@ -160,6 +149,7 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
 
     $scope.deletePlayer = function(teamId,playerId,showNotification) {
         showNotification = typeof showNotification === 'undefined';
+
         $http({
             url: '/api/teams/' + teamId + "/" + playerId,
             dataType: 'json',
@@ -177,8 +167,9 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
                         $scope.getTeams();
                     }
                     ,250);
-                if (showNotification)
+                if (showNotification) {
                     notification("Player removed!", 4000, true);
+                }
             }).
             error(function(data, status, headers, config, statusText) {
                 notification("Something went wrong!", 4000, false)
