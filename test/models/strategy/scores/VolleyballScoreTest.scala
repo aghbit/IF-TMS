@@ -1,5 +1,6 @@
 package models.strategy.scores
 
+import models.exceptions.MatchFinishedException
 import org.junit.runner.RunWith
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.junit.JUnitRunner
