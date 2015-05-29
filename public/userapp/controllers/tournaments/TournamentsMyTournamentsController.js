@@ -1,4 +1,4 @@
-mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', function ($scope, $http) {
+mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$state', function ($scope, $http,$state) {
     $scope.testmessage = "You have to be logged in to see user details!"
     $http.get('api/myTournaments', {}).
         success(function(data, status, headers, config) {
@@ -23,4 +23,29 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http', fu
             $scope.openedTournamentItem = id;
         }
     }
+
+
+    $scope.checkOwner = function(tid){
+        var cookie = $.cookie('tms-token');
+        var id = cookie.substr(0,24)
+        for (i = 0; i < $scope.tournaments.length; i++) {
+            if($scope.tournaments[i]._id==tid) {
+                if($scope.tournaments[i].staff.admin==id) return true
+            }
+        }
+        return false
+    };
+
+    $scope.nextEnrollmentState = function(id){
+        $http.post('/api/tournaments/nextEnrollmentState', {
+            "_id":id
+        }).success(function(){
+            $state.reload();
+            notification("Tournament's enrollment's state changed!", 4000, true)
+        }).error(function(){
+            notification("Enrollment state cannot be changed", 4000, false)
+        })
+
+    };
+
 }]);
