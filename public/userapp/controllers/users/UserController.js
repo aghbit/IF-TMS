@@ -153,14 +153,16 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
             "phone": $scope.phone,
             "mail": $scope.mail
         }).success(function (data, status, headers, config) {
-            $scope.closeThisDialog();
-            history.back();
+
             SessionService.token = " ";
             SessionService.isLoggedIn = false;
             $.removeCookie('tms-token');
             notification("Your account have been successfully deleted.", 4000, true);
             $location.url("");
+            $rootScope.$emit("LOGIN_EVENT", false);
             $scope.loggedIn = SessionService.isLoggedIn;
+            $scope.closeThisDialog();
+            history.back();
         }).
             error(function (data, status, headers, config) {
                 $scope.closeThisDialog();
