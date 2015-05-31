@@ -19,14 +19,14 @@
             <form ng-submit="submit()" class="col l8 offset-l2">
                 <div class="row col l12">
                     <div class="input-field">
-                        <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
+                        <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="nameClass = validateLength(name, 3, 20)">
                         <label for="name">Name</label>
                         <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters long. Sorry Ed.</span>
                     </div>
                 </div>
                 <div class="row col l12">
                     <div class="input-field">
-                        <input class="{{surnameClass}}" id="surname" type="text" ng-model="surname" ng-blur="validateSurnameField()">
+                        <input class="{{surnameClass}}" id="surname" type="text" ng-model="surname" ng-blur="surnameClass = validateLength(surname, 3, 30)">
                         <label for="surname">Surname</label>
                         <span ng-if="surnameClass == 'invalid'" class="inputValidationError">Surname must be 3-30 letters long.</span>
                     </div>

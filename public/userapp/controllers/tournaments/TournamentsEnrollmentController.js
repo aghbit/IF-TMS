@@ -36,45 +36,20 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
 
     };
 
-        $scope.validateTeamNameField = function() {
-            if($scope.teamName == null || $scope.teamName.length < 5 || $scope.teamName.length > 20){
-                $scope.teamNameClass = "invalid";
-            }else {
-                $scope.teamNameClass = "";
+        $scope.validateLength = function(value, min, max) {
+            if(value == null || value.length < min || value.length > max) {
+                return "invalid";
+            } else {
+                return "";
             }
         };
-        $scope.validateCaptainNameField = function() {
-            if($scope.captainName == null || $scope.captainName.length < 3 || $scope.captainName.length > 20){
-                $scope.captainNameClass = "invalid";
-            }else {
-                $scope.captainNameClass = "";
-            }
-        };
-        $scope.validateCaptainSurnameField = function() {
-            if($scope.captainSurname == null || $scope.captainSurname.length < 3 || $scope.captainSurname.length > 30){
-                $scope.captainSurnameClass = "invalid";
-            }else {
-                $scope.captainSurnameClass = "";
-            }
-        };
-        $scope.validateCaptainPhoneField = function() {
-            //regex for email address RFC 5322
-            var pattern= /^[0-9]{9}$/
-            if(!pattern.test($scope.captainPhone)){
-                $scope.captainPhoneClass = "invalid";
-            }else {
-                $scope.captainPhoneClass = "";
-            }
 
-        };
-        $scope.validateCaptainMailField = function() {
-            //regex for email address RFC 5322
-            var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-            if(!pattern.test($scope.captainMail)){
-                $scope.captainMailClass = "invalid";
+        $scope.validatePattern = function(value, pattern) {
+            var regex = new RegExp(pattern, 'g');
+            if(!regex.test(value)){
+                return "invalid";
             }else {
-                $scope.captainMailClass = "";
+                return "";
             }
-
         };
 }]);
