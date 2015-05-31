@@ -53,7 +53,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
             } else if(value.length < min) {
                 return "At least "+min+" characters required.";
             } else if(value.length > max) {
-                return "No more than "+max+" characters required.";
+                return "No more than "+max+" characters allowed.";
             } else {
                 return "";
             }

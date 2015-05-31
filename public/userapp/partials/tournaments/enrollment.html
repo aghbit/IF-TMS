@@ -69,7 +69,7 @@
             </div>
             <div class="row col l12">
                 <div class="input-field">
-                    <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="captainPhoneClass = validatePattern(captainPhone, '[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
+                    <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="captainMailClass = validatePattern(captainMail, '[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
                     <label for="captainMail">Captain Mail</label>
                     <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
                 </div>
