@@ -1,8 +1,5 @@
 /*
-Created by ludwik
-on i dont remember
-thanks to Piotr for
-RegisterController
+Created by ludwik who rocks
 
  */
 
@@ -97,7 +94,6 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     };
 
     $scope.submit = function(){
-
         if($scope.checkForm()) {
             $http.put('/api/users/' + SessionService.token.substr(0, 24), {
                 "name": $scope.name,

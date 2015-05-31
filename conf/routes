@@ -8,6 +8,7 @@ GET         /                                 controllers.ApplicationController.
 POST        /api/users                        controllers.UsersController.createUser
 PUT         /api/users/:id                    controllers.UsersController.modifyUser(id:String)
 GET         /api/users/:id                    controllers.UsersController.getUser(id:String)
+PUT         /api/users/:id/password           controllers.UsersController.changePassword(id:String)
 POST        /api/login                        controllers.UsersController.login()
 GET         /api/users/login/:login           controllers.UsersController.getUserByLogin(login: String)
 

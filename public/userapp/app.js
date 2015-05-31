@@ -15,10 +15,16 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
 
         //USERS
-        .state('users', {
+        .state('users/user', {
             url: "/users",
             templateUrl: "/assets/userapp/partials/users/user.html",
             controller: 'UserController'
+        })
+
+        .state('users/passwordChange', {
+            url: "/users",
+            templateUrl: "/assets/userapp/partials/users/passwordChange.html",
+            controller: 'PasswordUserController'
         })
 
 

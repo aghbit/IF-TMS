@@ -42,7 +42,57 @@ object UsersController extends Controller {
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
   }
+  def changePassword(id:String) = Action.async(parse.json) {
+    request => {
+      try {
+        request.headers.get("token") match {
+          case Some(s) =>
+            val token = TokenImpl(s)
+            val userID = token.getUserID
+            userID.stringify match {
+              case `id` => {
+                val password = request.body.\("password").validate[String](
+                  minLength[String](Validators.PASSWORD_MIN_LENGTH) andKeep
+                    maxLength[String](Validators.PASSWORD_MAX_LENGTH)
+                ).asEither
 
+                val my_map = Map(
+                  "password" -> password
+                )
+                val (errors, data) = Validators.simplifyEithers(my_map)
+                if (errors.isEmpty) {
+                  val query = new Query(Criteria where "_id" is BSONObjectID(id))
+                  val users = repository.find(query)
+                  val user = users.get(ListEnum.head)
+                  val new_user_prop = UserProperties(user.getProperties.name,
+                    user.getProperties.login,
+                    data.get("password").get,
+                    user.getProperties.phone,
+                    user.getProperties.mail)
+                  val new_user = UserImpl(new_user_prop)
+                  repository.remove(user)
+                  repository.insert(new_user)
+                  val token = new_user.generateToken
+                  TokensKeeper.addToken(token)
+                  Future.successful(Ok(token.toString))
+                } else {
+                    val jsErrors = errors.map(e => JsError.toFlatJson(e))
+                    Future.successful(BadRequest("Detected error: " + jsErrors))
+            }
+                }
+
+              case _ =>
+                Future.successful(Unauthorized("You are not authorized to see this content!"))
+            }
+          //This should never execute, because AuthorizationAction checked the token.
+          case None => Future.successful(NotFound("User with this ID was not found!"))
+        }
+
+      } catch {
+        case e: Exception => Future.failed(e)
+      }
+    }
+  }
 
   def modifyUser(id: String) = Action.async(parse.json) {
     request =>
@@ -158,6 +208,7 @@ object UsersController extends Controller {
       }
   }
 
+  //Unused
   def isLoginInUse(login: String) = Action.async{
     request =>
       val query = new Query(Criteria where "personalData.login" is login)
