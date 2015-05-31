@@ -7,6 +7,7 @@ import models.team.Team
 import models.strategy.eliminationtrees.TreeNode
 import models.tournament.tournamenttype.TournamentType
 import models.strategy.eliminationtrees.DoubleEliminationTree
+import org.bson.types.ObjectId
 
 import scala.util.Random
 ;
@@ -78,7 +79,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
 
     val greatFinal = new TreeNode(Some(semiFinal1), Some(semiFinal2), Match(None, None, tournamentType), 0)
 
-    val eliminationTree = new DoubleEliminationTree(teams, tournamentType, greatFinal)
+    val eliminationTree = new DoubleEliminationTree(ObjectId.get(), teams.length, tournamentType, greatFinal)
 
     eliminationTree.setQFs(winnersQF1, losersQF1, losersQF2, winnersQF2)
 
@@ -186,5 +187,29 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     result
   }
 
+  override def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = {
+    require(teamsNumber>=8, "Too less teams to generate DoubleEliminationTree. Should be >=8.")
+
+    val leafNumber = countLeaf(teamsNumber)
+    val winnerTreeDepth = countWinnerDepth(leafNumber)
+    val loserTreeDepth = countLoserDepth(winnerTreeDepth)
+
+    val winnersQF1 = generateWinnersQF(winnerTreeDepth, tournamentType)
+    val winnersQF2 = generateWinnersQF(winnerTreeDepth, tournamentType)
+
+    val losersQF1 = generateLosersQF(loserTreeDepth, tournamentType)
+    val losersQF2 = generateLosersQF(loserTreeDepth, tournamentType)
+
+    val semiFinal1 = new TreeNode(Some(winnersQF1), Some(losersQF1), Match(None, None, tournamentType), 1)
+    val semiFinal2 = new TreeNode(Some(losersQF2), Some(winnersQF2), Match(None, None, tournamentType), 1)
+
+    val greatFinal = new TreeNode(Some(semiFinal1), Some(semiFinal2), Match(None, None, tournamentType), 0)
+
+    val eliminationTree = new DoubleEliminationTree(id, teamsNumber, tournamentType, greatFinal)
+
+    eliminationTree.setQFs(winnersQF1, losersQF1, losersQF2, winnersQF2)
+
+    eliminationTree
+  }
 
 }

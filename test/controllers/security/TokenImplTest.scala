@@ -1,10 +1,10 @@
 package controllers.security
 
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
- * Created by Szymek.
+ * Created by Ania.
  */
 class TokenImplTest extends FunSuite with BeforeAndAfter {
 
@@ -15,16 +15,16 @@ class TokenImplTest extends FunSuite with BeforeAndAfter {
 
 
   before {
-    tokenX = TokenImpl(BSONObjectID.generate)
+    tokenX = TokenImpl(ObjectId.get())
     tokenY = TokenImpl(tokenX.token)
     tokenZ = TokenImpl(tokenX.token)
-    tokenNotX = TokenImpl(BSONObjectID.generate)
+    tokenNotX = TokenImpl(ObjectId.get())
   }
 
   test("Simple test"){
 
     //given
-    val id = BSONObjectID.generate
+    val id = ObjectId.get()
     val token = TokenImpl(id)
 
     //when

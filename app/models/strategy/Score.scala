@@ -2,7 +2,6 @@ package models.strategy
 
 
 import play.api.libs.json.JsObject
-import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by Rafal on 2014-12-07.

@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by krzysiek.
@@ -21,7 +21,7 @@ class VolleyballUserStatisticsTest extends FunSuite with MockitoSugar with Befor
   val winStreak = 3
 
   before {
-    testInstance = new VolleyballUserStatistics(BSONObjectID.generate, discipline, pointUnit,
+    testInstance = new VolleyballUserStatistics(ObjectId.get(), discipline, pointUnit,
       mock[TournamentsUserStatistics], mock[MatchesAndSetsUserStatistics], winStreak)
   }
 

@@ -19,10 +19,10 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter with Mockito
 
     //given
     val rightJson = Json.parse(
-      """{ "score" : { "sets" : [
+      """{ "sets" : [
         |{"1" : { "host" : 21 , "guest" : 15 }},
         |{"2": { "host" : 19, "guest" : 21}},
-        |{"3": { "host" : 17, "guest" : 15}}]}}""".stripMargin)
+        |{"3": { "host" : 17, "guest" : 15}}]}""".stripMargin)
 
     //when
     underTest.addSet()
@@ -34,7 +34,7 @@ class BeachVolleyballScoreTest extends FunSuite with BeforeAndAfter with Mockito
     val underTestJson = underTest.toJson
 
     //then
-    assert(underTest.isHostWinner(), "Something went!")
+    assert(underTest.isHostWinner(), "Something went wrong!")
     assert(rightJson.equals(underTestJson), "Json generation went wrong")
   }
 

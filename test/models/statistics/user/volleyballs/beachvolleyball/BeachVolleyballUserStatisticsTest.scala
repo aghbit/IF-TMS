@@ -2,11 +2,11 @@ package models.statistics.user.volleyballs.beachvolleyball
 
 import models.statistics.user.TournamentsUserStatistics
 import models.statistics.user.volleyballs.MatchesAndSetsUserStatistics
+import org.bson.types.ObjectId
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by krzysiek.
@@ -21,7 +21,7 @@ class BeachVolleyballUserStatisticsTest extends FunSuite with MockitoSugar with 
   val winStreak = 3
 
   before {
-    testInstance = new BeachVolleyballUserStatistics(BSONObjectID.generate, discipline, pointUnit,
+    testInstance = new BeachVolleyballUserStatistics(ObjectId.get(), discipline, pointUnit,
       mock[TournamentsUserStatistics], mock[MatchesAndSetsUserStatistics], winStreak)
   }
 

@@ -1,13 +1,13 @@
 package models.team.teams.volleyball.volleyballs
 
 import models.team.teams.volleyball.VolleyballTeams
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by Szymek
  */
 
-class BeachVolleyballTeam(val _id: BSONObjectID,
+class BeachVolleyballTeam(val _id: ObjectId,
                           val name: String,
                           val playersNumber: Int,
                           val benchWarmersNumber: Int) extends VolleyballTeams {
@@ -28,7 +28,7 @@ object BeachVolleyballTeam extends TeamObject{
    * and 0 bench warmers. It is additional and shouldn't be used now (so is private).
    */
   private def apply(name: String, benchWarmersNumber: Int) = {
-    new BeachVolleyballTeam(BSONObjectID.generate, name, 2, benchWarmersNumber)
+    new BeachVolleyballTeam(ObjectId.get, name, 2, benchWarmersNumber)
   }
 
   override def apply(name: String): BeachVolleyballTeam = {

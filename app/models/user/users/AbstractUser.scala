@@ -2,12 +2,12 @@ package models.user.users
 
 import models.user.User
 import models.user.userproperties.UserProperties
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by Szymek.
  */
-abstract class AbstractUser(val _id: BSONObjectID,
+abstract class AbstractUser(val _id: ObjectId,
                             val personalData: UserProperties,
                             var isAdmin: Boolean,
                             var isActive: Boolean,

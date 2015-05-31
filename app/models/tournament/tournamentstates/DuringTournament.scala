@@ -7,16 +7,16 @@ import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
 import models.user.User
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Przemek
  */
-class DuringTournament(override val _id: BSONObjectID,
+class DuringTournament(override val _id: ObjectId,
                        override var properties: TournamentProperties,
-                       override var teams: util.ArrayList[BSONObjectID],
+                       override var teams: util.ArrayList[ObjectId],
                        override val staff: TournamentStaff,
                        override var strategy: EliminationStrategy) extends Tournament {
 

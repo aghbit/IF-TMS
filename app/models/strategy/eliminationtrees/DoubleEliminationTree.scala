@@ -4,6 +4,7 @@ import models.strategy.strategies.DoubleEliminationStrategy
 import models.strategy.{Match, EliminationTree}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
+import org.bson.types.ObjectId
 
 import scala.StringBuilder
 import scala.collection.mutable
@@ -11,11 +12,11 @@ import scala.collection.mutable
 /**
  * Created by Szymek Seget on 25.05.15.
  */
-class DoubleEliminationTree(teams: List[Team],
+class DoubleEliminationTree(override val _id:ObjectId,
+                            override val teamsNumber:Int,
                             tournamentType: TournamentType,
                             root: TreeNode) extends EliminationTree {
 
-  val teamsNumber = teams.length
 
   val leafsNumber = DoubleEliminationStrategy.countLeaf(teamsNumber)
 
@@ -117,7 +118,7 @@ class DoubleEliminationTree(teams: List[Team],
     helper(n, Some(root))
   }
 
-  private def foreachTreeNodes(f:TreeNode => Unit) = {
+  override def foreachTreeNodes(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
     while(queue.nonEmpty) {
@@ -177,19 +178,31 @@ class DoubleEliminationTree(teams: List[Team],
   }
 
   override def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
-    var places = getMatchesInNthRound(losersTreeDepth-(winnersTreeDepth-prevMatchDepth))
-    while (!places.head.canAddTeam()){
+    var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
+    if(prevMatchDepth == winnersTreeDepth){
+      round = losersTreeDepth
+    }
+    var places = getMatchesInNthRound(round).reverse
+    while (places.nonEmpty && !places.head.canAddTeam()){
       places = places.tail
     }
-    places.head.addTeam(loser)
+    if(places.nonEmpty){
+      places.head.addTeam(loser)
+    }
   }
 
   override def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
-    var places = getMatchesInNthRound(losersTreeDepth-(winnersTreeDepth-prevMatchDepth)).reverse
-    while (!places.head.canAddTeam()){
+    var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
+    if(prevMatchDepth == winnersTreeDepth){
+      round = losersTreeDepth
+    }
+    var places = getMatchesInNthRound(round).reverse
+    while (places.nonEmpty && !places.head.canAddTeam()){
       places = places.tail
     }
-    places.head.addTeam(loser)
+    if(places.nonEmpty){
+      places.head.addTeam(loser)
+    }
   }
 
   private def isInWinnerPart(m:Match): Boolean = {

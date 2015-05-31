@@ -26,27 +26,22 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
 
   test("update process test") {
 
-    /*//given
-    val matchNumber = 7
+    //given
     println(eliminationTree.toString)
     println("Dupaaa :")
-    for (i <- List(12,11,8,7,10,9,6,3,5,4,2,1,0)){
-      val node = eliminationTree.getNode(i)
+    val iter:Iterator[TreeNode] = eliminationTree.iterator
+    while (iter.hasNext){
+      val node = iter.next()
       node.value.score.addSet()
       node.value.score.setScoreInLastSet(21,18)
       node.value.score.addSet()
       node.value.score.setScoreInLastSet(21,19)
       DoubleEliminationStrategy.updateMatchResult(eliminationTree, node.value)
-      println(eliminationTree.toString)
+      //println(eliminationTree.toString)
     }
     println("KONIEC!!!!!!!!!!!!!!!!!!!")
-*/
-    println(eliminationTree.toString)
 
-    val iter:Iterator[TreeNode] = eliminationTree.iterator
-    while(iter.hasNext) {
-      println(iter.next().value.id)
-    }
+    println(eliminationTree.toString)
 
   }
 

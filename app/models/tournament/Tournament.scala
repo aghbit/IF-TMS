@@ -9,9 +9,9 @@ import models.tournament.tournamentfields._
 import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import models.user.User
+import org.bson.types.ObjectId
 import play.api.libs.json.{JsObject, Json}
-import reactivemongo.bson.BSONObjectID
-
+import assets.ObjectIdFormat._
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -21,9 +21,9 @@ import scala.collection.mutable.ListBuffer
 
 trait Tournament {
 
-  val _id: BSONObjectID
+  val _id: ObjectId
   var properties: TournamentProperties
-  var teams: util.ArrayList[BSONObjectID]
+  var teams: util.ArrayList[ObjectId]
   var tree: EliminationTree = _
   val staff: TournamentStaff
   var strategy:EliminationStrategy
@@ -71,6 +71,6 @@ trait Tournament {
 
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
-    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id.stringify))
+    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id))
   }
 }

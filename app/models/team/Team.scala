@@ -1,21 +1,21 @@
 package models.team
 
-import models.player.Player
+import
+models.player.Player
 import models.player.players.Captain
-import models.user.User
+import org.bson.types.ObjectId
 import play.api.libs.json.JsObject
-import reactivemongo.bson.BSONObjectID
 
 /**
  * Created by Szymek.
  */
 trait Team {
 
-  val _id: BSONObjectID
+  val _id: ObjectId
 
   val name: String
 
-  def getMembersIDs: java.util.List[BSONObjectID]
+  def getMembersIDs: java.util.List[ObjectId]
 
   def isComplete: Boolean
 
@@ -29,7 +29,7 @@ trait Team {
 
   def setCaptain(captain: Captain)
 
-  def getCaptainID: BSONObjectID
+  def getCaptainID: ObjectId
 
   def isReadyToSave: Boolean
 

@@ -4,9 +4,9 @@ import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
+import org.bson.types.ObjectId
 import play.api.libs.json.{JsError, Json}
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONObjectID
 import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import utils.Validators
@@ -14,6 +14,7 @@ import scala.reflect.runtime.universe
 import scala.collection.JavaConversions._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
+import assets.ObjectIdFormat._
 
 import scala.concurrent.Future
 import scala.util.matching.Regex
@@ -73,7 +74,7 @@ object TeamsController extends Controller {
         )
 
         //Find tournament to check discipline
-        val query = new Query(Criteria where "_id" is BSONObjectID(id))
+        val query = new Query(Criteria where "_id" is new ObjectId(id))
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
 
         //Create right Team Class.
@@ -94,7 +95,7 @@ object TeamsController extends Controller {
           teamRepository.insert(team)
           playerRepository.insert(captain)
           tournamentRepository.insert(tournament)
-          Future.successful(Ok(Json.obj("id"->team._id.stringify)))
+          Future.successful(Ok(Json.obj("id"->team._id)))
         }catch {
           case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
           case e:Throwable => Future.failed(e)
@@ -106,14 +107,14 @@ object TeamsController extends Controller {
   }
 
   def getTeam(id: String) = Action.async {
-    val query = new Query(Criteria where "_id" is BSONObjectID(id))
+    val query = new Query(Criteria where "_id" is new ObjectId(id))
     val team = teamRepository.find(query).get(ListEnum.head)
     Future.successful(Ok(team.toJson))
   }
 
   def getTeams(id: String) = Action.async {
     request =>
-      val query = new Query(Criteria where "_id" is BSONObjectID(id))
+      val query = new Query(Criteria where "_id" is new ObjectId(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
       val teamsIDs = tournament.getTeams
       val teams = teamsIDs.map(teamID => {

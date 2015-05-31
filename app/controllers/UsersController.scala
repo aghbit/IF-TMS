@@ -6,11 +6,11 @@ import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.libs.json.JsError
 import play.api.libs.json.Reads._
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONObjectID
 import repositories.UserRepository
 import play.api.libs.functional.syntax._
 import utils.Validators
@@ -47,9 +47,9 @@ object UsersController extends Controller{
         case Some(s) =>
           val token = TokenImpl(s)
           val userID = token.getUserID
-          userID.stringify match {
-            case `id` =>
-              val query = new Query(Criteria where "_id" is BSONObjectID(id))
+          userID match {
+            case u:ObjectId =>
+              val query = new Query(Criteria where "_id" is new ObjectId(id))
               val users = repository.find(query)
               Future.successful(Ok(users.get(ListEnum.head).toJson))
             case _ =>

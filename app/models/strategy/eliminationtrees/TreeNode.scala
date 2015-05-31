@@ -74,10 +74,18 @@ class TreeNode(var left:Option[TreeNode],
       case Some(l) => builder.append("LeftChild: "+l.value.id+" ")
       case None => builder.append("LeftChild: null ")
     }
-    builder.append("MyValue: "+value.toJson+" ")
+    val hostID = value.host match {
+      case Some(i) => i.name
+      case None => "null"
+    }
+    val guestID = value.guest match {
+      case Some(i) => i.name
+      case None => "null"
+    }
+    builder.append("MyValue: [ID: "+value.id+" HOST: "+ hostID + " GUEST: "+ guestID+"] ")
     parent match {
-      case Some(p) => builder.append("Parent: " + p.value.id)
-      case None => builder.append("Parent: null")
+      case Some(p) => builder.append("Parent: " + p.value.id+" ")
+      case None => builder.append("Parent: null ")
     }
     right match {
       case Some(r) => builder.append("RightChild: "+r.value.id+" ")

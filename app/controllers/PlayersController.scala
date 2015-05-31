@@ -4,10 +4,10 @@ import controllers.TeamsController._
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.DefaultPlayerImpl
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.libs.json.JsError
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONObjectID
 import utils.Validators
 
 import scala.concurrent.Future
@@ -41,7 +41,7 @@ object PlayersController extends Controller {
 
       if(errors.isEmpty){
 
-        val query = new Query(Criteria where "_id" is BSONObjectID(teamId))
+        val query = new Query(Criteria where "_id" is new ObjectId(teamId))
         val team = teamRepository.find(query).get(ListEnum.head)
         val player = DefaultPlayerImpl(
           data.get("name").get,

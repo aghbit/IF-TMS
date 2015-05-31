@@ -3,13 +3,13 @@ package models.tournament.tournamentfields
 import java.util
 
 import models.user.User
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by Przemek.
  */
-class TournamentStaff(val admin: BSONObjectID,
-                      var Referees: util.ArrayList[BSONObjectID]) {
+class TournamentStaff(val admin: ObjectId,
+                      var Referees: util.ArrayList[ObjectId]) {
 
   def addReferee(newRef: User): Unit = {
     Referees.add(newRef._id)

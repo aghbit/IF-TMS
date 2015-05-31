@@ -1,13 +1,12 @@
 package controllers.security
 
-import reactivemongo.bson.BSONObjectID
-
+import org.bson.types.ObjectId
 /**
  * Created by Szymek.
  */
 trait Token {
 
-  def getUserID:BSONObjectID
+  def getUserID:ObjectId
 
   override def equals(obj: scala.Any): Boolean
 

@@ -6,13 +6,13 @@ import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 
 /**
  * Created by Przemek
  */
-class BeforeEnrollment(override val _id: BSONObjectID,
+class BeforeEnrollment(override val _id: ObjectId,
                        override var properties: TournamentProperties,
                        override val staff: TournamentStaff,
                        override var strategy: EliminationStrategy) extends Tournament {
@@ -21,14 +21,14 @@ class BeforeEnrollment(override val _id: BSONObjectID,
   override def startNext(): Enrollment = {
     val newState = new Enrollment(this._id,
       this.properties,
-      new util.ArrayList[BSONObjectID],
+      new util.ArrayList[ObjectId],
       staff,
       strategy)
     newState.properties.settings.canEnroll = true
     newState
   }
 
-  override var teams: util.ArrayList[BSONObjectID] = _
+  override var teams: util.ArrayList[ObjectId] = _
 
   override def editSettings(settings: TournamentSettings): Unit = {
     this.properties.settings.numberOfPitches = settings.numberOfPitches
@@ -58,7 +58,7 @@ object BeforeEnrollment {
   def apply(properties: TournamentProperties,
             staff: TournamentStaff,
             strategy: EliminationStrategy): Tournament = {
-    val newTournament = new BeforeEnrollment(BSONObjectID.generate,
+    val newTournament = new BeforeEnrollment(ObjectId.get(),
       properties,
       staff,
       strategy)

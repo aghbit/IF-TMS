@@ -5,7 +5,7 @@ import java.util
 import org.mockito.Mockito
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.scalatest.mock.MockitoSugar
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by Szymek.
@@ -17,9 +17,9 @@ class TokensKeeper$Test extends FunSuite with MockitoSugar with BeforeAndAfter{
 
   before{
     tokens = List(
-      TokenImpl(BSONObjectID.generate),
-      TokenImpl(BSONObjectID.generate),
-      TokenImpl(BSONObjectID.generate)
+      TokenImpl(ObjectId.get()),
+      TokenImpl(ObjectId.get()),
+      TokenImpl(ObjectId.get())
     )
 
   }

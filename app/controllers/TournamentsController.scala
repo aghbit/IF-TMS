@@ -10,9 +10,9 @@ import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
+import org.bson.types.ObjectId
 import play.api.libs.json.{JsError, Json}
 import play.api.mvc.{Action, Controller}
-import reactivemongo.bson.BSONObjectID
 import repositories.TournamentRepository
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
@@ -67,7 +67,7 @@ object TournamentsController extends Controller{
 
   def getTournament(id: String) = AuthorizationAction.async {
     request =>
-      val query = new Query(Criteria where "_id" is BSONObjectID(id))
+      val query = new Query(Criteria where "_id" is new ObjectId(id))
       val tournament = repository.find(query).get(ListEnum.head)
       val tournamentJson = tournament.toJson
       Future.successful(Ok(tournamentJson));

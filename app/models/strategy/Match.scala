@@ -3,6 +3,7 @@ package models.strategy
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import play.api.libs.json.{JsObject, Json}
+import assets.ObjectIdFormat._
 
 /**
  * Created by Szymek Seget on 2014-12-02.
@@ -20,7 +21,7 @@ class Match (var id:Int,
    */
   def addTeam(team: Option[Team]): Unit = {
     if(!canAddTeam()){
-      throw new IllegalStateException("Can't add team to this Match!!")
+      throw new IllegalStateException("Can't add team "+team.get.name +" to this Match "+id)
     }
     host match {
       case Some(i) => {
@@ -84,11 +85,11 @@ class Match (var id:Int,
   def toJson:JsObject = {
     Json.obj("_id" -> id,
       host match {
-      case Some(h) => "host" -> Json.obj("_id" -> h._id.stringify, "name" -> h.name)
+      case Some(h) => "host" -> Json.obj("_id" -> h._id, "name" -> h.name)
       case None => "host" -> "null"
       },
       guest match {
-        case Some(h) => "guest" -> Json.obj("_id" -> h._id.stringify, "name" -> h.name)
+        case Some(h) => "guest" -> Json.obj("_id" -> h._id, "name" -> h.name)
         case None => "guest" -> "null"
       }
     )

@@ -8,5 +8,4 @@ import models.strategy.Score
 trait TournamentType {
 
   def getNewScore():Score
-
 }

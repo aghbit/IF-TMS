@@ -53,8 +53,7 @@ class BeachVolleyballScore extends Score{
   }
   /**
    * Return JsObject representation. e.g.
-   * {"score": {
-   *          sets: [{"1": {
+   * {"score": [{"1": {
    *                        "host":21,
    *                        "guest":15}},
    *                 {"2": {
@@ -63,14 +62,12 @@ class BeachVolleyballScore extends Score{
    *                 {"3": {
    *                        "host":null,
    *                        "guest":null}}
-   *                ]
-   *           }
+   *           ]
    * }
    * @return
    */
   override def toJson: JsObject = {
-    Json.obj("score" ->
-      Json.obj("sets" ->
+    Json.obj("sets" ->
       Json.arr(Json.obj("1" -> (sets.get(1) match {
         case Some(x:(Int,Int)) => {
           Json.obj("host" -> x._1,
@@ -91,7 +88,7 @@ class BeachVolleyballScore extends Score{
               "guest" -> x._2)
           }
           case None => Json.obj("host"-> JsNull, "guest"->JsNull)
-        }))))
+        })))
     )
   }
 }

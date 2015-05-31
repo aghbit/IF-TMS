@@ -1,15 +1,16 @@
 package models.statistics.user
 
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
+
 
 /**
  * Created by krzysiek.
  */
-class TournamentsUserStatistics(var tournamentsID: Array[BSONObjectID],
+class TournamentsUserStatistics(var tournamentsID: Array[ObjectId],
                                 var numberOfTournaments: Int,
                                 var numberOfWonTournaments: Int) {
 
-  def addTournament(tournament: BSONObjectID): Unit = {
+  def addTournament(tournament: ObjectId): Unit = {
     tournamentsID :+= tournament
     numberOfTournaments = tournamentsID.length
   }
@@ -21,7 +22,7 @@ class TournamentsUserStatistics(var tournamentsID: Array[BSONObjectID],
 }
 
 object TournamentsUserStatistics {
-  def apply(tournamentsID: Array[BSONObjectID]): TournamentsUserStatistics = {
+  def apply(tournamentsID: Array[ObjectId]): TournamentsUserStatistics = {
     new TournamentsUserStatistics(tournamentsID, 0, 0)
   }
 }
