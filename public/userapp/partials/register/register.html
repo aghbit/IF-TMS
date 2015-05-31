@@ -24,7 +24,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="mailClass = validatePattern(mail, '[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
+                    <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="mailClass = validatePattern(mail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@([a-z0-9])\.(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
                     <label for="mail">Email</label>
                     <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
 
