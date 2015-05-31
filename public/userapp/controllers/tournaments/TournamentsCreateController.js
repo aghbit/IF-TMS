@@ -67,13 +67,17 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         }
     };
 
-    $scope.validateLength = function(value, min, max) {
-        if(value == null || value.length < min || value.length > max) {
-            return "invalid";
-        } else {
-            return "";
-        }
-    };
+        $scope.validateLength = function(value, min, max) {
+            if(value == null) {
+                return "This field is required.";
+            } else if(value.length < min) {
+                return "At least "+min+" characters required.";
+            } else if(value.length > max) {
+                return "No more than "+max+" characters required.";
+            } else {
+                return "";
+            }
+        };
 
     $scope.validatePattern = function(value, pattern) {
         var regex = new RegExp(pattern, 'g');
