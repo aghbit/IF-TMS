@@ -1,5 +1,6 @@
 package models.strategy.scores
 
+import models.exceptions.MatchFinishedException
 import models.strategy.{Score, VSet}
 import reactivemongo.bson.BSONObjectID
 
