@@ -146,6 +146,29 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
             closeByDocument: true
         });
     }
+    $scope.Delete = function(){
+        $http.post('/api/users/' + SessionService.token.substr(0, 24)+"/delete", {
+            "name": $scope.name,
+            "login": $scope.login,
+            "phone": $scope.phone,
+            "mail": $scope.mail
+        }).success(function (data, status, headers, config) {
+            $scope.closeThisDialog();
+            history.back();
+            SessionService.token = " ";
+            SessionService.isLoggedIn = false;
+            $.removeCookie('tms-token');
+            notification("Your account have been successfully deleted.", 4000, true);
+            $location.url("");
+            $scope.loggedIn = SessionService.isLoggedIn;
+        }).
+            error(function (data, status, headers, config) {
+                $scope.closeThisDialog();
+                $location.url(status + "/" + data);
+                notification("Sorry. Error occurred.", 4000, false);
+            });
+
+    }
 
 
 }]);

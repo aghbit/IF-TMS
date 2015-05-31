@@ -154,6 +154,31 @@ object UsersController extends Controller {
         Future.successful(BadRequest("Detected error: " + jsErrors))
       }
   }
+  def removeUser(id: String) = AuthorizationAction.async {
+    request => {
+      try {
+        request.headers.get("token") match {
+          case Some(s) =>
+            val token = TokenImpl(s)
+            val userID = token.getUserID
+            userID.stringify match {
+              case `id` =>
+                val query = new Query(Criteria where "_id" is BSONObjectID(id))
+                val user = repository.find(query).get(ListEnum.head)
+                repository.remove(user)
+                Future.successful(Ok)
+              case _ =>
+                Future.successful(Unauthorized("You are not authorized to see this content!"))
+            }
+          //This should never execute, because AuthorizationAction checked the token.
+          case None => Future.successful(NotFound("User with this ID was not found!"))
+        }
+
+      } catch {
+        case e: Exception => Future.failed(e)
+      }
+    }
+  }
 
   def getUser(id: String) = AuthorizationAction.async {
     request => {
