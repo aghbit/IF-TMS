@@ -44,7 +44,7 @@ object UsersController extends Controller {
   }
 
 
-  def removeUser(id: String) = Action.async(parse.json) {
+  def modifyUser(id: String) = Action.async(parse.json) {
     request =>
 
       val name = request.body.\("name").validate[String](
@@ -91,7 +91,10 @@ object UsersController extends Controller {
         try {
           repository.remove(user);
           repository.insert(new_user);
-          Future.successful(Created)
+          val token = new_user.generateToken
+          TokensKeeper.addToken(token)
+          Future.successful(Ok(token.toString))
+
         } catch {
           case e: NoUserWithThisLoginInDB => Future.failed(e)
           case e: Exception => Future.failed(e)

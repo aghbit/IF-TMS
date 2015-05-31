@@ -12,30 +12,28 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     $scope.loginClass = "";
     $scope.phoneClass = "";
     $scope.mailClass = "";
-    $scope.user_id = SessionService.token.substr(0, 24);
+    $rootScope.user_id = SessionService.token.substr(0, 24);
     $scope.refresh = function() {
-        $http.get('api/users/' + $scope.user_id, {}).
+        $http.get('api/users/' + $rootScope.user_id, {}).
             success(function (data, status, headers, config) {
+                //rootScope.login is login field in "Edit account" and
+                //scope.login is field from popUp window
                 $scope.user = data;
-                $scope.login = $scope.user.userProperties.login;
-                $scope.loginSave = $scope.user.userProperties.login;
-                $scope.name = $scope.user.userProperties.name;
-                $scope.phone = $scope.user.userProperties.phone;
-                $scope.mail = $scope.user.userProperties.mail;
-
-
+                $rootScope.login = $scope.user.userProperties.login;
+                $rootScope.loginSave = $scope.user.userProperties.login;
+                $rootScope.name = $scope.user.userProperties.name;
+                $rootScope.phone = $scope.user.userProperties.phone;
+                $rootScope.mail = $scope.user.userProperties.mail;
             }).error(function (data, status, headers, config, statusText) {
 
             });
-    }
+    };
     $scope.refresh();
-
     $scope.checkLoginAvailability = function(){
-
         if($scope.login == null ||( ($scope.login.length>=5 && $scope.login.length<=20)) ){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
-                    if(data.userProperties.login!=$scope.loginSave)
+                    if(data.userProperties.login!=$rootScope.loginSave)
                     $scope.loginClass = "invalid";
                     else
                         $scope.loginClass = "";
@@ -65,7 +63,7 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     $scope.validateMailField = function() {
         //regex for email address RFC 5322
         var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        if(!pattern.test($scope.mail)){
+        if(!pattern.test($rootScope.mail)){
             if($scope.mail==null)
                 $scope.mailClass = "";
             else
@@ -99,6 +97,7 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
     };
 
     $scope.submit = function(){
+
         if($scope.checkForm()) {
             $http.put('/api/users/' + SessionService.token.substr(0, 24), {
                 "name": $scope.name,
@@ -107,9 +106,14 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
                 "mail": $scope.mail
             }).
                 success(function (data, status, headers, config) {
+
                     $scope.closeThisDialog();
-                    $location.url("/users");
+                    SessionService.token = data;
+                    $rootScope.user_id = SessionService.token.substr(0, 24);
+                    $.cookie('tms-token', SessionService.token, { expires: 1 });
                     notification("You have successfully edited your account.", 4000, true);
+                    $location.url("/users");
+                    $scope.refresh()
                 }).
                 error(function (data, status, headers, config) {
                     $scope.closeThisDialog();
@@ -149,5 +153,3 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
 
 
 }]);
-
-//['$scope', '$rootScope', '$http', '$location', 'ngDialog', 'SessionService', function ($scope, $rootScope, $http, $location, ngDialog, SessionService)
