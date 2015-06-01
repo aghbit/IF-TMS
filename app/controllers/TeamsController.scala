@@ -127,8 +127,8 @@ object TeamsController extends Controller {
 
   def deleteTeam(tournId: String, teamId: String) = Action.async(parse.json) {
     request =>
-      val queryTournament = new Query(Criteria where "_id" is BSONObjectID(tournId))
-      val queryTeam = new Query(Criteria where "_id" is BSONObjectID(teamId))
+      val queryTournament = new Query(Criteria where "_id" is new ObjectId(tournId))
+      val queryTeam = new Query(Criteria where "_id" is new ObjectId(teamId))
       val tournament = tournamentRepository.find(queryTournament).get(ListEnum.head)
       val team = teamRepository.find(queryTeam).get(ListEnum.head)
       try {

@@ -37,7 +37,7 @@ object TournamentsController extends Controller{
         case Right(properties) =>
           val userID = TokenImpl(request.headers.get("token").get).getUserID
           val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
-          val beforeEnrollment = BeforeEnrollment(properties, new SingleEliminationStrategy(), tournamentStaff)
+          val beforeEnrollment = BeforeEnrollment(properties, tournamentStaff, DoubleEliminationStrategy)
           try {
             repository.insert(beforeEnrollment)
             Future.successful(Created)
@@ -53,7 +53,7 @@ object TournamentsController extends Controller{
       val tournamentID = request.body.\("_id").validate[String].asEither
       tournamentID match {
         case Right(id) =>
-          val query = new Query(Criteria where "_id" is BSONObjectID(id))
+          val query = new Query(Criteria where "_id" is new ObjectId(id))
           val tournament = repository.find(query)
           val enrollmentStateTournament = tournament.get(ListEnum.head).startNext()
           try {
