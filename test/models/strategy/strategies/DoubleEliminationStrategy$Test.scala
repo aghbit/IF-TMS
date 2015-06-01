@@ -15,20 +15,20 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
   var eliminationTree:EliminationTree = _
 
   before {
-    val teams = (for (i <- 0 to 31) yield BeachVolleyballTeam("team "+i)).toList
+    val teams = (for (i <- 0 to 63) yield BeachVolleyballTeam("team "+i)).toList
     eliminationTree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball)
   }
 
   test("Simple test"){
-    println(eliminationTree.toString)
+    //println(eliminationTree.toString)
     println("heheszki")
   }
 
   test("update process test") {
 
     //given
-    println(eliminationTree.toString)
-    println("Dupaaa :")
+    //println(eliminationTree.toString)
+    //println("Dupaaa :")
     val iter:Iterator[TreeNode] = eliminationTree.iterator
     while (iter.hasNext){
       val node = iter.next()
@@ -37,11 +37,13 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
       node.value.score.addSet()
       node.value.score.setScoreInLastSet(21,19)
       DoubleEliminationStrategy.updateMatchResult(eliminationTree, node.value)
-      //println(eliminationTree.toString)
+      println("NODEE : " + node.value.id)
+      //println(eliminationTree.toString())
+
     }
     println("KONIEC!!!!!!!!!!!!!!!!!!!")
 
-    println(eliminationTree.toString)
+    println(eliminationTree.toString())
 
   }
 

@@ -138,6 +138,17 @@ class DoubleEliminationTree(override val _id:ObjectId,
   override def toString = {
     val builder = new StringBuilder()
     foreachTreeNodes(x => builder.append(x.toString))
+
+    /*var i = losersTreeDepth
+    builder.append("{rounds:[ ")
+    while(i>=0){
+      builder.append("{round: " + i + ", matches:[ ")
+      getMatchesInNthRound(i).foreach(x => builder.append(x.toJson+","))
+      builder.append("]}, ")
+      i = i-1
+    }
+    builder.append("]}")*/
+
     builder.result()
   }
 
@@ -211,21 +222,27 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   override def iterator: Iterator[TreeNode] = {
     var i = winnersTreeDepth
+    var j = losersTreeDepth
     var list:List[TreeNode] = List()
-    while(i>=3){
+    while(i>=1){
       val tmpWinners = getNodesInNthRound(i).filter(n => isInWinnerPart(n.value))
       list = list ::: tmpWinners
-      val tmpLosers = getNodesInNthRound(i + losersTreeDepth-winnersTreeDepth).filter(n => !isInWinnerPart(n.value))
+
+      val tmpLosers = getNodesInNthRound(j)
+        .filter(n => !isInWinnerPart(n.value))
+        .filter(n => !list.contains(n))
+
       list = list ::: tmpLosers
+      if(j%2 == 0 && j!=losersTreeDepth) {
+        val tmpLosers2 = getNodesInNthRound(j-1)
+          .filter(n=> !isInWinnerPart(n.value))
+          .filter(n => !list.contains(n))
+        j=j-1
+        list = list ::: tmpLosers2
+      }
       i=i-1
+      j=j-1
     }
-    i= 3 + losersTreeDepth - winnersTreeDepth  - 1
-    while(i>=3){
-      val tmpLosers = getNodesInNthRound(i).filter(n => !isInWinnerPart(n.value))
-      list = list ::: tmpLosers
-      i=i-1
-    }
-    list =  list ::: List(firstQF, forthQF, secondQF, thirdQF, root.left.get, root.right.get, root)
     list.iterator
   }
 }
