@@ -1,0 +1,24 @@
+<div class="col s12 indigo" style="padding: 20px">
+    <div class="ngdialog-message">
+        <h3>Delete Team</h3>
+    </div>
+</div>
+<p>
+<div ng-controller="TournamentsTeamsShowController">
+    <p style="padding-left: 20px">Are you sure you want to delete team {{ngDialogData.name}}?</p>
+</div>
+</p>
+<div class="row" style="padding-top: 30px;">
+
+    <div class="col s12 grid-example m8 l7" style="padding-left: 40px;">
+        <a class="btn indigo waves-effect waves-light" ng-click="deleteTeam(ngDialogData)" >
+            <i class="mdi-action-done"></i>
+            Yes</a>
+    </div>
+    <div class="col s12 grid-example m5 l5">
+        <a class="btn indigo waves-effect waves-light" ng-click="closeThisDialog()" >
+            <i class="mdi-content-clear"></i>
+            No</a>
+    </div>
+
+</div>
