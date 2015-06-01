@@ -65,4 +65,22 @@ object PlayersController extends Controller {
 
 
   }
+
+  def deletePlayer(teamId: String, playerId: String) = Action.async(parse.json) {
+    request =>
+      val queryTeam = new Query(Criteria where "_id" is BSONObjectID(teamId))
+      val queryPlayer = new Query(Criteria where "_id" is BSONObjectID(playerId))
+      val team = teamRepository.find(queryTeam).get(ListEnum.head)
+      val player = playerRepository.find(queryPlayer).get(ListEnum.head)
+      try {
+        team.removePlayer(player)
+        playerRepository.remove(player)
+        teamRepository.insert(team)
+        Future.successful(Ok("Player removed!"))
+      }catch {
+        case e: TooManyMembersInTeamException => Future.failed(e)
+        case e: Throwable => Future.failed(e)
+      }
+
+  }
 }

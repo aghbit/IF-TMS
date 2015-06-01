@@ -17,31 +17,31 @@
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
+                    <input class="{{nameError ? 'invalid' : ''}}" id="name" type="text" ng-model="name" ng-blur="nameError = validateLength(name, 3, 20)">
                     <label for="name">Name</label>
-                    <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name must be 3-20 letters length.</span>
+                    <span ng-if="nameError != ''" class="inputValidationError">{{nameError}}</span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateMailField()">
+                    <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="mailClass = validatePattern(mail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@([a-z0-9])\.(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
                     <label for="mail">Email</label>
-                    <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be valid email address.</span>
+                    <span ng-if="mailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
 
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="validatePhoneField()">
+                    <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="phoneClass = validatePattern(phone, '^[0-9]{9}$' )">
                     <label for="phone">Phone Number</label>
-                    <span ng-if="phoneClass == 'invalid'" class="inputValidationError">This must be valid phone numbers. Only digits.</span>
+                    <span ng-if="phoneClass == 'invalid'" class="inputValidationError">This must be a valid 9-digit phone number..</span>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s9">
                     <input class="passwordClass" id="password" type="password" ng-model="password" ng-change="validatePasswordField()">
                     <label for="password">Password</label>
-                    <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters length.</span>
+                    <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters long.</span>
                 </div>
             </div>
             <div class="row">

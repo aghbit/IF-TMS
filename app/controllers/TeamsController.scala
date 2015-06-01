@@ -124,4 +124,22 @@ object TeamsController extends Controller {
       val teamsJSON = teams.map(team => team.toJson)
       Future.successful(Ok(Json.toJson(teamsJSON)))
   }
+
+  def deleteTeam(tournId: String, teamId: String) = Action.async(parse.json) {
+    request =>
+      val queryTournament = new Query(Criteria where "_id" is BSONObjectID(tournId))
+      val queryTeam = new Query(Criteria where "_id" is BSONObjectID(teamId))
+      val tournament = tournamentRepository.find(queryTournament).get(ListEnum.head)
+      val team = teamRepository.find(queryTeam).get(ListEnum.head)
+      try {
+        tournament.removeTeam(team)
+        teamRepository.remove(team)
+        tournamentRepository.insert(tournament)
+        Future.successful(Ok("Team removed!"))
+      }catch {
+        case e: TooManyMembersInTeamException => Future.failed(e)
+        case e: Throwable => Future.failed(e)
+      }
+
+  }
 }

@@ -12,6 +12,8 @@ import models.user.User
 import org.bson.types.ObjectId
 import play.api.libs.json.{JsObject, Json}
 import assets.ObjectIdFormat._
+import play.api.libs.json.{JsArray, JsObject, Json}
+import assets.ObjectIdFormat._
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -37,7 +39,7 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   def generateTree(teams: List[Team]) = {
-    tree = strategy.generateTree(teams, BeachVolleyball)
+    strategy.generateTree(teams)
   }
 
   def addReferee(user: User): Unit = {
@@ -71,6 +73,11 @@ trait Tournament {
 
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
-    tournamentPropertiesJson.as[JsObject].+("_id", Json.toJson(_id))
+    Json.obj(
+      "_id"->_id,
+      "properties"->tournamentPropertiesJson,
+      "staff"->staff.toJson,
+      "class"->this.getClass.toString
+    )
   }
 }

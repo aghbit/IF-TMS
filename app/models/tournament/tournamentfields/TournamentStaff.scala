@@ -4,7 +4,8 @@ import java.util
 
 import models.user.User
 import org.bson.types.ObjectId
-
+import play.api.libs.json.{JsArray, JsObject, Json}
+import assets.ObjectIdFormat._
 /**
  * Created by Przemek.
  */
@@ -24,5 +25,9 @@ class TournamentStaff(val admin: ObjectId,
   def contains(referee: User): Boolean = {
     Referees.contains(referee._id)
   }
-
+  def toJson = {
+    Json.obj(
+      "admin"->admin
+    )
+  }
 }
