@@ -97,7 +97,7 @@ object TeamsController extends Controller {
           tournamentRepository.insert(tournament)
           Future.successful(Ok(Json.obj("id"->team._id.stringify)))
         } catch {
-          case e:IllegalStateException => Future.successful(NotAcceptable(e.getMessage()))
+          case e:IllegalStateException => Future.successful(Forbidden(e.getMessage()))
           case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
           case e:Throwable => Future.failed(e)
         }
