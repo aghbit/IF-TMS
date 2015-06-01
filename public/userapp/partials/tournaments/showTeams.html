@@ -25,12 +25,12 @@
                             {{player.name + " " + player.surname}}
                             <a ng-click="deletePlayerCheck(team,player)" class="right clickable mdi-content-clear"></a>
                         </li>
-                        <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
+                        <a ng-show="tournament.properties.settings.canEnroll" ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
                         <i class="mdi-content-add"></i>Add Player</a>
                     </ul>
                 </div>
             </li>
-            <a ng-click="addAnotherTeam()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Team</a>
+            <a ng-show="tournament.properties.settings.canEnroll" ng-click="addAnotherTeam()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Team</a>
         </ul>
     </div>
 </div>

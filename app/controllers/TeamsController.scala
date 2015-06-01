@@ -87,19 +87,21 @@ object TeamsController extends Controller {
         //Add captain
         team.addPlayer(captain)
         team.setCaptain(captain)
-        tournament.addTeam(team)
 
-        //Insert team & captain to DB.
         try {
+          tournament.addTeam(team)
+
+          //Insert team & captain to DB.
           teamRepository.insert(team)
           playerRepository.insert(captain)
           tournamentRepository.insert(tournament)
           Future.successful(Ok(Json.obj("id"->team._id.stringify)))
-        }catch {
+        } catch {
+          case e:IllegalStateException => Future.successful(NotAcceptable(e.getMessage()))
           case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Team can't be saved!"))
           case e:Throwable => Future.failed(e)
         }
-      }else {
+      } else {
         val jsErrors = errors.map(e => JsError.toFlatJson(e))
         Future.successful(BadRequest("Detected error: " + jsErrors))
       }

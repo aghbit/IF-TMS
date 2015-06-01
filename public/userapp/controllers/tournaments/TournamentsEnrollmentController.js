@@ -31,7 +31,7 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
             error(function (data, status, headers, config) {
                 ErrorMessageService.content = data;
                 $location.url(status+"/");
-                notification("Team exists in db!", 4000, false)
+                notification(ErrorMessageService.content, 4000, false)
             });
 
     };
