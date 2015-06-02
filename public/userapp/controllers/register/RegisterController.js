@@ -70,7 +70,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
     }
 
     $scope.submit = function(){
-        if($scope.checkForm()) {
+        if(true) {
             $http.post('/api/users', {
                 "name": $scope.name,
                 "login": $scope.login,

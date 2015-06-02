@@ -31,7 +31,7 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
       t.setCaptain(captain)
     })
     teams.foreach(t => teamsRepo.insert(t))
-    tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball)
+    tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, ObjectId.get())
 
     val iterator = tree.iterator
     var i = 0

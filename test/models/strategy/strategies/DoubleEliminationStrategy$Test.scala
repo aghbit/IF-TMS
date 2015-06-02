@@ -4,6 +4,7 @@ import models.strategy.EliminationTree
 import models.strategy.eliminationtrees.TreeNode
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
+import org.bson.types.ObjectId
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 
@@ -16,7 +17,7 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
 
   before {
     val teams = (for (i <- 0 to 15) yield BeachVolleyballTeam("team "+i)).toList
-    eliminationTree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball)
+    eliminationTree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, ObjectId.get())
   }
 
   test("Simple test"){

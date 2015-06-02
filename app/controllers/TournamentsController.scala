@@ -2,19 +2,25 @@ package controllers
 
 import java.util
 
+import com.mongodb.BasicDBObject
+import com.mongodb.casbah.commons.MongoDBObject
 import controllers.UsersController._
 import controllers.security.{TokenImpl, AuthorizationAction}
 import models.enums.ListEnum
+import models.player.players.Captain
 import models.strategy.EliminationTree
 import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
+import models.team.Team
+import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
+import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import play.api.libs.json.{JsBoolean, JsError, Json}
 import org.bson.types.ObjectId
 import play.api.libs.json.{JsError, Json}
 import play.api.mvc.{Action, Controller}
-import repositories.TournamentRepository
+import repositories.{TeamRepository, EliminationTreeRepository, TournamentRepository}
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.collection.JavaConversions._
@@ -90,5 +96,28 @@ object TournamentsController extends Controller{
       Future.successful(Ok(tournamentJson));
   }
 
+  def getTournamentTree(id: String) = AuthorizationAction.async{
+    request =>
+      //test
+      val teams:List[Team] = (for(i <- 0 until 16) yield BeachVolleyballTeam("team "+i)).toList
+      val teamsRepo = new TeamRepository
+      val captain = Captain(ObjectId.get, "cap", "sur", "784588060", "pas@dm.pl")
+      teams.foreach( t => {
+        //println("TEAM " + t.name+ " " + t._id.toString)
+        t.addPlayer(captain)
+        t.setCaptain(captain)
+      })
+      teams.foreach(t => teamsRepo.insert(t))
+      val tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, new ObjectId(id))
+      val elRepo = new EliminationTreeRepository()
+      elRepo.insert(tree)
+      //test
+      val query = MongoDBObject("_id" -> new ObjectId(id))
+      val eliminationTreeRepository = new EliminationTreeRepository()
+      eliminationTreeRepository.findOne(query) match {
+        case Some(t) => Future.successful(Ok(t.toJson()))
+        case None => Future.successful(NotFound("Tournament with this id hasn't any tree."))
+      }
 
+  }
 }

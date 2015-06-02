@@ -11,7 +11,8 @@ import org.bson.types.ObjectId
  */
 
 object SingleEliminationStrategy extends EliminationStrategy{
-  override def generateTree(teams: List[Team], tournamentType: TournamentType): EliminationTree = ???
 
   override def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = ???
+
+  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = ???
 }

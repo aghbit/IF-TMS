@@ -15,6 +15,7 @@ POST        /api/tournaments/nextEnrollmentState    controllers.TournamentsContr
 GET         /api/myTournaments                      controllers.TournamentsController.getMyTournaments
 GET         /api/tournaments                        controllers.TournamentsController.getTournaments
 GET         /api/tournaments/:id                    controllers.TournamentsController.getTournament(id:String)
+GET         /api/tournaments/:id/tree               controllers.TournamentsController.getTournamentTree(id:String)
 
 GET           /api/teams/:id                      controllers.TeamsController.getTeam(id:String)
 POST          /api/tournaments/:id/teams          controllers.TeamsController.createTeam(id:String)

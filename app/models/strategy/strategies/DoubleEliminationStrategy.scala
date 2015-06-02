@@ -61,7 +61,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
    * @param tournamentType - Important, because algo has to know which type of score to create.
    * @return double elimination tree
    */
-  override def generateTree(teams: List[Team], tournamentType: TournamentType): EliminationTree = {
+  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
     require(teams.length>=8, "Too less teams to generate DoubleEliminationTree. Should be >=8.")
 
     val leafNumber = countLeaf(teams.length)
@@ -79,7 +79,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
 
     val greatFinal = new TreeNode(Some(semiFinal1), Some(semiFinal2), Match(None, None, tournamentType), 0)
 
-    val eliminationTree = new DoubleEliminationTree(ObjectId.get(), teams.length, tournamentType, greatFinal)
+    val eliminationTree = new DoubleEliminationTree(tournamentID, teams.length, tournamentType, greatFinal)
 
     eliminationTree.setQFs(winnersQF1, losersQF1, losersQF2, winnersQF2)
 

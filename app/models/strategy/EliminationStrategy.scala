@@ -11,7 +11,7 @@ import org.bson.types.ObjectId
  */
 trait EliminationStrategy {
 
-  def generateTree(teams:List[Team], tournamentType: TournamentType):EliminationTree
+  def generateTree(teams:List[Team], tournamentType: TournamentType, tournamentID:ObjectId):EliminationTree
 
   def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree
 
