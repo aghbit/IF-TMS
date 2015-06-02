@@ -62,9 +62,8 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
 
     $scope.checkForm = function() {
         return $scope.mailClass == "" &&
-            $scope.nameClass == "" &&
+            ($scope.nameError == "" || $scope.nameError == null) &&
             $scope.passwordClass == "" &&
-            $scope.mailClass == "" &&
             $scope.phoneClass == "" &&
             $scope.loginClass == ""
     }
