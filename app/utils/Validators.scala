@@ -7,7 +7,7 @@ package utils
 object Validators {
   val LOGIN_MIN_LENGTH = 5
   val NAME_MIN_LENGTH = 3
-  val SURNAME_MIN_LENGTH  = 3
+  val SURNAME_MIN_LENGTH  = 5
   val PASSWORD_MIN_LENGTH = 5
   val PHONE_REGEX = "^[0-9]{9}$"
   val LOGIN_MAX_LENGTH = 20
