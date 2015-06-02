@@ -5,6 +5,7 @@ import models.strategy.{Match, EliminationTree}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
+import play.api.libs.json.{Json, JsObject}
 
 import scala.StringBuilder
 import scala.collection.mutable
@@ -244,5 +245,16 @@ class DoubleEliminationTree(override val _id:ObjectId,
       j=j-1
     }
     list.iterator
+  }
+
+  override def toJson(): JsObject = {
+    var i=losersTreeDepth
+    var list:List[JsObject] = List()
+    while(i>=0){
+      val js = Json.obj("round" -> i, "matches" -> getMatchesInNthRound(i).map(m => m.toJson))
+      list = list ::: List(js)
+      i=i-1
+    }
+    Json.obj("rounds" -> list)
   }
 }

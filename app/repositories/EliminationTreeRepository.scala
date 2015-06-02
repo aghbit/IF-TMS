@@ -42,7 +42,7 @@ class EliminationTreeRepository {
       case Some(dbObj) => {
         val tournamentType = BeachVolleyball
         val document = Imports.wrapDBObj(dbObj.asInstanceOf[DBObject])
-        val eliminationTreeID = new ObjectId(document.getAs[String]("_id").get)
+        val eliminationTreeID = (document.getAs[ObjectId]("_id").get)
         val teamsNumber = document.getAs[Int]("teamsNumber").get
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
@@ -52,10 +52,10 @@ class EliminationTreeRepository {
           val m = matchFromDBObject(doc)
           matches =  matches ::: List(m)
         }
-        matches = matches.sortWith((m1, m2) => m1.id<m2.id)
+        matches = matches.sortWith((m1,m2) => m1.id < m2.id)
         val eliminationTree = DoubleEliminationStrategy.initEmptyTree(eliminationTreeID, teamsNumber, tournamentType)
         var i=0
-        eliminationTree.foreach( node => {
+        eliminationTree.foreachTreeNodes(node => {
           node.value = matches(i)
           i=i+1
         })
@@ -71,22 +71,27 @@ class EliminationTreeRepository {
     val document:MongoDBObject = Imports.wrapDBObj(dBObject.asInstanceOf[DBObject])
     val matchID = document.getAs[Int]("_id").get
 
-    val hostID = document.getAs[MongoDBObject]("host").get.getAs[ObjectId]("_id").get
-    val guestID = document.getAs[MongoDBObject]("guest").get.getAs[ObjectId]("_id").get
-
-    val hostQuery = new Query(Criteria where "_id" is hostID)
-    val guestQuery = new Query(Criteria where "_id" is guestID)
-
-    val hosts = teamsRepository.find(hostQuery)
+    val hostDBObject: MongoDBObject = document.getAs[MongoDBObject]("host").orNull
+    val guestDBObject: MongoDBObject = document.getAs[MongoDBObject]("guest").orNull
     var host:Option[Team] = None
-    if(!hosts.isEmpty){
-      host = Some(hosts.get(ListEnum.head))
+    if(hostDBObject != null){
+      val hostDBID = hostDBObject.getAs[String]("_id").get
+      val hostID = new ObjectId(hostDBID)
+      val hostQuery = new Query(Criteria where "_id" is hostID)
+      val hosts = teamsRepository.find(hostQuery)
+      if(!hosts.isEmpty){
+        host = Some(hosts.get(ListEnum.head))
+      }
     }
-
-    val guests = teamsRepository.find(guestQuery)
     var guest:Option[Team] = None
-    if(!guests.isEmpty){
-      guest = Some(guests.get(ListEnum.head))
+    if(guestDBObject != null){
+      val guestDBID = guestDBObject.getAs[String]("_id").get
+      val guestID = new ObjectId(guestDBID)
+      val guestQuery = new Query(Criteria where "_id" is guestID)
+      val guests = teamsRepository.find(guestQuery)
+      if(!guests.isEmpty){
+        guest = Some(guests.get(ListEnum.head))
+      }
     }
 
     val setsObjectList = document.getAs[MongoDBList]("sets").get

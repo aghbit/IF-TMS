@@ -4,6 +4,7 @@ import models.strategy.eliminationtrees.TreeNode
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
+import play.api.libs.json.JsObject
 
 
 /**
@@ -34,5 +35,7 @@ trait EliminationTree extends Iterable[TreeNode]{
   def setQFs(first:TreeNode, second:TreeNode, third:TreeNode, forth:TreeNode)
 
   def foreachTreeNodes(f:TreeNode => Unit)
+
+  def toJson():JsObject
 
 }

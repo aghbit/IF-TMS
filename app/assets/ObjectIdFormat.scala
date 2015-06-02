@@ -6,7 +6,7 @@ package assets
 import org.bson.types.ObjectId
 import play.api.libs.json._
 
-object ObjectIdFormat {
+object  ObjectIdFormat {
 
   implicit  val objectIdFormat:Format[ObjectId] = new Format[ObjectId] {
 

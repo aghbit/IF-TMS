@@ -26,7 +26,7 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
     val teamsRepo = new TeamRepository
     val captain = Captain(ObjectId.get, "cap", "sur", "784588060", "pas@dm.pl")
     teams.foreach( t => {
-      println("TEAM " + t.name+ " " + t._id.toString)
+      //println("TEAM " + t.name+ " " + t._id.toString)
       t.addPlayer(captain)
       t.setCaptain(captain)
     })
@@ -34,29 +34,30 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
     tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball)
 
     val iterator = tree.iterator
-    while(iterator.hasNext){
+    var i = 0
+    while(iterator.hasNext && i<10){
       val n = iterator.next()
-      println(n.value.id)
+      //println(n.value.id)
       val score = BeachVolleyballScore()
       score.addSet()
       score.setScoreInLastSet(21, 19)
       score.addSet()
-      score.setScoreInLastSet(19, 21)
-      score.addSet()
-      score.setScoreInLastSet(15, 13)
+      score.setScoreInLastSet(21, 19)
       n.value.score = score
       DoubleEliminationStrategy.updateMatchResult(tree, n.value)
+      i=i+1
     }
     //println(tree.toString())
 
   }
 
+  after {
+    //underTest.dropCollection()
+  }
   test("Simple"){
-    //underTest.insert(tree)
-
-   // val treee = underTest.findOne(new BasicDBObject())
-   // println("Jesteś zwycięzcą! :D")
-   // println(treee.toString)
+    underTest.insert(tree)
+    val treee = underTest.findOne(new BasicDBObject())
+    //println(treee.get.toString)
   }
 
 }

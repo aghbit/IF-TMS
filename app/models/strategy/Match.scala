@@ -86,11 +86,11 @@ class Match (var id:Int,
     Json.obj("_id" -> id,
       host match {
       case Some(h) => "host" -> Json.obj("_id" -> h._id, "name" -> h.name)
-      case None => "host" -> "null"
+      case None => "host" -> None
       },
       guest match {
         case Some(h) => "guest" -> Json.obj("_id" -> h._id, "name" -> h.name)
-        case None => "guest" -> "null"
+        case None => "guest" -> None
       }
     )
     .++(score.toJson)

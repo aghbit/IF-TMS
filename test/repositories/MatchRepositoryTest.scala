@@ -20,8 +20,9 @@ class MatchRepositoryTest extends FunSuite with BeforeAndAfter with MockitoSugar
   var underTest:MatchRepository = _
 
   before {
-    underTest = new MatchRepository
 
+    underTest = new MatchRepository
+    underTest.dropCollection()
   }
 
   after {
@@ -59,8 +60,7 @@ class MatchRepositoryTest extends FunSuite with BeforeAndAfter with MockitoSugar
     n.score.setScoreInLastSet(21,19)
     n.score.addSet()
     n.score.setScoreInLastSet(19,21)
-    n.score.addSet()
-    n.score.setScoreInLastSet(15, 13)
+
 
     underTest.insert(n)
     val u = underTest.findOne(new BasicDBObject())

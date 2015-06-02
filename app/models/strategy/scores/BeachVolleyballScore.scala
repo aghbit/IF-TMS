@@ -58,38 +58,26 @@ class BeachVolleyballScore extends Score{
    *                        "guest":15}},
    *                 {"2": {
    *                        "host":21,
-   *                        "guest":10}},
-   *                 {"3": {
-   *                        "host":null,
-   *                        "guest":null}}
+   *                        "guest":10}}
    *           ]
    * }
    * @return
    */
   override def toJson: JsObject = {
-    Json.obj("sets" ->
-      Json.arr(Json.obj("1" -> (sets.get(1) match {
+    var i = 1
+    var list:List[JsObject] = List()
+    while(i<=sets.size){
+      val js = Json.obj(i.toString -> (sets.get(i) match {
         case Some(x:(Int,Int)) => {
           Json.obj("host" -> x._1,
-                    "guest" -> x._2)
+            "guest" -> x._2)
         }
         case None => Json.obj("host"-> JsNull, "guest"->JsNull)
-      })),
-        Json.obj("2" -> (sets.get(2) match {
-          case Some(x:(Int,Int)) => {
-            Json.obj("host" -> x._1,
-              "guest" -> x._2)
-          }
-          case None => Json.obj("host"-> JsNull, "guest"->JsNull)
-        })),
-        Json.obj("3" -> (sets.get(3) match {
-          case Some(x:(Int,Int)) => {
-            Json.obj("host" -> x._1,
-              "guest" -> x._2)
-          }
-          case None => Json.obj("host"-> JsNull, "guest"->JsNull)
-        })))
-    )
+      }))
+      list = list ::: List(js)
+      i = i+1
+    }
+    Json.obj("sets" -> list)
   }
 }
 
