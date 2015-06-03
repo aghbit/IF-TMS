@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
  */
 class Break(override val _id: ObjectId,
             override var properties: TournamentProperties,
-            override var teams: util.ArrayList[ObjectId],
+            override var teams: util.ArrayList[Team],
             override val staff: TournamentStaff,
              override var strategy: EliminationStrategy) extends Tournament {
 
@@ -30,9 +30,9 @@ class Break(override val _id: ObjectId,
   }
 
   override def removeTeam(team: Team): Unit = {
-    if (!teams.contains(team._id))
+    if (!teams.contains(team))
       throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams.remove(team._id)
+    teams.remove(team)
   }
 
   override def addTeam(team: Team): Unit = {

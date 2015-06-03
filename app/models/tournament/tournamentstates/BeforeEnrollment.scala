@@ -21,14 +21,14 @@ class BeforeEnrollment(override val _id: ObjectId,
   override def startNext(): Enrollment = {
     val newState = new Enrollment(this._id,
       this.properties,
-      new util.ArrayList[ObjectId],
+      new util.ArrayList[Team],
       staff,
       strategy)
     newState.properties.settings.canEnroll = true
     newState
   }
 
-  override var teams: util.ArrayList[ObjectId] = _
+  override var teams: util.ArrayList[Team] = _
 
   override def editSettings(settings: TournamentSettings): Unit = {
     this.properties.settings.numberOfPitches = settings.numberOfPitches

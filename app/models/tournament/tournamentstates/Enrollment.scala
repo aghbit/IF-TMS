@@ -16,7 +16,7 @@ import scala.collection.JavaConversions._
  */
 class Enrollment(override val _id: ObjectId,
                  override var properties: TournamentProperties,
-                 override var teams: util.ArrayList[ObjectId],
+                 override var teams: util.ArrayList[Team],
                  override val staff: TournamentStaff,
                   override var strategy: EliminationStrategy) extends Tournament {
 
@@ -27,13 +27,13 @@ class Enrollment(override val _id: ObjectId,
   }
 
   override def addTeam(team: Team): Unit = {
-    teams.append(team._id)
+    teams.append(team)
   }
 
   override def removeTeam(team: Team): Unit = {
-    if (!teams.contains(team._id))
+    if (!teams.contains(team))
       throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams.remove(team._id)
+    teams.remove(team)
   }
 
   override def editTerm(term: TournamentTerm): Unit = {

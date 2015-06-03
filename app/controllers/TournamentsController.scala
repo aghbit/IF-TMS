@@ -98,20 +98,6 @@ object TournamentsController extends Controller{
 
   def getTournamentTree(id: String) = AuthorizationAction.async{
     request =>
-      //test
-      val teams:List[Team] = (for(i <- 0 until 16) yield BeachVolleyballTeam("team "+i)).toList
-      val teamsRepo = new TeamRepository
-      val captain = Captain(ObjectId.get, "cap", "sur", "784588060", "pas@dm.pl")
-      teams.foreach( t => {
-        //println("TEAM " + t.name+ " " + t._id.toString)
-        t.addPlayer(captain)
-        t.setCaptain(captain)
-      })
-      teams.foreach(t => teamsRepo.insert(t))
-      val tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, new ObjectId(id))
-      val elRepo = new EliminationTreeRepository()
-      elRepo.insert(tree)
-      //test
       val query = MongoDBObject("_id" -> new ObjectId(id))
       val eliminationTreeRepository = new EliminationTreeRepository()
       eliminationTreeRepository.findOne(query) match {
@@ -119,5 +105,15 @@ object TournamentsController extends Controller{
         case None => Future.successful(NotFound("Tournament with this id hasn't any tree."))
       }
 
+  }
+
+  def generateTournamentTree(id: String) = AuthorizationAction.async {
+    request =>
+      val query = new Query(Criteria where "_id" is new ObjectId(id))
+      val tournament = repository.find(query).get(ListEnum.head)
+      tournament.generateTree()
+      val eliminationTreeRepository = new EliminationTreeRepository()
+      eliminationTreeRepository.insert(tournament.tree)
+      Future.successful(Created("Tournament tree has been successfully created."))
   }
 }

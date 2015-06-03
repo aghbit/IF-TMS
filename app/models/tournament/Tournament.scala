@@ -15,6 +15,7 @@ import assets.ObjectIdFormat._
 import play.api.libs.json.{JsArray, JsObject, Json}
 import assets.ObjectIdFormat._
 import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 
 /**
  * Created by: Przemek
@@ -25,7 +26,7 @@ trait Tournament {
 
   val _id: ObjectId
   var properties: TournamentProperties
-  var teams: util.ArrayList[ObjectId]
+  var teams: util.ArrayList[Team]
   var tree: EliminationTree = _
   val staff: TournamentStaff
   var strategy:EliminationStrategy
@@ -38,8 +39,8 @@ trait Tournament {
 
   def editTerm(term: TournamentTerm): Unit
 
-  def generateTree(teams: List[Team]) = {
-    tree = strategy.generateTree(teams, BeachVolleyball, _id)
+  def generateTree() = {
+    tree = strategy.generateTree(teams.toList, BeachVolleyball, _id)
   }
 
   def addReferee(user: User): Unit = {
@@ -60,7 +61,7 @@ trait Tournament {
   }
 
   def containsTeam(team: Team): Boolean = {
-    teams.contains(team._id)
+    teams.contains(team)
   }
 
   def containsReferee(referee: User): Boolean = {

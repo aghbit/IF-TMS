@@ -16,7 +16,7 @@ import org.bson.types.ObjectId
  */
 class AfterTournament(override val _id: ObjectId,
                       override var properties: TournamentProperties,
-                      override var teams: util.ArrayList[ObjectId],
+                      override var teams: util.ArrayList[Team],
                       override val staff: TournamentStaff,
                       override var strategy: EliminationStrategy) extends Tournament {
 
