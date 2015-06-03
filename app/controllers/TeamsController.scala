@@ -116,7 +116,7 @@ object TeamsController extends Controller {
     request =>
       val query = new Query(Criteria where "_id" is new ObjectId(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
-      val teamsIDs = tournament.getTeams
+      val teamsIDs = tournament.getTeams.map(t => t._id)
       val teams = teamsIDs.map(teamID => {
         val query = new Query(Criteria where "_id" is teamID)
         teamRepository.find(query).get(ListEnum.head)

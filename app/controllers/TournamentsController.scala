@@ -107,7 +107,7 @@ object TournamentsController extends Controller{
 
   }
 
-  def generateTournamentTree(id: String) = AuthorizationAction.async {
+  def generateTournamentTree(id: String) = AuthorizationAction.async(parse.json) {
     request =>
       val query = new Query(Criteria where "_id" is new ObjectId(id))
       val tournament = repository.find(query).get(ListEnum.head)
