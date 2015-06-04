@@ -2,7 +2,7 @@ package controllers
 
 import java.util
 
-import com.mongodb.BasicDBObject
+import com.mongodb.{DBObject, BasicDBObject}
 import com.mongodb.casbah.commons.MongoDBObject
 import controllers.UsersController._
 import controllers.security.{TokenImpl, AuthorizationAction}
@@ -35,6 +35,8 @@ import scala.concurrent.Future
 object TournamentsController extends Controller{
 
   private val repository = new TournamentRepository()
+  private val eliminationTreeRepository = new EliminationTreeRepository()
+
 
   def createTournament() = AuthorizationAction.async(parse.json) {
     request =>
@@ -109,11 +111,41 @@ object TournamentsController extends Controller{
 
   def generateTournamentTree(id: String) = AuthorizationAction.async(parse.json) {
     request =>
-      val query = new Query(Criteria where "_id" is new ObjectId(id))
-      val tournament = repository.find(query).get(ListEnum.head)
-      tournament.generateTree()
-      val eliminationTreeRepository = new EliminationTreeRepository()
-      eliminationTreeRepository.insert(tournament.tree)
-      Future.successful(Created("Tournament tree has been successfully created."))
+      if(ObjectId.isValid(id)){
+
+        val tournamentId = new ObjectId(id)
+
+        if(!eliminationTreeRepository.contains(new BasicDBObject("_id", tournamentId))){
+
+          val query = new Query(Criteria where "_id" is tournamentId)
+          val tournament = repository.find(query).get(ListEnum.head)
+
+          tournament.generateTree()
+          eliminationTreeRepository.insert(tournament.tree)
+          Future.successful(Created("Tournament tree has been successfully created."))
+
+        }else{
+          Future.successful(MethodNotAllowed("This tournament has elimination tree. Can't generate."))
+        }
+      }else{
+        Future.successful(NotFound("Tournament id is invalid!"))
+      }
+  }
+
+
+  def removeTournamentTree(id: String) = AuthorizationAction.async(parse.json) {
+    request =>
+      if(ObjectId.isValid(id)){
+        val tournamentId = new ObjectId(id)
+        if(eliminationTreeRepository.contains(new BasicDBObject("_id", tournamentId))){
+          eliminationTreeRepository.remove(new BasicDBObject("_id", tournamentId))
+          Future.successful(Ok("Tournament tree was removed!"))
+        }else{
+          Future.successful(NotFound("Tournament id is invalid!"))
+        }
+      }else {
+        Future.successful(NotFound("Tournament id is invalid!"))
+      }
+
   }
 }

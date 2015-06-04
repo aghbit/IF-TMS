@@ -1,6 +1,6 @@
 package repositories
 
-import com.mongodb.DBObject
+import com.mongodb.{BasicDBObject, DBObject}
 import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder, MongoDBObject}
 import com.mongodb.util.JSON
 import configuration.CasbahMongoDBConfiguration
@@ -17,10 +17,25 @@ import org.springframework.data.mongodb.core.query.{Criteria, Query}
  * Created by Szymek Seget on 28.05.15.
  */
 class EliminationTreeRepository {
+
+
   val collectionName: String = "EliminationTrees"
   val collection = CasbahMongoDBConfiguration.mongo().apply(collectionName)
 
   private val teamsRepository = new TeamRepository()
+
+
+  def remove(query: BasicDBObject) = {
+    collection.remove(query)
+  }
+
+
+  def contains(query: BasicDBObject): Boolean = {
+    findOne(query) match {
+      case Some(i) => true
+      case None => false
+    }
+  }
 
   def insert(obj: EliminationTree): Unit = {
     val builder = new MongoDBObjectBuilder()
