@@ -80,15 +80,99 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
     };
 
-    $scope.deleteTeam = function(id) {
-        console.log(id);
+
+        $scope.deleteTeamPopUp = function(team) {
+            ngDialog.open({
+                template: '/assets/userapp/partials/tournaments/deleteTeamDialog.html',
+                className: 'ngdialog-theme-plain',
+                data: team,
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
+
+    $scope.deleteTeam = function(team) {
+        ngDialog.close();
+
+        for (var i=0; i<team.players.length-1; i++) {
+            $scope.deletePlayer(team.id,team.players[i].id,false);
+        }
+
+        $http({
+            url: '/api/tournaments/' + $stateParams.id + "/" + team.id,
+            dataType: 'json',
+            method: 'DELETE',
+            data: {
+                tournamentId: $stateParams.id,
+                teamId: team.id
+            },
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).
+            success(function(data, status, headers, config) {
+                setTimeout( function() {
+                        $scope.getTournament();
+                        $scope.getTeams();
+                    }
+                    ,250);
+                notification("Team removed!", 4000, true);
+            }).
+            error(function(data, status, headers, config, statusText) {
+                notification("Something went wrong!", 4000, false)
+            });
     };
 
     $scope.editTeam = function(id) {
         console.log(id);
     };
 
-    $scope.deletePlayer = function(id) {
-        console.log(id);
+        $scope.deletePlayerCheck = function(team,player) {
+            if (team.captain.id == player.id) {
+                $scope.deleteCaptainPopUp(team);
+            }
+            else {
+                $scope.deletePlayer(team.id, player.id);
+            }
+        };
+
+        $scope.deleteCaptainPopUp = function(team) {
+            ngDialog.open({
+                template: '/assets/userapp/partials/tournaments/deleteCaptainDialog.html',
+                className: 'ngdialog-theme-plain',
+                data: team,
+                scope: $scope,
+                closeByDocument: true
+            });
+        };
+
+    $scope.deletePlayer = function(teamId,playerId,showNotification) {
+        showNotification = typeof showNotification === 'undefined';
+
+        $http({
+            url: '/api/teams/' + teamId + "/" + playerId,
+            dataType: 'json',
+            method: 'DELETE',
+            data: {
+                teamId: teamId,
+                playerId: playerId
+            },
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).
+            success(function(data, status, headers, config) {
+                setTimeout( function() {
+                        $scope.getTeams();
+                    }
+                    ,250);
+                if (showNotification) {
+                    notification("Player removed!", 4000, true);
+                }
+            }).
+            error(function(data, status, headers, config, statusText) {
+                notification("Something went wrong!", 4000, false)
+            });
     };
 }]);

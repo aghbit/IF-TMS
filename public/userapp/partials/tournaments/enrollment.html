@@ -41,32 +41,37 @@
         <form ng-submit="submit()" class="col l8 offset-l2">
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="teamName" type="text" ng-model="teamName">
+                    <input class="{{teamNameError ? 'invalid' : ''}}" id="teamName" type="text" ng-model="teamName" ng-blur="teamNameError = validateLength(teamName, 5, 20)">
                     <label for="teamName">Team Name</label>
+                    <span ng-if="teamNameError != ''" class="inputValidationError">{{teamNameError}}</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="captainName" type="text" ng-model="captainName">
+                    <input class="{{captainNameError ? 'invalid' : ''}}" id="captainName" type="text" ng-model="captainName" ng-blur="captainNameError = validateLength(captainName, 3, 20)">
                     <label for="captainName">Captain Name</label>
+                    <span ng-if="captainNameError != ''" class="inputValidationError">{{captainNameError}}</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="captainSurname" type="text" ng-model="captainSurname">
+                    <input class="{{captainSurnameError ? 'invalid' : ''}}" id="captainSurname" type="text" ng-model="captainSurname" ng-blur="captainSurnameError = validateLength(captainSurname, 3, 30)">
                     <label for="captainSurname">Captain Surname</label>
+                    <span ng-if="captainSurnameError != ''" class="inputValidationError">{{captainSurnameError}}</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="captainPhone" type="tel" ng-model="captainPhone">
+                    <input class="{{captainPhoneClass}}" id="captainPhone" type="tel" ng-model="captainPhone" ng-blur="captainPhoneClass = validatePattern(captainPhone, '^[0-9]{9}$' )">
                     <label for="captainPhone">Captain Phone</label>
+                    <span ng-if="captainPhoneClass == 'invalid'" class="inputValidationError">This must be a valid 9-digit phone numbers.</span>
                 </div>
             </div>
             <div class="row col l12">
                 <div class="input-field">
-                    <input id="captainMail" type="email" ng-model="captainMail">
+                    <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="captainMailClass = validatePattern(captainMail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
                     <label for="captainMail">Captain Mail</label>
+                    <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
                 </div>
             </div>
             <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Enroll team!<i class="mdi-content-send right"></i></button>

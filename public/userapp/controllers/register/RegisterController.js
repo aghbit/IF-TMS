@@ -39,43 +39,34 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
         }
     }
 
-    $scope.validateNameField = function() {
-        if($scope.name == null || $scope.name.length < 3 || $scope.name.length > 20){
-            $scope.nameClass = "invalid";
-        }else {
-            $scope.nameClass = "";
-        }
-    }
+        $scope.validateLength = function(value, min, max) {
+            if(value == null) {
+                return "This field is required.";
+            } else if(value.length < min) {
+                return "At least "+min+" characters required.";
+            } else if(value.length > max) {
+                return "No more than "+max+" characters allowed.";
+            } else {
+                return "";
+            }
+        };
 
-    $scope.validateMailField = function() {
-        //regex for email address RFC 5322
-        var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        if(!pattern.test($scope.mail)){
-            $scope.mailClass = "invalid";
-        }else {
-            $scope.mailClass = "";
-        }
-
-    };
-    $scope.validatePhoneField = function() {
-        //regex for email address RFC 5322
-        var pattern= /^[0-9]{9}$/
-        if(!pattern.test($scope.phone)){
-            $scope.phoneClass = "invalid";
-        }else {
-            $scope.phoneClass = "";
-        }
-
-    };
+        $scope.validatePattern = function(value, pattern) {
+            var regex = new RegExp(pattern, 'g');
+            if(!regex.test(value)){
+                return "invalid";
+            }else {
+                return "";
+            }
+        };
 
     $scope.checkForm = function() {
         return $scope.mailClass == "" &&
-            $scope.nameClass == "" &&
+            ($scope.nameError == "" || $scope.nameError == null) &&
             $scope.passwordClass == "" &&
-            $scope.mailClass == "" &&
             $scope.phoneClass == "" &&
             $scope.loginClass == ""
-    };
+    }
 
     $scope.submit = function(){
         if($scope.checkForm()) {
@@ -95,7 +86,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
                     $scope.closeThisDialog();
                     ErrorMessageService.content = data;
                     $location.url(status+"/");
-                    notification("Sorry. Error occurred.", 4000, false);
+                    notification("Sorry. An error occurred.", 4000, false);
                 });
         }else {
             notification("Sorry. You have typed wrong data.", 4000, false);

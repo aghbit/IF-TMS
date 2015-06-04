@@ -19,14 +19,16 @@
             <form ng-submit="submit()" class="col l8 offset-l2">
                 <div class="row col l12">
                     <div class="input-field">
-                        <input id="name" type="text" ng-model="name">
+                        <input class="{{nameError ? 'invalid' : ''}}" id="name" type="text" ng-model="name" ng-blur="nameError = validateLength(name, 3, 20)">
                         <label for="name">Name</label>
+                        <span ng-if="nameError != ''" class="inputValidationError">{{nameError}}</span>
                     </div>
                 </div>
                 <div class="row col l12">
                     <div class="input-field">
-                        <input id="surname" type="text" ng-model="surname">
+                        <input class="{{surnameError ? 'invalid' : ''}}" id="surname" type="text" ng-model="surname" ng-blur="surnameError = validateLength(surname, 3, 30)">
                         <label for="surname">Surname</label>
+                        <span ng-if="surnameError != ''" class="inputValidationError">{{surnameError}}</span>
                     </div>
                 </div>
 

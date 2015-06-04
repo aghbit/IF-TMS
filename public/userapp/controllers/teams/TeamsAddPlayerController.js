@@ -45,5 +45,18 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
 
         $scope.endAdding = function(){
             $location.path('tournaments/myTournaments');
-        }
+        };
+
+        $scope.validateLength = function(value, min, max) {
+            if(value == null) {
+                return "This field is required.";
+            } else if(value.length < min) {
+                return "At least "+min+" characters required.";
+            } else if(value.length > max) {
+                return "No more than "+max+" characters allowed.";
+            } else {
+                return "";
+            }
+        };
+
 }]);
