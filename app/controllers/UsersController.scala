@@ -42,9 +42,33 @@ object UsersController extends Controller {
         case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
       }
   }
-  def changePassword(id:String) = Action.async(parse.json) {
+
+  def checkLoginAvailability(login: String) = AuthorizationAction.async {
     request => {
       try {
+        request.headers.get("token") match {
+          case Some(s) =>
+            val token = TokenImpl(s)
+            val userID = token.getUserID
+            val query = new Query(Criteria where "_id" is BSONObjectID(userID.stringify))
+            val user = repository.find(query).get(ListEnum.head)
+            user.getProperties.login match {
+              case `login` =>
+                Future.successful(Ok)
+              case _ =>
+                Future.successful(NotFound("You have to choose another login."))
+            }
+          //This should never execute, because AuthorizationAction checked the token.
+          case None => Future.successful(Ok)
+        }
+      } catch {
+        case e: Exception => Future.failed(e)
+      }
+    }
+  }
+
+  def changePassword(id:String) = Action.async(parse.json) {
+    request => {
         request.headers.get("token") match {
           case Some(s) =>
             val token = TokenImpl(s)
@@ -55,32 +79,34 @@ object UsersController extends Controller {
                   minLength[String](Validators.PASSWORD_MIN_LENGTH) andKeep
                     maxLength[String](Validators.PASSWORD_MAX_LENGTH)
                 ).asEither
-
-                val my_map = Map(
+                val myMap = Map(
                   "password" -> password
                 )
-                val (errors, data) = Validators.simplifyEithers(my_map)
+                val (errors, data) = Validators.simplifyEithers(myMap)
                 if (errors.isEmpty) {
                   val query = new Query(Criteria where "_id" is BSONObjectID(id))
                   val users = repository.find(query)
                   val user = users.get(ListEnum.head)
-                  val new_user_prop = UserProperties(user.getProperties.name,
+                  val newUserProp = UserProperties(user.getProperties.name,
                     user.getProperties.login,
                     data.get("password").get,
                     user.getProperties.phone,
                     user.getProperties.mail)
-                  val new_user = UserImpl(new_user_prop)
-                  repository.remove(user)
-                  repository.insert(new_user)
-                  val token = new_user.generateToken
-                  TokensKeeper.addToken(token)
-                  Future.successful(Ok(token.toString))
+                  val newUser = UserImpl(newUserProp)
+                  try {
+                    repository.remove(user)
+                    repository.insert(newUser)
+                    val token = newUser.generateToken
+                    TokensKeeper.addToken(token)
+                    Future.successful(Ok(token.toString))
+                  } catch {
+                    case e: Exception => Future.failed(e)
+                  }
                 } else {
-                    val jsErrors = errors.map(e => JsError.toFlatJson(e))
-                    Future.successful(BadRequest("Detected error: " + jsErrors))
-            }
+                  val jsErrors = errors.map(e => JsError.toFlatJson(e))
+                  Future.successful(BadRequest("Detected error: " + jsErrors))
                 }
-
+              }
               case _ =>
                 Future.successful(Unauthorized("You are not authorized to see this content!"))
             }
@@ -88,15 +114,11 @@ object UsersController extends Controller {
           case None => Future.successful(NotFound("User with this ID was not found!"))
         }
 
-      } catch {
-        case e: Exception => Future.failed(e)
-      }
     }
   }
 
   def modifyUser(id: String) = Action.async(parse.json) {
     request =>
-
       val name = request.body.\("name").validate[String](
         minLength[String](Validators.NAME_MIN_LENGTH) andKeep
           maxLength[String](Validators.NAME_MAX_LENGTH)
@@ -115,36 +137,31 @@ object UsersController extends Controller {
         pattern(new Regex(Validators.EMAIL_REGEX))
       ).asEither
 
-      val my_map = Map(
+      val myMap = Map(
         "name" -> name,
         "login" -> login,
         "phone" -> phone,
         "mail" -> mail
       )
-
-
-      val (errors, data) = Validators.simplifyEithers(my_map)
+      val (errors, data) = Validators.simplifyEithers(myMap)
 
       if (errors.isEmpty) {
         val query = new Query(Criteria where "_id" is BSONObjectID(id))
         //import password from database
         val user = repository.find(query).get(ListEnum.head)
         val password = user.getProperties.password
-        val new_user_prop = UserProperties(data.get("name").get,
+        val newUserProp = UserProperties(data.get("name").get,
           data.get("login").get,
           password,
           data.get("phone").get,
           data.get("mail").get)
-        val new_user = UserImpl(new_user_prop)
-
-
+        val newUser = UserImpl(newUserProp)
         try {
           repository.remove(user);
-          repository.insert(new_user);
-          val token = new_user.generateToken
+          repository.insert(newUser);
+          val token = newUser.generateToken
           TokensKeeper.addToken(token)
           Future.successful(Ok(token.toString))
-
         } catch {
           case e: NoUserWithThisLoginInDB => Future.failed(e)
           case e: Exception => Future.failed(e)
@@ -198,7 +215,6 @@ object UsersController extends Controller {
           //This should never execute, because AuthorizationAction checked the token.
           case None => Future.successful(NotFound("User with this ID was not found!"))
         }
-
       } catch {
         case e: Exception => Future.failed(e)
       }
@@ -232,8 +248,6 @@ object UsersController extends Controller {
           + JsError.toFlatJson(p)))
       }
   }
-
-  //Unused
   def isLoginInUse(login: String) = Action.async{
     request =>
       val query = new Query(Criteria where "personalData.login" is login)
@@ -251,7 +265,6 @@ object UsersController extends Controller {
       if(users.isEmpty){
         Future(NotFound("Login is not in use."))
       }else {
-        //
         Future(Ok( users.get(ListEnum.head).toJson))
       }
   }

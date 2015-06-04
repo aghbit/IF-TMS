@@ -101,7 +101,7 @@ class DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
   }
 
 
-  test("UpdateTree: Updating first-match in 8-team tournament") {
+  test("UpdateTree: Updating firstPass-match in 8-team tournament") {
     //given
     for (i <- 0 until 8) {
       val team = mock[Team]
@@ -138,10 +138,10 @@ class DoubleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
     val newGame = underTest.getGame(updatedTree.root, "ll")
     val newGameLosers = underTest.getGame(updatedTree.root, "rrr")
     //then
-    assert(newGame.value.get.host === winner1, "UpdateTree: Updating first-match in 8-team tournament1")
-    assert(newGame.value.get.guest === winner2, "UpdateTree: Updating first-match in 8-team tournament2")
-    assert(newGameLosers.value.get.host === loser1, "UpdateTree: Updating first-match in 8-team tournament3")
-    assert(newGameLosers.value.get.guest === loser2, "UpdateTree: Updating first-match in 8-team tournament4")
+    assert(newGame.value.get.host === winner1, "UpdateTree: Updating firstPass-match in 8-team tournament1")
+    assert(newGame.value.get.guest === winner2, "UpdateTree: Updating firstPass-match in 8-team tournament2")
+    assert(newGameLosers.value.get.host === loser1, "UpdateTree: Updating firstPass-match in 8-team tournament3")
+    assert(newGameLosers.value.get.guest === loser2, "UpdateTree: Updating firstPass-match in 8-team tournament4")
   }
   //
   test("UpdateTree: playing 8-team tournament, not playing all matches") {

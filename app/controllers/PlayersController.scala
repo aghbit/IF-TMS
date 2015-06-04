@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.TeamsController._
+import  controllers.TeamsController._
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.DefaultPlayerImpl

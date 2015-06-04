@@ -18,7 +18,7 @@
                     <div class="input-field col s10">
                         <input class="{{loginClass}}" id="login" type="text" ng-model="login" ng-blur="checkLoginAvailability()">
                         <label>{{user.userProperties.login}}</label>
-                        <span ng-if="loginClass == 'invalid'" class="inputValidationError">Login is unavailable. Please select another one.</span>
+                        <span ng-if="loginClass != ''" class="inputValidationError">{{loginClass}}</span>
 
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="input-field col s10">
                         <input class="{{nameClass}}" id="name" type="text" ng-model="name" ng-blur="validateNameField()">
                         <label>{{user.userProperties.name}}</label>
-                        <span ng-if="nameClass == 'invalid'" class="inputValidationError">Name should be 3 - 20 letters long.</span>
+                        <span ng-if="nameClass != ''" class="inputValidationError">{{nameClass}}</span>
 
                     </div>
                 </div>
@@ -50,9 +50,9 @@
 
                 <div class=" col m9">
                     <div class="input-field col s10">
-                        <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="validatePhoneField()">
+                        <input class="{{phoneClass}}" id="phone" type="text" ng-model="phone" ng-blur="validateRegexField('phone')">
                         <label>{{user.userProperties.phone}}</label>
-                        <span ng-if="phoneClass == 'invalid'" class="inputValidationError">There should be nine digit long number.</span>
+                        <span ng-if="phoneClass != ''" class="inputValidationError">{{phoneClass}}</span>
 
                     </div>
                 </div>
@@ -66,19 +66,14 @@
 
                 <div class=" col m9">
                     <div class="input-field col s10">
-                        <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateMailField()">
+                        <input class="{{mailClass}}" id="mail" type="text" ng-model="mail" ng-blur="validateRegexField('mail')">
                         <label>{{user.userProperties.mail}}</label>
-                        <span ng-if="mailClass == 'invalid'" class="inputValidationError">This should be valid mail address.</span>
+                        <span ng-if="mailClass != 'invalid'" class="inputValidationError">{{mailClass}}</span>
 
 
                     </div>
                 </div>
             </div>
-
-
-
-
-
         </div>
 
 

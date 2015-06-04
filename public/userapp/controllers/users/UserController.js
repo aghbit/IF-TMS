@@ -30,55 +30,53 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
         if($scope.login == null ||( ($scope.login.length>=5 && $scope.login.length<=20)) ){
             $http.get('/api/users/login/'+$scope.login).
                 success(function (data, status, headers, config) {
-                    if(data.userProperties.login!=$rootScope.loginSave)
-                    $scope.loginClass = "invalid";
-                    else
-                        $scope.loginClass = "";
-                }).
-                error(function (data, status, headers, config){
-                    if(status==404){
-                        $scope.loginClass ="";
-                    }else{
-                        $scope.closeThisDialog();
-                        $location.url(status + "/" + "Internal Server Error. ")
-                        notification("Sorry. Error occurred.", 4000, false);
-                    }
-                })
+                    $http.get('/api/users/checklogin/'+$scope.login).
+                        success(function (data, status, headers, config) {
+
+                                $scope.loginClass = "";
+                        }).
+                        error(function (data, status, headers, config){
+                            if(status==404){
+                                $scope.loginClass ="User with this login already exists.";
+                            }
+                            else{
+                                $scope.closeThisDialog();
+                                $location.url(status + "/" + "Internal Server Error. ")
+                                notification("Sorry. Error occurred.", 4000, false);
+                            }
+                        })
+
+                }). error(function (data, status, headers, config){
+                    $scope.loginClass = "";
+                });
+
         }else{
-            $scope.loginClass = "invalid";
+            $scope.loginClass = "Login should be 3 - 20 letters long.";
         }
     };
     $scope.validateNameField= function(){
         if(($scope.name != null) &&( $scope.name.length < 3 || $scope.name.length > 20)){
-            $scope.nameClass = "invalid";
+            $scope.nameClass = "Name should be 3 - 20 letters long.";
         }else {
             $scope.nameClass = "";
         }
     };
 
 
-    $scope.validateMailField = function() {
+    $scope.validateRegexField = function(regex) {
         //regex for email address RFC 5322
-        var pattern= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        if(!pattern.test($rootScope.mail)){
-            if($scope.mail==null)
-                $scope.mailClass = "";
-            else
-                $scope.mailClass = "invalid";
-
-        }else {
-            $scope.mailClass = "";
-        }
-
-    };
-    $scope.validatePhoneField = function() {
-        //regex for email address RFC 5322
-        var pattern= /^[0-9]{9}$/
+        var phone= /^[0-9]{9}$/
+        var mail= /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+        var pattern = "";
+        if(regex=="phone")
+            pattern = phone
+        else if(regex=="mail")
+            pattern = mail
         if(!pattern.test($scope.phone)){
             if($scope.phone==null)
                 $scope.phoneClass = "";
             else
-                $scope.phoneClass = "invalid";
+                $scope.phoneClass = "There should be nine digit long number.";
 
         }else {
             $scope.phoneClass = "";
@@ -146,14 +144,13 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
             closeByDocument: true
         });
     }
-    $scope.Delete = function(){
+    $scope.delete = function(){
         $http.post('/api/users/' + SessionService.token.substr(0, 24)+"/delete", {
             "name": $scope.name,
             "login": $scope.login,
             "phone": $scope.phone,
             "mail": $scope.mail
         }).success(function (data, status, headers, config) {
-
             SessionService.token = " ";
             SessionService.isLoggedIn = false;
             $.removeCookie('tms-token');

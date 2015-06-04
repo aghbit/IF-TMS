@@ -169,7 +169,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
 
     //then
     assert(finalmatch != None, "Update Tree: FinalMatch is null")
-    val condition = finalmatch.value.get.host == game1.value.get.host //checking first team in final
+    val condition = finalmatch.value.get.host == game1.value.get.host //checking firstPass team in final
     val condition2 = finalmatch.value.get.guest == game3.value.get.host //checking the second team
 
     assert(condition, "Update Tree: 8 teams match, checking the final")
@@ -244,7 +244,7 @@ class SingleEliminationUpdateTest extends FunSuite with BeforeAndAfter with Mock
 
     //then
 
-    val condition = finalmatch.value.get.host == game2.value.get.host //checking first team in final
+    val condition = finalmatch.value.get.host == game2.value.get.host //checking firstPass team in final
     val condition2 = finalmatch.value.get.guest == game4.value.get.guest //checking the second team
 
     assert(condition, "Update Tree: 8 teams match, checking the final")

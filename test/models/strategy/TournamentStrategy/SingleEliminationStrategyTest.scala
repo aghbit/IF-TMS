@@ -302,7 +302,7 @@ class SingleEliminationStrategyTest extends FunSuite with BeforeAndAfter with Mo
     }
     //I have 19 teams, so I should have 3 full matches
 
-    //checking first match
+    //checking firstPass match
     val cond1 = my_guest1 != None && my_host1 != None
     //checking second match; should be full (guest and host filled)
     val condition = my_guest2 != None && my_host2 != None
