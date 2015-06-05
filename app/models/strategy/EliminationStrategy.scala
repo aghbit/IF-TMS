@@ -11,6 +11,7 @@ import org.bson.types.ObjectId
  */
 trait EliminationStrategy {
 
+  @throws(classOf[IllegalArgumentException])
   def generateTree(teams:List[Team], tournamentType: TournamentType, tournamentID:ObjectId):EliminationTree
 
   def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree

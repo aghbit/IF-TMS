@@ -18,6 +18,7 @@ GET           /api/tournaments/:id                        controllers.Tournament
 GET           /api/tournaments/:id/tree                   controllers.TournamentsController.getTournamentTree(id:String)
 POST          /api/tournaments/:id/tree                   controllers.TournamentsController.generateTournamentTree(id:String)
 DELETE        /api/tournaments/:id/tree                   controllers.TournamentsController.removeTournamentTree(id:String)
+POST          /api/tournaments/:id/match/:matchId         controllers.TournamentsController.updateMatch(id:String, matchId:Int)
 
 GET           /api/teams/:id                              controllers.TeamsController.getTeam(id:String)
 POST          /api/tournaments/:id/teams                  controllers.TeamsController.createTeam(id:String)

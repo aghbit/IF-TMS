@@ -22,6 +22,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     val winner = m.getWinner()
     val loser = m.getLoser()
     val node = eliminationTree.getNode(m.id)
+    node.value = m
     node.parent match {
       case Some(n) => n.value.addTeam(winner)
       case None => // Koniec turnieju
@@ -61,6 +62,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
    * @param tournamentType - Important, because algo has to know which type of score to create.
    * @return double elimination tree
    */
+  @throws(classOf[IllegalArgumentException])
   override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
     require(teams.length>=8, "Too less teams to generate DoubleEliminationTree. Should be >=8.")
 

@@ -27,7 +27,6 @@ trait Tournament {
   val _id: ObjectId
   var properties: TournamentProperties
   var teams: util.ArrayList[Team]
-  var tree: EliminationTree = _
   val staff: TournamentStaff
   var strategy:EliminationStrategy
 
@@ -39,8 +38,13 @@ trait Tournament {
 
   def editTerm(term: TournamentTerm): Unit
 
-  def generateTree() = {
-    tree = strategy.generateTree(teams.toList, BeachVolleyball, _id)
+  @throws(classOf[IllegalArgumentException])
+  def generateTree():EliminationTree  = {
+    try{
+      strategy.generateTree(teams.toList, BeachVolleyball, _id)
+    }catch {
+      case e:IllegalArgumentException => throw new IllegalArgumentException(e)
+    }
   }
 
   def addReferee(user: User): Unit = {
