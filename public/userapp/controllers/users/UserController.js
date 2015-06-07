@@ -84,15 +84,14 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
 
     };
 
-    $scope.checkForm = function() {
-        return $scope.mailClass == "" &&
-            $scope.nameClass == "" &&
-            $scope.phoneClass == "" &&
-            $scope.loginClass == ""
-    };
+
 
     $scope.submit = function(){
-        if($scope.checkForm()) {
+        if($scope.mailClass == "" &&
+            $scope.nameClass == "" &&
+            $scope.phoneClass == "" &&
+            $scope.loginClass == "")
+        {
             $http.put('/api/users/' + SessionService.token.substr(0, 24), {
                 "name": $scope.name,
                 "login": $scope.login,
