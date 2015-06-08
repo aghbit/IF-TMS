@@ -39,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <input class="passwordClass" id="password" type="password" ng-model="password" ng-change="validatePasswordField()">
+                    <input class="{{passwordClass}}" id="password" type="password" ng-model="password" ng-change="validatePasswordField()">
                     <label for="password">Password</label>
                     <span ng-if="passwordClass == 'invalid'" class="inputValidationError">Password must be 5-20 letters long.</span>
                 </div>
