@@ -2,7 +2,9 @@ package IT.repositories
 
 import java.util
 
-import models.strategy.strategies.SingleEliminationStrategy
+import models.strategy.EliminationTree
+import models.strategy.eliminationtrees.DoubleEliminationTree
+import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.tournament.Tournament
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields._
@@ -12,7 +14,7 @@ import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import play.api.Logger
 import play.api.libs.json.Json
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 import repositories.TournamentRepository
 import org.joda.time.DateTime
 import org.springframework.data.mongodb.core.query._
@@ -33,12 +35,11 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
     new DateTime(2014, 3, 27, 8, 0, 0, 0),
     new DateTime(2014, 3, 27, 16, 0, 0, 0))
   val tournamentSettings = new TournamentSettings(2, 16, true, 1, "Volleyball")
-  val tournamentStrategy = new SingleEliminationStrategy()
-  val tournamentStaff = new TournamentStaff(BSONObjectID.generate, new util.ArrayList[BSONObjectID]())
+  val tournamentStaff = new TournamentStaff(ObjectId.get(), new util.ArrayList[ObjectId]())
   val tournamentProperties = new TournamentProperties(tournamentDescription, tournamentTerms, tournamentSettings)
   before {
     underTest = new TournamentRepository()
-    tournament = BeforeEnrollment(tournamentProperties, tournamentStrategy, tournamentStaff)
+    tournament = BeforeEnrollment(tournamentProperties, tournamentStaff, DoubleEliminationStrategy)
   }
 
   after {

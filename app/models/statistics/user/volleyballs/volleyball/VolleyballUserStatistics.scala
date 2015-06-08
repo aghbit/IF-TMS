@@ -2,12 +2,12 @@ package models.statistics.user.volleyballs.volleyball
 
 import models.statistics.user.TournamentsUserStatistics
 import models.statistics.user.volleyballs.{MatchesAndSetsUserStatistics, VolleyballsUserStatistics}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by krzysiek.
  */
-class VolleyballUserStatistics(val _id: BSONObjectID,
+class VolleyballUserStatistics(val _id: ObjectId,
                                val discipline: String,
                                val pointUnit: String,
                                var tournamentsStats: TournamentsUserStatistics,
@@ -18,7 +18,7 @@ class VolleyballUserStatistics(val _id: BSONObjectID,
 
 object VolleyballUserStatistics {
   def apply(tournamentsStats: TournamentsUserStatistics): VolleyballUserStatistics = {
-    new VolleyballUserStatistics(BSONObjectID.generate, "Volleyball", "point", tournamentsStats,
+    new VolleyballUserStatistics(ObjectId.get(), "Volleyball", "point", tournamentsStats,
       MatchesAndSetsUserStatistics("Volleyball"), 0)
   }
 }

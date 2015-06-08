@@ -10,7 +10,7 @@ import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 
 /**
@@ -26,9 +26,9 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
   before {
     underTest = BeachVolleyballTeam("underTest")
     players = List(mock[Player], mock[Player], mock[Player])
-    players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
+    players.foreach(player => Mockito.when(player._id).thenReturn(ObjectId.get()))
     captain = mock[Captain]
-    Mockito.when(captain._id).thenReturn(BSONObjectID.generate)
+    Mockito.when(captain._id).thenReturn(ObjectId.get())
   }
 
   test("Constructor: Simple test") {
@@ -36,7 +36,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
     //given
 
     //when
-    val underTest: Team = new BeachVolleyballTeam(BSONObjectID.generate, "underTest", 2, 1)
+    val underTest: Team = new BeachVolleyballTeam(ObjectId.get(), "underTest", 2, 1)
 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")

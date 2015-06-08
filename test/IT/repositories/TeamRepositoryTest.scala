@@ -10,7 +10,6 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
 import org.springframework.data.mongodb.core.query._
-import reactivemongo.bson.BSONObjectID
 import repositories.TeamRepository
 
 /**

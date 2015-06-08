@@ -2,15 +2,20 @@ package models.tournament
 
 import java.util
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
+import models.tournament.tournamenttype.TournamentType
+import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import models.user.User
+import org.bson.types.ObjectId
+import play.api.libs.json.{JsObject, Json}
+import assets.ObjectIdFormat._
 import play.api.libs.json.{JsArray, JsObject, Json}
-import reactivemongo.bson.BSONObjectID
-
+import assets.ObjectIdFormat._
 import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConversions._
 
 /**
  * Created by: Przemek
@@ -19,11 +24,11 @@ import scala.collection.mutable.ListBuffer
 
 trait Tournament {
 
-  val _id: BSONObjectID
+  val _id: ObjectId
   var properties: TournamentProperties
-  var teams: util.ArrayList[BSONObjectID]
-  val strategy: TournamentStrategy
+  var teams: util.ArrayList[Team]
   val staff: TournamentStaff
+  var strategy:EliminationStrategy
 
   def startNext(): Tournament
 
@@ -33,8 +38,13 @@ trait Tournament {
 
   def editTerm(term: TournamentTerm): Unit
 
-  def generateTree(teams: List[Team]) = {
-    strategy.generateTree(teams)
+  @throws(classOf[IllegalArgumentException])
+  def generateTree():EliminationTree  = {
+    try{
+      strategy.generateTree(teams.toList, BeachVolleyball, _id)
+    }catch {
+      case e:IllegalArgumentException => throw new IllegalArgumentException(e)
+    }
   }
 
   def addReferee(user: User): Unit = {
@@ -55,7 +65,7 @@ trait Tournament {
   }
 
   def containsTeam(team: Team): Boolean = {
-    teams.contains(team._id)
+    teams.contains(team)
   }
 
   def containsReferee(referee: User): Boolean = {
@@ -69,7 +79,7 @@ trait Tournament {
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
     Json.obj(
-      "_id"->_id.stringify,
+      "_id"->_id,
       "properties"->tournamentPropertiesJson,
       "staff"->staff.toJson,
       "class"->this.getClass.toString

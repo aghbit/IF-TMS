@@ -4,7 +4,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by krzysiek.
@@ -14,7 +14,7 @@ class TournamentsUserStatisticsTest extends FunSuite with MockitoSugar with Befo
 
   var testInstance: TournamentsUserStatistics = _
 
-  val tournamentsID: Array[BSONObjectID] = Array(BSONObjectID.generate)
+  val tournamentsID: Array[ObjectId] = Array(ObjectId.get)
   val numberOfTournaments: Int = tournamentsID.length
   val numberOfWonTournaments: Int = 1
 
@@ -40,7 +40,7 @@ class TournamentsUserStatisticsTest extends FunSuite with MockitoSugar with Befo
     //given
 
     //when
-    testInstance.addTournament(BSONObjectID.generate)
+    testInstance.addTournament(ObjectId.get())
 
     //then
     assert(testInstance.numberOfTournaments === 2, "addTournament test")

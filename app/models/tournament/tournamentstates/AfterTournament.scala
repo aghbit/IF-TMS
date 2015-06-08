@@ -2,24 +2,24 @@ package models.tournament.tournamentstates
 
 import java.util
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
 import models.user.User
-import reactivemongo.bson.BSONObjectID
-
+import org.bson.types.ObjectId
 
 
 
 /**
  * Created by Przemek
  */
-class AfterTournament(override val _id: BSONObjectID,
+class AfterTournament(override val _id: ObjectId,
                       override var properties: TournamentProperties,
-                      override var teams: util.ArrayList[BSONObjectID],
-                      override val strategy: TournamentStrategy,
-                      override val staff: TournamentStaff) extends Tournament {
+                      override var teams: util.ArrayList[Team],
+                      override val staff: TournamentStaff,
+                      override var strategy: EliminationStrategy) extends Tournament {
+
   override def addReferee(user: User): Unit = {
     throw new IllegalStateException("Can't add referee during this tournament state")
   }

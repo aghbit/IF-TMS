@@ -1,7 +1,7 @@
 package controllers.security
 
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.query.{Criteria, Query}
-import reactivemongo.bson.BSONObjectID
 import repositories.TokenRepository
 import scala.collection.JavaConversions._
 
@@ -21,7 +21,7 @@ object TokensKeeper {
     repository.insert(token)
   }
 
-  def removeTokenForUser(id: BSONObjectID): Unit ={
+  def removeTokenForUser(id: ObjectId): Unit ={
     val query = new Query(Criteria where "userID" is id)
     repository.remove(query)
     tokens = tokens.filter(t => !t.getUserID.equals(id))

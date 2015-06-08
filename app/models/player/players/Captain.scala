@@ -1,12 +1,11 @@
 package models.player.players
 
 import models.player.Player
-import reactivemongo.bson.BSONObjectID
-
+import org.bson.types.ObjectId
 /**
  * Created by Szymek Seget on 06.03.15.
  */
-case class Captain(_id:BSONObjectID,
+case class Captain(_id:ObjectId,
                    name:String,
                    surname:String,
                    phone:String,
@@ -19,6 +18,6 @@ case class Captain(_id:BSONObjectID,
 }
 object Captain {
   def apply(name:String, surname:String, phone:String, mail:String) = {
-    new Captain(BSONObjectID.generate, name, surname, phone, mail)
+    new Captain(ObjectId.get(), name, surname, phone, mail)
   }
 }

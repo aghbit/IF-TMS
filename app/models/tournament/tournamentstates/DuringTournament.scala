@@ -2,26 +2,26 @@ package models.tournament.tournamentstates
 
 import java.util
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
 import models.user.User
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Przemek
  */
-class DuringTournament(override val _id: BSONObjectID,
+class DuringTournament(override val _id: ObjectId,
                        override var properties: TournamentProperties,
-                       override var teams: util.ArrayList[BSONObjectID],
-                       override val strategy: TournamentStrategy,
-                       override val staff: TournamentStaff) extends Tournament {
+                       override var teams: util.ArrayList[Team],
+                       override val staff: TournamentStaff,
+                       override var strategy: EliminationStrategy) extends Tournament {
 
   override def startNext(): AfterTournament = {
-    val newState = new AfterTournament(this._id, this.properties, this.teams, strategy, staff)
+    val newState = new AfterTournament(this._id, this.properties, this.teams, staff, strategy)
     newState
   }
 

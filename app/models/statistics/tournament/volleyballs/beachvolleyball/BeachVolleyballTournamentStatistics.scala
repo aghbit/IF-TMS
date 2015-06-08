@@ -1,12 +1,12 @@
 package models.statistics.tournament.volleyballs.beachvolleyball
 
 import models.statistics.tournament.volleyballs.VolleyballsTournamentStatistics
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by krzysiek.
  */
-class BeachVolleyballTournamentStatistics(val _id: BSONObjectID,
+class BeachVolleyballTournamentStatistics(val _id: ObjectId,
                                           val discipline: String,
                                           val pointUnit: String,
                                           val numberOfMatches: Int,
@@ -18,6 +18,6 @@ class BeachVolleyballTournamentStatistics(val _id: BSONObjectID,
 
 object BeachVolleyballTournamentStatistics {
   def apply(): BeachVolleyballTournamentStatistics = {
-    new BeachVolleyballTournamentStatistics(BSONObjectID.generate, "Beach Volleyball", "point", 0, 0, 0, 0)
+    new BeachVolleyballTournamentStatistics(ObjectId.get(), "Beach Volleyball", "point", 0, 0, 0, 0)
   }
 }

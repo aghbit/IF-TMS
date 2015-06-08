@@ -1,18 +1,32 @@
 package models.strategy
 
 
-import reactivemongo.bson.BSONObjectID
+import play.api.libs.json.JsObject
 
 /**
  * Created by Rafal on 2014-12-07.
  */
 trait Score {
-  val host: BSONObjectID
-  val guest: BSONObjectID
 
-  def isMatchFinished: Boolean
-
-  def getWinner: Option[BSONObjectID]
-
-  def getLoser: Option[BSONObjectID]
+  def isHostWinner():Boolean
+  def addSet():Unit
+  def setScoreInLastSet(hostScore:Int, guestScore:Int):Unit
+  /**
+   * Return JsObject representation. e.g.
+   * {"score": {
+   *          sets: [{"1": {
+   *                        "host":21,
+   *                        "guest":15}},
+   *                 {"2": {
+   *                        "host":21,
+   *                        "guest":10}},
+   *                 {"3": {
+   *                        "host":null,
+   *                        "guest":null}}
+   *                ]
+   *           }
+   * }
+   * @return
+   */
+  def toJson:JsObject
 }

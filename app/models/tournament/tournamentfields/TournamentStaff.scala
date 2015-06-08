@@ -1,15 +1,16 @@
 package models.tournament.tournamentfields
 
+import java.util
 
 import models.user.User
+import org.bson.types.ObjectId
 import play.api.libs.json.{JsArray, JsObject, Json}
-import reactivemongo.bson.BSONObjectID
-
+import assets.ObjectIdFormat._
 /**
  * Created by Przemek.
  */
-class TournamentStaff(val admin: BSONObjectID,
-                      val Referees: java.util.List[BSONObjectID]) {
+class TournamentStaff(val admin: ObjectId,
+                      var Referees: util.ArrayList[ObjectId]) {
 
   def addReferee(newRef: User): Unit = {
     Referees.add(newRef._id)
@@ -26,7 +27,7 @@ class TournamentStaff(val admin: BSONObjectID,
   }
   def toJson = {
     Json.obj(
-      "admin"->admin.stringify
+      "admin"->admin
     )
   }
 }

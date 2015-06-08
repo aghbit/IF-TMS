@@ -1,6 +1,8 @@
 package models.team.teams.volleyball
 
 import java.util
+import assets.ObjectIdFormat
+import org.bson.types.ObjectId
 import play.api.libs.json.{JsArray, Json}
 
 import scala.collection.JavaConversions._
@@ -9,25 +11,25 @@ import models.exceptions.TooManyMembersInTeamException
 import models.player.Player
 import models.player.players.Captain
 import models.team.Team
-import reactivemongo.bson.BSONObjectID
+import ObjectIdFormat._
 
 /**
  * Created by Szymek.
  */
 trait VolleyballTeams extends Team {
 
-  val _id: BSONObjectID
+  val _id: ObjectId
   val playersNumber: Int
   val benchWarmersNumber: Int
 
   protected var players: java.util.List[Player] = new util.ArrayList[Player]()
   protected var benchWarmers: java.util.List[Player] = new util.ArrayList[Player]()
-  protected var captainID: Option[BSONObjectID] = None
+  protected var captainID: Option[ObjectId] = None
   protected var phone: String = _
   protected var mail: String = _
 
-  override def getMembersIDs: java.util.List[BSONObjectID] = {
-    val result = new util.ArrayList[BSONObjectID]()
+  override def getMembersIDs: java.util.List[ObjectId] = {
+    val result = new util.ArrayList[ObjectId]()
     val iterator = players.iterator()
     while (iterator.hasNext) {
       result.add(iterator.next()._id)
@@ -81,7 +83,7 @@ trait VolleyballTeams extends Team {
     mail = captain.mail
   }
 
-  override def getCaptainID: BSONObjectID = captainID match {
+  override def getCaptainID: ObjectId = captainID match {
     case Some(captain) => captain
     case None => throw new NullPointerException("Can't return captain; Captain is not set!")
   }
@@ -99,7 +101,7 @@ trait VolleyballTeams extends Team {
     val playersJsons = players.map(player => player.toJson)
     val benchWarmersJsons = benchWarmers.map(benchWarmer => benchWarmer.toJson)
     Json.obj(
-    "id"->_id.stringify,
+    "id"->_id,
     "name"->name,
     "players"->JsArray(playersJsons),
     "benchWarmers" -> JsArray(benchWarmersJsons),

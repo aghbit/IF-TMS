@@ -11,7 +11,7 @@ import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 /**
  * Created by Szymek.
@@ -28,10 +28,10 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     underTest = VolleyballTeam("underTest")
     captains = List(mock[Captain], mock[Captain])
     players = List(mock[Player], mock[Player], mock[Player], mock[Player], mock[Player], mock[Player])
-    players.foreach(player => Mockito.when(player._id).thenReturn(BSONObjectID.generate))
+    players.foreach(player => Mockito.when(player._id).thenReturn(ObjectId.get()))
     benchWarmers = List(mock[Player], mock[Player], mock[Player], mock[Player], mock[Player], mock[Player])
-    benchWarmers.foreach(benchWarmer => Mockito.when(benchWarmer._id).thenReturn(BSONObjectID.generate))
-    captains.foreach(captain => Mockito.when(captain._id).thenReturn(BSONObjectID.generate))
+    benchWarmers.foreach(benchWarmer => Mockito.when(benchWarmer._id).thenReturn(ObjectId.get()))
+    captains.foreach(captain => Mockito.when(captain._id).thenReturn(ObjectId.get))
   }
 
   test("Constructor: Simple test") {
@@ -39,7 +39,7 @@ class VolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //given
 
     //when
-    val underTest: Team = new VolleyballTeam(BSONObjectID.generate, "underTest", 6, 2)
+    val underTest: Team = new VolleyballTeam(ObjectId.get, "underTest", 6, 2)
 
     //then
     assert(underTest.name === "underTest", "Constructor: test 1")

@@ -8,6 +8,7 @@
                     <ul class="collection">
                         <li class="collection-item tournaments-date">
                             <a class="btn waves-effect waves-light" ui-sref="tournaments/id/teams({id : tournament._id})">Show teams</a>
+                            <a class="btn waves-effect waves-light" ui-sref="tournaments/id/treeDebug({id : tournament._id})">Tree debug</a>
                             <a ng-if="tournament.properties.settings.canEnroll" class="btn waves-effect waves-light" ui-sref="tournaments/id/enrollment({id: tournament._id})">Enroll me</a>
                             <a ng-if="tournament.class=='class models.tournament.tournamentstates.BeforeEnrollment' && checkOwner(tournament._id) " class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Start enrollment</a>
                             <a ng-if="tournament.class=='class models.tournament.tournamentstates.Enrollment'" class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Stop enrollment</a></li>

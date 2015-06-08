@@ -1,16 +1,16 @@
 package models.tournaments.tournamentstate
 
-import models.strategy.TournamentStrategy
+import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentstates.{BeforeEnrollment, DuringTournament}
 import models.tournament.tournamentfields.{TournamentStaff, TournamentProperties, TournamentSettings}
+import org.bson.types.ObjectId
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
 
 import scala.collection.mutable.ListBuffer
 
@@ -25,17 +25,17 @@ class BreakTest extends FunSuite with MockitoSugar with BeforeAndAfter {
 
   before {
     teams = ListBuffer(mock[Team], mock[Team], mock[Team], mock[Team], mock[Team], mock[Team])
-    teams.foreach(team => Mockito.when(team._id).thenReturn(BSONObjectID.generate))
+    teams.foreach(team => Mockito.when(team._id).thenReturn(ObjectId.get))
 
     val tournamentPropertiesMock = mock[TournamentProperties]
     val tournamentSettingsMock = mock[TournamentSettings]
-    val tournamentStrategyMock = mock[TournamentStrategy]
+    val strategyMock = mock[EliminationStrategy]
     val tournamentStaffMock = mock[TournamentStaff]
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStrategyMock, tournamentStaffMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStaffMock, strategyMock)
     instance = instance.startNext().startNext()
   }
 

@@ -9,7 +9,7 @@ import org.mockito.Mockito
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import reactivemongo.bson.BSONObjectID
+import org.bson.types.ObjectId
 
 import scala.collection.mutable.ListBuffer
 
@@ -19,12 +19,12 @@ import scala.collection.mutable.ListBuffer
 @RunWith(classOf[JUnitRunner])
 class StaffTest extends FunSuite with MockitoSugar with BeforeAndAfter {
   var refs: ListBuffer[User] = _
-  var memberRefs: util.ArrayList[BSONObjectID] = new util.ArrayList[BSONObjectID]()
-  var staff: TournamentStaff = new TournamentStaff(mock[BSONObjectID], memberRefs)
+  var memberRefs: util.ArrayList[ObjectId] = new util.ArrayList[ObjectId]()
+  var staff: TournamentStaff = new TournamentStaff(mock[ObjectId], memberRefs)
 
   before {
     refs = ListBuffer(mock[User], mock[User], mock[User], mock[User], mock[User], mock[User])
-    refs.foreach(user => Mockito.when(user._id).thenReturn(BSONObjectID.generate))
+    refs.foreach(user => Mockito.when(user._id).thenReturn(ObjectId.get))
   }
 
   test("addReferee: test") {
