@@ -64,7 +64,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
    */
   @throws(classOf[IllegalArgumentException])
   override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
-    require(teams.length>=8, "Too less teams to generate DoubleEliminationTree. Should be >=8.")
+    require(teams.length>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
 
     val leafNumber = countLeaf(teams.length)
     val winnerTreeDepth = countWinnerDepth(leafNumber)
@@ -190,7 +190,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
   }
 
   override def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = {
-    require(teamsNumber>=8, "Too less teams to generate DoubleEliminationTree. Should be >=8.")
+    require(teamsNumber>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
 
     val leafNumber = countLeaf(teamsNumber)
     val winnerTreeDepth = countWinnerDepth(leafNumber)

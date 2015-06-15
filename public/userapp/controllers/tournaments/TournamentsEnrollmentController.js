@@ -5,7 +5,7 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
     function ($scope, $http, $stateParams, $location, ErrorMessageService) {
         $http.get('api/tournaments/'+$stateParams.id, {}).
             success(function(data, status, headers, config) {
-                $scope.tournament = data;
+                $scope.tournament = data.properties;
                 $('.collapsible').collapsible({
                     accordion : false
                 });
