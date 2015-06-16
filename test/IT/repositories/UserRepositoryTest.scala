@@ -1,5 +1,6 @@
 package IT.repositories
 
+import com.mongodb.BasicDBObject
 import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.User
 import models.user.userproperties.UserProperties
@@ -20,7 +21,7 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
   before {
     underTest = new UserRepository()
-    userProperties = new UserProperties("Name", "Login", "Password", "Phone", "Mail")
+    userProperties = new UserProperties("Szymon", "Passarinho", "Password", "784588999", "test@test.pl")
     user = UserImpl(userProperties)
   }
 
@@ -31,25 +32,25 @@ class UserRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
   test("Simple test") {
 
     //given
-    val query = new Query(Criteria where "_id" is user._id)
+    val criteria = new BasicDBObject("_id", user._id)
 
     //when
     underTest.insert(user)
-    val userRestored = underTest.find(query).get(0)
+    val userRestored = underTest.findOne(criteria).get
 
     //then
     assert(userRestored.getClass == classOf[UserImpl], "Simple test: Wrong class type!")
     assert(userRestored._id == user._id, "Simple test: Wrong id!")
-    assert(userRestored.getProperties.name == "Name", "Simple test: Wrong name!!")
-    assert(userRestored.getProperties.login == "Login", "Simple test: Wrong login!!")
+    assert(userRestored.getProperties.name == "Szymon", "Simple test: Wrong name!!")
+    assert(userRestored.getProperties.login == "Passarinho", "Simple test: Wrong login!!")
     assert(userRestored.getProperties.password == "Password", "Simple test: Wrong Password!!")
-    assert(userRestored.getProperties.phone == "Phone", "Simple test: Wrong Phone!!")
-    assert(userRestored.getProperties.mail == "Mail", "Simple test: Wrong Mail!!")
+    assert(userRestored.getProperties.phone == "784588999", "Simple test: Wrong Phone!!")
+    assert(userRestored.getProperties.mail == "test@test.pl", "Simple test: Wrong Mail!!")
 
     //when
     underTest.remove(user)
 
-    val userRestored2 = underTest.find(query)
+    val userRestored2 = underTest.findOne(criteria)
 
     //then
     assert(userRestored2.isEmpty, "Simple test: Remove error!")

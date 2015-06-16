@@ -1,5 +1,6 @@
 package controllers
 
+import com.mongodb.BasicDBObject
 import controllers.TeamsController._
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
@@ -69,9 +70,9 @@ object PlayersController extends Controller {
   def deletePlayer(teamId: String, playerId: String) = Action.async(parse.json) {
     request =>
       val queryTeam = new Query(Criteria where "_id" is new ObjectId(teamId))
-      val queryPlayer = new Query(Criteria where "_id" is new ObjectId(playerId))
+      val criteriaPlayer = new BasicDBObject("_id", new ObjectId(playerId))
       val team = teamRepository.find(queryTeam).get(ListEnum.head)
-      val player = playerRepository.find(queryPlayer).get(ListEnum.head)
+      val player = playerRepository.findOne(criteriaPlayer).getOrElse(throw new Exception("Player doesn't exist!"))
       try {
         team.removePlayer(player)
         playerRepository.remove(player)

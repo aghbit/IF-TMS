@@ -1,5 +1,6 @@
 package controllers
 
+import com.mongodb.{BasicDBObjectBuilder, BasicDBObject}
 import controllers.security.{AuthorizationAction, TokenImpl, TokensKeeper}
 import models.enums.ListEnum
 import models.exceptions.UserWithThisLoginExistsInDB
@@ -49,9 +50,9 @@ object UsersController extends Controller{
           val userID = token.getUserID
           userID match {
             case u:ObjectId =>
-              val query = new Query(Criteria where "_id" is new ObjectId(id))
-              val users = repository.find(query)
-              Future.successful(Ok(users.get(ListEnum.head).toJson))
+              val criteria = new BasicDBObject("_id", u)
+              val users = repository.findOne(criteria)
+              Future.successful(Ok(users.get.toJson))
             case _ =>
               Future.successful(Unauthorized("You are not authorized to see this content!"))
           }
@@ -78,13 +79,14 @@ object UsersController extends Controller{
       val (errors, data) = Validators.simplifyEithers(inputsListEither)
 
       if(errors.isEmpty){
-        val query = new Query(Criteria where "personalData.login" is data.get("login").get and
-          "personalData.password" is data.get("password").get)
-        val users = repository.find(query)
+        val builder = new BasicDBObjectBuilder()
+        builder.append("personalData.login", data.get("login").get)
+        builder.append("personalData.password", data.get("password").get)
+        val users = repository.findOne(builder.get())
         if(users.isEmpty){
           Future.successful(Unauthorized("Wrong login or password!"))
         }else{
-          val token = users.get(ListEnum.head).generateToken
+          val token = users.head.generateToken
           TokensKeeper.addToken(token)
           Future.successful(Ok(token.toString))
         }
@@ -96,8 +98,8 @@ object UsersController extends Controller{
 
   def isLoginInUse(login: String) = Action.async{
     request =>
-      val query = new Query(Criteria where "personalData.login" is login)
-      val users = repository.find(query)
+      val criteria = new BasicDBObject("personalData.login", login)
+      val users = repository.findOne(criteria)
       if(users.isEmpty){
         Future(NotFound("Login is not in use."))
       }else {

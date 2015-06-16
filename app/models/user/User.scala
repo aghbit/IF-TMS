@@ -12,6 +12,12 @@ import assets.ObjectIdFormat._
  */
 trait User {
 
+  def isBanned: Boolean
+
+  def isActive: Boolean
+
+  def isAdmin: Boolean
+
   def _id: ObjectId
 
   def activateAccount: Boolean
