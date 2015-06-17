@@ -42,8 +42,8 @@ object PlayersController extends Controller {
 
       if(errors.isEmpty){
 
-        val query = new Query(Criteria where "_id" is new ObjectId(teamId))
-        val team = teamRepository.find(query).get(ListEnum.head)
+        val criteria = new BasicDBObject("_id", new ObjectId(teamId))
+        val team = teamRepository.findOne(criteria).get
         val player = DefaultPlayerImpl(
           data.get("name").get,
           data.get("surname").get
@@ -69,9 +69,9 @@ object PlayersController extends Controller {
 
   def deletePlayer(teamId: String, playerId: String) = Action.async(parse.json) {
     request =>
-      val queryTeam = new Query(Criteria where "_id" is new ObjectId(teamId))
+      val queryTeam = new BasicDBObject("_id", new ObjectId(teamId))
       val criteriaPlayer = new BasicDBObject("_id", new ObjectId(playerId))
-      val team = teamRepository.find(queryTeam).get(ListEnum.head)
+      val team = teamRepository.findOne(queryTeam).get
       val player = playerRepository.findOne(criteriaPlayer).getOrElse(throw new Exception("Player doesn't exist!"))
       try {
         team.removePlayer(player)

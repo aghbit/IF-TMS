@@ -1,6 +1,6 @@
 package repositories
 
-import com.mongodb.DBObject
+import com.mongodb.{BasicDBObject, DBObject}
 import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObject}
 import com.mongodb.util.JSON
 import configuration.CasbahMongoDBConfiguration
@@ -33,11 +33,11 @@ class MatchRepository{
         val hostID = new ObjectId(document.getAs[MongoDBObject]("host").get.getAs[String]("_id").get)
         val guestID = new ObjectId(document.getAs[MongoDBObject]("guest").get.getAs[String]("_id").get)
 
-        val hostQuery = new Query(Criteria where "_id" is hostID)
-        val guestQuery = new Query(Criteria where "_id" is guestID)
+        val hostQuery = new BasicDBObject("_id", hostID)
+        val guestQuery = new BasicDBObject("_id", guestID)
 
-        val host = teamsRepository.find(hostQuery).get(ListEnum.head)
-        val guest = teamsRepository.find(guestQuery).get(ListEnum.head)
+        val host = teamsRepository.findOne(hostQuery).get
+        val guest = teamsRepository.findOne(guestQuery).get
 
         val setsObjectList = document.getAs[MongoDBList]("sets").get
 

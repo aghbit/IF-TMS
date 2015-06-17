@@ -1,5 +1,6 @@
 package controllers.security
 
+import com.mongodb.BasicDBObject
 import models.enums.ListEnum
 import models.tournament.Tournament
 import org.bson.types.ObjectId
@@ -32,9 +33,11 @@ object TournamentAction extends ActionBuilder[RequestWithTournament] with Contro
       val token = TokenImpl(request.headers.get("token").get)
       val userId = token.getUserID
       val query = new Query(Criteria where "_id" is id and "staff.admin" is userId)
-      val tournaments = tournamentRepository.find(query)
+      val criteria = new BasicDBObject("_id", id)
+      criteria.append("staff.admin", userId)
+      val tournaments = tournamentRepository.findOne(criteria)
       if(!tournaments.isEmpty){
-        block(new RequestWithTournament[A](tournaments.get(ListEnum.head), request))
+        block(new RequestWithTournament[A](tournaments.get, request))
       }else{
         Future.successful(NotFound("You can't see this tournament or it doesn't exist!"))
       }

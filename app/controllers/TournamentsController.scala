@@ -61,7 +61,7 @@ object TournamentsController extends Controller{
       val tournamentID = request.body.\("_id").validate[String].asEither
       tournamentID match {
         case Right(id) =>
-          val query = new Query(Criteria where "_id" is new ObjectId(id))
+          val query = new BasicDBObject("_id", new ObjectId(id))
           val tournament = repository.find(query)
           val enrollmentStateTournament = tournament.get(ListEnum.head).startNext()
           try {
@@ -77,14 +77,14 @@ object TournamentsController extends Controller{
   def getMyTournaments = AuthorizationAction.async {
     request =>
       val userID = TokenImpl(request.headers.get("token").get).getUserID
-      val query = new Query(Criteria where "staff.admin" is userID)
+      val query = new BasicDBObject("staff.admin", userID)
       val tournaments = repository.find(query)
       val tournamentsJson = tournaments.map(tournament => tournament.toJson)
       Future.successful(Ok(Json.toJson(tournamentsJson)))
   }
   def getTournaments = Action.async {
     request =>
-      val query = new Query()
+      val query = new BasicDBObject()
       val tournaments = repository.find(query)
       val tournamentsJson = tournaments.map(tournament => tournament.toJson)
       Future.successful(Ok(Json.toJson(tournamentsJson)))
@@ -113,7 +113,7 @@ object TournamentsController extends Controller{
 
         if(!eliminationTreeRepository.contains(new BasicDBObject("_id", tournamentId))){
 
-          val query = new Query(Criteria where "_id" is tournamentId)
+          val query = new BasicDBObject("_id", tournamentId)
           val tournament = repository.find(query).get(ListEnum.head)
 
           try {

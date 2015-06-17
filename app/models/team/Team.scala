@@ -13,6 +13,7 @@ trait Team {
 
   val _id: ObjectId
 
+
   val name: String
 
   def getMembersIDs: java.util.List[ObjectId]
@@ -27,9 +28,9 @@ trait Team {
 
   def removeBenchWarmer(benchWarmer: Player)
 
-  def setCaptain(captain: Captain)
+  def setCaptain(cap: Captain)
 
-  def getCaptainID: ObjectId
+  def getCaptain: Captain
 
   def isReadyToSave: Boolean
 
@@ -40,4 +41,12 @@ trait Team {
   def containsMember(member: Player): Boolean
 
   def toJson:JsObject
+
+  def getPlayersNumber:Int
+
+  def getBenchWarmersNumber: Int
+
+  def getPlayersAsList:List[Player]
+
+  def getBenchWarmersAsList:List[Player]
 }

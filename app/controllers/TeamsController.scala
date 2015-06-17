@@ -1,5 +1,6 @@
 package controllers
 
+import com.mongodb.BasicDBObject
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
@@ -72,23 +73,26 @@ object TeamsController extends Controller {
           data.get("captainPhone").get,
           data.get("captainMail").get
         )
-
+        println("1")
         //Find tournament to check discipline
-        val query = new Query(Criteria where "_id" is new ObjectId(id))
+        val query = new BasicDBObject("_id", new ObjectId(id))
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
 
+        println("2")
         //Create right Team Class.
         val teamClass = "models.team.teams.volleyball.volleyballs."+
-          tournament.properties.settings.discipline + "Team$"
+        tournament.properties.settings.discipline + "Team$"
         val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
         val module = runtimeMirror.staticModule(teamClass)
         val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
         val team = obj(data.getOrElse("teamName", ""))
 
+        println("3")
         //Add captain
         team.addPlayer(captain)
         team.setCaptain(captain)
         tournament.addTeam(team)
+        println("4")
 
         //Insert team & captain to DB.
         try {
@@ -107,19 +111,19 @@ object TeamsController extends Controller {
   }
 
   def getTeam(id: String) = Action.async {
-    val query = new Query(Criteria where "_id" is new ObjectId(id))
-    val team = teamRepository.find(query).get(ListEnum.head)
+    val criteria = new BasicDBObject("_id", new ObjectId(id))
+    val team = teamRepository.findOne(criteria).get
     Future.successful(Ok(team.toJson))
   }
 
   def getTeams(id: String) = Action.async {
     request =>
-      val query = new Query(Criteria where "_id" is new ObjectId(id))
+      val query = new BasicDBObject("_id", new ObjectId(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
       val teamsIDs = tournament.getTeams.map(t => t._id)
       val teams = teamsIDs.map(teamID => {
-        val query = new Query(Criteria where "_id" is teamID)
-        teamRepository.find(query).get(ListEnum.head)
+        val criteria = new BasicDBObject("_id", teamID)
+        teamRepository.findOne(criteria).get
       })
       val teamsJSON = teams.map(team => team.toJson)
       Future.successful(Ok(Json.toJson(teamsJSON)))
@@ -127,10 +131,10 @@ object TeamsController extends Controller {
 
   def deleteTeam(tournId: String, teamId: String) = Action.async(parse.json) {
     request =>
-      val queryTournament = new Query(Criteria where "_id" is new ObjectId(tournId))
-      val queryTeam = new Query(Criteria where "_id" is new ObjectId(teamId))
+      val queryTournament = new BasicDBObject("_id", new ObjectId(tournId))
+      val criteria = new BasicDBObject("_id", new ObjectId(teamId))
       val tournament = tournamentRepository.find(queryTournament).get(ListEnum.head)
-      val team = teamRepository.find(queryTeam).get(ListEnum.head)
+      val team = teamRepository.findOne(criteria).get
       try {
         tournament.removeTeam(team)
         teamRepository.remove(team)

@@ -88,7 +88,7 @@ object UsersController extends Controller{
         }else{
           val token = users.head.generateToken
           TokensKeeper.addToken(token)
-          Future.successful(Ok(token.toString))
+          Future.successful(Ok(token.getTokenAsString))
         }
       }else {
         val jsErrors = errors.map(e=> JsError.toFlatJson(e))

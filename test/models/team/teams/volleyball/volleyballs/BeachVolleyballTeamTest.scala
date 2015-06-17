@@ -121,7 +121,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
 
     //when&then
     intercept[NullPointerException] {
-      underTest.getCaptainID
+      underTest.getCaptain
     }
 
   }
@@ -144,7 +144,7 @@ class BeachVolleyballTeamTest extends FunSuite with MockitoSugar with BeforeAndA
 
     //when
     underTest.setCaptain(captain)
-    val captainID = underTest.getCaptainID
+    val captainID = underTest.getCaptain._id
     //then
     assert(captainID === captain._id, "SetCaptain&CaptainID: test 1")
   }

@@ -28,7 +28,7 @@ class BeforeEnrollment(override val _id: ObjectId,
     newState
   }
 
-  override var teams: util.ArrayList[Team] = _
+  override var teams: util.ArrayList[Team] = new util.ArrayList[Team]()
 
   override def editSettings(settings: TournamentSettings): Unit = {
     this.properties.settings.numberOfPitches = settings.numberOfPitches
