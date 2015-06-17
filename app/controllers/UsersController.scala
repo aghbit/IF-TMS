@@ -8,7 +8,6 @@ import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.libs.json.JsError
 import play.api.libs.json.Reads._
 import play.api.mvc.{Action, Controller}

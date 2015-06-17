@@ -1,14 +1,9 @@
 package repositories
 
-import com.mongodb.{BasicDBObject, MongoException, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder}
+import com.mongodb.{BasicDBObject, DBObject}
 import configuration.CasbahMongoDBConfiguration
-import models.player.players.Captain
 import models.team.Team
-import models.team.teams.volleyball.volleyballs.{VolleyballTeam, BeachVolleyballTeam}
-import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.Query
-import repositories.converters.{TeamDBObjectConverter, PlayerDBObjectConverter}
+import repositories.converters.TeamDBObjectConverter
 
 /**
  * Created by Szymek.

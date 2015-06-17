@@ -9,7 +9,6 @@ import org.bson.types.ObjectId
 import play.api.libs.json.{JsError, Json}
 import play.api.mvc.{Action, Controller}
 import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import utils.Validators
 import scala.reflect.runtime.universe
 import scala.collection.JavaConversions._
@@ -73,12 +72,10 @@ object TeamsController extends Controller {
           data.get("captainPhone").get,
           data.get("captainMail").get
         )
-        println("1")
         //Find tournament to check discipline
         val query = new BasicDBObject("_id", new ObjectId(id))
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
 
-        println("2")
         //Create right Team Class.
         val teamClass = "models.team.teams.volleyball.volleyballs."+
         tournament.properties.settings.discipline + "Team$"
@@ -87,12 +84,10 @@ object TeamsController extends Controller {
         val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
         val team = obj(data.getOrElse("teamName", ""))
 
-        println("3")
         //Add captain
         team.addPlayer(captain)
         team.setCaptain(captain)
         tournament.addTeam(team)
-        println("4")
 
         //Insert team & captain to DB.
         try {

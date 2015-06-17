@@ -4,7 +4,6 @@ import com.mongodb.BasicDBObject
 import models.enums.ListEnum
 import models.tournament.Tournament
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.mvc._
 import repositories.TournamentRepository
 import scala.collection.JavaConversions._
@@ -32,7 +31,8 @@ object TournamentAction extends ActionBuilder[RequestWithTournament] with Contro
       val id = new ObjectId(tournamentId)
       val token = TokenImpl(request.headers.get("token").get)
       val userId = token.getUserID
-      val query = new Query(Criteria where "_id" is id and "staff.admin" is userId)
+      val query = new BasicDBObject("_id", id)
+      query.append("staff.admin", userId)
       val criteria = new BasicDBObject("_id", id)
       criteria.append("staff.admin", userId)
       val tournaments = tournamentRepository.findOne(criteria)

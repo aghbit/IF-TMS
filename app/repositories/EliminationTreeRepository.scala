@@ -11,7 +11,6 @@ import models.strategy.{EliminationTree, Match}
 import models.team.Team
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 
 /**
  * Created by Szymek Seget on 28.05.15.

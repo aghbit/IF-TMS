@@ -2,9 +2,7 @@ package controllers.security
 
 import com.mongodb.BasicDBObject
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import repositories.TokenRepository
-import scala.collection.JavaConversions._
 
 /**
  * Created by Szymek.

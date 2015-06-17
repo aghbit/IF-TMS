@@ -6,7 +6,6 @@ import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.DefaultPlayerImpl
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import play.api.libs.json.JsError
 import play.api.mvc.{Action, Controller}
 import utils.Validators

@@ -8,7 +8,6 @@ import models.enums.ListEnum
 import models.strategy.Match
 import models.strategy.scores.BeachVolleyballScore
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 
 import scala.collection.mutable
 

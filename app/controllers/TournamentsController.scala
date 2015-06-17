@@ -21,7 +21,6 @@ import org.bson.types.ObjectId
 import play.api.mvc.{Action, Controller}
 import repositories.{TeamRepository, EliminationTreeRepository, TournamentRepository}
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import scala.collection.JavaConversions._
 
 

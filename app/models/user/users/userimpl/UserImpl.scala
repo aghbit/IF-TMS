@@ -4,7 +4,6 @@ import models.user.User
 import models.user.userproperties.UserProperties
 import models.user.users.AbstractUser
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.mapping.Document
 
 /**
  * Created by Piotr on 2014-12-12.
