@@ -12,6 +12,6 @@ trait Token {
 
   override def hashCode(): Int
 
-  override def toString: String
+  def getTokenAsString: String
 
 }

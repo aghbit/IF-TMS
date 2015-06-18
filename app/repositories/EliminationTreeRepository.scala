@@ -11,7 +11,6 @@ import models.strategy.{EliminationTree, Match}
 import models.team.Team
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 
 /**
  * Created by Szymek Seget on 28.05.15.
@@ -92,20 +91,20 @@ class EliminationTreeRepository {
     if(hostDBObject != null){
       val hostDBID = hostDBObject.getAs[String]("_id").get
       val hostID = new ObjectId(hostDBID)
-      val hostQuery = new Query(Criteria where "_id" is hostID)
-      val hosts = teamsRepository.find(hostQuery)
-      if(!hosts.isEmpty){
-        host = Some(hosts.get(ListEnum.head))
+      val hostQuery = new BasicDBObject("_id", hostID)
+      val hosts = teamsRepository.findOne(hostQuery)
+      if(hosts.isDefined){
+        host = Some(hosts.get)
       }
     }
     var guest:Option[Team] = None
     if(guestDBObject != null){
       val guestDBID = guestDBObject.getAs[String]("_id").get
       val guestID = new ObjectId(guestDBID)
-      val guestQuery = new Query(Criteria where "_id" is guestID)
-      val guests = teamsRepository.find(guestQuery)
-      if(!guests.isEmpty){
-        guest = Some(guests.get(ListEnum.head))
+      val guestQuery = new BasicDBObject("_id", guestID)
+      val guests = teamsRepository.findOne(guestQuery)
+      if(guests.isDefined){
+        guest = Some(guests.get)
       }
     }
 

@@ -1,26 +1,40 @@
 package repositories
 
+import com.mongodb.{BasicDBObject, DBObject}
+import configuration.CasbahMongoDBConfiguration
 import models.team.Team
-import models.team.teams.volleyball.volleyballs.VolleyballTeam
-import models.user.User
-import models.user.users.userimpl.UserImpl
-import org.springframework.data.mongodb.core.query.Query
+import repositories.converters.TeamDBObjectConverter
 
 /**
  * Created by Szymek.
  */
-class TeamRepository extends Repository[Team] {
+class TeamRepository {
 
-  override val collectionName: String = "Teams"
-  override val clazz: Class[Team] = classOf[Team]
+  val collectionName: String = "Teams"
 
+
+
+  val collection = CasbahMongoDBConfiguration.mongo().apply(collectionName)
   @throws[IllegalArgumentException]
   def insert(team: Team) = {
     if (!team.isReadyToSave){
       throw new IllegalArgumentException("Team is not ready to save!")
     }else{
-      mongoTemplate.save(team, collectionName)
+      collection.save(TeamDBObjectConverter.toDbObject(team))
     }
   }
+
+  def findOne(criteria:DBObject):Option[Team] = {
+    collection.findOne(criteria) match {
+      case Some(obj) => {
+        Some(TeamDBObjectConverter.fromDBObject(obj))
+      }
+      case None => None
+    }
+  }
+
+  def remove(team: Team) = collection.remove(new BasicDBObject("_id", team._id))
+
+  def dropCollection() = collection.dropCollection()
 
 }

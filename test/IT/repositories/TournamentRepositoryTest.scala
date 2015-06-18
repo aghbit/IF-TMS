@@ -2,6 +2,7 @@ package IT.repositories
 
 import java.util
 
+import com.mongodb.BasicDBObject
 import models.strategy.EliminationTree
 import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
@@ -49,12 +50,12 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
   test("Simple test"){
 
     //given
-    val query = new Query(Criteria where "_id" is tournament._id)
+    val query = new BasicDBObject("_id", tournament._id)
 
     //when
     underTest.insert(tournament)
-    val t = underTest.find(query)
-    val tournamentRestored = t.get(0)
+    val t = underTest.findOne(query)
+    val tournamentRestored = t.get
 
     //then
     assert(tournamentRestored.getClass == classOf[BeforeEnrollment] , "Simple test: Wrong class type!")

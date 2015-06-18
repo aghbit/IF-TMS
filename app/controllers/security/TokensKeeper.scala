@@ -1,9 +1,8 @@
 package controllers.security
 
+import com.mongodb.BasicDBObject
 import org.bson.types.ObjectId
-import org.springframework.data.mongodb.core.query.{Criteria, Query}
 import repositories.TokenRepository
-import scala.collection.JavaConversions._
 
 /**
  * Created by Szymek.
@@ -22,8 +21,8 @@ object TokensKeeper {
   }
 
   def removeTokenForUser(id: ObjectId): Unit ={
-    val query = new Query(Criteria where "userID" is id)
-    repository.remove(query)
+    val criteria = new BasicDBObject("userId", id)
+    repository.remove(criteria)
     tokens = tokens.filter(t => !t.getUserID.equals(id))
   }
 
@@ -31,7 +30,7 @@ object TokensKeeper {
     if(tokens.exists(t => t.getUserID.equals(token.getUserID))){
       true
     }else {
-      tokens = repository.find(new Query()).toList
+      tokens = repository.findOne(new BasicDBObject()).toList
       tokens.exists(t => t.getUserID.equals(token.getUserID))
     }
   }

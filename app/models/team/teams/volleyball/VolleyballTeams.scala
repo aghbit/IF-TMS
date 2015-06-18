@@ -22,69 +22,70 @@ trait VolleyballTeams extends Team {
   val playersNumber: Int
   val benchWarmersNumber: Int
 
-  protected var players: java.util.List[Player] = new util.ArrayList[Player]()
-  protected var benchWarmers: java.util.List[Player] = new util.ArrayList[Player]()
-  protected var captainID: Option[ObjectId] = None
-  protected var phone: String = _
-  protected var mail: String = _
+  protected var players: List[Player] = List()
+  protected var benchWarmers: List[Player] = List()
+  protected var captain: Option[Captain] = None
 
   override def getMembersIDs: java.util.List[ObjectId] = {
     val result = new util.ArrayList[ObjectId]()
-    val iterator = players.iterator()
+    val iterator = players.iterator
     while (iterator.hasNext) {
       result.add(iterator.next()._id)
     }
-    val iterator2 = benchWarmers.iterator()
+    val iterator2 = benchWarmers.iterator
     while (iterator2.hasNext) {
       result.add(iterator.next()._id)
     }
     result
   }
 
-  override def isComplete: Boolean = players.size() >= playersNumber
+  override def getPlayersNumber:Int = playersNumber
 
-  override def canAddPlayer: Boolean = players.size() < playersNumber
 
-  override def canAddBenchWarmer: Boolean = benchWarmers.size() < benchWarmersNumber
+  override def getBenchWarmersNumber: Int = benchWarmersNumber
+
+  override def isComplete: Boolean = players.size >= playersNumber
+
+  override def canAddPlayer: Boolean = players.size < playersNumber
+
+  override def canAddBenchWarmer: Boolean = benchWarmers.size < benchWarmersNumber
 
   override def addPlayer(player: Player): Unit = {
     if (!canAddPlayer) {
       throw new TooManyMembersInTeamException("Can't add! Too many players in this team!")
     }
-    players.add(player)
+    players = players ::: List(player)
   }
 
   override def addBenchWarmer(benchWarmer: Player): Unit = {
     if (!canAddBenchWarmer) {
       throw new TooManyMembersInTeamException("Can't add! Too many bench warmers in this team!")
     }
-    benchWarmers.add(benchWarmer)
+    benchWarmers = benchWarmers ::: List(benchWarmer)
   }
 
   override def removePlayer(player: Player): Unit = {
     if (!players.contains(player))
       throw new NoSuchElementException("Can't remove absent player from the team!")
-    players.remove(player)
+    players = players.filter(p => !p.equals(player))
   }
 
   override def removeBenchWarmer(benchWarmer: Player): Unit = {
     if (!benchWarmers.contains(benchWarmer)) {
       throw new NoSuchElementException("Can't remove absent bench warmer from the team!")
     }
-    benchWarmers.remove(benchWarmer)
+    benchWarmers = benchWarmers.filter(b => !b.equals(benchWarmer))
   }
 
-  override def setCaptain(captain: Captain): Unit = {
-    if (!containsMember(captain)) {
+  override def setCaptain(cap: Captain): Unit = {
+    if (!containsMember(cap)) {
       throw new NoSuchElementException("Captain has to be a team member!")
     }
-    captainID = Option(captain._id)
-    phone = captain.phone
-    mail = captain.mail
+    captain = Option(cap)
   }
 
-  override def getCaptainID: ObjectId = captainID match {
-    case Some(captain) => captain
+  override def getCaptain: Captain = captain match {
+    case Some(cap) => cap
     case None => throw new NullPointerException("Can't return captain; Captain is not set!")
   }
 
@@ -92,22 +93,37 @@ trait VolleyballTeams extends Team {
     players.contains(member) || benchWarmers.contains(member)
   }
 
-  override def isReadyToSave: Boolean = captainID match {
-    case Some(captain) => true
+  override def isReadyToSave: Boolean = captain match {
+    case Some(cap) => true
     case _ => false
   }
 
   override def toJson = {
     val playersJsons = players.map(player => player.toJson)
     val benchWarmersJsons = benchWarmers.map(benchWarmer => benchWarmer.toJson)
+    var phone:String = ""
+    var mail:String = ""
+    captain match {
+      case Some(c:Captain) =>
+        phone = c.phone
+        mail = c.mail
+      case _ =>
+    }
     Json.obj(
-    "id"->_id,
-    "name"->name,
-    "players"->JsArray(playersJsons),
-    "benchWarmers" -> JsArray(benchWarmersJsons),
-    "captain" -> players.filter(player=> player._id==getCaptainID).head.toJson,
-    "phone" -> phone,
-    "mail" -> mail
+      "id"->_id,
+      "name"->name,
+      "players"->JsArray(playersJsons),
+      "benchWarmers" -> JsArray(benchWarmersJsons),
+      "captain" -> (captain match {
+        case Some(c:Captain) => c.toJson
+        case _ => ""
+      }),
+      "phone" -> phone,
+      "mail" -> mail
     )
   }
+
+  override def getPlayersAsList: List[Player] = players
+  override def getBenchWarmersAsList: List[Player] = benchWarmers
+
 }

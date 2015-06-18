@@ -1,5 +1,6 @@
 package IT.repositories
 
+import com.mongodb.BasicDBObject
 import models.player.players.Captain
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.VolleyballTeam
@@ -32,11 +33,11 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
     //given
     team.addPlayer(captain)
     team.setCaptain(captain)
-    val query = new Query(Criteria where "name" is "Czarne ninje")
+    val query = new BasicDBObject("name", "Czarne ninje")
 
     //when
     underTest.insert(team)
-    val teamRestored = underTest.find(query).get(0)
+    val teamRestored = underTest.findOne(query).get
 
     //then
     assert(teamRestored.getClass == classOf[VolleyballTeam], "Wrong class type!")
@@ -45,7 +46,7 @@ class TeamRepositoryTest extends FunSuite with MockitoSugar with BeforeAndAfter 
 
     //when
     underTest.remove(team)
-    val teamRestored2 = underTest.find(query)
+    val teamRestored2 = underTest.findOne(query)
 
     assert(teamRestored2.isEmpty, "Remove error!")
   }

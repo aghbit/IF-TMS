@@ -20,7 +20,7 @@ case class TokenImpl(token: String, userID:ObjectId) extends Token {
     token.hashCode
   }
 
-  override def toString: String = {
+  override def getTokenAsString: String = {
     token
   }
 }
