@@ -18,7 +18,7 @@ object CasbahMongoDBConfiguration {
       db
     } else {
       databaseName = "tms_db"
-      val uri = new MongoClientURI("mongodb://tms:tms123@ds047622.mongolab.com:47622/test_tms_db")
+      val uri = new MongoClientURI("mongodb://tms:tms123@ds061928.mongolab.com:61928/tms_db")
       val mongoClient = MongoClient(uri)
       val db = mongoClient(databaseName)
       db
