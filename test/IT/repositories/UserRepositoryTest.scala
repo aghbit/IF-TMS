@@ -7,7 +7,6 @@ import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import org.springframework.data.mongodb.core.query._
 import repositories.UserRepository
 
 /**

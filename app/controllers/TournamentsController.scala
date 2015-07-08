@@ -89,10 +89,12 @@ object TournamentsController extends Controller{
       Future.successful(Ok(Json.toJson(tournamentsJson)))
   }
 
-  def getTournament(id: String) = TournamentAction(id).async {
+  def getTournament(id: String) = Action.async {
     request =>
-      val tournamentJson = request.tournament.toJson
-      Future.successful(Ok(tournamentJson));
+      repository.findOne(MongoDBObject("_id" -> new ObjectId(id))) match {
+        case Some(tournament) => Future.successful(Ok(tournament.toJson));
+        case None => Future.successful(NotFound("Tournament not found!"))
+      }
   }
 
   def getTournamentTree(id: String) = TournamentAction(id).async{

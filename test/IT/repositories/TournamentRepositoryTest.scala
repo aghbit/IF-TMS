@@ -18,7 +18,6 @@ import play.api.libs.json.Json
 import org.bson.types.ObjectId
 import repositories.TournamentRepository
 import org.joda.time.DateTime
-import org.springframework.data.mongodb.core.query._
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 
 
