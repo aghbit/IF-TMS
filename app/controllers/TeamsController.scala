@@ -1,6 +1,7 @@
 package controllers
 
 import com.mongodb.BasicDBObject
+import controllers.security.AuthorizationAction
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
@@ -111,7 +112,7 @@ object TeamsController extends Controller {
     Future.successful(Ok(team.toJson))
   }
 
-  def getTeams(id: String) = Action.async {
+  def getTeams(id: String) = AuthorizationAction.async {
     request =>
       val query = new BasicDBObject("_id", new ObjectId(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
