@@ -10,9 +10,6 @@
                     <i class="mdi-maps-place"></i>Place: {{tournament.description.place}}
                 </h5>
                 <h5>
-                    <i class="mdi-maps-place"></i><a href="#/tournaments/{{tournament._id}}/teams">Show teams!</a>
-                </h5>
-                <h5>
                     <i class="mdi-notification-event-note"></i>Start Date: {{tournament.term.begin}}
                 </h5>
                 <h5>
@@ -30,7 +27,6 @@
                 <h5 class="col l6 ">
                     <i class="mdi-action-polymer"></i> Discipline: {{tournament.settings.discipline}}
                 </h5>
-                <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
             </div>
             </div>
             </div>
@@ -79,6 +75,8 @@
         </form>
 
         </div>
+        <h6 class="col l12 center-align ">{{tournament.description.description}}</h6>
+
 
     </div>
 </div>
