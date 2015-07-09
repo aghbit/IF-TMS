@@ -5,12 +5,12 @@
  *
  * Made By MaterializeCSS.com
  */
-
+@import url("../font/MavenPro/Web/stylesheet.css");
 .icon-block {
   padding: 0 15px;
 }
 body{
-    font-family: 'Maven Pro', sans-serif !important;
+    font-family: 'MavenProRegular', sans-serif !important;
 }
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=date]:focus, input[type=tel]:focus, input[type=number]:focus, input[type=search]:focus, textarea:focus.materialize-textarea{
 /*all text inputs in the project*/
