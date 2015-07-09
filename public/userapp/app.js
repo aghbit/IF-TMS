@@ -1,4 +1,4 @@
-var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies']);
+var mainApp = angular.module('mainApp', ['ui.router', 'angular-loading-bar','ngDialog', 'ngCookies', 'ngSanitize']);
 
 mainApp.config(function ($stateProvider, $urlRouterProvider) {
 

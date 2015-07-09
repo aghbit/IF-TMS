@@ -1,8 +1,8 @@
 /**
  * Created by Szymek on 07.03.15.
  */
-mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location', 'ErrorMessageService',
-    function ($scope, $http, $stateParams, $location, ErrorMessageService) {
+mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stateParams', '$location', 'ErrorMessageService', '$sce',
+    function ($scope, $http, $stateParams, $location, ErrorMessageService, $sce) {
         $http.get('api/tournaments/'+$stateParams.id, {}).
             success(function(data, status, headers, config) {
                 $scope.tournament = data.properties;
