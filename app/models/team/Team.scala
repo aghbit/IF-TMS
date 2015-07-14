@@ -49,4 +49,10 @@ trait Team {
   def getPlayersAsList:List[Player]
 
   def getBenchWarmersAsList:List[Player]
+
+  override def equals(obj: Any) = obj match {
+    case null => false
+    case t:Team => _id.equals(t._id)
+    case _ => false
+  }
 }

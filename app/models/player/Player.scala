@@ -20,4 +20,9 @@ trait Player {
     )
   }
 
+  override def equals(obj: scala.Any): Boolean = obj match {
+    case null => false
+    case p:Player => _id.equals(p._id)
+    case _ => false
+  }
 }

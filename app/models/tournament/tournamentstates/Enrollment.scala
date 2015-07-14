@@ -27,7 +27,7 @@ class Enrollment(override val _id: ObjectId,
   }
 
   override def addTeam(team: Team): Unit = {
-    teams.append(team)
+    teams.add(team)
   }
 
   override def removeTeam(team: Team): Unit = {

@@ -95,10 +95,6 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
     $scope.deleteTeam = function(team) {
         ngDialog.close();
 
-        for (var i=0; i<team.players.length-1; i++) {
-            $scope.deletePlayer(team.id,team.players[i].id,false);
-        }
-
         $http({
             url: '/api/tournaments/' + $stateParams.id + "/" + team.id,
             dataType: 'json',

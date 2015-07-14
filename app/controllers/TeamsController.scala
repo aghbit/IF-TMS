@@ -131,7 +131,11 @@ object TeamsController extends Controller {
       val criteria = new BasicDBObject("_id", new ObjectId(teamId))
       val tournament = tournamentRepository.find(queryTournament).get(ListEnum.head)
       val team = teamRepository.findOne(criteria).get
+
+      val players = team.getPlayersAsList ::: team.getBenchWarmersAsList
+
       try {
+        players.foreach(p => playerRepository.remove(p))
         tournament.removeTeam(team)
         teamRepository.remove(team)
         tournamentRepository.insert(tournament)
@@ -140,6 +144,7 @@ object TeamsController extends Controller {
         case e: TooManyMembersInTeamException => Future.failed(e)
         case e: Throwable => Future.failed(e)
       }
+      Future.successful(Ok(""))
 
   }
 }
