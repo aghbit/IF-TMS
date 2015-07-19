@@ -1,0 +1,9 @@
+.node text {
+    font: 10px sans-serif;
+}
+
+path.link {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
