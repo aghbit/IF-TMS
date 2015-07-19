@@ -162,7 +162,7 @@ mainApp.controller('TournamentTableController',  ['$scope', '$location', '$http'
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        d3.json("https://gist.githubusercontent.com/anonymous/65825490feb199e37112/raw/144d6e356b37c37265ed8e7b6d1dee3d65dd49d2/bracket", function(json) {
+        d3.json("https://gist.githubusercontent.com/anonymous/10b04b27d7f41ff32aa9/raw/201f4d90d4ccf4445722c95ad5aedf12b1d510dd/gistfile1.json", function(json) {
             root = json;
             root.x0 = height / 2;
             root.y0 = width / 2;
