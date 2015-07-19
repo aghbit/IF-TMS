@@ -371,3 +371,20 @@ footer.page-footer {
     color: white;
     background-color: rgba(63, 81, 181, 0.4);
 }
+
+.node circle {
+    cursor: pointer;
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.node text {
+    font: 10px sans-serif;
+}
+
+path.link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
