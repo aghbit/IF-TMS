@@ -40,6 +40,7 @@ object TournamentsController extends Controller{
   def createTournament() = AuthorizationAction.async(parse.json) {
     request =>
       val tournamentProperties = request.body.validate[TournamentProperties].asEither
+      println(request.body.toString())
       tournamentProperties match {
         case Right(properties) =>
           val userID = TokenImpl(request.headers.get("token").get).getUserID

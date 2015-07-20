@@ -30,6 +30,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         var extraBeginTime = $('#extraBeginTime')[0].value;
         var extraEnd = $('#extraEnd')[0].value;
         var extraEndTime = $('#extraEndTime')[0].value;
+        alert($scope.discipline);
         $http.post('/api/tournaments', {
             "description":{"name":$scope.tournamentName, "place":$scope.tournamentPlace, "description":$scope.tournamentDescription},
             "term":{"enrollDeadline": enrollDeadline+" "+enrollDeadlineTime,
