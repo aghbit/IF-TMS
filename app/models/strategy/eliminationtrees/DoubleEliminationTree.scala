@@ -249,7 +249,8 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   override def toJson(): JsObject = {
     Json.obj(
-      "treeDepth" -> (losersTreeDepth+winnersTreeDepth),
+      "losersTreeDepth" -> losersTreeDepth,
+      "winnersTreeDepth" -> winnersTreeDepth,
       "match" -> root.value.toJson,
       "lefts" -> List(
         Json.obj(

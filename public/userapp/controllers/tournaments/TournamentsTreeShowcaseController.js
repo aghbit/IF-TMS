@@ -9,10 +9,10 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
          * Created by szymek on 19.07.15.
          */
 
-        var margin = {top: 30, right: 10, bottom: 10, left: 10},
-            width = 1000 - margin.left - margin.right,
-            halfWidth = width / 2,
-            height = 300 - margin.top - margin.bottom,
+        var margin = {top: 30, right: 0, bottom: 10, left: 0},
+            width = null,
+            halfWidth = null,
+            height = 600 - margin.top - margin.bottom,
             i = 0,
             root;
 
@@ -57,8 +57,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
         };
 
         var vis = d3.select("#chart").append("svg")
-            .attr("width", width + margin.right + margin.left)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("width", "100%")
+            .attr("height", '100%')
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -96,7 +96,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             var nodes = toArray(source);
 
             // Normalize for fixed-depth.
-            nodes.forEach(function(d) { d.y = d.depth * (width/((root.treeDepth-2)*2)) + halfWidth; });
+            nodes.forEach(function(d) { d.y = d.depth * 120 + halfWidth; });
 
             // Update the nodes…
             var node = vis.selectAll("g.node")
@@ -162,7 +162,12 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
 
             $http.get('/api/tournaments/' + $stateParams.id + "/tree").
                 success(function(data, status, headers, config) {
+                    $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
+                    $scope.chartHeight = (data.losersTreeDepth+data.winnersTreeDepth+1)*80;
+                    halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
                     buildTree(data);
+                    console.log(data);
+
                 }).error(function(data, status, headers, config, statusText) {
                     $scope.message = "";
                     alert(status + " " + data);
