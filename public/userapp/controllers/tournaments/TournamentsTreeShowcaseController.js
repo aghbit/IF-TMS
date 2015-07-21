@@ -16,6 +16,20 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             i = 0,
             root;
 
+        $scope.openScorePopup = function(matchID, team1, team2) {
+            $scope.match = {};
+            $scope.match.id = matchID;
+            $scope.match.team1 = team1;
+            $scope.match.team2 = team2;
+            ngDialog.open({
+                template: '/assets/userapp/partials/match/matchScore.html',
+                className: 'ngdialog-theme-plain',
+                controller: 'MatchResultsController',
+                data: $scope.match,
+                closeByDocument: true
+            });
+        };
+
         var getChildren = function(d){
                 var a = [];
                 if(d.lefts) for(var i = 0; i < d.lefts.length; i++){
@@ -106,6 +120,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             var nodeEnter = node.enter().append("g")
                 .attr("class", "node")
                 .attr("transform", function(d) { p = calcLeft(d); return "translate(" + p.y + "," + p.x + ")"; })
+                .on("click", click);
 
             nodeEnter.append("rect")
                 .attr("width", 90)
@@ -156,6 +171,12 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             link.enter().insert("path", "g")
                 .attr("class", "link")
                 .attr("d", connector);
+
+            function click(d) {
+                console.log(d);
+                $scope.openScorePopup(d.match.id, d.match.host, d.match.guest);
+
+            }
 
         }
 

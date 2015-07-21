@@ -280,6 +280,7 @@ mainApp.controller('TournamentTableController',  ['$scope', '$location', '$http'
 
             // Toggle children on click.
             function click(d) {
+                console.log("aaaa")
                 if (d.children) {
                     d._children = d.children;
                     d.children = null;
