@@ -9,6 +9,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
          * Created by szymek on 19.07.15.
          */
 
+
         var margin = {top: 30, right: 0, bottom: 10, left: 0},
             width = null,
             halfWidth = null,
@@ -21,6 +22,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             $scope.match.id = matchID;
             $scope.match.team1 = team1;
             $scope.match.team2 = team2;
+            $scope.match.tournamentID = $scope.tournament._id;
+            console.log('aaa'+$scope.tournament);
             ngDialog.open({
                 template: '/assets/userapp/partials/match/matchScore.html',
                 className: 'ngdialog-theme-plain',
@@ -29,6 +32,17 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 closeByDocument: true
             });
         };
+
+        $scope.getTournament = function(){
+            $http.get('api/tournaments/' + $stateParams.id, {}).
+                success(function(data, status, headers, config) {
+                    $scope.tournament = data;
+                    console.log($scope.tournament);
+                }).error(function(data, status, headers, config, statusText) {
+
+                });
+        };
+        $scope.getTournament();
 
         var getChildren = function(d){
                 var a = [];
@@ -174,7 +188,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
 
             function click(d) {
                 console.log(d);
-                $scope.openScorePopup(d.match.id, d.match.host, d.match.guest);
+                $scope.openScorePopup(d.match._id, d.match.host, d.match.guest);
 
             }
 
