@@ -2,7 +2,7 @@
  * Created by Piotr on 2015-05-25.
  */
 
-mainApp.controller('MatchResultsController', ['$scope', '$http', function($scope, $http) {
+mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', function($scope, $http, $state) {
 
 
     $scope.match = {};
@@ -11,7 +11,6 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', function($scope
         "_id": $scope.ngDialogData.team1._id,
         "name": $scope.ngDialogData.team1.name
     };
-    $scope.match.tournamentID = $scope.ngDialogData.tournamentID;
     $scope.match.guest = {
         "_id": $scope.ngDialogData.team2._id,
         "name": $scope.ngDialogData.team2.name
@@ -21,17 +20,16 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', function($scope
 
 
     $scope.submit = function() {
-        console.log($scope.match);
-        var url = '/api/tournaments/' + $scope.match.tournamentID + '/match/' + $scope.match._id;
-        console.log(url);
-            $http.post(url, {"match" : $scope.match}).
+        var url = '/api/tournaments/' + $scope.ngDialogData.tournamentID + '/match/' + $scope.match._id;
+            $http.post(url, $scope.match).
                 success(function(data, status, headers, config) {
                     notification("Score has been set.", 4000, true);
-                    history.back();
+                    $scope.closeThisDialog();
+                    $state.reload();
                 }).
                 error(function(data, status, headers, config) {
+                    $scope.closeThisDialog();
                     notification("Sorry. Error occurred.", 4000, false);
-                    history.back();
                 });
 
     }

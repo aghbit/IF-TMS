@@ -15,6 +15,10 @@ mainApp.controller('TournamentsTreeDebugController', ['$scope', '$location', '$h
                 });
         };
 
+        $scope.showcase = function() {
+            $location.url("tournaments/" + $stateParams.id + "/treeShowcase");
+        };
+
         $scope.generate = function(){
             $http.post('/api/tournaments/'+$stateParams.id+'/tree', {"tree":true}).
                 success(function(data, status, headers, config) {

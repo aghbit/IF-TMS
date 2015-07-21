@@ -160,8 +160,8 @@ object TournamentsController extends Controller{
           matchUpdated.score = tournamentType.getNewScore()
           val sets = request.body.\("sets").validate[List[JsObject]].get
           sets.foreach( set => {
-            val hostScore = set.\("host").validate[Int].get
-            val guestScore = set.\("guest").validate[Int].get
+            val hostScore = set.\("host").validate[String].get.toInt
+            val guestScore = set.\("guest").validate[String].get.toInt
             matchUpdated.score.addSet()
             matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
           })
