@@ -1457,8 +1457,7 @@ $(document).ready(function(){
         var target = e.target || e.srcElement;
 
         while (target.parentElement !== null) {
-            if (target.className.indexOf('waves-effect') !== -1) {
-                element = target;
+            if (target.className.indexOf && target.className.indexOf('waves-effect') !== -1) {                element = target;
                 break;
             }
             target = target.parentElement;

@@ -1,19 +1,17 @@
 package controllers
 
 import com.mongodb.BasicDBObject
-import controllers.TeamsController._
-import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.DefaultPlayerImpl
 import org.bson.types.ObjectId
+import play.api.libs.functional.syntax._
 import play.api.libs.json.JsError
+import play.api.libs.json.Reads._
 import play.api.mvc.{Action, Controller}
-import repositories.{TournamentRepository, PlayerRepository, TeamRepository}
+import repositories.{PlayerRepository, TeamRepository, TournamentRepository}
 import utils.Validators
 
 import scala.concurrent.Future
-import play.api.libs.functional.syntax._
-import play.api.libs.json.Reads._
 
 
 /**
