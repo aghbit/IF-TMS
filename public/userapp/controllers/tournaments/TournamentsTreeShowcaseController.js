@@ -172,7 +172,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                         return "";
                     }
                 })
-                .style("fill-opacity", 1);
+                .style("fill-opacity", 1)
+                .style("fill", "#303f9f");
 
 
             nodeEnter.append("text")
@@ -187,7 +188,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                     }
                 })
                 .style("fill-opacity", 1)
-                .style("font-color", "#303f9f");
+                .style("fill", "#303f9f");
 
             nodeEnter.append("line")
                 .attr("x1", -45)

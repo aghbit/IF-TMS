@@ -387,9 +387,12 @@ path.link {
 }
 
 #container {
-    position: absolute;
+    background: none;
+    position: fixed;
     min-height: 100%;
-    min-width: 100%; }
+    min-width: 100%;
+    margin: auto;
+}
 
 .chart {
     font-family: "Arial";
