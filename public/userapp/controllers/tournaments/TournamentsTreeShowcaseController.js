@@ -60,6 +60,23 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
         };
         $scope.getTournament();
 
+        var wonSets = function(sets, who) {
+            var arrayLength = sets.length;
+            var counter = 0;
+            var other;
+            if(who == "host") {
+                other = "guest"
+            } else {
+                other = "host"
+            }
+            for (var i = 0; i < arrayLength; i++) {
+                if(sets[i][i+1][who] > sets[i][i+1][other]) {
+                    counter++;
+                }
+            }
+            return counter;
+        };
+
         var getChildren = function(d){
                 var a = [];
                 if(d.lefts) for(var i = 0; i < d.lefts.length; i++){
@@ -167,7 +184,35 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("text-anchor", "middle")
                 .text(function(d) {
                     if(d.match.host!=null) {
-                        return d.match.host.name;
+                        return d.match.host.name.substring(0, 10);
+                    } else {
+                        return "";
+                    }
+                })
+                .style("fill-opacity", 1)
+                .style("fill", "#303f9f");
+
+            nodeEnter.append("text")
+                .attr("dy", -6)
+                .attr("dx", 37)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    if(d.match.host!=null && d.match.sets.length > 0) {
+                        return wonSets(d.match.sets, "host");
+                    } else {
+                        return "";
+                    }
+                })
+                .style("fill-opacity", 1)
+                .style("fill", "#303f9f");
+
+            nodeEnter.append("text")
+                .attr("dy", 14)
+                .attr("dx", 37)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    if(d.match.guest!=null && d.match.sets.length > 0) {
+                        return wonSets(d.match.sets, "guest");
                     } else {
                         return "";
                     }
@@ -176,13 +221,14 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .style("fill", "#303f9f");
 
 
+
             nodeEnter.append("text")
                 .attr("dy", 14)
                 .attr("dx", 0)
                 .attr("text-anchor", "middle")
                 .text(function(d) {
                     if(d.match.guest != null) {
-                        return d.match.guest.name;
+                        return d.match.guest.name.substring(0, 10);
                     }else {
                         return "";
                     }
@@ -196,6 +242,16 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("y1", 0)
                 .attr("y2", 0)
                 .style("stroke", "#303f9f");
+
+            nodeEnter.append("line")
+                    .attr("x1", 30)
+                    .attr("x2", 30)
+                    .attr("y1", -20)
+                    .attr("y2", 20)
+                    .style("stroke", "#303f9f");
+
+
+
 
             // Update the links...
             var link = vis.selectAll("path.link")
@@ -211,6 +267,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 $scope.openScorePopup(d.match._id, d.match.host, d.match.guest);
 
             }
+
 
         }
 
