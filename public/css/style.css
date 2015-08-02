@@ -372,19 +372,26 @@ footer.page-footer {
     background-color: rgba(63, 81, 181, 0.4);
 }
 
-.node circle {
+.node {
     cursor: pointer;
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 1.5px;
 }
 
 .node text {
-    font: 10px sans-serif;
+    color: #303f9f
 }
 
 path.link {
     fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
+    stroke: #fff;
+    stroke-width: 1.5 px;
+}
+
+#container {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%; }
+
+.chart {
+    font-family: "Arial";
+    position: absolute;
 }

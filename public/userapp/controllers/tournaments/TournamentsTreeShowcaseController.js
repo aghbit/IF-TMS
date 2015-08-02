@@ -10,6 +10,23 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
          */
 
 
+        var container = document.getElementById('container'), dragging = false, previousmouse;
+        container.x = 0; container.y = 0;
+
+        window.onmousedown = function(e) { dragging = true; previousmouse = {x: e.pageX, y: e.pageY}; };
+
+        window.onmouseup = function() { dragging = false; };
+
+        window.ondragstart = function(e) { e.preventDefault(); };
+
+        window.onmousemove = function(e) {
+            if (dragging) {
+                container.x += e.pageX - previousmouse.x; container.y += e.pageY - previousmouse.y;
+                container.style.left = container.x + 'px'; container.style.top = container.y + 'px';
+                previousmouse = {x: e.pageX, y: e.pageY};
+            }
+        };
+
         var margin = {top: 30, right: 0, bottom: 10, left: 0},
             width = null,
             halfWidth = null,
@@ -23,7 +40,6 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             $scope.match.team1 = team1;
             $scope.match.team2 = team2;
             $scope.match.tournamentID = $scope.tournament._id;
-            console.log('aaa'+$scope.tournament);
             ngDialog.open({
                 template: '/assets/userapp/partials/match/matchScore.html',
                 className: 'ngdialog-theme-plain',
@@ -139,9 +155,10 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             nodeEnter.append("rect")
                 .attr("width", 90)
                 .attr("height", 40)
-                .style("stroke", "#000")
+                .style("stroke", "#303f9f")
+                .style("stroke-width", "3px")
                 .attr("transform", "translate(-45,-20)")
-                .style("fill", "#ccc");
+                .style("fill", "#fff");
 
 
             nodeEnter.append("text")
@@ -157,6 +174,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 })
                 .style("fill-opacity", 1);
 
+
             nodeEnter.append("text")
                 .attr("dy", 14)
                 .attr("dx", 0)
@@ -168,14 +186,15 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                         return "";
                     }
                 })
-                .style("fill-opacity", 1);
+                .style("fill-opacity", 1)
+                .style("font-color", "#303f9f");
 
             nodeEnter.append("line")
                 .attr("x1", -45)
                 .attr("x2", 45)
                 .attr("y1", 0)
                 .attr("y2", 0)
-                .style("stroke", "#000");
+                .style("stroke", "#303f9f");
 
             // Update the links...
             var link = vis.selectAll("path.link")
@@ -184,10 +203,10 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             // Enter any new links at the parent's previous position.
             link.enter().insert("path", "g")
                 .attr("class", "link")
+                .style("stroke", "#303f9f")
                 .attr("d", connector);
 
             function click(d) {
-                console.log(d);
                 $scope.openScorePopup(d.match._id, d.match.host, d.match.guest);
 
             }
