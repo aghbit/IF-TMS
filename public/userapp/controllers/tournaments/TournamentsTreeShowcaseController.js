@@ -5,11 +5,6 @@
 mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
     function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
 
-        /**
-         * Created by szymek on 19.07.15.
-         */
-
-
         var container = document.getElementById('container'), dragging = false, previousmouse;
         container.x = 0; container.y = 0;
 
@@ -27,10 +22,10 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             }
         };
 
-        var margin = {top: 30, right: 0, bottom: 10, left: 0},
+        var margin = {top: 0, right: 0, bottom: 0, left: 0},
             width = null,
             halfWidth = null,
-            height = 600 - margin.top - margin.bottom,
+            height = null,
             i = 0,
             root;
 
@@ -275,8 +270,10 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             $http.get('/api/tournaments/' + $stateParams.id + "/tree").
                 success(function(data, status, headers, config) {
                     $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
-                    $scope.chartHeight = (data.losersTreeDepth+data.winnersTreeDepth+1)*80;
+                    $scope.chartHeight = (data.losersTreeDepth+data.winnersTreeDepth+1)*85;
                     halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
+                    height = $scope.chartHeight;
+                    width = $scope.chartWidth;
                     buildTree(data);
                     console.log(data);
 
