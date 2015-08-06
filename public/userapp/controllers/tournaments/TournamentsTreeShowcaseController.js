@@ -266,20 +266,28 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
 
         }
 
+        $http.get('/api/tournaments/' + $stateParams.id + "/tree").
+            success(function(data, status, headers, config) {
+                $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
+                $scope.chartHeight = (data.losersTreeDepth+data.winnersTreeDepth+1)*85;
+                halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
+                height = $scope.chartHeight;
+                width = $scope.chartWidth;
+                buildTree(data);
+                console.log(data);
 
-            $http.get('/api/tournaments/' + $stateParams.id + "/tree").
-                success(function(data, status, headers, config) {
-                    $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
-                    $scope.chartHeight = (data.losersTreeDepth+data.winnersTreeDepth+1)*85;
-                    halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
-                    height = $scope.chartHeight;
-                    width = $scope.chartWidth;
-                    buildTree(data);
-                    console.log(data);
+            }).error(function(data, status, headers, config, statusText) {
+                $scope.message = "";
+                alert(status + " " + data);
+            });
 
-                }).error(function(data, status, headers, config, statusText) {
-                    $scope.message = "";
-                    alert(status + " " + data);
-                });
-
+        var actualScale = 1;
+        $scope.enlarge = function() {
+            actualScale = actualScale*1.1;
+            $scope.scale = "scale("+actualScale+")";
+        };
+        $scope.reduce = function() {
+            actualScale = actualScale/1.1;
+            $scope.scale = "scale("+actualScale+")";
+        };
     }]);

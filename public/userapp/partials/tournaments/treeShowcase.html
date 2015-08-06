@@ -1,4 +1,9 @@
+<div class="remote-control">
+        <button class="btn btn-small indigo" ng-model="plusButton" ng-click="enlarge()">+</button>
+        <button class="btn btn-small indigo" bg-model="minusButton" ng-click="reduce()">-</button>
+
+</div>
 <div id="container">
-        <div class="draggable ui-widget-content chart" id="chart" ng-style="{'width':chartWidth, 'height':chartHeight}">
+        <div class="draggable ui-widget-content chart" id="chart" ng-style="{'width':chartWidth, 'height':chartHeight, 'transform':scale}">
         </div>
 </div>

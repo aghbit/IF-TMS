@@ -7,3 +7,10 @@ path.link {
     stroke: #000;
     stroke-width: 1.5px;
 }
+.remote-control {
+    z-index: 998;
+    position: relative;
+    margin-top:5px;
+    float:right;
+    margin-right:5px;
+}
