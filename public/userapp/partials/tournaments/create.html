@@ -48,7 +48,8 @@
                     <span ng-if="levelClass == 'invalid'" class="inputValidationError">Must be a number, at least 1..</span>
                 </div>
                 <div class="input-field">
-                    <select name="discipline" id="discipline" ng-model="discipline" ng-init="discipline='Volleyball'">
+                    <select name="discipline" id="discipline" class="browser-default" ng-model="discipline">
+                        <option value="" disabled selected>Choose tournament type</option>
                         <option value="Volleyball">Volleyball</option>
                         <option value="BeachVolleyball">BeachVolleyball</option>
                     </select>
