@@ -35,8 +35,8 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     eliminationTree
   }
 
-  def populateTree(eliminationTree: DoubleEliminationTree, teams: List[Team]): EliminationTree = {
-    val teamsIterator = Random.shuffle((0 until teams.length).toList).toIterator
+  private def populateTree(eliminationTree: DoubleEliminationTree, teams: List[Team]): EliminationTree = {
+    val teamsIterator = Random.shuffle(teams.indices.toList).toIterator
     val matches = eliminationTree.getMatchesInNthRound(eliminationTree.winnersTreeDepth)
     val firstQF = matches.take(eliminationTree.leafsNumber/4)
     val secondQF = matches.drop(matches.length - eliminationTree.leafsNumber / 4)

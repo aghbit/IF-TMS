@@ -16,6 +16,7 @@ trait EliminationStrategy {
 
   def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree
 
+  def updateMatchResult(eliminationTree: EliminationTree, m:Match):EliminationTree
 }
 
 

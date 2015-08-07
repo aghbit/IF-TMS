@@ -5,7 +5,7 @@ import java.util
 import com.mongodb.{MongoException, DBObject}
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject, Imports, MongoDBObjectBuilder}
 import models.strategy.EliminationStrategy
-import models.strategy.strategies.DoubleEliminationStrategy
+import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
@@ -161,6 +161,7 @@ object TournamentDBObjectConverter {
     val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found"))
     val eliminationStrategy = className match {
       case "models.strategy.strategies.DoubleEliminationStrategy$" => DoubleEliminationStrategy
+      case "models.strategy.strategies.SingleEliminationStrategy$" => SingleEliminationStrategy
       case _ => throw new Exception("NOT IMPLEMENTED!")
     }
     eliminationStrategy

@@ -39,12 +39,18 @@ object TournamentsController extends Controller{
 
   def createTournament() = AuthorizationAction.async(parse.json) {
     request =>
-      val tournamentProperties = request.body.validate[TournamentProperties].asEither
-      tournamentProperties match {
-        case Right(properties) =>
+      val tournamentProperties = request.body.\("properties").validate[TournamentProperties].asEither
+      val tournamentStrategy = request.body.\("strategy").validate[String].asEither
+      val strategy = tournamentStrategy match {
+        case Right("SingleEliminationStrategy") => Some(SingleEliminationStrategy)
+        case Right("DoubleEliminationStrategy") => Some(DoubleEliminationStrategy)
+        case _ => None
+      }
+      (tournamentProperties, strategy) match {
+        case (Right(properties), Some(eliminationStrategy)) =>
           val userID = TokenImpl(request.headers.get("token").get).getUserID
           val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
-          val beforeEnrollment = BeforeEnrollment(properties, tournamentStaff, DoubleEliminationStrategy)
+          val beforeEnrollment = BeforeEnrollment(properties, tournamentStaff, eliminationStrategy)
           try {
             repository.insert(beforeEnrollment)
             Future.successful(Created)
@@ -52,7 +58,8 @@ object TournamentsController extends Controller{
             case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
             case e:Throwable => Future.failed(e)
           }
-        case Left(e) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
+        case (Left(e), _) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
+        case (_, None) => Future.successful(BadRequest("Detected error: This strategy isn't available."))
       }
   }
   def nextEnrollmentState() = AuthorizationAction.async(parse.json) {

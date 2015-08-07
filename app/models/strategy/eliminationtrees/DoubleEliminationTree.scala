@@ -15,8 +15,8 @@ import scala.collection.mutable
  */
 class DoubleEliminationTree(override val _id:ObjectId,
                             override val teamsNumber:Int,
-                            tournamentType: TournamentType,
-                            root: TreeNode) extends EliminationTree {
+                            override val tournamentType: TournamentType,
+                            override val root: TreeNode) extends EliminationTree {
 
 
   val leafsNumber = DoubleEliminationStrategy.countLeaf(teamsNumber)
