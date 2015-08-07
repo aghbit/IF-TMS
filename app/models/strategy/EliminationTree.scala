@@ -15,11 +15,11 @@ trait EliminationTree extends Iterable[TreeNode]{
   val _id:ObjectId
   val teamsNumber:Int
   val root:TreeNode
+  val tournamentType:TournamentType
   var firstQF:TreeNode = _
   var secondQF:TreeNode = _
   var thirdQF:TreeNode = _
   var forthQF:TreeNode = _
-  var tournamentType:TournamentType = _
 
 
   def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int):Unit
