@@ -151,7 +151,7 @@ class SingleEliminationTree (override val _id:ObjectId,
   override def toJson(): JsObject = {
     Json.obj(
       "losersTreeDepth" -> 0,
-      "winnersTreeDepth" -> depth,
+      "winnersTreeDepth" -> (depth+1),
       "match" -> root.value.toJson,
       "lefts" -> List(
         root.left.get.toJson("lefts"),
