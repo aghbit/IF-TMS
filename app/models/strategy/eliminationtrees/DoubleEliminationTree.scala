@@ -182,14 +182,14 @@ class DoubleEliminationTree(override val _id:ObjectId,
     tmp
   }
 
-  override def setQFs(first: TreeNode, second: TreeNode, third: TreeNode, forth: TreeNode): Unit = {
+  def setQFs(first: TreeNode, second: TreeNode, third: TreeNode, forth: TreeNode): Unit = {
     firstQF = first
     secondQF = second
     thirdQF = third
     forthQF = forth
   }
 
-  override def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
@@ -203,7 +203,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
     }
   }
 
-  override def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth

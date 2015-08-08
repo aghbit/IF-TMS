@@ -22,10 +22,6 @@ trait EliminationTree extends Iterable[TreeNode]{
   var forthQF:TreeNode = _
 
 
-  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int):Unit
-
-  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int):Unit
-
   def depth:Int
 
   def mapMatches(f: Match => Match):Unit
@@ -33,8 +29,6 @@ trait EliminationTree extends Iterable[TreeNode]{
   def getMatchesInNthRound(n:Int):List[Match]
 
   def getNode(matchID: Int):TreeNode
-
-  def setQFs(first:TreeNode, second:TreeNode, third:TreeNode, forth:TreeNode)
 
   def foreachTreeNodes(f:TreeNode => Unit)
 

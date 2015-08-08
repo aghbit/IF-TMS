@@ -7,6 +7,8 @@ import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 
+import scala.util.Random
+
 /**
  * Created by Szymek
  */
@@ -24,13 +26,59 @@ object SingleEliminationStrategy extends EliminationStrategy{
     new SingleEliminationTree(id, teamsNumber, tournamentType, greatFinal)
   }
 
-  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = ???
+  /**
+   * Generates single elimination tree, with populated teams. Teams are populated randomly.
+   * Matches are numbered (Like bfs. e.g Final 0, left SF 1, right SF 2 ...).
+   *
+   * @param teams - The tree is populated by this teams randomly.
+   * @param tournamentType - Important, because algo has to know which type of score to create.
+   * @return single elimination tree
+   */
+  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = {
+    require(teams.length >=2, "Too few teams to generate Single Elimination Tree. Should be >=2.")
 
-  override def updateMatchResult(eliminationTree: EliminationTree, m: Match): EliminationTree = ???
+    val eliminationTree = initEmptyTree(tournamentID, teams.length, tournamentType)
+
+    populateTree(eliminationTree, teams)
+  }
+
+  def populateTree(eliminationTree: EliminationTree, teams: List[Team]): EliminationTree = {
+    val teamsIterator = Random.shuffle(teams.indices.toList).iterator
+    val matches = eliminationTree.getMatchesInNthRound(eliminationTree.depth)
+    val matchesIterator = matches.iterator
+    while(matchesIterator.hasNext){
+      val matchToPopulate = matchesIterator.next()
+      if(teamsIterator.hasNext) {
+        matchToPopulate.host = Some(teams(teamsIterator.next()))
+      }
+      if(teamsIterator.hasNext){
+        matchToPopulate.guest = Some(teams(teamsIterator.next()))
+      }
+    }
+    eliminationTree
+  }
+
+
+  override def updateMatchResult(eliminationTree: EliminationTree, m: Match): EliminationTree = {
+    require(eliminationTree.isInstanceOf[SingleEliminationTree], "Single Elimination Strategy needs Single Elimination Tree.")
+    updateMatchResultHelper(eliminationTree.asInstanceOf[SingleEliminationTree], m)
+  }
+
+  private def updateMatchResultHelper(tree: SingleEliminationTree, m: Match): EliminationTree = {
+    val winner = m.getWinner()
+    val loser = m.getLoser()
+    val node = tree.getNode(m.id)
+    node.value = m
+    node.parent match {
+      case Some(n) => n.value.addTeam(winner)
+      case None => // Koniec turnieju
+    }
+    tree
+  }
 
   private def generateEmptyTree(treeDepth: Int, tournamentType: TournamentType) = {
     def helper(depth:Int, i:Int):TreeNode = {
-      if(treeDepth==0){
+      if(depth==0){
         new TreeNode(None, None, Match(None, None, tournamentType), i)
       }else{
         new TreeNode(
@@ -41,7 +89,7 @@ object SingleEliminationStrategy extends EliminationStrategy{
         )
       }
     }
-    helper(treeDepth, 0)
+    helper(treeDepth-1, 0)
   }
 
   /**

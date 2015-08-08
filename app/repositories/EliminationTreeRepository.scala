@@ -1,12 +1,12 @@
 package repositories
 
-import com.mongodb.{BasicDBObject, DBObject}
+import com.mongodb.{MongoException, BasicDBObject, DBObject}
 import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder, MongoDBObject}
 import com.mongodb.util.JSON
 import configuration.CasbahMongoDBConfiguration
 import models.enums.ListEnum
 import models.strategy.scores.BeachVolleyballScore
-import models.strategy.strategies.DoubleEliminationStrategy
+import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
 import models.strategy.{EliminationTree, Match}
 import models.team.Team
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
@@ -42,6 +42,8 @@ class EliminationTreeRepository {
     builder += ("teamsNumber" -> obj.teamsNumber)
   //  val clazz = obj.tournamentType.getClass
   //  builder += ("type" -> clazz.toString)
+    val clazz = obj.getClass.getName()
+    builder += ("_class" -> clazz)
     var matches:List[Match] = List()
     obj.mapMatches(m => {
       matches = matches ::: List(m)
@@ -56,7 +58,8 @@ class EliminationTreeRepository {
       case Some(dbObj) => {
         val tournamentType = BeachVolleyball
         val document = Imports.wrapDBObj(dbObj.asInstanceOf[DBObject])
-        val eliminationTreeID = (document.getAs[ObjectId]("_id").get)
+        val eliminationTreeID = document.getAs[ObjectId]("_id").get
+        val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
         val teamsNumber = document.getAs[Int]("teamsNumber").get
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
@@ -67,7 +70,12 @@ class EliminationTreeRepository {
           matches =  matches ::: List(m)
         }
         matches = matches.sortWith((m1,m2) => m1.id < m2.id)
-        val eliminationTree = DoubleEliminationStrategy.initEmptyTree(eliminationTreeID, teamsNumber, tournamentType)
+        val strategy = className match {
+          case "models.strategy.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
+          case "models.strategy.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
+          case _ => throw new NoSuchElementException("This strategy is not implemented")
+        }
+        val eliminationTree = strategy.initEmptyTree(eliminationTreeID, teamsNumber, tournamentType)
         var i=0
         eliminationTree.foreachTreeNodes(node => {
           node.value = matches(i)
