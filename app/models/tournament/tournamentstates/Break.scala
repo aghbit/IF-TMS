@@ -6,6 +6,7 @@ import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
+import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 
 import scala.collection.mutable.ListBuffer
@@ -18,10 +19,11 @@ class Break(override val _id: ObjectId,
             override var properties: TournamentProperties,
             override var teams: util.ArrayList[Team],
             override val staff: TournamentStaff,
-             override var strategy: EliminationStrategy) extends Tournament {
+            override var strategy: EliminationStrategy,
+            override val discipline: TournamentType) extends Tournament {
 
   override def startNext(): DuringTournament = {
-    val newState = new DuringTournament(this._id, this.properties, this.teams, staff, strategy)
+    val newState = new DuringTournament(this._id, this.properties, this.teams, staff, strategy, discipline)
     newState
   }
 

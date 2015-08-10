@@ -10,6 +10,8 @@ import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
 import models.tournament.tournamentstates._
+import models.tournament.tournamenttype.TournamentType
+import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import scala.collection.JavaConversions._
@@ -19,35 +21,40 @@ import scala.collection.JavaConversions._
  */
 object TournamentDBObjectConverter {
 
+
   def fromDbObject(obj:DBObject) = {
     val document = Imports.wrapDBObj(obj.asInstanceOf[DBObject])
     val id = document.getAsOrElse[ObjectId]("_id", throw new MongoException("_id not found!"))
     val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
     val properties = propertiesFromDbObject(document.getAsOrElse[DBObject]("properties",
-      throw new MongoException("properties not found")))
+    throw new MongoException("properties not found")))
     val teamsDbObjects = document.getAsOrElse[MongoDBList]("teams", throw new MongoException("teams not found!"))
     val teams = teamsDbObjects.map(o => TeamDBObjectConverter.fromDBObject(o.asInstanceOf[DBObject]))
     val staff = staffFromDbObject(document.getAsOrElse[DBObject]("staff",
-      throw new MongoException("staff not found"))
+    throw new MongoException("staff not found"))
     )
     val strategy = strategyFromDbObject(document.getAsOrElse[DBObject]("strategy",
-      throw new MongoException("strategy not found"))
+    throw new MongoException("strategy not found"))
+    )
+    val discipline = disciplineFromDbObject(document.getAsOrElse[DBObject]("discipline",
+    throw new MongoException("discipline not found"))
     )
 
     className match {
       case "models.tournament.tournamentstates.BeforeEnrollment" =>
-        Some(new BeforeEnrollment(id, properties, staff, strategy))
+        Some(new BeforeEnrollment(id, properties, staff, strategy, discipline))
       case "models.tournament.tournamentstates.Enrollment" =>
-        Some(new Enrollment(id, properties, new util.ArrayList(teams), staff, strategy))
+        Some(new Enrollment(id, properties, new util.ArrayList(teams), staff, strategy, discipline))
       case "models.tournament.tournamentstates.Break" =>
-        Some(new Break(id, properties, new util.ArrayList[Team](teams), staff, strategy))
+        Some(new Break(id, properties, new util.ArrayList[Team](teams), staff, strategy, discipline))
       case "models.tournament.tournamentstates.DuringTournament" =>
-        Some(new DuringTournament(id, properties, new util.ArrayList[Team](teams), staff, strategy))
+        Some(new DuringTournament(id, properties, new util.ArrayList[Team](teams), staff, strategy, discipline))
       case "models.tournament.tournamentstates.AfterTournament" =>
-        Some(new AfterTournament(id, properties, new util.ArrayList[Team](teams), staff, strategy))
+        Some(new AfterTournament(id, properties, new util.ArrayList[Team](teams), staff, strategy, discipline))
       case _ => None
     }
   }
+
 
   def toDbObject(tournament:Tournament) = {
     val builder = new MongoDBObjectBuilder
@@ -57,6 +64,13 @@ object TournamentDBObjectConverter {
     builder += ("teams" -> tournament.getTeams.map(t => TeamDBObjectConverter.toDbObject(t)))
     builder += ("staff" -> staffToDbObject(tournament.staff))
     builder += ("strategy" -> strategyDbObject(tournament.strategy))
+    builder += ("discipline" -> disciplineToDbObject(tournament.discipline))
+    builder.result()
+  }
+
+  private def disciplineToDbObject(discipline: TournamentType) = {
+    val builder = new MongoDBObjectBuilder
+    builder += ("_class" -> discipline.getClass.getName)
     builder.result()
   }
 
@@ -94,7 +108,6 @@ object TournamentDBObjectConverter {
     settingsBuilder += ("numberOfTeams" -> properties.settings.numberOfTeams)
     settingsBuilder += ("canEnroll" -> properties.settings.canEnroll)
     settingsBuilder += ("level" -> properties.settings.level)
-    settingsBuilder += ("discipline" -> properties.settings.discipline)
 
     val builder = new MongoDBObjectBuilder
     builder += ("description" -> descriptionBuilder.result())
@@ -107,46 +120,44 @@ object TournamentDBObjectConverter {
   def propertiesFromDbObject(obj: DBObject) = {
     val document = Imports.wrapDBObj(obj)
     val descriptionDbObject = document.getAsOrElse[MongoDBObject]("description",
-      throw new MongoException("description not found")
+    throw new MongoException("description not found")
     )
     val termDbObject = document.getAsOrElse[MongoDBObject]("term",
-      throw new MongoException("term not found")
+    throw new MongoException("term not found")
     )
     val settingsDbObject = document.getAsOrElse[MongoDBObject]("settings",
-      throw new MongoException("settings not found"))
+    throw new MongoException("settings not found"))
 
     val name = descriptionDbObject.getAsOrElse[String]("name", throw new MongoException("name not found"))
     val place = descriptionDbObject.getAsOrElse[String]("place", throw new MongoException("place not found"))
     val description = descriptionDbObject.getAsOrElse[String]("description",
-      throw new MongoException("description not found")
+    throw new MongoException("description not found")
     )
     val enrollDeadline = termDbObject.getAsOrElse[DateTime]("enrollDeadline",
-      throw new MongoException("enrollDeadline not found")
+    throw new MongoException("enrollDeadline not found")
     )
     val begin = termDbObject.getAsOrElse[DateTime]("begin", throw new MongoException("begin not found"))
     val end = termDbObject.getAsOrElse[DateTime]("end", throw new MongoException("end not found"))
     val extraBegin = termDbObject.getAsOrElse[DateTime]("extraBegin",
-      throw new MongoException("extraBegin not found")
+    throw new MongoException("extraBegin not found")
     )
     val extraEnd = termDbObject.getAsOrElse[DateTime]("extraEnd",
-      throw new MongoException("extraEnd not found")
+    throw new MongoException("extraEnd not found")
     )
     val numberOfPitches = settingsDbObject.getAsOrElse[Int]("numberOfPitches",
-      throw new MongoException("numberOfPitches not found")
+    throw new MongoException("numberOfPitches not found")
     )
     val numberOfTeams = settingsDbObject.getAsOrElse[Int]("numberOfTeams",
-      throw new MongoException("numberOfTeams not found")
+    throw new MongoException("numberOfTeams not found")
     )
     val canEnroll = settingsDbObject.getAsOrElse[Boolean]("canEnroll",
-      throw new MongoException("canEnroll not found")
+    throw new MongoException("canEnroll not found")
     )
     val level = settingsDbObject.getAsOrElse[Int]("level", throw new MongoException("level not found"))
-    val discipline = settingsDbObject.getAsOrElse[String]("discipline",
-      throw new MongoException("discipline not found")
-    )
+
     val tournamentDescription = new TournamentDescription(name, place, description)
     val tournamentTerms = new TournamentTerm(enrollDeadline, begin, end, extraBegin, extraEnd)
-    val tournamentSettings = new TournamentSettings(numberOfPitches, numberOfTeams, canEnroll, level, discipline)
+    val tournamentSettings = new TournamentSettings(numberOfPitches, numberOfTeams, canEnroll, level)
     new TournamentProperties(tournamentDescription, tournamentTerms, tournamentSettings)
   }
 
@@ -165,5 +176,15 @@ object TournamentDBObjectConverter {
       case _ => throw new Exception("NOT IMPLEMENTED!")
     }
     eliminationStrategy
+  }
+  def disciplineFromDbObject(obj: DBObject) = {
+    val document = Imports.wrapDBObj(obj)
+    val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found"))
+    val discipline = className match {
+      case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
+      case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
+      case _ => throw new Exception("NOT IMPLEMENTED!")
+    }
+    discipline
   }
 }

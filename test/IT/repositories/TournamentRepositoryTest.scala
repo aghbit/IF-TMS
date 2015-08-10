@@ -9,6 +9,7 @@ import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationS
 import models.tournament.Tournament
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields._
+import models.tournament.tournamenttype.tournamenttypes.Volleyball
 import models.user.userproperties.UserProperties
 import models.user.users.userimpl.UserImpl
 import org.scalatest.mock.MockitoSugar
@@ -34,16 +35,16 @@ class TournamentRepositoryTest extends FunSuite with MockitoSugar with BeforeAnd
     new DateTime(2014, 3, 20, 16, 0, 0, 0),
     new DateTime(2014, 3, 27, 8, 0, 0, 0),
     new DateTime(2014, 3, 27, 16, 0, 0, 0))
-  val tournamentSettings = new TournamentSettings(2, 16, true, 1, "Volleyball")
+  val tournamentSettings = new TournamentSettings(2, 16, true, 1)
   val tournamentStaff = new TournamentStaff(ObjectId.get(), new util.ArrayList[ObjectId]())
   val tournamentProperties = new TournamentProperties(tournamentDescription, tournamentTerms, tournamentSettings)
   before {
     underTest = new TournamentRepository()
-    tournament = BeforeEnrollment(tournamentProperties, tournamentStaff, DoubleEliminationStrategy)
+    tournament = BeforeEnrollment(tournamentProperties, tournamentStaff, DoubleEliminationStrategy, Volleyball)
   }
 
   after {
-    underTest.dropCollection()
+    //underTest.dropCollection()
   }
 
   test("Simple test"){

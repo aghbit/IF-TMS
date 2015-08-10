@@ -15,7 +15,7 @@ import models.team.Team
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
-import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
+import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import play.api.libs.json._
 import org.bson.types.ObjectId
 import play.api.mvc.{Action, Controller}
@@ -41,16 +41,24 @@ object TournamentsController extends Controller{
     request =>
       val tournamentProperties = request.body.\("properties").validate[TournamentProperties].asEither
       val tournamentStrategy = request.body.\("strategy").validate[String].asEither
+      val tournamentDiscipline = request.body.\("discipline").validate[String].asEither
+
       val strategy = tournamentStrategy match {
         case Right("SingleEliminationStrategy") => Some(SingleEliminationStrategy)
         case Right("DoubleEliminationStrategy") => Some(DoubleEliminationStrategy)
         case _ => None
       }
-      (tournamentProperties, strategy) match {
-        case (Right(properties), Some(eliminationStrategy)) =>
+      val discipline = tournamentDiscipline match {
+        case Right("BeachVolleyball") => Some(BeachVolleyball)
+        case Right("Volleyball") => Some(Volleyball)
+        case _ => None
+
+      }
+      (tournamentProperties, strategy, discipline) match {
+        case (Right(properties), Some(eliminationStrategy), Some(d)) =>
           val userID = TokenImpl(request.headers.get("token").get).getUserID
           val tournamentStaff =  new TournamentStaff(userID, new util.ArrayList())
-          val beforeEnrollment = BeforeEnrollment(properties, tournamentStaff, eliminationStrategy)
+          val beforeEnrollment = BeforeEnrollment(properties, tournamentStaff, eliminationStrategy, d)
           try {
             repository.insert(beforeEnrollment)
             Future.successful(Created)
@@ -58,8 +66,9 @@ object TournamentsController extends Controller{
             case e:IllegalArgumentException => Future.successful(UnprocessableEntity("Tournament can't be saved!"))
             case e:Throwable => Future.failed(e)
           }
-        case (Left(e), _) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
-        case (_, None) => Future.successful(BadRequest("Detected error: This strategy isn't available."))
+        case (Left(e), _, _) => Future.successful(BadRequest("Detected error: " + JsError.toFlatJson(e)))
+        case (_, None, _) => Future.successful(BadRequest("Detected error: This strategy isn't available."))
+        case (_, _, None) => Future.successful(BadRequest("Detected error: This discipline isn't available."))
       }
   }
   def nextEnrollmentState() = AuthorizationAction.async(parse.json) {
@@ -152,19 +161,18 @@ object TournamentsController extends Controller{
 
   def updateMatch(id: String, matchId: Int) = TournamentAction(id).async(parse.json) {
     request =>
-      //val tournamentType = request.tournament.tournamentType
-      val tournamentType = BeachVolleyball
+      val discipline = request.tournament.discipline
       val tournamentId = request.tournament._id
       eliminationTreeRepository.findOne(new BasicDBObject("_id", tournamentId)) match {
         case Some(tree) =>
           //only for tests
-          val host = new BeachVolleyballTeam(new ObjectId(request.body.\("host").\("_id").validate[String].get),
-            request.body.\("host").\("name").validate[String].get, 2, 0)
-          val guest = new BeachVolleyballTeam(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
-            request.body.\("guest").\("name").validate[String].get, 2, 0)
-          val matchUpdated = new Match(matchId, Some(host), Some(guest), tournamentType.getNewScore())
+          val host = discipline.getNewTeam(new ObjectId(request.body.\("host").\("_id").validate[String].get),
+            request.body.\("host").\("name").validate[String].get)
+          val guest = discipline.getNewTeam(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
+            request.body.\("guest").\("name").validate[String].get)
+          val matchUpdated = new Match(matchId, Some(host), Some(guest), discipline.getNewScore())
 
-          matchUpdated.score = tournamentType.getNewScore()
+          matchUpdated.score = discipline.getNewScore()
           val sets = request.body.\("sets").validate[List[JsObject]].get
           sets.foreach( set => {
             val hostScore = set.\("host").validate[String].get.toInt

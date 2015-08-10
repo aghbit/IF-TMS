@@ -6,6 +6,7 @@ import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
+import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 
 
@@ -15,7 +16,8 @@ import org.bson.types.ObjectId
 class BeforeEnrollment(override val _id: ObjectId,
                        override var properties: TournamentProperties,
                        override val staff: TournamentStaff,
-                       override var strategy: EliminationStrategy) extends Tournament {
+                       override var strategy: EliminationStrategy,
+                       override val discipline: TournamentType) extends Tournament {
 
 
   override def startNext(): Enrollment = {
@@ -23,7 +25,8 @@ class BeforeEnrollment(override val _id: ObjectId,
       this.properties,
       new util.ArrayList[Team],
       staff,
-      strategy)
+      strategy,
+      discipline)
     newState.properties.settings.canEnroll = true
     newState
   }
@@ -34,7 +37,6 @@ class BeforeEnrollment(override val _id: ObjectId,
     this.properties.settings.numberOfPitches = settings.numberOfPitches
     this.properties.settings.numberOfTeams = settings.numberOfTeams
     this.properties.settings.level = settings.level
-    this.properties.settings.discipline = settings.discipline
   }
 
   override def editTerm(term: TournamentTerm) {
@@ -57,11 +59,12 @@ class BeforeEnrollment(override val _id: ObjectId,
 object BeforeEnrollment {
   def apply(properties: TournamentProperties,
             staff: TournamentStaff,
-            strategy: EliminationStrategy): Tournament = {
+            strategy: EliminationStrategy,
+             discipline: TournamentType): Tournament = {
     val newTournament = new BeforeEnrollment(ObjectId.get(),
       properties,
       staff,
-      strategy)
+      strategy, discipline)
     newTournament.properties.settings.canEnroll = false
     newTournament
   }

@@ -24,11 +24,13 @@ import scala.collection.JavaConversions._
 
 trait Tournament {
 
+
   val _id: ObjectId
   var properties: TournamentProperties
   var teams: util.ArrayList[Team]
   val staff: TournamentStaff
   var strategy:EliminationStrategy
+  val discipline:TournamentType
 
   def startNext(): Tournament
 

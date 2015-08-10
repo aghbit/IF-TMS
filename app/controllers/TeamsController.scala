@@ -78,12 +78,7 @@ object TeamsController extends Controller {
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
 
         //Create right Team Class.
-        val teamClass = "models.team.teams.volleyball.volleyballs."+
-        tournament.properties.settings.discipline + "Team$"
-        val runtimeMirror = universe.runtimeMirror(getClass.getClassLoader)
-        val module = runtimeMirror.staticModule(teamClass)
-        val obj = runtimeMirror.reflectModule(module).instance.asInstanceOf[TeamObject]
-        val team = obj(data.getOrElse("teamName", ""))
+        val team = tournament.discipline.getNewTeam(data.getOrElse("teamName", ""))
 
         //Add captain
         team.addPlayer(captain)

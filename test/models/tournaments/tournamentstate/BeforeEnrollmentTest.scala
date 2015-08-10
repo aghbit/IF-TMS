@@ -5,6 +5,7 @@ import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentstates.{BeforeEnrollment, Enrollment}
 import models.tournament.tournamentfields.{TournamentStaff, TournamentProperties, TournamentSettings}
+import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -31,11 +32,12 @@ class BeforeEnrollmentTest extends FunSuite with MockitoSugar with BeforeAndAfte
     val tournamentSettingsMock = mock[TournamentSettings]
     val tournamentStaffMock = mock[TournamentStaff]
     val strategyMock = mock[EliminationStrategy]
+    val disciplineMock = mock[TournamentType]
 
     Mockito.when(tournamentSettingsMock.canEnroll).thenReturn(false)
     Mockito.when(tournamentPropertiesMock.settings).thenReturn(tournamentSettingsMock)
 
-    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStaffMock, strategyMock)
+    instance = BeforeEnrollment(tournamentPropertiesMock, tournamentStaffMock, strategyMock, disciplineMock)
   }
 
   test("Change tournament state test; (from BeforeEnrollment to Enrollment)") {

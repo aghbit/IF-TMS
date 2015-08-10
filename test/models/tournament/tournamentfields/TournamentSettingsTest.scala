@@ -10,11 +10,11 @@ class TournamentSettingsTest extends FunSuite {
   test("areValid: simple test") {
 
     //given
-    val underTestValid = TournamentSettings(1, 2, canEnroll = true, 1, "Volleyball")
-    val underTestNotValid1 = TournamentSettings(-1, 2, canEnroll = true, 1, "Volleyball")
-    val underTestNotValid2 = TournamentSettings(0, 2, canEnroll = true, 1, "Volleyball")
-    val underTestNotValid3 = TournamentSettings(1, 1, canEnroll = true, 1, "Volleyball")
-    val underTestNotValid4 = TournamentSettings(1, -1, canEnroll = true, 1, "Volleyball")
+    val underTestValid = TournamentSettings(1, 2, canEnroll = true, 1)
+    val underTestNotValid1 = TournamentSettings(-1, 2, canEnroll = true, 1)
+    val underTestNotValid2 = TournamentSettings(0, 2, canEnroll = true, 1)
+    val underTestNotValid3 = TournamentSettings(1, 1, canEnroll = true, 1)
+    val underTestNotValid4 = TournamentSettings(1, -1, canEnroll = true, 1)
 
     //when
     val resultValid = underTestValid.isValid
