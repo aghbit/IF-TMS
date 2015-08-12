@@ -269,7 +269,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
         $http.get('/api/tournaments/' + $stateParams.id + "/tree").
             success(function(data, status, headers, config) {
                 $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
-                $scope.chartHeight = (Math.pow(2, data.winnersTreeDepth))*50;
+                $scope.chartHeight = (Math.pow(2, data.winnersTreeDepth))*70;
                 halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
                 height = $scope.chartHeight;
                 width = $scope.chartWidth;

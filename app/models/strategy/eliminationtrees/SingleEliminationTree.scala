@@ -1,6 +1,7 @@
 package models.strategy.eliminationtrees
 
-import models.strategy.{Match, EliminationTree}
+import models.strategy.strategies.SingleEliminationStrategy
+import models.strategy.{EliminationStrategy, Match, EliminationTree}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -15,6 +16,8 @@ class SingleEliminationTree (override val _id:ObjectId,
                             override val teamsNumber:Int,
                             override val tournamentType:TournamentType,
                             override val root:TreeNode) extends EliminationTree {
+
+  override val strategy: EliminationStrategy = SingleEliminationStrategy
 
   //sets ID for every match
   private var i = 0
@@ -108,10 +111,10 @@ class SingleEliminationTree (override val _id:ObjectId,
 
   /**
    * Represents max depth of elimination tree. Counts from 0 (final), e.g.
-   * For 32 teams depth equals 7.
-   * For 16 teams depth equals 5
+   * For 32 teams depth equals 4.
+   * For 16 teams depth equals 3
    */
-  override def depth = (Math.log(teamsNumber)/Math.log(2)).asInstanceOf[Int]
+  override def depth = (Math.log(teamsNumber)/Math.log(2)).asInstanceOf[Int]-1
 
   override def getNode(matchID: Int): TreeNode = {
     val stack = new mutable.Stack[TreeNode]()
@@ -151,7 +154,7 @@ class SingleEliminationTree (override val _id:ObjectId,
   override def toJson(): JsObject = {
     Json.obj(
       "losersTreeDepth" -> 0,
-      "winnersTreeDepth" -> (depth+1),
+      "winnersTreeDepth" -> (depth),
       "match" -> root.value.toJson,
       "lefts" -> List(
         root.left.get.toJson("lefts"),

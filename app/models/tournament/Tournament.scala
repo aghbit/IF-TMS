@@ -43,7 +43,7 @@ trait Tournament {
   @throws(classOf[IllegalArgumentException])
   def generateTree():EliminationTree  = {
     try{
-      strategy.generateTree(teams.toList, BeachVolleyball, _id)
+      strategy.generateTree(teams.toList, discipline, _id)
     }catch {
       case e:IllegalArgumentException => throw new IllegalArgumentException(e)
     }

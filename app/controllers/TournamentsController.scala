@@ -7,19 +7,21 @@ import com.mongodb.casbah.commons.MongoDBObject
 import controllers.UsersController._
 import controllers.security.{TournamentAction, TokenImpl, AuthorizationAction}
 import models.enums.ListEnum
-import models.player.players.Captain
-import models.strategy.{Match, EliminationTree}
+import models.player.players.{DefaultPlayerImpl, Captain}
+import models.strategy.{EliminationStrategy, Match, EliminationTree}
 import models.strategy.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamentstates.BeforeEnrollment
-import models.tournament.tournamentfields.{TournamentDescription, TournamentStaff, TournamentProperties}
+import models.tournament.tournamentfields._
+import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
+import org.joda.time.DateTime
 import play.api.libs.json._
 import org.bson.types.ObjectId
 import play.api.mvc.{Action, Controller}
-import repositories.{TeamRepository, EliminationTreeRepository, TournamentRepository}
+import repositories.{PlayerRepository, TeamRepository, EliminationTreeRepository, TournamentRepository}
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import scala.collection.JavaConversions._
 
@@ -27,6 +29,7 @@ import scala.collection.JavaConversions._
 
 
 import scala.concurrent.Future
+import scala.util.Random
 
 /**
  * Created by Szymek.
@@ -180,7 +183,8 @@ object TournamentsController extends Controller{
             matchUpdated.score.addSet()
             matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
           })
-          DoubleEliminationStrategy.updateMatchResult(tree, matchUpdated)
+
+          tree.strategy.updateMatchResult(tree, matchUpdated)
           eliminationTreeRepository.remove(new BasicDBObject("_id", tournamentId))
           eliminationTreeRepository.insert(tree)
           Future.successful(Ok(""))
@@ -188,5 +192,75 @@ object TournamentsController extends Controller{
         case None => Future.successful(NotFound("This tournament has elimination tree. Can't update match"))
 
       }
+  }
+
+  def initDB() = Action.async{
+    request =>
+      initDBHelper("BVTEST8SE", 10, SingleEliminationStrategy, BeachVolleyball, 8, 2)
+      initDBHelper("BVTEST16SE", 18, SingleEliminationStrategy, BeachVolleyball, 16, 2)
+      initDBHelper("BVTEST32SE", 34, SingleEliminationStrategy, BeachVolleyball, 32, 2)
+
+      initDBHelper("BVTEST8DE", 10, DoubleEliminationStrategy, BeachVolleyball, 8, 2)
+      initDBHelper("BVTEST16DE", 18, DoubleEliminationStrategy, BeachVolleyball, 16, 2)
+      initDBHelper("BVTEST32DE", 34, DoubleEliminationStrategy, BeachVolleyball, 32, 2)
+
+      initDBHelper("VTEST8SE", 10, SingleEliminationStrategy, Volleyball, 8, 6)
+      initDBHelper("VTEST16SE", 18, SingleEliminationStrategy, Volleyball, 16, 6)
+      initDBHelper("VTEST32SE", 34, SingleEliminationStrategy, Volleyball, 32, 6)
+
+      initDBHelper("VTEST8DE", 10, DoubleEliminationStrategy, Volleyball, 8, 6)
+      initDBHelper("VTEST16DE", 18, DoubleEliminationStrategy, Volleyball, 16, 6)
+      initDBHelper("VTEST32DE", 34, DoubleEliminationStrategy, Volleyball, 32, 6)
+      //initDBHelper("VTEST128DE", 130, DoubleEliminationStrategy, Volleyball, 128, 6)
+
+      Future.successful(Ok("OK"))
+  }
+
+  private def initDBHelper(name:String, maxTeamsNumber:Int, eliminationStrategy: EliminationStrategy,
+                            discipline:TournamentType, teamsNumber:Int, playersInTeamNumber:Int) = {
+    val names = List("Noah",	"Emma", "Liam",	"Olivia",	"Mason",
+      "Sophia",	"Jacob", "Isabell", "William",	"Ava",  "Ethan",	"Mia")
+    val surnames = List("SMITH",  "JOHNSON", "WILLIAMS", "JONES", "BROWN",
+      "DAVIS", "MILLER", "WILSON")
+    val phones = List("784588969", "784555333", "999333222", "543523444")
+    val mails = List("pas@cs.pl", "knbit@edu.pl", "lol32@jd.pl", "pio@a.pl")
+    val teamNames = (for(i<- 1 to 160) yield "Team"+i).toList
+
+    var tournament = BeforeEnrollment(
+      new TournamentProperties(new TournamentDescription(name, "KRK", "description"),
+        new TournamentTerm(
+          new DateTime().plusDays(2),
+          new DateTime().plusDays(10),
+          new DateTime().plusDays(12),
+          new DateTime().plusDays(14),
+          new DateTime().plusDays(16)
+        ),
+        new TournamentSettings(8, maxTeamsNumber, false, 1)
+      ),
+      new TournamentStaff(new ObjectId("55ca3b9744ae7468a4dca767"), new util.ArrayList()),
+      eliminationStrategy,
+      discipline)
+    val playerRepo = new PlayerRepository
+    val teamRepo = new TeamRepository
+    tournament = tournament.startNext()
+    for(i<- 0 until teamsNumber) {
+      val team = discipline.getNewTeam(teamNames(i))
+      val captain: Captain = Captain(Random.shuffle(names).head,
+        Random.shuffle(surnames).head,
+        Random.shuffle(phones).head,
+        Random.shuffle(mails).head)
+      team.addPlayer(captain)
+      team.setCaptain(captain)
+      playerRepo.insert(captain)
+      for(i <- 1 until playersInTeamNumber){
+        val player: DefaultPlayerImpl = DefaultPlayerImpl(Random.shuffle(names).head, Random.shuffle(surnames).head)
+        team.addPlayer(player)
+        playerRepo.insert(player)
+      }
+      tournament.addTeam(team)
+      teamRepo.insert(team)
+    }
+    val repo = new TournamentRepository
+    repo.insert(tournament)
   }
 }

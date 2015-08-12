@@ -16,6 +16,7 @@ trait EliminationTree extends Iterable[TreeNode]{
   val teamsNumber:Int
   val root:TreeNode
   val tournamentType:TournamentType
+  val strategy:EliminationStrategy
   var firstQF:TreeNode = _
   var secondQF:TreeNode = _
   var thirdQF:TreeNode = _

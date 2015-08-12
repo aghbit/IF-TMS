@@ -44,7 +44,8 @@ object SingleEliminationStrategy extends EliminationStrategy{
 
   def populateTree(eliminationTree: EliminationTree, teams: List[Team]): EliminationTree = {
     val teamsIterator = Random.shuffle(teams.indices.toList).iterator
-    val matches = eliminationTree.getMatchesInNthRound(eliminationTree.depth)
+    val depth: Int = eliminationTree.depth
+    val matches = eliminationTree.getMatchesInNthRound(depth)
     val matchesIterator = matches.iterator
     while(matchesIterator.hasNext){
       val matchToPopulate = matchesIterator.next()

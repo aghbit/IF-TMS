@@ -4,6 +4,7 @@
 
 GET           /                                           controllers.ApplicationController.index
 
+GET           /api/initDB                                 controllers.TournamentsController.initDB()
 
 POST          /api/users                                  controllers.UsersController.createUser
 GET           /api/users/:id                              controllers.UsersController.getUser(id:String)

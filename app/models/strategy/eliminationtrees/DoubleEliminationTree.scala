@@ -1,7 +1,7 @@
 package models.strategy.eliminationtrees
 
 import models.strategy.strategies.DoubleEliminationStrategy
-import models.strategy.{Match, EliminationTree}
+import models.strategy.{EliminationStrategy, Match, EliminationTree}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -18,6 +18,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
                             override val tournamentType: TournamentType,
                             override val root: TreeNode) extends EliminationTree {
 
+  override val strategy: EliminationStrategy = DoubleEliminationStrategy
 
   val leafsNumber = DoubleEliminationStrategy.countLeaf(teamsNumber)
 
@@ -272,4 +273,5 @@ class DoubleEliminationTree(override val _id:ObjectId,
       )
     )
   }
+
 }
