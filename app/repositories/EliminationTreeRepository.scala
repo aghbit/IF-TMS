@@ -7,9 +7,10 @@ import configuration.CasbahMongoDBConfiguration
 import models.enums.ListEnum
 import models.strategy.scores.BeachVolleyballScore
 import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
-import models.strategy.{EliminationTree, Match}
+import models.strategy.{Score, EliminationTree, Match}
 import models.team.Team
-import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
+import models.tournament.tournamenttype.TournamentType
+import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 
 /**
@@ -40,9 +41,9 @@ class EliminationTreeRepository {
     val builder = new MongoDBObjectBuilder()
     builder += ("_id" ->obj._id)
     builder += ("teamsNumber" -> obj.teamsNumber)
-  //  val clazz = obj.tournamentType.getClass
-  //  builder += ("type" -> clazz.toString)
-    val clazz = obj.getClass.getName()
+    val className = obj.tournamentType.getClass.getName
+    builder += ("discipline" -> className)
+    val clazz = obj.getClass.getName
     builder += ("_class" -> clazz)
     var matches:List[Match] = List()
     obj.mapMatches(m => {
@@ -56,26 +57,31 @@ class EliminationTreeRepository {
   def findOne(criteria: DBObject):Option[EliminationTree] = {
     collection.findOne(criteria) match {
       case Some(dbObj) => {
-        val tournamentType = BeachVolleyball
         val document = Imports.wrapDBObj(dbObj.asInstanceOf[DBObject])
         val eliminationTreeID = document.getAs[ObjectId]("_id").get
-        val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
+        val clazz = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
+        val className = document.getAsOrElse[String]("discipline", throw new MongoException("discipline not found!"))
         val teamsNumber = document.getAs[Int]("teamsNumber").get
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
-        var matches:List[Match] = List()
-        while(iterator.hasNext) {
-          val doc = iterator.next().asInstanceOf[DBObject]
-          val m = matchFromDBObject(doc)
-          matches =  matches ::: List(m)
-        }
-        matches = matches.sortWith((m1,m2) => m1.id < m2.id)
-        val strategy = className match {
+        val strategy = clazz match {
           case "models.strategy.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
           case "models.strategy.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
           case _ => throw new NoSuchElementException("This strategy is not implemented")
         }
-        val eliminationTree = strategy.initEmptyTree(eliminationTreeID, teamsNumber, tournamentType)
+        val disipline = className match {
+          case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
+          case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
+          case _ => throw new Exception("NOT IMPLEMENTED!")
+        }
+        var matches:List[Match] = List()
+        while(iterator.hasNext) {
+          val doc = iterator.next().asInstanceOf[DBObject]
+          val m = matchFromDBObject(doc, disipline)
+          matches =  matches ::: List(m)
+        }
+        matches = matches.sortWith((m1,m2) => m1.id < m2.id)
+        val eliminationTree = strategy.initEmptyTree(eliminationTreeID, teamsNumber, disipline)
         var i=0
         eliminationTree.foreachTreeNodes(node => {
           node.value = matches(i)
@@ -89,7 +95,7 @@ class EliminationTreeRepository {
 
   }
 
-  private def matchFromDBObject(dBObject: DBObject):Match = {
+  private def matchFromDBObject(dBObject: DBObject, discipline:TournamentType):Match = {
     val document:MongoDBObject = Imports.wrapDBObj(dBObject.asInstanceOf[DBObject])
     val matchID = document.getAs[Int]("_id").get
 
@@ -118,7 +124,7 @@ class EliminationTreeRepository {
 
     val setsObjectList = document.getAs[MongoDBList]("sets").get
 
-    val score:BeachVolleyballScore = BeachVolleyballScore()
+    val score:Score = discipline.getNewScore()
 
     val iterator = setsObjectList.iterator
     var i:Int=1

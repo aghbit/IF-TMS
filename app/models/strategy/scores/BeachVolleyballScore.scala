@@ -51,13 +51,7 @@ class BeachVolleyballScore extends Score {
   }
 
   override def isHostWinner(): Boolean = {
-    if (isHostWinnerOfNthSet(1) && isHostWinnerOfNthSet(2)) {
-      true
-    } else if (!isHostWinnerOfNthSet(1) && !isHostWinnerOfNthSet(2)) {
-      false
-    } else {
-      isHostWinnerOfNthSet(3)
-    }
+    isMatchFinished() && hostSets.equals(2)
   }
 
   /**
@@ -94,7 +88,7 @@ class BeachVolleyballScore extends Score {
   }
 
   override def isMatchFinished(): Boolean = {
-    isMatchFinished() && hostSets.equals(2)
+    hostSets.equals(2) || guestSets.equals(2)
   }
 
   private def isNthSetFinished(n: Int): Boolean = {
