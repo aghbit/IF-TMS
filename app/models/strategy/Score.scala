@@ -9,6 +9,8 @@ import play.api.libs.json.JsObject
 trait Score {
 
   def isHostWinner():Boolean
+  def isGuestWinner():Boolean
+  def isMatchFinished():Boolean
   def addSet():Unit
   def setScoreInLastSet(hostScore:Int, guestScore:Int):Unit
   /**

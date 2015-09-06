@@ -12,10 +12,8 @@ class BeachVolleyballTeam(val _id: ObjectId,
                           val playersNumber: Int,
                           val benchWarmersNumber: Int) extends VolleyballTeams {
 
-  /**
-   * Only for Spring Data. Don't use it. For more information check: TMS-76
-   */
-  def this() = this(null, null, 0, 0)
+
+  def this(id:ObjectId, name:String) = this(id, name, 0, 0)
 
 
 }

@@ -371,3 +371,30 @@ footer.page-footer {
     color: white;
     background-color: rgba(63, 81, 181, 0.4);
 }
+
+.node {
+    cursor: pointer;
+}
+
+.node text {
+    color: #303f9f
+}
+
+path.link {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.5 px;
+}
+
+#container {
+    background: none;
+    position: fixed;
+    min-height: 100%;
+    min-width: 100%;
+    margin: auto;
+}
+
+.chart {
+    font-family: "Arial";
+    position: absolute;
+}

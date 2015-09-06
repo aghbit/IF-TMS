@@ -9,8 +9,7 @@ import play.api.libs.json.Json
 case class TournamentSettings(var numberOfPitches: Int,
                          var numberOfTeams: Int,
                          var canEnroll: Boolean,
-                         var level: Int,
-                         var discipline: String) {
+                         var level: Int) {
 
   def isValid = numberOfTeams>1 && numberOfPitches>0
 

@@ -1,0 +1,16 @@
+.node text {
+    font: 10px sans-serif;
+}
+
+path.link {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+.remote-control {
+    z-index: 998;
+    position: relative;
+    margin-top:5px;
+    float:right;
+    margin-right:5px;
+}

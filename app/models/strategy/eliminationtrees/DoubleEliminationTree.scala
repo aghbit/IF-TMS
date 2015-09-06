@@ -1,7 +1,7 @@
 package models.strategy.eliminationtrees
 
 import models.strategy.strategies.DoubleEliminationStrategy
-import models.strategy.{Match, EliminationTree}
+import models.strategy.{EliminationStrategy, Match, EliminationTree}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -15,9 +15,10 @@ import scala.collection.mutable
  */
 class DoubleEliminationTree(override val _id:ObjectId,
                             override val teamsNumber:Int,
-                            tournamentType: TournamentType,
-                            root: TreeNode) extends EliminationTree {
+                            override val tournamentType: TournamentType,
+                            override val root: TreeNode) extends EliminationTree {
 
+  override val strategy: EliminationStrategy = DoubleEliminationStrategy
 
   val leafsNumber = DoubleEliminationStrategy.countLeaf(teamsNumber)
 
@@ -182,14 +183,14 @@ class DoubleEliminationTree(override val _id:ObjectId,
     tmp
   }
 
-  override def setQFs(first: TreeNode, second: TreeNode, third: TreeNode, forth: TreeNode): Unit = {
+  def setQFs(first: TreeNode, second: TreeNode, third: TreeNode, forth: TreeNode): Unit = {
     firstQF = first
     secondQF = second
     thirdQF = third
     forthQF = forth
   }
 
-  override def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
@@ -203,7 +204,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
     }
   }
 
-  override def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
@@ -248,13 +249,29 @@ class DoubleEliminationTree(override val _id:ObjectId,
   }
 
   override def toJson(): JsObject = {
-    var i=losersTreeDepth
-    var list:List[JsObject] = List()
-    while(i>=0){
-      val js = Json.obj("round" -> i, "matches" -> getMatchesInNthRound(i).map(m => m.toJson))
-      list = list ::: List(js)
-      i=i-1
-    }
-    Json.obj("rounds" -> list)
+    Json.obj(
+      "losersTreeDepth" -> losersTreeDepth,
+      "winnersTreeDepth" -> winnersTreeDepth,
+      "match" -> root.value.toJson,
+      "lefts" -> List(
+        Json.obj(
+          "match"->root.left.get.value.toJson,
+          "lefts" -> List(
+            root.left.get.left.get.toJson("lefts"),
+            root.right.get.right.get.toJson("lefts")
+          )
+        )
+      ),
+      "rights" -> List(
+        Json.obj(
+          "match"->root.right.get.value.toJson,
+          "rights" -> List(
+            root.left.get.right.get.toJson("rights"),
+            root.right.get.left.get.toJson("rights")
+          )
+        )
+      )
+    )
   }
+
 }

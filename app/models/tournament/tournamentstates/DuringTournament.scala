@@ -6,6 +6,7 @@ import models.strategy.{EliminationTree, EliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
+import models.tournament.tournamenttype.TournamentType
 import models.user.User
 import org.bson.types.ObjectId
 
@@ -18,10 +19,11 @@ class DuringTournament(override val _id: ObjectId,
                        override var properties: TournamentProperties,
                        override var teams: util.ArrayList[Team],
                        override val staff: TournamentStaff,
-                       override var strategy: EliminationStrategy) extends Tournament {
+                       override var strategy: EliminationStrategy,
+                       override val discipline: TournamentType) extends Tournament {
 
   override def startNext(): AfterTournament = {
-    val newState = new AfterTournament(this._id, this.properties, this.teams, staff, strategy)
+    val newState = new AfterTournament(this._id, this.properties, this.teams, staff, strategy, discipline)
     newState
   }
 

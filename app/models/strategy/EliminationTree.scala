@@ -14,15 +14,14 @@ trait EliminationTree extends Iterable[TreeNode]{
 
   val _id:ObjectId
   val teamsNumber:Int
+  val root:TreeNode
+  val tournamentType:TournamentType
+  val strategy:EliminationStrategy
   var firstQF:TreeNode = _
   var secondQF:TreeNode = _
   var thirdQF:TreeNode = _
   var forthQF:TreeNode = _
-  var tournamentType:TournamentType = _
 
-  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int):Unit
-
-  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int):Unit
 
   def depth:Int
 
@@ -31,8 +30,6 @@ trait EliminationTree extends Iterable[TreeNode]{
   def getMatchesInNthRound(n:Int):List[Match]
 
   def getNode(matchID: Int):TreeNode
-
-  def setQFs(first:TreeNode, second:TreeNode, third:TreeNode, forth:TreeNode)
 
   def foreachTreeNodes(f:TreeNode => Unit)
 

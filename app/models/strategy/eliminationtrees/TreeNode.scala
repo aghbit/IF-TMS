@@ -1,6 +1,7 @@
 package models.strategy.eliminationtrees
 
 import models.strategy.Match
+import play.api.libs.json.{Json, JsObject}
 
 import scala.collection.mutable
 
@@ -93,5 +94,35 @@ class TreeNode(var left:Option[TreeNode],
     }
     builder.append("\n")
     builder.result()
+  }
+
+  /**
+   * Returns all nodes as JsObject. Important, param side is a name of list, which contains
+   * kids nodes.
+   * @param side
+   * @return
+   */
+  def toJson(side:String): JsObject = {
+    (left, right) match {
+      case (None, None) => Json.obj("match"->value.toJson)
+      case (Some(l), None) => {
+        Json.obj(
+        "match" -> value.toJson,
+        side -> List(l.toJson(side))
+        )
+      }
+      case (None, Some(r)) => {
+        Json.obj(
+        "match" -> value.toJson,
+        side -> List(r.toJson(side))
+        )
+      }
+      case (Some(l), Some(r)) => {
+        Json.obj(
+        "match" -> value.toJson,
+        side -> List(l.toJson(side), r.toJson(side))
+        )
+      }
+    }
   }
 }

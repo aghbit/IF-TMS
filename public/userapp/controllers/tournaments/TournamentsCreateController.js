@@ -30,7 +30,7 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         var extraBeginTime = $('#extraBeginTime')[0].value;
         var extraEnd = $('#extraEnd')[0].value;
         var extraEndTime = $('#extraEndTime')[0].value;
-        $http.post('/api/tournaments', {
+        $http.post('/api/tournaments', {properties:{
             "description":{"name":$scope.tournamentName, "place":$scope.tournamentPlace, "description":$scope.tournamentDescription},
             "term":{"enrollDeadline": enrollDeadline+" "+enrollDeadlineTime,
                 "begin": begin + " " + beginTime,
@@ -39,9 +39,9 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
                 "extraEnd": extraEnd + " " + extraEndTime
             },
             "settings":{"numberOfPitches":$scope.numberOfPitches, "numberOfTeams":$scope.numberOfTeams,
-                "canEnroll": false, "level": $scope.level, "discipline": $scope.discipline
+                "canEnroll": false, "level": $scope.level
             }
-        }).success(function(){
+        }, strategy:$scope.strategy, discipline: $scope.discipline}).success(function(){
             notification("Tournament created!", 4000, true)
             $location.path("tournaments/myTournaments")
         }).error(function(data, status){

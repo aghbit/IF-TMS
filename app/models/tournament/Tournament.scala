@@ -24,11 +24,13 @@ import scala.collection.JavaConversions._
 
 trait Tournament {
 
+
   val _id: ObjectId
   var properties: TournamentProperties
   var teams: util.ArrayList[Team]
   val staff: TournamentStaff
   var strategy:EliminationStrategy
+  val discipline:TournamentType
 
   def startNext(): Tournament
 
@@ -41,7 +43,7 @@ trait Tournament {
   @throws(classOf[IllegalArgumentException])
   def generateTree():EliminationTree  = {
     try{
-      strategy.generateTree(teams.toList, BeachVolleyball, _id)
+      strategy.generateTree(teams.toList, discipline, _id)
     }catch {
       case e:IllegalArgumentException => throw new IllegalArgumentException(e)
     }
