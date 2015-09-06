@@ -45,7 +45,7 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
     //println("KONIEC!!!!!!!!!!!!!!!!!!!")
 
     //println(eliminationTree.toString())
-    println(eliminationTree.toJson())
+    //println(eliminationTree.toJson())
 
   }
 

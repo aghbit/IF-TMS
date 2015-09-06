@@ -20,7 +20,7 @@ class DoubleEliminationTreeTest extends FunSuite with BeforeAndAfter {
   }
 
   test("Simple test"){
-    println(underTest.toJson().toString())
+    //println(underTest.toJson().toString())
 
   }
 

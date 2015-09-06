@@ -52,7 +52,7 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
   }
 
   after {
-    //underTest.dropCollection()
+    underTest.dropCollection()
   }
   test("Simple"){
     underTest.insert(tree)
