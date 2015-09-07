@@ -10,11 +10,6 @@ case class DefaultPlayerImpl(_id:ObjectId,
                              name:String,
                              surname:String) extends Player {
 
-  /**
-   * Only for Spring Data. Don't use it. For more information check: TMS-76
-   */
-  def this() = this(null, null, null)
-
 }
 
 object DefaultPlayerImpl {

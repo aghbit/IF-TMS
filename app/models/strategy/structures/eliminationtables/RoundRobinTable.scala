@@ -21,7 +21,11 @@ class RoundRobinTable(override val _id:ObjectId,
    */
   val tableSize = teamsNumber - (1-teamsNumber%2)
 
-  private val table = Array.fill[TableNode](tableSize, tableSize)(new TableNode(None, None))
+
+  private val table = Array.tabulate[TableNode](tableSize, tableSize){
+    (y, x) => new TableNode(None, 0, y, x)
+  }
+
 
   val numberOfMatches:Int = (teamsNumber*(teamsNumber-1))/2
 
@@ -59,9 +63,8 @@ class RoundRobinTable(override val _id:ObjectId,
   private def getNodesInNthRound(k:Int):List[TableNode] = {
     (for(
       i <- table.indices;
-      j <- table(i).indices;
-      r <- table(i)(j).round
-      if r == k
+      j <- table(i).indices
+      if table(i)(j).round == k
     ) yield table(i)(j)).toList
   }
 

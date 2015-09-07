@@ -3,16 +3,18 @@ package models.strategy
 
 import play.api.libs.json.JsObject
 
-/**
- * Created by Rafal on 2014-12-07.
- */
 trait Score {
 
-  def isHostWinner():Boolean
-  def isGuestWinner():Boolean
-  def isMatchFinished():Boolean
+  def isHostWinner:Boolean
+
+  def isGuestWinner:Boolean
+
+  def isMatchFinished:Boolean
+
   def addSet():Unit
+
   def setScoreInLastSet(hostScore:Int, guestScore:Int):Unit
+
   /**
    * Return JsObject representation. e.g.
    * {"score": {
