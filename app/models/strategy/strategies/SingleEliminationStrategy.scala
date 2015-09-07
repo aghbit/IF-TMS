@@ -1,8 +1,9 @@
 package models.strategy.strategies
 
 
-import models.strategy.eliminationtrees.{SingleEliminationTree, TreeNode}
-import models.strategy.{Match, EliminationTree, EliminationStrategy}
+import models.strategy.structures.eliminationtrees.{SingleEliminationTree, TreeNode}
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStructure, Match, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -15,7 +16,7 @@ import scala.util.Random
 
 object SingleEliminationStrategy extends EliminationStrategy{
 
-  override def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = {
+  override def initEmpty(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = {
     require(teamsNumber >=2, "Too few teams to generate Single Elimination Tree. Should be >=2.")
 
     val leafsNumber = countLeaf(teamsNumber)
@@ -34,10 +35,10 @@ object SingleEliminationStrategy extends EliminationStrategy{
    * @param tournamentType - Important, because algo has to know which type of score to create.
    * @return single elimination tree
    */
-  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = {
+  override def generate(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = {
     require(teams.length >=2, "Too few teams to generate Single Elimination Tree. Should be >=2.")
 
-    val eliminationTree = initEmptyTree(tournamentID, teams.length, tournamentType)
+    val eliminationTree = initEmpty(tournamentID, teams.length, tournamentType)
 
     populateTree(eliminationTree, teams)
   }
@@ -60,7 +61,7 @@ object SingleEliminationStrategy extends EliminationStrategy{
   }
 
 
-  override def updateMatchResult(eliminationTree: EliminationTree, m: Match): EliminationTree = {
+  override def updateMatchResult(eliminationTree: EliminationStructure, m: Match): EliminationTree = {
     require(eliminationTree.isInstanceOf[SingleEliminationTree], "Single Elimination Strategy needs Single Elimination Tree.")
     updateMatchResultHelper(eliminationTree.asInstanceOf[SingleEliminationTree], m)
   }

@@ -1,7 +1,8 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
 import models.strategy.strategies.SingleEliminationStrategy
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStrategy, Match}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -92,7 +93,7 @@ class SingleEliminationTree (override val _id:ObjectId,
     }
   }
 
-  override def foreachTreeNodes(f:TreeNode => Unit) = {
+  override def foreachNode(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
     while(queue.nonEmpty) {
@@ -147,7 +148,7 @@ class SingleEliminationTree (override val _id:ObjectId,
 
   override def iterator: Iterator[TreeNode] = {
     var list:List[TreeNode] = List()
-    foreachTreeNodes(t => list=List(t) ::: list)
+    foreachNode(t => list=List(t) ::: list)
     list.iterator
   }
 

@@ -7,7 +7,8 @@ import configuration.CasbahMongoDBConfiguration
 import models.enums.ListEnum
 import models.strategy.scores.BeachVolleyballScore
 import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
-import models.strategy.{Score, EliminationTree, Match}
+import models.strategy.structures.EliminationTree
+import models.strategy.{Score, Match}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
@@ -65,8 +66,8 @@ class EliminationTreeRepository {
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
         val strategy = clazz match {
-          case "models.strategy.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
-          case "models.strategy.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
+          case "models.strategy.structures.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
+          case "models.strategy.structures.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
           case _ => throw new NoSuchElementException("This strategy is not implemented")
         }
         val disipline = className match {
@@ -81,14 +82,20 @@ class EliminationTreeRepository {
           matches =  matches ::: List(m)
         }
         matches = matches.sortWith((m1,m2) => m1.id < m2.id)
-        val eliminationTree = strategy.initEmptyTree(eliminationTreeID, teamsNumber, disipline)
+        val eliminationTree = strategy.initEmpty(eliminationTreeID, teamsNumber, disipline)
         var i=0
-        eliminationTree.foreachTreeNodes(node => {
-          node.value = matches(i)
-          i=i+1
-        })
-        Some(eliminationTree)
-      }
+        eliminationTree match {
+          case t:EliminationTree =>{
+            t.foreachNode(node => {
+              node.value = matches(i)
+              i=i+1
+            })
+            Some(t)
+          }
+          case _ => ???
+        }
+        }
+
 
       case None => None
     }

@@ -3,9 +3,9 @@ package repositories
 import com.mongodb.BasicDBObject
 import com.mongodb.casbah.commons.ValidBSONType.{BSONObject, BasicDBObject}
 import models.player.players.Captain
-import models.strategy.EliminationTree
 import models.strategy.scores.BeachVolleyballScore
 import models.strategy.strategies.DoubleEliminationStrategy
+import models.strategy.structures.EliminationTree
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
@@ -31,7 +31,7 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
       t.setCaptain(captain)
     })
     teams.foreach(t => teamsRepo.insert(t))
-    tree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, ObjectId.get())
+    tree = DoubleEliminationStrategy.generate(teams, BeachVolleyball, ObjectId.get())
 
     val iterator = tree.iterator
     var i = 0

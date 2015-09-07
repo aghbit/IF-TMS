@@ -1,4 +1,4 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
 import models.strategy.Match
 import play.api.libs.json.{Json, JsObject}

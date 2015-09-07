@@ -1,6 +1,6 @@
 package models.strategy
 
-import models.strategy.eliminationtrees.TreeNode
+import models.strategy.structures.EliminationTree
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -12,11 +12,11 @@ import org.bson.types.ObjectId
 trait EliminationStrategy {
 
   @throws(classOf[IllegalArgumentException])
-  def generateTree(teams:List[Team], tournamentType: TournamentType, tournamentID:ObjectId):EliminationTree
+  def generate(teams:List[Team], tournamentType: TournamentType, tournamentID:ObjectId):EliminationStructure
 
-  def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree
+  def initEmpty(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationStructure
 
-  def updateMatchResult(eliminationTree: EliminationTree, m:Match):EliminationTree
+  def updateMatchResult(eliminationStructure: EliminationStructure, m:Match):EliminationStructure
 }
 
 

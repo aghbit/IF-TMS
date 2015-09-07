@@ -8,8 +8,9 @@ import controllers.UsersController._
 import controllers.security.{TournamentAction, TokenImpl, AuthorizationAction}
 import models.enums.ListEnum
 import models.player.players.{DefaultPlayerImpl, Captain}
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
-import models.strategy.eliminationtrees.DoubleEliminationTree
+import models.strategy.structures.{EliminationTree, EliminationTable}
+import models.strategy.{EliminationStrategy, Match}
+import models.strategy.structures.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
@@ -138,7 +139,10 @@ object TournamentsController extends Controller{
 
           try {
             val tree = tournament.generateTree()
-            eliminationTreeRepository.insert(tree)
+            tree match {
+              case t:EliminationTree => eliminationTreeRepository.insert(t)
+              case t:EliminationTable => ???
+            }
             Future.successful(Created("Tournament tree has been successfully created."))
           } catch {
             case e:IllegalArgumentException => Future.successful(UnprocessableEntity(e.getMessage))

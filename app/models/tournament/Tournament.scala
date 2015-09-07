@@ -2,7 +2,7 @@ package models.tournament
 
 import java.util
 
-import models.strategy.{EliminationTree, EliminationStrategy}
+import models.strategy.{EliminationStructure, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
@@ -41,9 +41,9 @@ trait Tournament {
   def editTerm(term: TournamentTerm): Unit
 
   @throws(classOf[IllegalArgumentException])
-  def generateTree():EliminationTree  = {
+  def generateTree():EliminationStructure  = {
     try{
-      strategy.generateTree(teams.toList, discipline, _id)
+      strategy.generate(teams.toList, discipline, _id)
     }catch {
       case e:IllegalArgumentException => throw new IllegalArgumentException(e)
     }

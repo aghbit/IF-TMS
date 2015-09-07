@@ -1,12 +1,12 @@
 package models.strategy.strategies
 
 
-
-import models.strategy.{Match, EliminationTree, EliminationStrategy}
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStructure, Match, EliminationStrategy}
 import models.team.Team
-import models.strategy.eliminationtrees.TreeNode
+import models.strategy.structures.eliminationtrees.TreeNode
 import models.tournament.tournamenttype.TournamentType
-import models.strategy.eliminationtrees.DoubleEliminationTree
+import models.strategy.structures.eliminationtrees.DoubleEliminationTree
 import org.bson.types.ObjectId
 
 import scala.util.Random
@@ -63,10 +63,10 @@ object DoubleEliminationStrategy extends EliminationStrategy{
    * @return double elimination tree
    */
   @throws(classOf[IllegalArgumentException])
-  override def generateTree(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
+  override def generate(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
     require(teams.length>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
 
-    val eliminationTree = initEmptyTree(tournamentID, teams.length, tournamentType)
+    val eliminationTree = initEmpty(tournamentID, teams.length, tournamentType)
 
     populateTree(eliminationTree, teams)
   }
@@ -172,7 +172,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     result
   }
 
-  override def initEmptyTree(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): DoubleEliminationTree = {
+  override def initEmpty(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): DoubleEliminationTree = {
     require(teamsNumber>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
 
     val leafNumber = countLeaf(teamsNumber)
@@ -197,7 +197,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     eliminationTree
   }
 
-  override def updateMatchResult(eliminationTree: EliminationTree, m: Match): EliminationTree = {
+  override def updateMatchResult(eliminationTree: EliminationStructure, m: Match): EliminationTree = {
     require(eliminationTree.isInstanceOf[DoubleEliminationTree], "Double Elimination Strategy needs Double Elimination Tree.")
     updateMatchResultHelper(eliminationTree.asInstanceOf[DoubleEliminationTree], m);
   }

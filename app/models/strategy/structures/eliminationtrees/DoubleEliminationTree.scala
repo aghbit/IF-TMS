@@ -1,7 +1,8 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
 import models.strategy.strategies.DoubleEliminationStrategy
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStrategy, Match}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -120,7 +121,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
     helper(n, Some(root))
   }
 
-  override def foreachTreeNodes(f:TreeNode => Unit) = {
+  override def foreachNode(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
     while(queue.nonEmpty) {
@@ -139,7 +140,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   override def toString = {
     val builder = new StringBuilder()
-    foreachTreeNodes(x => builder.append(x.toString))
+    foreachNode(x => builder.append(x.toString))
 
     /*var i = losersTreeDepth
     builder.append("{rounds:[ ")
