@@ -3,6 +3,7 @@ package models.strategy.structures.eliminationtables
 import models.strategy.Match
 import models.strategy.strategies.RoundRobinStrategy
 import models.strategy.structures.EliminationTable
+import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import play.api.libs.json.JsObject
@@ -87,16 +88,28 @@ class RoundRobinTable(override val _id:ObjectId,
   }
 
   override def getMatchesInNthRound(n: Int): List[Match] = {
-    ???
+    (for(
+      row <- table;
+      node <- row
+      if node.round == n;
+      m <- node.value
+    ) yield m).toList
   }
 
   override def toString = {
     val builder = new StringBuilder
-    foreachNode(node =>
-      node.round match {
-        case Some(r) => builder.append(r)
-        case None =>
-      })
+    foreachNode(node =>{
+      builder.append(s"[round=${node.round}")
+      for(
+        m <- node.value;
+        host <- m.host;
+        guest <- m.guest
+      ) builder.append(s", hostName= ${host.name}, guestName= ${guest.name}")
+      builder.append("]")
+      if(node.x == tableSize-1) {
+        builder.append("\n")
+      }
+    })
     builder.result()
   }
 }

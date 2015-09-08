@@ -1,36 +1,29 @@
 package repositories
 
+import com.mongodb.casbah.Imports
 import com.mongodb.{MongoException, BasicDBObject, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder, MongoDBObject}
+import com.mongodb.BasicDBObject
+import com.mongodb.casbah.commons.{MongoDBList, MongoDBObjectBuilder}
 import com.mongodb.util.JSON
 import configuration.CasbahMongoDBConfiguration
-import models.enums.ListEnum
-import models.strategy.scores.BeachVolleyballScore
-import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
-import models.strategy.structures.EliminationTree
-import models.strategy.{Score, Match}
-import models.team.Team
-import models.tournament.tournamenttype.TournamentType
+import models.strategy.Match
+import models.strategy.strategies.RoundRobinStrategy
+import models.strategy.structures.EliminationTable
 import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import repositories.converters.MatchFromDBObjectConverter
 
 /**
- * Created by Szymek Seget on 28.05.15.
+ * Created by Szymek Seget on 08.09.15.
  */
-class EliminationTreeRepository {
+class EliminationTableRepository {
 
-
-  val collectionName: String = "EliminationTrees"
+  val collectionName: String = "EliminationTables"
   val collection = CasbahMongoDBConfiguration.mongo().apply(collectionName)
-
-  private val teamsRepository = new TeamRepository()
-
 
   def remove(query: BasicDBObject) = {
     collection.remove(query)
   }
-
 
   def contains(query: BasicDBObject): Boolean = {
     findOne(query) match {
@@ -39,9 +32,9 @@ class EliminationTreeRepository {
     }
   }
 
-  def insert(obj: EliminationTree): Unit = {
+  def insert(obj:EliminationTable):Unit = {
     val builder = new MongoDBObjectBuilder()
-    builder += ("_id" ->obj._id)
+    builder += ("_id" -> obj._id)
     builder += ("teamsNumber" -> obj.teamsNumber)
     val className = obj.tournamentType.getClass.getName
     builder += ("discipline" -> className)
@@ -56,54 +49,48 @@ class EliminationTreeRepository {
     collection.insert(builder.result())
   }
 
-  def findOne(criteria: DBObject):Option[EliminationTree] = {
-    collection.findOne(criteria) match {
-      case Some(dbObj) => {
+  def findOne(query: BasicDBObject):Option[EliminationTable] = {
+    collection.findOne(query) match {
+      case Some(dbObj) =>
         val document = Imports.wrapDBObj(dbObj.asInstanceOf[DBObject])
-        val eliminationTreeID = document.getAs[ObjectId]("_id").get
+        val eliminationTreeID = document.getAsOrElse[ObjectId]("_id", throw new MongoException("_id not found!"))
         val clazz = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
         val className = document.getAsOrElse[String]("discipline", throw new MongoException("discipline not found!"))
-        val teamsNumber = document.getAs[Int]("teamsNumber").get
-        val matchesDBObjects = document.getAs[MongoDBList]("matches").get
-        val iterator = matchesDBObjects.iterator
+        val teamsNumber = document.getAsOrElse[Int]("teamsNumber", throw new MongoException("teamsNumber not found!"))
+        val matchesDBObject = document.getAsOrElse[MongoDBList]("matches", throw new MongoException("matches not found!"))
         val strategy = clazz match {
-          case "models.strategy.structures.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
-          case "models.strategy.structures.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
-          case _ => throw new NoSuchElementException("This strategy is not implemented")
+          case "models.strategy.structures.eliminationtables.RoundRobinTable" => RoundRobinStrategy
+          case _ => throw new Exception("NOT IMPLEMENTED!")
         }
         val discipline = className match {
           case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
           case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
           case _ => throw new Exception("NOT IMPLEMENTED!")
         }
+        val iterator = matchesDBObject.iterator
         var matches:List[Match] = List()
         while(iterator.hasNext) {
           val doc = iterator.next().asInstanceOf[DBObject]
           val m = MatchFromDBObjectConverter.matchFromDBObject(doc, discipline)
           matches =  matches ::: List(m)
         }
-        matches = matches.sortWith((m1,m2) => m1.id < m2.id)
-        val eliminationTree = strategy.initEmpty(eliminationTreeID, teamsNumber, discipline)
-        var i=0
-        eliminationTree match {
-          case t:EliminationTree =>{
-            t.foreachNode(node => {
-              node.value = matches(i)
-              i=i+1
-            })
+        val eliminationTable = strategy.initEmpty(eliminationTreeID, teamsNumber, discipline)
+        var i = 0
+        eliminationTable match {
+          case t:EliminationTable => {
+            t.foreachNode(
+              node => {node.value = Some(matches(i))
+                i=i+1
+              }
+            )
+            println("!!!!!!!!!!!!!!!1")
+            println(t.toString())
+            println("!!!!!!!!!!!!!!!1")
             Some(t)
           }
-          case _ => ???
+          case _ => throw new Exception("NOT IMPLEMENTED!")
         }
-        }
-
-
       case None => None
     }
-
-  }
-
-  def dropCollection() = {
-    collection.dropCollection()
   }
 }

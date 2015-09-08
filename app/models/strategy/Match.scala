@@ -35,9 +35,9 @@ class Match (var id:Int,
   }
 
   def getWinner(): Option[Team] = {
-    if(score.isHostWinner()){
+    if(score.isHostWinner){
       host
-    } else if (score.isGuestWinner()) {
+    } else if (score.isGuestWinner) {
       guest
     } else {
       None
@@ -45,9 +45,9 @@ class Match (var id:Int,
   }
 
   def getLoser(): Option[Team] = {
-    if(score.isHostWinner()){
+    if(score.isHostWinner){
       guest
-    }else if(score.isGuestWinner()){
+    }else if(score.isGuestWinner){
       host
     }else {
       None

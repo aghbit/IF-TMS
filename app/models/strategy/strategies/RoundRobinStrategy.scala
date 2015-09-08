@@ -35,7 +35,6 @@ object RoundRobinStrategy extends EliminationStrategy {
 
     val table = initEmpty(tournamentID, teams.size, tournamentType)
     val shuffledTeams = Random.shuffle(teams)
-
     table.foreachNode(populate(false, shuffledTeams, tournamentType))
 
     table
@@ -47,13 +46,15 @@ object RoundRobinStrategy extends EliminationStrategy {
   private def populate(isRevenge:Boolean, shuffledTeams:List[Team], tournamentType: TournamentType):TableNode => Unit = {
     node => {
       var host: Some[Team] = Some(shuffledTeams(node.y))
-      val guest: Some[Team] = Some(shuffledTeams(node.x))
+      var guest: Some[Team] = Some(shuffledTeams(node.x))
       var rest:Int = 0
       if(isRevenge){
         rest = 1
       }
       if(node.y == node.x && node.y%2 == rest){
         host = Some(shuffledTeams.last)
+      }else if (node.y == node.x) {
+        guest = Some(shuffledTeams.last)
       }
       node.value = Some(Match(
         host,
