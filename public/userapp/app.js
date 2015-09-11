@@ -48,10 +48,10 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/tournaments/showTeams.html",
             controller: 'TournamentsTeamsShowController'
         })
-        .state('tournaments/id/treeDebug', {
-            url: "/tournaments/{id}/treeDebug",
-            templateUrl: "/assets/userapp/partials/tournaments/treeDebug.html",
-            controller: 'TournamentsTreeDebugController'
+        .state('tournaments/id/debug', {
+            url: "/tournaments/{id}/debug",
+            templateUrl: "/assets/userapp/partials/tournaments/debug.html",
+            controller: 'TournamentsDebugController'
         }).state('tournaments/id/edit-table', {
             url: "/tournaments/{id}/edit-table",
             templateUrl: "/assets/userapp/partials/tournaments/editableTable.html",
@@ -61,6 +61,11 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             url: "/tournaments/{id}/treeShowcase",
             templateUrl: "/assets/userapp/partials/tournaments/treeShowcase.html",
             controller: 'TournamentsTreeShowcaseController'
+        })
+        .state('tournaments/id/tableShowcase', {
+            url: "/tournaments/{id}/tableShowcase",
+            templateUrl: "/assets/userapp/partials/tournaments/tableShowcase.html",
+            controller: 'TournamentsTableShowcaseController'
         })
 
 

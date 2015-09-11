@@ -5,7 +5,7 @@ import java.util
 import com.mongodb.{MongoException, DBObject}
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject, Imports, MongoDBObjectBuilder}
 import models.strategy.EliminationStrategy
-import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
+import models.strategy.strategies.{RoundRobinStrategy, SingleEliminationStrategy, DoubleEliminationStrategy}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
@@ -173,6 +173,7 @@ object TournamentDBObjectConverter {
     val eliminationStrategy = className match {
       case "models.strategy.strategies.DoubleEliminationStrategy$" => DoubleEliminationStrategy
       case "models.strategy.strategies.SingleEliminationStrategy$" => SingleEliminationStrategy
+      case "models.strategy.strategies.RoundRobinStrategy$" => RoundRobinStrategy
       case _ => throw new Exception("NOT IMPLEMENTED!")
     }
     eliminationStrategy

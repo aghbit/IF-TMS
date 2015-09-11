@@ -8,7 +8,8 @@ import models.strategy.Match
 class TableNode(var value:Option[Match],
                  var round:Int,
                  val y:Int,
-                 val x:Int) {
+                 val x:Int,
+                 val revenge:Boolean) {
 
   def toJson = ???
 }

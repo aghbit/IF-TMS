@@ -20,9 +20,13 @@ object RoundRobinStrategy extends EliminationStrategy {
     require(teamsNumber>=2, "Too few teams to generate Round Robin Table. Should be >=2.")
     val table = new RoundRobinTable(id, tournamentType, teamsNumber)
     for(i <- 0 until 2*table.tableSize-1) {
-      val diagonal: List[TableNode] = table.getDiagonal(i)
+      val diagonal: List[TableNode] = table.getTableDiagonal(i)
       diagonal.foreach(t => t.round = (i%(teamsNumber-1))+1)
       }
+    for(i <- 0 until 2*table.tableSize-1) {
+      val diagonal: List[TableNode] = table.getRevengeTableDiagonal(i)
+      diagonal.foreach(t => t.round = (i%(teamsNumber-1))+1+table.numberOfRoundsWithoutRevenge)
+    }
     table
   }
 
@@ -34,27 +38,31 @@ object RoundRobinStrategy extends EliminationStrategy {
     require(teams.size>=2, "Too few teams to generate Round Robin Table. Should be >=2.")
 
     val table = initEmpty(tournamentID, teams.size, tournamentType)
-    val shuffledTeams = Random.shuffle(teams)
-    table.foreachNode(populate(false, shuffledTeams, tournamentType))
+    //val shuffledTeams = Random.shuffle(teams)
+    val shuffledTeams = teams
+    table.foreachNode(populate(shuffledTeams, tournamentType))
 
     table
-
   }
 
   override def updateMatchResult(eliminationTable: EliminationStructure, m: Match): EliminationTable = ???
 
-  private def populate(isRevenge:Boolean, shuffledTeams:List[Team], tournamentType: TournamentType):TableNode => Unit = {
+  private def populate(shuffledTeams:List[Team], tournamentType: TournamentType):TableNode => Unit = {
     node => {
       var host: Some[Team] = Some(shuffledTeams(node.y))
       var guest: Some[Team] = Some(shuffledTeams(node.x))
       var rest:Int = 0
-      if(isRevenge){
+      if(node.revenge){
         rest = 1
       }
       if(node.y == node.x && node.y%2 == rest){
         host = Some(shuffledTeams.last)
       }else if (node.y == node.x) {
         guest = Some(shuffledTeams.last)
+      }else if (node.revenge) {
+        val tmp = host
+        host = guest
+        guest = tmp
       }
       node.value = Some(Match(
         host,

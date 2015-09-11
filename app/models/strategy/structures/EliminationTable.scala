@@ -24,5 +24,7 @@ trait EliminationTable extends Iterable[TableNode] with EliminationStructure {
 
   def foreachNode(f:TableNode => Unit):Unit
 
-  def getDiagonal(k:Int):List[TableNode]
+  def getTableDiagonal(k:Int):List[TableNode]
+  
+  def getRevengeTableDiagonal(k:Int):List[TableNode]
 }

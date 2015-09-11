@@ -1,0 +1,18 @@
+<div class="page-content">
+        <div class="row">
+                <h5 ng-if="rounds.length == 0">Tournaments haven't any rounds.</h5>
+                <ul ng-if="rounds.length != 0" class="collapsible col l12 m12 s12" data-collapsible="accordion" id="rounds">
+                        <li  ng-repeat="round in rounds">
+                                <div class="collapsible-header tournaments-header" ng-click="rotateArrow(round.id)"><i id="list-icon{{ round.id }}" class="mdi-content-send"></i>Round {{round.id}}</div>
+                                <div class="collapsible-body">
+                                        {{round.matches.length}}
+                                        <ul>
+                                                <li ng-repeat="match in round.matches">
+                                                        Host: {{match.host.name}} -  Guest: {{match.guest.name}}
+                                                </li>
+                                        </ul>
+                                </div>
+                        </li>
+                </ul>
+        </div>
+</div>

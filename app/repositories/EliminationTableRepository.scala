@@ -49,7 +49,7 @@ class EliminationTableRepository {
     collection.insert(builder.result())
   }
 
-  def findOne(query: BasicDBObject):Option[EliminationTable] = {
+  def findOne(query: DBObject):Option[EliminationTable] = {
     collection.findOne(query) match {
       case Some(dbObj) =>
         val document = Imports.wrapDBObj(dbObj.asInstanceOf[DBObject])
