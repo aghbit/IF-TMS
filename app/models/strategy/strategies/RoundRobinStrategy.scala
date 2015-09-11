@@ -38,8 +38,7 @@ object RoundRobinStrategy extends EliminationStrategy {
     require(teams.size>=2, "Too few teams to generate Round Robin Table. Should be >=2.")
 
     val table = initEmpty(tournamentID, teams.size, tournamentType)
-    //val shuffledTeams = Random.shuffle(teams)
-    val shuffledTeams = teams
+    val shuffledTeams = Random.shuffle(teams)
     table.foreachNode(populate(shuffledTeams, tournamentType))
 
     table
