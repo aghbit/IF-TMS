@@ -57,6 +57,7 @@ object TournamentsController extends Controller{
       val discipline = tournamentDiscipline match {
         case Right("BeachVolleyball") => Some(BeachVolleyball)
         case Right("Volleyball") => Some(Volleyball)
+        case Right("Speedminton") => Some()
         case _ => None
 
       }

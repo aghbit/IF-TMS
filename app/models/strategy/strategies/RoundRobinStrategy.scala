@@ -44,7 +44,17 @@ object RoundRobinStrategy extends EliminationStrategy {
     table
   }
 
-  override def updateMatchResult(eliminationTable: EliminationStructure, m: Match): EliminationTable = ???
+  override def updateMatchResult(eliminationTable: EliminationStructure, updatedMatch: Match): EliminationTable = {
+    require(eliminationTable.isInstanceOf[EliminationTable], "Round Robin Strategy requires Elimination Table")
+    val table = eliminationTable.asInstanceOf[EliminationTable]
+    table.foreachNode(node =>
+      for(
+        m <- node.value
+        if m.id.equals(updatedMatch.id)
+      ) node.value = Some(updatedMatch)
+    )
+    table
+  }
 
   private def populate(shuffledTeams:List[Team], tournamentType: TournamentType):TableNode => Unit = {
     node => {
