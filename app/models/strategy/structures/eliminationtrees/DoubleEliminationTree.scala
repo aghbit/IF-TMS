@@ -1,14 +1,13 @@
 package models.strategy.structures.eliminationtrees
 
+import models.Participant
 import models.strategy.strategies.DoubleEliminationStrategy
 import models.strategy.structures.EliminationTree
 import models.strategy.{EliminationStrategy, Match}
-import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import play.api.libs.json.{Json, JsObject}
 
-import scala.StringBuilder
 import scala.collection.mutable
 
 /**
@@ -191,31 +190,31 @@ class DoubleEliminationTree(override val _id:ObjectId,
     forthQF = forth
   }
 
-  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToSecondQF(loser: Option[Participant], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
     }
     var places = getMatchesInNthRound(round).reverse
-    while (places.nonEmpty && !places.head.canAddTeam()){
+    while (places.nonEmpty && !places.head.canAddParticipant()){
       places = places.tail
     }
     if(places.nonEmpty){
-      places.head.addTeam(loser)
+      places.head.addParticipant(loser)
     }
   }
 
-  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToThirdQF(loser: Option[Participant], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
     }
     var places = getMatchesInNthRound(round).reverse
-    while (places.nonEmpty && !places.head.canAddTeam()){
+    while (places.nonEmpty && !places.head.canAddParticipant()){
       places = places.tail
     }
     if(places.nonEmpty){
-      places.head.addTeam(loser)
+      places.head.addParticipant(loser)
     }
   }
 

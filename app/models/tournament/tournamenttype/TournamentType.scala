@@ -1,7 +1,7 @@
 package models.tournament.tournamenttype
 
+import models.Participant
 import models.strategy.Score
-import models.team.Team
 import org.bson.types.ObjectId
 
 /**
@@ -10,7 +10,7 @@ import org.bson.types.ObjectId
 trait TournamentType {
 
   def getNewScore():Score
-  def getNewTeam(name: String):Team
-  def getNewTeam(id:ObjectId, name: String):Team
+  def getNewParticipant(nickName: String):Participant
+  def getNewParticipant(id:ObjectId, nickName: String):Participant
 
 }

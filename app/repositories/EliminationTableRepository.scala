@@ -83,9 +83,6 @@ class EliminationTableRepository {
                 i=i+1
               }
             )
-            println("!!!!!!!!!!!!!!!1")
-            println(t.toString())
-            println("!!!!!!!!!!!!!!!1")
             Some(t)
           }
           case _ => throw new Exception("NOT IMPLEMENTED!")

@@ -9,11 +9,11 @@ import org.bson.types.ObjectId
 /**
  * Created by Szymek Seget on 13.09.15.
  */
-object Speedminton extends TournamentType{
+object Speedminton extends TournamentType {
 
   override def getNewScore(): Score = SpeedmintonScore()
 
-  override def getNewTeam(name: String): Team =
+  override def getNewParticipant(name: String): Team = ???
 
-  override def getNewTeam(id: ObjectId, name: String): Team = ???
+  override def getNewParticipant(id: ObjectId, name: String): Team = ???
 }

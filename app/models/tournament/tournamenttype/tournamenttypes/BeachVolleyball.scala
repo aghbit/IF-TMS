@@ -13,7 +13,7 @@ import org.bson.types.ObjectId
 object BeachVolleyball extends TournamentType{
   override def getNewScore(): Score = BeachVolleyballScore()
 
-  override def getNewTeam(name: String): Team = BeachVolleyballTeam(name)
+  override def getNewParticipant(name: String): Team = BeachVolleyballTeam(name)
 
-  override def getNewTeam(id: ObjectId, name: String): Team = new BeachVolleyballTeam(id, name)
+  override def getNewParticipant(id: ObjectId, name: String): Team = new BeachVolleyballTeam(id, name)
 }

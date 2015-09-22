@@ -24,7 +24,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     val node = eliminationTree.getNode(m.id)
     node.value = m
     node.parent match {
-      case Some(n) => n.value.addTeam(winner)
+      case Some(n) => n.value.addParticipant(winner)
       case None => // Koniec turnieju
     }
     if(eliminationTree.firstQF.contains(node)){

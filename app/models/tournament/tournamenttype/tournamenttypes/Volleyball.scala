@@ -14,7 +14,7 @@ object Volleyball extends TournamentType{
 
   override def getNewScore(): Score = VolleyballScore()
 
-  override def getNewTeam(name: String): Team = VolleyballTeam(name)
+  override def getNewParticipant(name: String): Team = VolleyballTeam(name)
 
-  override def getNewTeam(id: ObjectId, name: String): Team = new VolleyballTeam(id, name)
+  override def getNewParticipant(id: ObjectId, name: String): Team = new VolleyballTeam(id, name)
 }

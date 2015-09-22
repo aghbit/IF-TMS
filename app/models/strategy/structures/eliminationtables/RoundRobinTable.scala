@@ -118,7 +118,6 @@ class RoundRobinTable(override val _id:ObjectId,
   override def foreachNode(f:TableNode => Unit):Unit = {
     foreachNodeInTable(table)(f)
     foreachNodeInTable(revengeTable)(f)
-    println("ok")
   }
 
   override def getMatchesInNthRound(n: Int): List[Match] = {

@@ -5,6 +5,7 @@ import controllers.security.AuthorizationAction
 import models.enums.ListEnum
 import models.exceptions.TooManyMembersInTeamException
 import models.player.players.{DefaultPlayerImpl, Captain}
+import models.team.Team
 import models.team.teams.volleyball.volleyballs.{TeamObject, BeachVolleyballTeam}
 import org.bson.types.ObjectId
 import play.api.libs.json.{JsError, Json}
@@ -78,7 +79,7 @@ object TeamsController extends Controller {
         val tournament = tournamentRepository.find(query).get(ListEnum.head)
 
         //Create right Team Class.
-        val team = tournament.discipline.getNewTeam(data.getOrElse("teamName", ""))
+        val team = tournament.discipline.getNewParticipant(data.getOrElse("teamName", "")).asInstanceOf[Team]
 
         //Add captain
         team.addPlayer(captain)

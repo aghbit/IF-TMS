@@ -29,14 +29,10 @@ class RoundRobinStrategy$Test extends FunSuite {
     teams.foreach(t => teamsRepo.insert(t))
     //when
 
-    print(underTest.toString())
-
     val repo = new EliminationTableRepository
     repo.insert(underTest)
     val fromDB = repo.findOne(new BasicDBObject("_id", underTest._id)).get
 
-    println("After:")
-    println(fromDB.toString)
     assert(fromDB.toString.equals(underTest.toString()))
     //then
   }

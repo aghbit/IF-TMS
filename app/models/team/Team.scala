@@ -2,6 +2,7 @@ package models.team
 
 import
 models.player.Player
+import models.Participant
 import models.player.players.Captain
 import org.bson.types.ObjectId
 import play.api.libs.json.JsObject
@@ -9,12 +10,11 @@ import play.api.libs.json.JsObject
 /**
  * Created by Szymek.
  */
-trait Team {
-
-  val _id: ObjectId
-
+trait Team extends Participant {
 
   val name: String
+
+  override def getNickName: String = name
 
   def getMembersIDs: java.util.List[ObjectId]
 

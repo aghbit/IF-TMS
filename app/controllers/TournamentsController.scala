@@ -17,7 +17,7 @@ import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields._
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
+import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
 import org.joda.time.DateTime
 import play.api.libs.json._
 import org.bson.types.ObjectId
@@ -57,7 +57,7 @@ object TournamentsController extends Controller{
       val discipline = tournamentDiscipline match {
         case Right("BeachVolleyball") => Some(BeachVolleyball)
         case Right("Volleyball") => Some(Volleyball)
-        case Right("Speedminton") => Some()
+        case Right("Speedminton") => Some(Speedminton)
         case _ => None
 
       }
@@ -176,9 +176,9 @@ object TournamentsController extends Controller{
       eliminationTreeRepository.findOne(new BasicDBObject("_id", tournamentId)) match {
         case Some(tree) =>
           //only for tests
-          val host = discipline.getNewTeam(new ObjectId(request.body.\("host").\("_id").validate[String].get),
+          val host = discipline.getNewParticipant(new ObjectId(request.body.\("host").\("_id").validate[String].get),
             request.body.\("host").\("name").validate[String].get)
-          val guest = discipline.getNewTeam(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
+          val guest = discipline.getNewParticipant(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
             request.body.\("guest").\("name").validate[String].get)
           val matchUpdated = new Match(matchId, Some(host), Some(guest), discipline.getNewScore())
 
@@ -251,7 +251,7 @@ object TournamentsController extends Controller{
     val teamRepo = new TeamRepository
     tournament = tournament.startNext()
     for(i<- 0 until teamsNumber) {
-      val team = discipline.getNewTeam(teamNames(i))
+      val team = discipline.getNewParticipant(teamNames(i)).asInstanceOf[Team]
       val captain: Captain = Captain(Random.shuffle(names).head,
         Random.shuffle(surnames).head,
         Random.shuffle(phones).head,
