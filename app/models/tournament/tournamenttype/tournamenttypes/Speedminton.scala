@@ -1,8 +1,9 @@
 package models.tournament.tournamenttype.tournamenttypes
 
+import models.Participant
+import models.player.players.SpeedmintonPlayer
 import models.strategy.Score
 import models.strategy.scores.SpeedmintonScore
-import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 
@@ -13,7 +14,7 @@ object Speedminton extends TournamentType {
 
   override def getNewScore(): Score = SpeedmintonScore()
 
-  override def getNewParticipant(name: String): Team = ???
+  override def getNewParticipant(nickName: String): Participant = SpeedmintonPlayer(nickName)
 
-  override def getNewParticipant(id: ObjectId, name: String): Team = ???
+  override def getNewParticipant(id: ObjectId, nickName: String): Participant = SpeedmintonPlayer(id, nickName)
 }

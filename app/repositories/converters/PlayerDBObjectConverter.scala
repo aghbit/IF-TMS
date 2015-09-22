@@ -3,7 +3,7 @@ package repositories.converters
 import com.mongodb.{MongoException, DBObject}
 import com.mongodb.casbah.commons.{Imports, MongoDBObjectBuilder}
 import models.player.Player
-import models.player.players.{DefaultPlayerImpl, Captain}
+import models.player.players.{SpeedmintonPlayer, DefaultPlayerImpl, Captain}
 import org.bson.types.ObjectId
 
 /**
@@ -15,6 +15,7 @@ object PlayerDBObjectConverter {
     val builder = new MongoDBObjectBuilder
     builder += ("_id" -> obj._id)
     builder += ("_class" -> obj.getClass.getName)
+    builder += ("nickName" -> obj.getNickName)
     builder += ("name" -> obj.name)
     builder += ("surname" -> obj.surname)
 
@@ -33,6 +34,7 @@ object PlayerDBObjectConverter {
     val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found!"))
     val name = document.getAsOrElse[String]("name", throw new MongoException("name not found!"))
     val surname = document.getAsOrElse[String]("surname", throw new MongoException("surname not found!"))
+    val nickName = document.getAsOrElse[String]("nickName", throw new MongoException("nickName not found!"))
     val player = className match {
       case "models.player.players.Captain" => {
         val mail = document.getAsOrElse[String]("mail", throw new MongoException("mail not found!"))
@@ -40,6 +42,12 @@ object PlayerDBObjectConverter {
         new Captain(id, name, surname, phone, mail)
       }
       case "models.player.players.DefaultPlayerImpl" => new DefaultPlayerImpl(id, name, surname)
+      case "models.player.players.SpeedmintonPlayer" => {
+        val p = SpeedmintonPlayer(id, nickName)
+        p.name = name
+        p.surname = surname
+        p
+      }
       case _ => throw new Exception("Wrong class name!")
     }
     player

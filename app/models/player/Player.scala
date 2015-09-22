@@ -10,16 +10,17 @@ import assets.ObjectIdFormat._
 trait Player extends Participant{
 
   val _id:ObjectId
-  val name:String
-  val surname:String
+  var name:String
+  var surname:String
 
-  override def getNickName: String = name+" "+surname
+  override def getNickName: String
 
   override def isReadyToSave: Boolean = name!=null && surname!=null
 
   def toJson = {
     Json.obj(
     "id" -> _id,
+    "nickName" -> getNickName,
     "name" -> name,
     "surname" -> surname
     )
