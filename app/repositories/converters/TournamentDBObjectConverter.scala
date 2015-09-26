@@ -18,6 +18,7 @@ import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
+import repositories.factories.ReflectionFactory
 import scala.collection.JavaConversions._
 
 /**
@@ -187,22 +188,18 @@ object TournamentDBObjectConverter {
   def strategyFromDbObject(obj: DBObject) = {
     val document = Imports.wrapDBObj(obj)
     val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found"))
-    val eliminationStrategy = className match {
-      case "models.strategy.strategies.DoubleEliminationStrategy$" => DoubleEliminationStrategy
-      case "models.strategy.strategies.SingleEliminationStrategy$" => SingleEliminationStrategy
-      case "models.strategy.strategies.RoundRobinStrategy$" => RoundRobinStrategy
-      case _ => throw new Exception("NOT IMPLEMENTED!")
+    val eliminationStrategy = ReflectionFactory.build[EliminationStrategy](className) match {
+      case Some(s) => s
+      case None => throw new Exception("Not implemented!")
     }
     eliminationStrategy
   }
   def disciplineFromDbObject(obj: DBObject) = {
     val document = Imports.wrapDBObj(obj)
     val className = document.getAsOrElse[String]("_class", throw new MongoException("_class not found"))
-    val discipline = className match {
-      case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
-      case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
-      case "models.tournament.tournamenttype.tournamenttypes.Speedminton$" => Speedminton
-      case _ => throw new Exception("NOT IMPLEMENTED!")
+    val discipline = ReflectionFactory.build[TournamentType](className) match {
+      case Some(s) => s
+      case None => throw new Exception("Not implemented!")
     }
     discipline
   }

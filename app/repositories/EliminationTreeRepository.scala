@@ -14,6 +14,7 @@ import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import repositories.converters.MatchFromDBObjectConverter
+import repositories.factories.ReflectionFactory
 
 /**
  * Created by Szymek Seget on 28.05.15.
@@ -71,10 +72,9 @@ class EliminationTreeRepository {
           case "models.strategy.structures.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
           case _ => throw new NoSuchElementException("This strategy is not implemented")
         }
-        val discipline = className match {
-          case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
-          case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
-          case _ => throw new Exception("NOT IMPLEMENTED!")
+        val discipline = ReflectionFactory.build[TournamentType](className) match {
+          case Some(s) => s
+          case None => throw new Exception("NOT IMPLEMENTED!")
         }
         var matches:List[Match] = List()
         while(iterator.hasNext) {

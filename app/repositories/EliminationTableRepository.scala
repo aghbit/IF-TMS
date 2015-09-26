@@ -9,9 +9,11 @@ import configuration.CasbahMongoDBConfiguration
 import models.strategy.Match
 import models.strategy.strategies.RoundRobinStrategy
 import models.strategy.structures.EliminationTable
+import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import repositories.converters.MatchFromDBObjectConverter
+import repositories.factories.ReflectionFactory
 
 /**
  * Created by Szymek Seget on 08.09.15.
@@ -62,11 +64,9 @@ class EliminationTableRepository {
           case "models.strategy.structures.eliminationtables.RoundRobinTable" => RoundRobinStrategy
           case _ => throw new Exception("NOT IMPLEMENTED!")
         }
-        val discipline = className match {
-          case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
-          case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
-          case "models.tournament.tournamenttype.tournamenttypes.Speedminton$" => Speedminton
-          case _ => throw new Exception("NOT IMPLEMENTED!")
+        val discipline = ReflectionFactory.build[TournamentType](className) match {
+          case Some(s) => s
+          case None => throw new Exception("NOT IMPLEMENTED!")
         }
         val iterator = matchesDBObject.iterator
         var matches:List[Match] = List()
