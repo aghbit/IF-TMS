@@ -106,7 +106,7 @@ class Match (var id:Int,
 
 }
 object Match {
-  def apply(host:Option[Team], guest:Option[Team], tournamentType: TournamentType) = {
+  def apply(host:Option[Participant], guest:Option[Participant], tournamentType: TournamentType) = {
     new Match(0, host, guest, tournamentType.getNewScore())
   }
 }

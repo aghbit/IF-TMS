@@ -21,7 +21,7 @@ class RoundRobinStrategy$Test extends FunSuite {
     //val underTest = RoundRobinStrategy.initEmpty(new ObjectId(), 10, BeachVolleyball)
     val teams:List[Team] = (for(i <- 1 to 10) yield VolleyballTeam("Team"+i)).toList
     val underTest = RoundRobinStrategy.generate(teams, Volleyball, new ObjectId())
-
+    println(teams.length)
     val teamsRepo = new TeamRepository
     val captain = Captain("nameC", "surnameC", "784588969", "mailC")
     for(t <- teams ;i <- 0 to 4) t.addPlayer(captain)

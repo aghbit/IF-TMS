@@ -1,5 +1,6 @@
 package models.strategy.strategies
 
+import models.Participant
 import models.strategy.structures.EliminationTable
 import models.strategy.structures.eliminationtables.{TableNode, RoundRobinTable}
 import models.strategy.{EliminationStrategy, EliminationStructure, Match}
@@ -17,7 +18,7 @@ object RoundRobinStrategy extends EliminationStrategy {
   override def initEmpty(id: ObjectId,
                          teamsNumber: Int,
                          tournamentType: TournamentType): EliminationTable = {
-    require(teamsNumber>=2, "Too few teams to generate Round Robin Table. Should be >=2.")
+    require(teamsNumber>=2, "Too few participants to generate Round Robin Table. Should be >=2.")
     val table = new RoundRobinTable(id, tournamentType, teamsNumber)
     for(i <- 0 until 2*table.tableSize-1) {
       val diagonal: List[TableNode] = table.getTableDiagonal(i)
@@ -32,10 +33,10 @@ object RoundRobinStrategy extends EliminationStrategy {
 
 
   @throws(classOf[IllegalArgumentException])
-  override def generate(teams: List[Team],
+  override def generate(teams: List[Participant],
                         tournamentType: TournamentType,
                         tournamentID: ObjectId): EliminationTable = {
-    require(teams.size>=2, "Too few teams to generate Round Robin Table. Should be >=2.")
+    require(teams.size>=2, "Too few participants to generate Round Robin Table. Should be >=2.")
 
     val table = initEmpty(tournamentID, teams.size, tournamentType)
     val shuffledTeams = Random.shuffle(teams)
@@ -56,10 +57,10 @@ object RoundRobinStrategy extends EliminationStrategy {
     table
   }
 
-  private def populate(shuffledTeams:List[Team], tournamentType: TournamentType):TableNode => Unit = {
+  private def populate(shuffledTeams:List[Participant], tournamentType: TournamentType):TableNode => Unit = {
     node => {
-      var host: Some[Team] = Some(shuffledTeams(node.y))
-      var guest: Some[Team] = Some(shuffledTeams(node.x))
+      var host: Some[Participant] = Some(shuffledTeams(node.y))
+      var guest: Some[Participant] = Some(shuffledTeams(node.x))
       var rest:Int = 0
       if(node.revenge){
         rest = 1

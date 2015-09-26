@@ -58,7 +58,8 @@ object TeamDBObjectConverter {
         benchWarmers.foreach(b => team.addBenchWarmer(b))
         team.setCaptain(captain)
         team
-      case _ => throw new Exception("Wrong class name!")
+      case s:String => throw new Exception("Wrong class name !" + s)
+      case _ => throw new Exception("Something went wrong.")
     }
   }
 

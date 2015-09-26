@@ -1,6 +1,7 @@
 package models.strategy.strategies
 
 
+import models.Participant
 import models.strategy.structures.eliminationtrees.{SingleEliminationTree, TreeNode}
 import models.strategy.structures.EliminationTree
 import models.strategy.{EliminationStructure, Match, EliminationStrategy}
@@ -17,7 +18,7 @@ import scala.util.Random
 object SingleEliminationStrategy extends EliminationStrategy{
 
   override def initEmpty(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): EliminationTree = {
-    require(teamsNumber >=2, "Too few teams to generate Single Elimination Tree. Should be >=2.")
+    require(teamsNumber >=2, "Too few participants to generate Single Elimination Tree. Should be >=2.")
 
     val leafsNumber = countLeaf(teamsNumber)
     val treeDepth = countTreeDepth(leafsNumber)
@@ -28,22 +29,22 @@ object SingleEliminationStrategy extends EliminationStrategy{
   }
 
   /**
-   * Generates single elimination tree, with populated teams. Teams are populated randomly.
+   * Generates single elimination tree, with populated participants. Teams are populated randomly.
    * Matches are numbered (Like bfs. e.g Final 0, left SF 1, right SF 2 ...).
    *
-   * @param teams - The tree is populated by this teams randomly.
+   * @param teams - The tree is populated by this participants randomly.
    * @param tournamentType - Important, because algo has to know which type of score to create.
    * @return single elimination tree
    */
-  override def generate(teams: List[Team], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = {
-    require(teams.length >=2, "Too few teams to generate Single Elimination Tree. Should be >=2.")
+  override def generate(teams: List[Participant], tournamentType: TournamentType, tournamentID: ObjectId): EliminationTree = {
+    require(teams.length >=2, "Too few participants to generate Single Elimination Tree. Should be >=2.")
 
     val eliminationTree = initEmpty(tournamentID, teams.length, tournamentType)
 
     populateTree(eliminationTree, teams)
   }
 
-  def populateTree(eliminationTree: EliminationTree, teams: List[Team]): EliminationTree = {
+  def populateTree(eliminationTree: EliminationTree, teams: List[Participant]): EliminationTree = {
     val teamsIterator = Random.shuffle(teams.indices.toList).iterator
     val depth: Int = eliminationTree.depth
     val matches = eliminationTree.getMatchesInNthRound(depth)
@@ -106,7 +107,7 @@ object SingleEliminationStrategy extends EliminationStrategy{
   }
 
   /**
-   * Returns how many teams leafs are needed to populate n Teams.
+   * Returns how many participants leafs are needed to populate n Teams.
    * e.g n=8 returns 8, n=17 returns 32.
    * @param n
    * @return Int - number of leafs

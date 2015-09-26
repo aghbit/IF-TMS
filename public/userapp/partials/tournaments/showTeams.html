@@ -1,36 +1,62 @@
 <div class="page-content">
     <div class="row">
-        <p class="col s8 m7 flow-text"><b>{{tournament.description.name}} teams:</b></p>
+        <p class="col s8 m7 flow-text"><b>{{tournament.description.name}} Participants:</b></p>
         <a download="teams.csv" ng-click="generateCSV()" ng-href="{{ url }}" class="right read-more btn indigo waves-effect waves-light">Generate CSV</a>
     </div>
     <div class="row">
-        <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
-        <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection"  id="team-collaps">
-            <li ng-repeat="team in teams">
-                <div class="collapsible-header">
-                    <b>{{team.name}}</b>
-                    <a ng-click="deleteTeamPopUp(team)" class="clickable right"><i class="mdi-content-clear"></i></a>
-                    <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
-                </div>
-                <div class="collapsible-body">
-                    <ul class="collection">
-                        <li class="collection-item active">
-                            Captain:  {{team.captain.name + " " + team.captain.surname}}
-                            <div class="right indigo-button">
-                                <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
-                            </div>
+        <div ng-show="tournament.participantType == 'team'">
+            <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
+            <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection"  id="team-collaps">
+                <li ng-repeat="team in teams">
+                    <div class="collapsible-header">
+                        <b>{{team.nickName}}</b>
+                        <a ng-click="deleteParticipantPopUp(team)" class="clickable right"><i class="mdi-content-clear"></i></a>
+                        <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
+                    </div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <li class="collection-item active">
+                                Captain:  {{team.captain.name + " " + team.captain.surname}}
+                                <div class="right indigo-button">
+                                    <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
+                                </div>
 
-                        </li>
-                        <li ng-repeat="player in team.players" class="collection-item">
-                            {{player.name + " " + player.surname}}
-                            <a ng-click="deletePlayerCheck(team,player)" class="right clickable mdi-content-clear"></a>
-                        </li>
-                        <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
-                        <i class="mdi-content-add"></i>Add Player</a>
-                    </ul>
-                </div>
-            </li>
-            <a ng-click="addAnotherTeam()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Team</a>
-        </ul>
+                            </li>
+                            <li ng-repeat="player in team.players" class="collection-item">
+                                {{player.name + " " + player.surname}}
+                                <a ng-click="deletePlayerCheck(team,player)" class="right clickable mdi-content-clear"></a>
+                            </li>
+                            <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
+                            <i class="mdi-content-add"></i>Add Player</a>
+                        </ul>
+                    </div>
+                </li>
+                <a ng-click="addAnotherTeam()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Team</a>
+            </ul>
+        </div>
+        <div ng-show="tournament.participantType == 'player'">
+            <h5 ng-if="players.length == 0">No players have enrolled yet!</h5>
+            <ul ng-if="players.length != 0" class="collapsible col l8 offset-l2 collection"  id="player-collaps">
+                <li ng-repeat="player in players">
+                    <div class="collapsible-header">
+                        <b>{{player.nickName}}</b>
+                        <a ng-click="deleteParticipantPopUp(player)" class="clickable right"><i class="mdi-content-clear"></i></a>
+                        <a ng-click="editPlayer(player.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
+                    </div>
+                    <div class="collapsible-body">
+                        <ul class="collection">
+                            <li class="collection-item active">
+                                Player:  {{player.name + " " + player.surname}}
+                                <div class="right indigo-button">
+                                    <a ng-click="showContactInfo(player)" class="clickable">Contact</a>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <a ng-click="addAnotherSinglePlayer()" class="clickable collection-item active"><i class="mdi-content-add"></i>Add Player</a>
+            </ul>
+        </div>
     </div>
 </div>

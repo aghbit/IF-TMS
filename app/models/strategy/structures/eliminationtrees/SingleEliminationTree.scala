@@ -112,8 +112,8 @@ class SingleEliminationTree (override val _id:ObjectId,
 
   /**
    * Represents max depth of elimination tree. Counts from 0 (final), e.g.
-   * For 32 teams depth equals 4.
-   * For 16 teams depth equals 3
+   * For 32 participants depth equals 4.
+   * For 16 participants depth equals 3
    */
   override def depth = (Math.log(teamsNumber)/Math.log(2)).asInstanceOf[Int]-1
 

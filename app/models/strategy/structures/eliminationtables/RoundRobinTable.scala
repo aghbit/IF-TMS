@@ -142,7 +142,7 @@ class RoundRobinTable(override val _id:ObjectId,
       "numebrOfMatchesWithoutRevenge" -> numberOfMatchesWithoutRevenge,
       "numberOfRoundsWithoutRevenge" -> numberOfRoundsWithoutRevenge,
       "rounds" ->
-        (for(i<- 1 until numberOfRoundsWithRevenge)
+        (for(i<- 1 to numberOfRoundsWithRevenge)
           yield Json.obj("id" -> i.toString,
             "matches" -> getMatchesInNthRound(i).map(m => m.toJson))
       ).toList

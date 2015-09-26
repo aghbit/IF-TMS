@@ -1,6 +1,7 @@
 package models.strategy.strategies
 
 
+import models.Participant
 import models.strategy.structures.EliminationTree
 import models.strategy.{EliminationStructure, Match, EliminationStrategy}
 import models.team.Team
@@ -35,7 +36,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
     eliminationTree
   }
 
-  private def populateTree(eliminationTree: DoubleEliminationTree, teams: List[Team]): EliminationTree = {
+  private def populateTree(eliminationTree: DoubleEliminationTree, teams: List[Participant]): EliminationTree = {
     val teamsIterator = Random.shuffle(teams.indices.toList).toIterator
     val matches = eliminationTree.getMatchesInNthRound(eliminationTree.winnersTreeDepth)
     val firstQF = matches.take(eliminationTree.leafsNumber/4)
@@ -55,16 +56,16 @@ object DoubleEliminationStrategy extends EliminationStrategy{
   }
 
   /**
-   * Generates double elimination tree, with populated teams. Teams are populated randomly.
+   * Generates double elimination tree, with populated participants. Teams are populated randomly.
    * Matches are numbered (Like bfs. e.g Final 0, left SF 1, right SF 2 ...).
    *
-   * @param teams - The tree is populated by this teams randomly.
+   * @param teams - The tree is populated by this participants randomly.
    * @param tournamentType - Important, because algo has to know which type of score to create.
    * @return double elimination tree
    */
   @throws(classOf[IllegalArgumentException])
-  override def generate(teams: List[Team], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
-    require(teams.length>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
+  override def generate(teams: List[Participant], tournamentType: TournamentType, tournamentID:ObjectId): EliminationTree = {
+    require(teams.length>=8, "Too few participants to generate DoubleEliminationTree. Should be >=8.")
 
     val eliminationTree = initEmpty(tournamentID, teams.length, tournamentType)
 
@@ -159,7 +160,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
   }
 
   /**
-   * Returns how many teams leafs are needed to populate n Teams.
+   * Returns how many participants leafs are needed to populate n Teams.
    * e.g n=8 returns 8, n=17 returns 32.
    * @param n
    * @return Int - number of leafs
@@ -173,7 +174,7 @@ object DoubleEliminationStrategy extends EliminationStrategy{
   }
 
   override def initEmpty(id:ObjectId, teamsNumber: Int, tournamentType: TournamentType): DoubleEliminationTree = {
-    require(teamsNumber>=8, "Too few teams to generate DoubleEliminationTree. Should be >=8.")
+    require(teamsNumber>=8, "Too few participants to generate DoubleEliminationTree. Should be >=8.")
 
     val leafNumber = countLeaf(teamsNumber)
     val winnerTreeDepth = countWinnerDepth(leafNumber)

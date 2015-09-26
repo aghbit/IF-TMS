@@ -3,7 +3,7 @@ package repositories.converters
 import com.mongodb.{MongoException, DBObject}
 import com.mongodb.casbah.commons.{Imports, MongoDBObjectBuilder}
 import models.player.Player
-import models.player.players.{SpeedmintonPlayer, DefaultPlayerImpl, Captain}
+import models.player.players.{SinglePlayer, SpeedmintonPlayer, DefaultPlayerImpl, Captain}
 import org.bson.types.ObjectId
 
 /**
@@ -23,6 +23,9 @@ object PlayerDBObjectConverter {
       case objCaptain: Captain =>
         builder += ("mail" -> objCaptain.mail)
         builder += ("phone" -> objCaptain.phone)
+      case objSinglePlayer: SinglePlayer =>
+        for(m <- objSinglePlayer.mail) builder += ("mail" -> m)
+        for(p <- objSinglePlayer.phone) builder += ("phone" -> p)
       case _ =>
     }
     builder.result()
@@ -46,6 +49,8 @@ object PlayerDBObjectConverter {
         val p = SpeedmintonPlayer(id, nickName)
         p.name = name
         p.surname = surname
+        p.phone = document.getAs[String]("phone")
+        p.mail = document.getAs[String]("mail")
         p
       }
       case _ => throw new Exception("Wrong class name!")

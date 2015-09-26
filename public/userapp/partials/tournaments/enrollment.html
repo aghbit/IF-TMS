@@ -19,7 +19,7 @@
                     <i class="mdi-image-healing"></i> Pitches: {{tournament.settings.numberOfPitches}}
                 </h5>
                 <h5 class="col l6 ">
-                    <i class="mdi-social-people"></i> Max teams: {{tournament.settings.numberOfTeams}}
+                    <i class="mdi-social-people"></i> Max participants: {{tournament.settings.numberOfTeams}}
                 </h5>
                 <h5 class="col l6 ">
                     <i class="mdi-social-poll"></i> Level: {{tournament.settings.level}}
@@ -33,47 +33,81 @@
 
         </div>
         <div class="row col s6">
+            <div ng-show="participantType == 'team'">
+                <form ng-submit="submitTeam()" class="col l8 offset-l2">
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{teamNameError ? 'invalid' : ''}}" id="teamName" type="text" ng-model="teamName" ng-blur="teamNameError = validateLength(teamName, 5, 20)">
+                            <label for="teamName">Team Name</label>
+                            <span ng-if="teamNameError != ''" class="inputValidationError">{{teamNameError}}</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{captainNameError ? 'invalid' : ''}}" id="captainName" type="text" ng-model="captainName" ng-blur="captainNameError = validateLength(captainName, 3, 20)">
+                            <label for="captainName">Captain Name</label>
+                            <span ng-if="captainNameError != ''" class="inputValidationError">{{captainNameError}}</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{captainSurnameError ? 'invalid' : ''}}" id="captainSurname" type="text" ng-model="captainSurname" ng-blur="captainSurnameError = validateLength(captainSurname, 3, 30)">
+                            <label for="captainSurname">Captain Surname</label>
+                            <span ng-if="captainSurnameError != ''" class="inputValidationError">{{captainSurnameError}}</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{captainPhoneClass}}" id="captainPhone" type="tel" ng-model="captainPhone" ng-blur="captainPhoneClass = validatePattern(captainPhone, '^[0-9]{9}$' )">
+                            <label for="captainPhone">Captain Phone</label>
+                            <span ng-if="captainPhoneClass == 'invalid'" class="inputValidationError">This must be a valid 9-digit phone numbers.</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="captainMailClass = validatePattern(captainMail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
+                            <label for="captainMail">Captain Mail</label>
+                            <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Enroll team!<i class="mdi-content-send right"></i></button>
 
-        <form ng-submit="submit()" class="col l8 offset-l2">
-            <div class="row col l12">
-                <div class="input-field">
-                    <input class="{{teamNameError ? 'invalid' : ''}}" id="teamName" type="text" ng-model="teamName" ng-blur="teamNameError = validateLength(teamName, 5, 20)">
-                    <label for="teamName">Team Name</label>
-                    <span ng-if="teamNameError != ''" class="inputValidationError">{{teamNameError}}</span>
-                </div>
+                </form>
             </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <input class="{{captainNameError ? 'invalid' : ''}}" id="captainName" type="text" ng-model="captainName" ng-blur="captainNameError = validateLength(captainName, 3, 20)">
-                    <label for="captainName">Captain Name</label>
-                    <span ng-if="captainNameError != ''" class="inputValidationError">{{captainNameError}}</span>
-                </div>
-            </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <input class="{{captainSurnameError ? 'invalid' : ''}}" id="captainSurname" type="text" ng-model="captainSurname" ng-blur="captainSurnameError = validateLength(captainSurname, 3, 30)">
-                    <label for="captainSurname">Captain Surname</label>
-                    <span ng-if="captainSurnameError != ''" class="inputValidationError">{{captainSurnameError}}</span>
-                </div>
-            </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <input class="{{captainPhoneClass}}" id="captainPhone" type="tel" ng-model="captainPhone" ng-blur="captainPhoneClass = validatePattern(captainPhone, '^[0-9]{9}$' )">
-                    <label for="captainPhone">Captain Phone</label>
-                    <span ng-if="captainPhoneClass == 'invalid'" class="inputValidationError">This must be a valid 9-digit phone numbers.</span>
-                </div>
-            </div>
-            <div class="row col l12">
-                <div class="input-field">
-                    <input class="{{captainMailClass}}" id="captainMail" type="email" ng-model="captainMail" ng-blur="captainMailClass = validatePattern(captainMail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
-                    <label for="captainMail">Captain Mail</label>
-                    <span ng-if="captainMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
-                </div>
-            </div>
-            <button class="btn waves-effect waves-light" type="submit" id="submit" name="submit">Enroll team!<i class="mdi-content-send right"></i></button>
+            <div ng-show="participantType == 'player'">
+                <form ng-submit="submitPlayer()" class="col l8 offset-l2">
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{playerNameError ? 'invalid' : ''}}" id="playerName" type="text" ng-model="playerName" ng-blur="playerNameError = validateLength(playerName, 3, 20)">
+                            <label for="playerName">Player Name</label>
+                            <span ng-if="playerNameError != ''" class="inputValidationError">{{playerNameError}}</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{playerSurnameError ? 'invalid' : ''}}" id="playerSurname" type="text" ng-model="playerSurname" ng-blur="playerSurnameError = validateLength(playerSurname, 3, 30)">
+                            <label for="playerSurname">Player Surname</label>
+                            <span ng-if="captainSurnameError != ''" class="inputValidationError">{{playerSurnameError}}</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{playerPhoneClass}}" id="playerPhone" type="tel" ng-model="playerPhone" ng-blur="playerPhoneClass = validatePattern(playerPhone, '^[0-9]{9}$' )">
+                            <label for="playerPhone">Player Phone</label>
+                            <span ng-if="playerPhoneClass == 'invalid'" class="inputValidationError">This must be a valid 9-digit phone numbers.</span>
+                        </div>
+                    </div>
+                    <div class="row col l12">
+                        <div class="input-field">
+                            <input class="{{playerMailClass}}" id="playerMail" type="email" ng-model="playerMail" ng-blur="playerMailClass = validatePattern(playerMail, '[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?' )">
+                            <label for="playerMail">Player Mail</label>
+                            <span ng-if="playerMailClass == 'invalid'" class="inputValidationError">This must be a valid email address.</span>
+                        </div>
+                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" id="submitPlayer" name="submit">Enroll player!<i class="mdi-content-send right"></i></button>
 
-        </form>
-
+                </form>
+            </div>
         </div>
         <h5 class="col l12 center-align" ng-bind-html="tournament.description.description"></h5>
 

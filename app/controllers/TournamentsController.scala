@@ -264,7 +264,7 @@ object TournamentsController extends Controller{
         team.addPlayer(player)
         playerRepo.insert(player)
       }
-      tournament.addTeam(team)
+      tournament.addParticipant(team)
       teamRepo.insert(team)
     }
     val repo = new TournamentRepository

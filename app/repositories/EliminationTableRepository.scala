@@ -9,7 +9,7 @@ import configuration.CasbahMongoDBConfiguration
 import models.strategy.Match
 import models.strategy.strategies.RoundRobinStrategy
 import models.strategy.structures.EliminationTable
-import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
+import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import repositories.converters.MatchFromDBObjectConverter
 
@@ -65,6 +65,7 @@ class EliminationTableRepository {
         val discipline = className match {
           case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
           case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
+          case "models.tournament.tournamenttype.tournamenttypes.Speedminton$" => Speedminton
           case _ => throw new Exception("NOT IMPLEMENTED!")
         }
         val iterator = matchesDBObject.iterator

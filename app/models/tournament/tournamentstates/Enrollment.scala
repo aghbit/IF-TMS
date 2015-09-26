@@ -2,6 +2,7 @@ package models.tournament.tournamentstates
 
 import java.util
 
+import models.Participant
 import models.strategy.EliminationStrategy
 import models.team.Team
 import models.tournament.Tournament
@@ -17,25 +18,25 @@ import scala.collection.JavaConversions._
  */
 class Enrollment(override val _id: ObjectId,
                  override var properties: TournamentProperties,
-                 override var teams: util.ArrayList[Team],
+                 override var participants: util.ArrayList[Participant],
                  override val staff: TournamentStaff,
                   override var strategy: EliminationStrategy,
                  override val discipline: TournamentType) extends Tournament {
 
   override def startNext(): Break = {
-    val newState = new Break(this._id, this.properties, this.teams, staff, strategy, discipline)
+    val newState = new Break(this._id, this.properties, this.participants, staff, strategy, discipline)
     newState.properties.settings.canEnroll = false
     newState
   }
 
-  override def addTeam(team: Team): Unit = {
-    teams.add(team)
+  override def addParticipant(participant: Participant): Unit = {
+    participants.add(participant)
   }
 
-  override def removeTeam(team: Team): Unit = {
-    if (!teams.contains(team))
-      throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams.remove(team)
+  override def removeParticipant(participant: Participant): Unit = {
+    if (!participants.contains(participant))
+      throw new NoSuchElementException("Can't remove absent participant from the Tournament!")
+    participants.remove(participant)
   }
 
   override def editTerm(term: TournamentTerm): Unit = {

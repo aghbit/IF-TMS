@@ -84,7 +84,7 @@ object TeamsController extends Controller {
         //Add captain
         team.addPlayer(captain)
         team.setCaptain(captain)
-        tournament.addTeam(team)
+        tournament.addParticipant(team)
 
         //Insert team & captain to DB.
         try {
@@ -112,12 +112,12 @@ object TeamsController extends Controller {
     request =>
       val query = new BasicDBObject("_id", new ObjectId(id))
       val tournament = tournamentRepository.find(query).get(ListEnum.head)
-      val teamsIDs = tournament.getTeams.map(t => t._id)
+      val teamsIDs = tournament.getParticipants.map(t => t._id)
       val teams = teamsIDs.map(teamID => {
         val criteria = new BasicDBObject("_id", teamID)
-        teamRepository.findOne(criteria).get
+        teamRepository.findOne(criteria)
       })
-      val teamsJSON = teams.map(team => team.toJson)
+      val teamsJSON = for(team <- teams; t<- team) yield t.toJson
       Future.successful(Ok(Json.toJson(teamsJSON)))
   }
 
@@ -132,7 +132,7 @@ object TeamsController extends Controller {
 
       try {
         players.foreach(p => playerRepository.remove(p))
-        tournament.removeTeam(team)
+        tournament.removeParticipant(team)
         teamRepository.remove(team)
         tournamentRepository.insert(tournament)
         Future.successful(Ok("Team removed!"))

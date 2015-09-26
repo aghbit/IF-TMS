@@ -1,6 +1,7 @@
 package models.tournament.tournamenttype.tournamenttypes
 
-import models.strategy.Score
+import models.strategy.ParticipantType.ParticipantType
+import models.strategy.{ParticipantType, Score}
 import models.strategy.scores.VolleyballScore
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.VolleyballTeam
@@ -17,4 +18,6 @@ object Volleyball extends TournamentType{
   override def getNewParticipant(name: String): Team = VolleyballTeam(name)
 
   override def getNewParticipant(id: ObjectId, name: String): Team = new VolleyballTeam(id, name)
+
+  override def getParticipantType: ParticipantType = ParticipantType.TEAM
 }

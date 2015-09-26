@@ -39,7 +39,7 @@
                 </div>
                 <div class="input-field">
                     <input class="{{numberOfTeamsClass}}" id="numberOfTeams" type="number" min="0" ng-model="numberOfTeams" ng-blur="numberOfTeamsClass = validatePattern(numberOfTeams, '^[2-9][0-9]*$|^1[0-9]+$' )">
-                    <label for="numberOfTeams">Number of teams</label>
+                    <label for="numberOfTeams">Number of participants</label>
                     <span ng-if="numberOfTeamsClass == 'invalid'" class="inputValidationError">Must be a number, at least 2.</span>
                 </div>
                 <div class="input-field">

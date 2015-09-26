@@ -35,8 +35,21 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
 
                 });
         };
+        $scope.getPlayers = function() {
+            $http.get('api/tournaments/' + $stateParams.id + "/players", {}).
+                success(function (data, status, headers, config) {
+                    $scope.players = data;
+                    console.log(data)
+                    $('.collapsible').collapsible({
+                        accordion: false
+                    });
+                }).error(function (data, status, headers, config, statusText) {
+
+                });
+        };
         $scope.getTournament();
         $scope.getTeams();
+        $scope.getPlayers();
         $scope.generateCSV = function(){
         //Update data
         $scope.getTournament();
@@ -60,65 +73,97 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );
     };
                 
-    $scope.showContactInfo = function(team){
-        console.log(team)
+    $scope.showContactInfo = function(contactPerson){
         ngDialog.open({
-            template: '/assets/userapp/partials/teams/contactInfo.html',
+            template: '/assets/userapp/partials/participants/contactInfo.html',
             className: 'ngdialog-theme-plain',
-            data: team,
+            data: contactPerson,
             closeByDocument: true
         })
     };
 
-    $scope.addAnotherPlayer = function(teamID){
-        $location.path('/teams/' + teamID + '/addPlayer');
-    };
-    
+        $scope.addAnotherPlayer = function(teamID){
+            $location.path('/participants/' + teamID + '/addPlayer');
+        };
 
 
-    $scope.addAnotherTeam = function(){
-        $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
-    };
+
+        $scope.addAnotherTeam = function(){
+            $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
+        };
+
+        $scope.addAnotherSinglePlayer = function(){
+            $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
+        };
 
 
-        $scope.deleteTeamPopUp = function(team) {
+        $scope.deleteParticipantPopUp = function(participant) {
+            participant.participantType = $scope.tournament.participantType
             ngDialog.open({
-                template: '/assets/userapp/partials/tournaments/deleteTeamDialog.html',
+                template: '/assets/userapp/partials/tournaments/deleteParticipantDialog.html',
                 className: 'ngdialog-theme-plain',
-                data: team,
+                data: participant,
                 scope: $scope,
                 closeByDocument: true
             });
         };
 
 
-    $scope.deleteTeam = function(team) {
-        ngDialog.close();
+        $scope.deleteTeam = function(team) {
+            ngDialog.close();
 
-        $http({
-            url: '/api/tournaments/' + $stateParams.id + "/" + team.id,
-            dataType: 'json',
-            method: 'DELETE',
-            data: {
-                tournamentId: $stateParams.id,
-                teamId: team.id
-            },
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).
-            success(function(data, status, headers, config) {
-                setTimeout( function() {
-                        $scope.getTournament();
-                        $scope.getTeams();
-                    }
-                    ,250);
-                notification("Team removed!", 4000, true);
+            $http({
+                url: '/api/tournaments/' + $stateParams.id + "/teams/" + team.id,
+                dataType: 'json',
+                method: 'DELETE',
+                data: {
+                    tournamentId: $stateParams.id,
+                    teamId: team.id
+                },
+                headers: {
+                    "Content-Type": "application/json"
+                }
             }).
-            error(function(data, status, headers, config, statusText) {
-                notification("Something went wrong!", 4000, false)
-            });
-    };
+                success(function(data, status, headers, config) {
+                    setTimeout( function() {
+                            $scope.getTournament();
+                            $scope.getTeams();
+                        }
+                        ,250);
+                    notification("Team removed!", 4000, true);
+                }).
+                error(function(data, status, headers, config, statusText) {
+                    notification("Something went wrong!", 4000, false)
+                });
+        };
+
+        $scope.deleteSinglePlayer = function(player) {
+            ngDialog.close();
+
+            $http({
+                url: '/api/tournaments/' + $stateParams.id + "/players/" + player.id,
+                dataType: 'json',
+                method: 'DELETE',
+                data: {
+                    tournamentId: $stateParams.id,
+                    playerId: player.id
+                },
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).
+                success(function(data, status, headers, config) {
+                    setTimeout( function() {
+                            $scope.getTournament();
+                            $scope.getPlayers();
+                        }
+                        ,250);
+                    notification("Player removed!", 4000, true);
+                }).
+                error(function(data, status, headers, config, statusText) {
+                    notification("Something went wrong!", 4000, false)
+                });
+        };
 
     $scope.editTeam = function(id) {
         console.log(id);
@@ -147,7 +192,7 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         showNotification = typeof showNotification === 'undefined';
 
         $http({
-            url: '/api/teams/' + teamId + "/" + playerId,
+            url: '/api/participants/' + teamId + "/" + playerId,
             dataType: 'json',
             method: 'DELETE',
             data: {

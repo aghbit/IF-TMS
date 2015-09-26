@@ -2,6 +2,7 @@ package models.tournament.tournamentstates
 
 import java.util
 
+import models.Participant
 import models.strategy.EliminationStrategy
 import models.team.Team
 import models.tournament.Tournament
@@ -17,7 +18,7 @@ import org.bson.types.ObjectId
  */
 class AfterTournament(override val _id: ObjectId,
                       override var properties: TournamentProperties,
-                      override var teams: util.ArrayList[Team],
+                      override var participants: util.ArrayList[Participant],
                       override val staff: TournamentStaff,
                       override var strategy: EliminationStrategy,
                       override val discipline: TournamentType) extends Tournament {
@@ -38,15 +39,15 @@ class AfterTournament(override val _id: ObjectId,
     throw new IllegalStateException("Can't start next phase of tournament")
   }
 
-  override def addTeam(team: Team): Unit = {
-    throw new IllegalStateException("You can't add teams during this tournament phase")
+  override def addParticipant(participant: Participant): Unit = {
+    throw new IllegalStateException("You can't add participants during this tournament phase")
   }
 
   override def editTerm(term: TournamentTerm): Unit = {
     throw new IllegalStateException("You can't edit term during this tournament phase")
   }
 
-  override def removeTeam(team: Team): Unit = {
-    throw new IllegalStateException("You can't remove teams during this tournament phase")
+  override def removeParticipant(participant: Participant): Unit = {
+    throw new IllegalStateException("You can't remove participants during this tournament phase")
   }
 }

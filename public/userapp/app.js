@@ -43,8 +43,8 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: "/assets/userapp/partials/tournaments/enrollment.html",
             controller: 'TournamentsEnrollmentController'
         })
-        .state('tournaments/id/teams', {
-            url: "/tournaments/{id}/teams",
+        .state('tournaments/id/participants', {
+            url: "/tournaments/{id}/participants",
             templateUrl: "/assets/userapp/partials/tournaments/showTeams.html",
             controller: 'TournamentsTeamsShowController'
         })
@@ -70,14 +70,14 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
 
 
         // TEAMS
-        .state('teams/id/addPlayer', {
-            url: "/teams/{id}/addPlayer",
-            templateUrl: "/assets/userapp/partials/teams/addPlayer.html",
+        .state('participants/id/addPlayer', {
+            url: "/participants/{id}/addPlayer",
+            templateUrl: "/assets/userapp/partials/participants/addPlayer.html",
             controller: 'TeamsAddPlayerController'
         })
-        .state('teams/id', {
-            url: "/teams/{id}",
-            templateUrl: "/assets/userapp/partials/teams/showPlayers.html",
+        .state('participants/id', {
+            url: "/participants/{id}",
+            templateUrl: "/assets/userapp/partials/participants/showPlayers.html",
             controller: 'TeamsPlayersShowController'
         })
 

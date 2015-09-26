@@ -2,6 +2,7 @@ package models.tournament.tournamentstates
 
 import java.util
 
+import models.Participant
 import models.strategy.EliminationStrategy
 import models.team.Team
 import models.tournament.Tournament
@@ -23,7 +24,7 @@ class BeforeEnrollment(override val _id: ObjectId,
   override def startNext(): Enrollment = {
     val newState = new Enrollment(this._id,
       this.properties,
-      new util.ArrayList[Team],
+      new util.ArrayList[Participant],
       staff,
       strategy,
       discipline)
@@ -31,7 +32,7 @@ class BeforeEnrollment(override val _id: ObjectId,
     newState
   }
 
-  override var teams: util.ArrayList[Team] = new util.ArrayList[Team]()
+  override var participants: util.ArrayList[Participant] = new util.ArrayList[Participant]()
 
   override def editSettings(settings: TournamentSettings): Unit = {
     this.properties.settings.numberOfPitches = settings.numberOfPitches
@@ -47,12 +48,12 @@ class BeforeEnrollment(override val _id: ObjectId,
     this.properties.description = description
   }
 
-  override def addTeam(team: Team): Unit = {
-    throw new IllegalStateException("You can't add teams during this tournament phase")
+  override def addParticipant(participant: Participant): Unit = {
+    throw new IllegalStateException("You can't add participants during this tournament phase")
   }
 
-  override def removeTeam(team: Team): Unit = {
-    throw new IllegalStateException("You can't remove teams during this tournament phase")
+  override def removeParticipant(participant: Participant): Unit = {
+    throw new IllegalStateException("You can't remove participants during this tournament phase")
   }
 }
 

@@ -62,7 +62,7 @@ mainApp.controller('TournamentTableController',  ['$scope', '$location', '$http'
             });
     };
     $scope.getTeams = function() {
-        $http.get('api/tournaments/' + $stateParams.id + "/teams", {}).
+        $http.get('api/tournaments/' + $stateParams.id + "/participants", {}).
             success(function (data, status, headers, config) {
                 $scope.teams = data;
                 $scope.treeHeight = Math.ceil(Math.log($scope.teams.length)/Math.LN2);
