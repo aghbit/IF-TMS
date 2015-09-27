@@ -6,7 +6,7 @@ import com.mongodb.BasicDBObject
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObjectBuilder}
 import com.mongodb.util.JSON
 import configuration.CasbahMongoDBConfiguration
-import models.strategy.Match
+import models.strategy.{EliminationStrategy, Match}
 import models.strategy.strategies.RoundRobinStrategy
 import models.strategy.structures.EliminationTable
 import models.tournament.tournamenttype.TournamentType
@@ -42,6 +42,7 @@ class EliminationTableRepository {
     builder += ("discipline" -> className)
     val clazz = obj.getClass.getName
     builder += ("_class" -> clazz)
+    builder += ("strategy"->obj.strategy.getClass.getName)
     var matches:List[Match] = List()
     obj.mapMatches(m => {
       matches = matches ::: List(m)
@@ -60,9 +61,11 @@ class EliminationTableRepository {
         val className = document.getAsOrElse[String]("discipline", throw new MongoException("discipline not found!"))
         val teamsNumber = document.getAsOrElse[Int]("teamsNumber", throw new MongoException("teamsNumber not found!"))
         val matchesDBObject = document.getAsOrElse[MongoDBList]("matches", throw new MongoException("matches not found!"))
-        val strategy = clazz match {
-          case "models.strategy.structures.eliminationtables.RoundRobinTable" => RoundRobinStrategy
-          case _ => throw new Exception("NOT IMPLEMENTED!")
+        val strategyClassName = document.getAsOrElse[String]("strategy", throw new MongoException("_class not found!"))
+
+        val strategy = ReflectionFactory.build[EliminationStrategy](strategyClassName) match {
+          case Some(s) => s
+          case None => throw new Exception("NOT IMPLEMENTED!")
         }
         val discipline = ReflectionFactory.build[TournamentType](className) match {
           case Some(s) => s

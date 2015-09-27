@@ -8,7 +8,7 @@ import models.enums.ListEnum
 import models.strategy.scores.BeachVolleyballScore
 import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
 import models.strategy.structures.EliminationTree
-import models.strategy.{Score, Match}
+import models.strategy.{EliminationStrategy, Score, Match}
 import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
@@ -48,6 +48,7 @@ class EliminationTreeRepository {
     builder += ("discipline" -> className)
     val clazz = obj.getClass.getName
     builder += ("_class" -> clazz)
+    builder += ("strategy" -> obj.strategy.getClass.getName)
     var matches:List[Match] = List()
     obj.mapMatches(m => {
       matches = matches ::: List(m)
@@ -67,10 +68,11 @@ class EliminationTreeRepository {
         val teamsNumber = document.getAs[Int]("teamsNumber").get
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
-        val strategy = clazz match {
-          case "models.strategy.structures.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
-          case "models.strategy.structures.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
-          case _ => throw new NoSuchElementException("This strategy is not implemented")
+        val strategyClassName = document.getAsOrElse[String]("strategy", throw new MongoException("_class not found!"))
+
+        val strategy = ReflectionFactory.build[EliminationStrategy](strategyClassName) match {
+          case Some(s) => s
+          case None => throw new Exception("This strategy is not implemented")
         }
         val discipline = ReflectionFactory.build[TournamentType](className) match {
           case Some(s) => s
