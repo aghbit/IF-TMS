@@ -2,33 +2,27 @@ package controllers
 
 import java.util
 
-import com.mongodb.{DBObject, BasicDBObject}
+import com.mongodb.BasicDBObject
 import com.mongodb.casbah.commons.MongoDBObject
-import controllers.UsersController._
-import controllers.security.{TournamentAction, TokenImpl, AuthorizationAction}
+import controllers.security.{AuthorizationAction, TokenImpl, TournamentAction}
 import models.enums.ListEnum
-import models.player.players.{DefaultPlayerImpl, Captain}
-import models.strategy.structures.{EliminationTree, EliminationTable}
+import models.player.players.{Captain, DefaultPlayerImpl}
+import models.strategy.strategies.{DoubleEliminationStrategy, RoundRobinStrategy, SingleEliminationStrategy}
+import models.strategy.structures.{EliminationTable, EliminationTree}
 import models.strategy.{EliminationStrategy, Match}
-import models.strategy.structures.eliminationtrees.DoubleEliminationTree
-import models.strategy.strategies.{RoundRobinStrategy, DoubleEliminationStrategy, SingleEliminationStrategy}
 import models.team.Team
-import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
-import models.tournament.tournamentstates.BeforeEnrollment
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
+import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
+import models.tournament.tournamenttype.tournamenttypes.{BeachVolleyball, Speedminton, Volleyball}
+import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import play.api.libs.json._
-import org.bson.types.ObjectId
 import play.api.mvc.{Action, Controller}
 import repositories._
-import models.tournament.tournamentfields.JsonFormatTournamentProperties._
+
 import scala.collection.JavaConversions._
-
-
-
-
 import scala.concurrent.Future
 import scala.util.Random
 
@@ -187,8 +181,8 @@ object TournamentsController extends Controller{
           sets.foreach( set => {
             val hostScore = set.\("host").validate[String].get.toInt
             val guestScore = set.\("guest").validate[String].get.toInt
-            matchUpdated.score.addSet()
-            matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
+            //matchUpdated.score.addPointsContainer()
+            //matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
           })
 
           tree.strategy.updateMatchResult(tree, matchUpdated)

@@ -1,10 +1,9 @@
 package models.strategy
 
+import assets.ObjectIdFormat._
 import models.Participant
-import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import play.api.libs.json.{JsObject, Json}
-import assets.ObjectIdFormat._
 
 /**
  * Created by Szymek Seget on 2014-12-02.
@@ -99,7 +98,7 @@ class Match (var id:Int,
         case None => "guest" -> None
       }
     )
-    .++(score.toJson)
+    .+("score" -> score.toJson)
   }
 
 

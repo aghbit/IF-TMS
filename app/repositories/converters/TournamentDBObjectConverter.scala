@@ -2,23 +2,20 @@ package repositories.converters
 
 import java.util
 
-import com.mongodb.{MongoException, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject, Imports, MongoDBObjectBuilder}
+import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObject, MongoDBObjectBuilder}
+import com.mongodb.{DBObject, MongoException}
 import models.Participant
 import models.player.Player
-import models.strategy.ParticipantType.ParticipantType
-import models.strategy.{ParticipantType, EliminationStrategy}
-import models.strategy.ParticipantType.ParticipantType
-import models.strategy.strategies.{RoundRobinStrategy, SingleEliminationStrategy, DoubleEliminationStrategy}
+import models.strategy.{EliminationStrategy, ParticipantType}
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields._
 import models.tournament.tournamentstates._
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Speedminton, Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import repositories.factories.ReflectionFactory
+
 import scala.collection.JavaConversions._
 
 /**
@@ -34,10 +31,7 @@ object TournamentDBObjectConverter {
     val properties = propertiesFromDbObject(document.getAsOrElse[DBObject]("properties",
     throw new MongoException("properties not found")))
     val participantTypeString = document.getAsOrElse[String]("participantType", throw new MongoException("participantType not found!"))
-    val participantType = participantTypeString match {
-      case "team" => ParticipantType.TEAM
-      case "player" => ParticipantType.PLAYER
-    }
+    val participantType = ParticipantType.withName(participantTypeString)
     val participantsDBObjects = document.getAsOrElse[MongoDBList]("participants", throw new MongoException("participants not found!"))
     val participants = participantsDBObjects.map(o =>
       participantType match {

@@ -192,8 +192,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("dx", 37)
                 .attr("text-anchor", "middle")
                 .text(function(d) {
-                    if(d.match.host!=null && d.match.sets.length > 0) {
-                        return wonSets(d.match.sets, "host");
+                    if(d.match.host!=null && d.match.score.length > 0) {
+                        return wonSets(d.match.score, "host");
                     } else {
                         return "";
                     }
@@ -206,8 +206,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("dx", 37)
                 .attr("text-anchor", "middle")
                 .text(function(d) {
-                    if(d.match.guest!=null && d.match.sets.length > 0) {
-                        return wonSets(d.match.sets, "guest");
+                    if(d.match.guest!=null && d.match.score.length > 0) {
+                        return wonSets(d.match.score, "guest");
                     } else {
                         return "";
                     }

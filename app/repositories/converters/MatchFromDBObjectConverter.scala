@@ -1,10 +1,10 @@
 package repositories.converters
 
-import com.mongodb.{BasicDBObject, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObject}
+import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObject, MongoDBObjectBuilder}
+import com.mongodb.{BasicDBObject, DBObject, MongoException}
 import models.Participant
-import models.strategy.{Score, Match}
-import models.team.Team
+import models.strategy.scores.newscores.beachvolleyball.BeachVolleyballSet
+import models.strategy.{Match, Score}
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import repositories.{PlayerRepository, TeamRepository}
@@ -17,6 +17,25 @@ object MatchFromDBObjectConverter {
   private val teamsRepository = new TeamRepository
 
   private val playersRepository = new PlayerRepository
+
+
+  def toDbObject(m: Match): DBObject = {
+    val builder = new MongoDBObjectBuilder
+    builder += ("_id" -> m.id,
+      m.host match {
+        case Some(h) => "host" -> new BasicDBObject("_id",h._id.toString).append("name",h.getNickName)
+        case None => "host" -> null
+      },
+      m.guest match {
+        case Some(h) => "guest" -> new BasicDBObject("_id",h._id.toString).append("name",h.getNickName)
+        case None => "guest" -> null
+      }
+    )
+    m.score.addPointsContainer(new BeachVolleyballSet(10,3))
+    builder += "pointsContainers" ->
+      m.score.pointsContainers.map(p => PointsContainerDBObjectConverter.toDBObject(p))
+    builder.result()
+  }
 
   def matchFromDBObject(dBObject: DBObject, discipline:TournamentType):Match = {
     val document:MongoDBObject = Imports.wrapDBObj(dBObject.asInstanceOf[DBObject])
@@ -45,21 +64,13 @@ object MatchFromDBObjectConverter {
       }
     }
 
-    val setsObjectList = document.getAs[MongoDBList]("sets").get
+    val pointsContainersObjectList = document.getAsOrElse[MongoDBList]("pointsContainers", throw new MongoException("pointsContainer not found!"))
 
     val score:Score = discipline.getNewScore()
 
-    val iterator = setsObjectList.iterator
-    var i:Int=1
-
-    while(iterator.hasNext){
-      val set = Imports.wrapDBObj(iterator.next().asInstanceOf[DBObject]).getAs[MongoDBObject](i.toString).get
-      val hostScore:Int = set.getAs[Int]("host").get
-      val guestScore:Int = set.getAs[Int]("guest").get
-      score.addSet()
-      score.setScoreInLastSet(hostScore, guestScore)
-      i=i+1
-    }
+    pointsContainersObjectList.foreach(obj => {
+      score.addPointsContainer(PointsContainerDBObjectConverter.fromDBObject(obj.asInstanceOf[DBObject]))
+    })
 
     val m = new Match(matchID, host, guest, score)
     m

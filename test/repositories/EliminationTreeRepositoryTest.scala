@@ -1,17 +1,15 @@
 package repositories
 
 import com.mongodb.BasicDBObject
-import com.mongodb.casbah.commons.ValidBSONType.{BSONObject, BasicDBObject}
 import models.player.players.Captain
-import models.strategy.scores.BeachVolleyballScore
 import models.strategy.strategies.DoubleEliminationStrategy
 import models.strategy.structures.EliminationTree
 import models.team.Team
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
+import org.bson.types.ObjectId
 import org.scalatest.mock.MockitoSugar
 import org.scalatest.{BeforeAndAfter, FunSuite}
-import org.bson.types.ObjectId
 
 /**
  * Created by Szymek Seget on 28.05.15.
@@ -38,12 +36,12 @@ class EliminationTreeRepositoryTest extends FunSuite with BeforeAndAfter with Mo
     while(iterator.hasNext && i<10){
       val n = iterator.next()
       //println(n.value.id)
-      val score = BeachVolleyballScore()
-      score.addSet()
-      score.setScoreInLastSet(21, 19)
-      score.addSet()
-      score.setScoreInLastSet(21, 19)
-      n.value.score = score
+    //  val score = BeachVolleyballScore()
+     // score.addPointsContainer()
+     // score.setScoreInLastSet(21, 19)
+     // score.addPointsContainer()
+     // score.setScoreInLastSet(21, 19)
+     // n.value.score = score
       DoubleEliminationStrategy.updateMatchResult(tree, n.value)
       i=i+1
     }

@@ -1,17 +1,11 @@
 package repositories
 
-import com.mongodb.{MongoException, BasicDBObject, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder, MongoDBObject}
-import com.mongodb.util.JSON
+import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObjectBuilder}
+import com.mongodb.{BasicDBObject, DBObject, MongoException}
 import configuration.CasbahMongoDBConfiguration
-import models.enums.ListEnum
-import models.strategy.scores.BeachVolleyballScore
-import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
 import models.strategy.structures.EliminationTree
-import models.strategy.{EliminationStrategy, Score, Match}
-import models.team.Team
+import models.strategy.{EliminationStrategy, Match}
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
 import repositories.converters.MatchFromDBObjectConverter
 import repositories.factories.ReflectionFactory
@@ -54,7 +48,7 @@ class EliminationTreeRepository {
       matches = matches ::: List(m)
       m
     })
-    builder += ("matches" -> matches.map(m => JSON.parse(m.toJson.toString()).asInstanceOf[DBObject]))
+    builder += ("matches" -> matches.map(m => MatchFromDBObjectConverter.toDbObject(m)))
     collection.insert(builder.result())
   }
 

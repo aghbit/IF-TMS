@@ -33,10 +33,10 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
     val iter:Iterator[TreeNode] = eliminationTree.iterator
     while (iter.hasNext){
       val node = iter.next()
-      node.value.score.addSet()
-      node.value.score.setScoreInLastSet(21,18)
-      node.value.score.addSet()
-      node.value.score.setScoreInLastSet(21,19)
+  //    node.value.score.addPointsContainer()
+   //   node.value.score.setScoreInLastSet(21,18)
+      //node.value.score.addPointsContainer()
+   //   node.value.score.setScoreInLastSet(21,19)
       DoubleEliminationStrategy.updateMatchResult(eliminationTree, node.value)
       //println("NODEE : " + node.value.id)
       //println(eliminationTree.toString())

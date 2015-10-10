@@ -3,11 +3,9 @@ package models.strategy.strategies
 
 import models.Participant
 import models.strategy.structures.EliminationTree
-import models.strategy.{EliminationStructure, Match, EliminationStrategy}
-import models.team.Team
-import models.strategy.structures.eliminationtrees.TreeNode
+import models.strategy.structures.eliminationtrees.{DoubleEliminationTree, TreeNode}
+import models.strategy.{EliminationStrategy, EliminationStructure, Match}
 import models.tournament.tournamenttype.TournamentType
-import models.strategy.structures.eliminationtrees.DoubleEliminationTree
 import org.bson.types.ObjectId
 
 import scala.util.Random
@@ -200,6 +198,6 @@ object DoubleEliminationStrategy extends EliminationStrategy{
 
   override def updateMatchResult(eliminationTree: EliminationStructure, m: Match): EliminationTree = {
     require(eliminationTree.isInstanceOf[DoubleEliminationTree], "Double Elimination Strategy needs Double Elimination Tree.")
-    updateMatchResultHelper(eliminationTree.asInstanceOf[DoubleEliminationTree], m);
+    updateMatchResultHelper(eliminationTree.asInstanceOf[DoubleEliminationTree], m)
   }
 }
