@@ -251,6 +251,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
   override def toJson(): JsObject = {
     Json.obj(
       "type" -> "DoubleEliminationTree",
+      "discipline" -> tournamentType.getDisciplineName,
       "losersTreeDepth" -> losersTreeDepth,
       "winnersTreeDepth" -> winnersTreeDepth,
       "match" -> root.value.toJson,

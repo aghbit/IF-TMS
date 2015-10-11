@@ -29,11 +29,12 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             i = 0,
             root;
 
-        $scope.openScorePopup = function(matchID, team1, team2) {
+        $scope.openScorePopup = function(matchID, team1, team2, discipline) {
             $scope.match = {};
             $scope.match.id = matchID;
             $scope.match.team1 = team1;
             $scope.match.team2 = team2;
+            $scope.match.discipline = $scope.tournamentTree.discipline;
             $scope.match.tournamentID = $scope.tournament._id;
             ngDialog.open({
                 template: '/assets/userapp/partials/match/matchScore.html',
@@ -65,7 +66,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 other = "host"
             }
             for (var i = 0; i < arrayLength; i++) {
-                if(sets[i][i+1][who] > sets[i][i+1][other]) {
+                if(sets[i][who] > sets[i][other]) {
                     counter++;
                 }
             }
@@ -192,8 +193,9 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("dx", 37)
                 .attr("text-anchor", "middle")
                 .text(function(d) {
-                    if(d.match.host!=null && d.match.score.length > 0) {
-                        return wonSets(d.match.score, "host");
+                    console.log(d.match);
+                    if(d.match.host!=null && d.match.score.pointsContainers.length > 0) {
+                        return wonSets(d.match.score.pointsContainers, "host");
                     } else {
                         return "";
                     }
@@ -206,8 +208,8 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 .attr("dx", 37)
                 .attr("text-anchor", "middle")
                 .text(function(d) {
-                    if(d.match.guest!=null && d.match.score.length > 0) {
-                        return wonSets(d.match.score, "guest");
+                    if(d.match.guest!=null && d.match.score.pointsContainers.length > 0) {
+                        return wonSets(d.match.score.pointsContainers, "guest");
                     } else {
                         return "";
                     }
@@ -268,6 +270,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
 
         $http.get('/api/tournaments/' + $stateParams.id + "/tree").
             success(function(data, status, headers, config) {
+                $scope.tournamentTree = data;
                 $scope.chartWidth = (data.losersTreeDepth+data.winnersTreeDepth+1)*120+80;
                 $scope.chartHeight = (Math.pow(2, data.winnersTreeDepth))*70;
                 halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;

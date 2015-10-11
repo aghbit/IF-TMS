@@ -3,7 +3,6 @@ package repositories.converters
 import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObject, MongoDBObjectBuilder}
 import com.mongodb.{BasicDBObject, DBObject, MongoException}
 import models.Participant
-import models.strategy.scores.newscores.beachvolleyball.BeachVolleyballSet
 import models.strategy.{Match, Score}
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
@@ -31,7 +30,6 @@ object MatchFromDBObjectConverter {
         case None => "guest" -> null
       }
     )
-    m.score.addPointsContainer(new BeachVolleyballSet(10,3))
     builder += "pointsContainers" ->
       m.score.pointsContainers.map(p => PointsContainerDBObjectConverter.toDBObject(p))
     builder.result()

@@ -165,6 +165,7 @@ object TournamentsController extends Controller{
 
   def updateMatch(id: String, matchId: Int) = TournamentAction(id).async(parse.json) {
     request =>
+      println(request.body.toString())
       val discipline = request.tournament.discipline
       val tournamentId = request.tournament._id
       eliminationTreeRepository.findOne(new BasicDBObject("_id", tournamentId)) match {
@@ -177,12 +178,13 @@ object TournamentsController extends Controller{
           val matchUpdated = new Match(matchId, Some(host), Some(guest), discipline.getNewScore())
 
           matchUpdated.score = discipline.getNewScore()
-          val sets = request.body.\("sets").validate[List[JsObject]].get
-          sets.foreach( set => {
-            val hostScore = set.\("host").validate[String].get.toInt
-            val guestScore = set.\("guest").validate[String].get.toInt
-            //matchUpdated.score.addPointsContainer()
-            //matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
+          val score = request.body.\("sets").validate[List[JsObject]].get
+          score.foreach( pointsContainerJson => {
+            val hostScore = pointsContainerJson.\("host")
+            val guestScore = pointsContainerJson.\("guest")
+            val typeScore = pointsContainerJson.\("type").validate[String].get.toString
+            val pointsContainer = discipline.getNewPointsContainer(typeScore, hostScore, guestScore)
+            matchUpdated.score.addPointsContainer(pointsContainer)
           })
 
           tree.strategy.updateMatchResult(tree, matchUpdated)

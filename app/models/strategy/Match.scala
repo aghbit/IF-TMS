@@ -98,7 +98,7 @@ class Match (var id:Int,
         case None => "guest" -> None
       }
     )
-    .+("score" -> score.toJson)
+    .++(score.toJson)
   }
 
 

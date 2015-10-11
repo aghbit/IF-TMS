@@ -3,10 +3,9 @@ package models.strategy.structures.eliminationtrees
 import models.strategy.strategies.SingleEliminationStrategy
 import models.strategy.structures.EliminationTree
 import models.strategy.{EliminationStrategy, Match}
-import models.team.Team
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
-import play.api.libs.json.{Json, JsObject}
+import play.api.libs.json.{JsObject, Json}
 
 import scala.collection.mutable
 
@@ -155,6 +154,7 @@ class SingleEliminationTree (override val _id:ObjectId,
   override def toJson(): JsObject = {
     Json.obj(
       "type"->"SingleEliminationTree",
+      "discipline" -> tournamentType.getDisciplineName,
       "losersTreeDepth" -> 0,
       "winnersTreeDepth" -> (depth),
       "match" -> root.value.toJson,

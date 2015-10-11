@@ -57,7 +57,7 @@ class Score(val maxPointsContainersNumber:Int) {
   def toJson:JsObject = {
     Json.obj("score" ->
       Json.obj("pointsContainers" ->
-        Json.toJson(pointsContainers.zipWithIndex.map{ case (p, i) => Json.obj(i.toString -> p.toJson)})
+        Json.toJson(pointsContainers.zipWithIndex.map{ case (p, i) => p.toJson})
       )
     )
   }
