@@ -1,7 +1,7 @@
-package models.strategy
+package models.strategy.structures
 
-import models.strategy.eliminationtrees.TreeNode
-import models.team.Team
+import models.strategy.structures.eliminationtrees.TreeNode
+import models.strategy.{EliminationStrategy, EliminationStructure, Match}
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import play.api.libs.json.JsObject
@@ -10,7 +10,7 @@ import play.api.libs.json.JsObject
 /**
  * Created by Szymek Seget on 2015-02-22.
  */
-trait EliminationTree extends Iterable[TreeNode]{
+trait EliminationTree extends Iterable[TreeNode] with EliminationStructure{
 
   val _id:ObjectId
   val teamsNumber:Int
@@ -31,7 +31,7 @@ trait EliminationTree extends Iterable[TreeNode]{
 
   def getNode(matchID: Int):TreeNode
 
-  def foreachTreeNodes(f:TreeNode => Unit)
+  def foreachNode(f:TreeNode => Unit)
 
   def toJson():JsObject
 

@@ -2,11 +2,11 @@
  * Created by szymek on 08.03.15.
  */
 
-mainApp.controller('TournamentsTreeDebugController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
+mainApp.controller('TournamentsDebugController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
     function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
 
-        $scope.show = function() {
-            $http.get('/api/tournaments/' + $stateParams.id + "/tree").
+        $scope.show = function(type) {
+            $http.get('/api/tournaments/' + $stateParams.id + "/"+type).
                 success(function(data, status, headers, config) {
                     $scope.message = data;
                 }).error(function(data, status, headers, config, statusText) {
@@ -15,12 +15,12 @@ mainApp.controller('TournamentsTreeDebugController', ['$scope', '$location', '$h
                 });
         };
 
-        $scope.showcase = function() {
-            $location.url("tournaments/" + $stateParams.id + "/treeShowcase");
+        $scope.showcase = function(type) {
+            $location.url("tournaments/" + $stateParams.id + "/"+type+ "Showcase");
         };
 
-        $scope.generate = function(){
-            $http.post('/api/tournaments/'+$stateParams.id+'/tree', {"tree":true}).
+        $scope.generate = function(type){
+            $http.post('/api/tournaments/'+$stateParams.id+'/'+type, {"tree":true}).
                 success(function(data, status, headers, config) {
                     alert(status + " " + data)
                 }).
@@ -28,9 +28,10 @@ mainApp.controller('TournamentsTreeDebugController', ['$scope', '$location', '$h
                     window.alert(status + " " + data)
                 });
         };
-        $scope.remove = function(){
+
+        $scope.remove = function(type){
             $http({
-                url: '/api/tournaments/' + $stateParams.id + "/tree",
+                url: '/api/tournaments/' + $stateParams.id + "/"+type,
                 dataType: 'json',
                 method: 'DELETE',
                 data: {
@@ -49,4 +50,7 @@ mainApp.controller('TournamentsTreeDebugController', ['$scope', '$location', '$h
                 });
 
         };
+
+
+
 }]);

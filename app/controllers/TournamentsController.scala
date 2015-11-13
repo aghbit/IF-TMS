@@ -2,32 +2,27 @@ package controllers
 
 import java.util
 
-import com.mongodb.{DBObject, BasicDBObject}
+import com.mongodb.BasicDBObject
 import com.mongodb.casbah.commons.MongoDBObject
-import controllers.UsersController._
-import controllers.security.{TournamentAction, TokenImpl, AuthorizationAction}
+import controllers.security.{AuthorizationAction, TokenImpl, TournamentAction}
 import models.enums.ListEnum
-import models.player.players.{DefaultPlayerImpl, Captain}
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
-import models.strategy.eliminationtrees.DoubleEliminationTree
-import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
+import models.player.players.{Captain, DefaultPlayerImpl}
+import models.strategy.strategies.{DoubleEliminationStrategy, RoundRobinStrategy, SingleEliminationStrategy}
+import models.strategy.structures.{EliminationTable, EliminationTree}
+import models.strategy.{EliminationStrategy, Match}
 import models.team.Team
-import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
-import models.tournament.tournamentstates.BeforeEnrollment
+import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
+import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
+import models.tournament.tournamenttype.tournamenttypes.{BeachVolleyball, Speedminton, Volleyball}
+import org.bson.types.ObjectId
 import org.joda.time.DateTime
 import play.api.libs.json._
-import org.bson.types.ObjectId
 import play.api.mvc.{Action, Controller}
-import repositories.{PlayerRepository, TeamRepository, EliminationTreeRepository, TournamentRepository}
-import models.tournament.tournamentfields.JsonFormatTournamentProperties._
+import repositories._
+
 import scala.collection.JavaConversions._
-
-
-
-
 import scala.concurrent.Future
 import scala.util.Random
 
@@ -38,6 +33,7 @@ object TournamentsController extends Controller{
 
   private val repository = new TournamentRepository()
   private val eliminationTreeRepository = new EliminationTreeRepository()
+  private val eliminationTableRepository = new EliminationTableRepository()
 
 
   def createTournament() = AuthorizationAction.async(parse.json) {
@@ -49,11 +45,13 @@ object TournamentsController extends Controller{
       val strategy = tournamentStrategy match {
         case Right("SingleEliminationStrategy") => Some(SingleEliminationStrategy)
         case Right("DoubleEliminationStrategy") => Some(DoubleEliminationStrategy)
+        case Right("RoundRobinStrategy") => Some(RoundRobinStrategy)
         case _ => None
       }
       val discipline = tournamentDiscipline match {
         case Right("BeachVolleyball") => Some(BeachVolleyball)
         case Right("Volleyball") => Some(Volleyball)
+        case Right("Speedminton") => Some(Speedminton)
         case _ => None
 
       }
@@ -138,7 +136,10 @@ object TournamentsController extends Controller{
 
           try {
             val tree = tournament.generateTree()
-            eliminationTreeRepository.insert(tree)
+            tree match {
+              case t:EliminationTree => eliminationTreeRepository.insert(t)
+              case t:EliminationTable => ???
+            }
             Future.successful(Created("Tournament tree has been successfully created."))
           } catch {
             case e:IllegalArgumentException => Future.successful(UnprocessableEntity(e.getMessage))
@@ -164,24 +165,26 @@ object TournamentsController extends Controller{
 
   def updateMatch(id: String, matchId: Int) = TournamentAction(id).async(parse.json) {
     request =>
+      println(request.body.toString())
       val discipline = request.tournament.discipline
       val tournamentId = request.tournament._id
       eliminationTreeRepository.findOne(new BasicDBObject("_id", tournamentId)) match {
         case Some(tree) =>
           //only for tests
-          val host = discipline.getNewTeam(new ObjectId(request.body.\("host").\("_id").validate[String].get),
+          val host = discipline.getNewParticipant(new ObjectId(request.body.\("host").\("_id").validate[String].get),
             request.body.\("host").\("name").validate[String].get)
-          val guest = discipline.getNewTeam(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
+          val guest = discipline.getNewParticipant(new ObjectId(request.body.\("guest").\("_id").validate[String].get),
             request.body.\("guest").\("name").validate[String].get)
           val matchUpdated = new Match(matchId, Some(host), Some(guest), discipline.getNewScore())
 
           matchUpdated.score = discipline.getNewScore()
-          val sets = request.body.\("sets").validate[List[JsObject]].get
-          sets.foreach( set => {
-            val hostScore = set.\("host").validate[String].get.toInt
-            val guestScore = set.\("guest").validate[String].get.toInt
-            matchUpdated.score.addSet()
-            matchUpdated.score.setScoreInLastSet(hostScore, guestScore)
+          val score = request.body.\("sets").validate[List[JsObject]].get
+          score.foreach( pointsContainerJson => {
+            val hostScore = pointsContainerJson.\("host")
+            val guestScore = pointsContainerJson.\("guest")
+            val typeScore = pointsContainerJson.\("type").validate[String].get.toString
+            val pointsContainer = discipline.getNewPointsContainer(typeScore, hostScore, guestScore)
+            matchUpdated.score.addPointsContainer(pointsContainer)
           })
 
           tree.strategy.updateMatchResult(tree, matchUpdated)
@@ -244,7 +247,7 @@ object TournamentsController extends Controller{
     val teamRepo = new TeamRepository
     tournament = tournament.startNext()
     for(i<- 0 until teamsNumber) {
-      val team = discipline.getNewTeam(teamNames(i))
+      val team = discipline.getNewParticipant(teamNames(i)).asInstanceOf[Team]
       val captain: Captain = Captain(Random.shuffle(names).head,
         Random.shuffle(surnames).head,
         Random.shuffle(phones).head,
@@ -257,10 +260,57 @@ object TournamentsController extends Controller{
         team.addPlayer(player)
         playerRepo.insert(player)
       }
-      tournament.addTeam(team)
+      tournament.addParticipant(team)
       teamRepo.insert(team)
     }
     val repo = new TournamentRepository
     repo.insert(tournament)
+  }
+
+  def getTournamentTable(id: String) = TournamentAction(id).async{
+    request =>
+      val query = MongoDBObject("_id" -> request.tournament._id)
+      eliminationTableRepository.findOne(query) match {
+        case Some(t) => Future.successful(Ok(t.toJson))
+        case None => Future.successful(NotFound("Tournament with this id hasn't any table."))
+      }
+
+  }
+
+  def generateTournamentTable(id: String) = TournamentAction(id).async(parse.json) {
+    request =>
+      val tournamentId = request.tournament._id
+
+      if(!eliminationTableRepository.contains(new BasicDBObject("_id", tournamentId))){
+
+        val query = new BasicDBObject("_id", tournamentId)
+        val tournament = repository.find(query).get(ListEnum.head)
+
+        try {
+          val tree = tournament.generateTree()
+          tree match {
+            case t:EliminationTable => eliminationTableRepository.insert(t)
+            case t:EliminationTree => ???
+          }
+          Future.successful(Created("Tournament table has been successfully created."))
+        } catch {
+          case e:IllegalArgumentException => Future.successful(UnprocessableEntity(e.getMessage))
+          case e:Exception => Future.failed(e)
+        }
+      }else{
+        Future.successful(MethodNotAllowed("This tournament has elimination table. Can't generate."))
+      }
+  }
+
+  def removeTournamentTable(id: String) = TournamentAction(id).async(parse.json) {
+    request =>
+      val tournamentId = request.tournament._id
+      if(eliminationTableRepository.contains(new BasicDBObject("_id", tournamentId))){
+        eliminationTableRepository.remove(new BasicDBObject("_id", tournamentId))
+        Future.successful(Ok("Tournament table was removed!"))
+      }else{
+        Future.successful(NotFound("Tournament id is invalid!"))
+      }
+
   }
 }

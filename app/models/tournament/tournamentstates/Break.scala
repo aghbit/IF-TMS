@@ -2,7 +2,8 @@ package models.tournament.tournamentstates
 
 import java.util
 
-import models.strategy.{EliminationTree, EliminationStrategy}
+import models.Participant
+import models.strategy.EliminationStrategy
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentfields.{TournamentStaff, TournamentTerm, TournamentProperties, TournamentSettings}
@@ -17,13 +18,13 @@ import scala.collection.JavaConversions._
  */
 class Break(override val _id: ObjectId,
             override var properties: TournamentProperties,
-            override var teams: util.ArrayList[Team],
+            override var participants: util.ArrayList[Participant],
             override val staff: TournamentStaff,
             override var strategy: EliminationStrategy,
             override val discipline: TournamentType) extends Tournament {
 
   override def startNext(): DuringTournament = {
-    val newState = new DuringTournament(this._id, this.properties, this.teams, staff, strategy, discipline)
+    val newState = new DuringTournament(this._id, this.properties, this.participants, staff, strategy, discipline)
     newState
   }
 
@@ -31,14 +32,14 @@ class Break(override val _id: ObjectId,
     this.properties.settings.numberOfPitches = settings.numberOfPitches
   }
 
-  override def removeTeam(team: Team): Unit = {
-    if (!teams.contains(team))
-      throw new NoSuchElementException("Can't remove absent team from the Tournament!")
-    teams.remove(team)
+  override def removeParticipant(participant: Participant): Unit = {
+    if (!participants.contains(participant))
+      throw new NoSuchElementException("Can't remove absent participant from the Tournament!")
+    participants.remove(participant)
   }
 
-  override def addTeam(team: Team): Unit = {
-    throw new IllegalStateException("You can't add teams during this tournament phase")
+  override def addParticipant(participant: Participant): Unit = {
+    throw new IllegalStateException("You can't add participants during this tournament phase")
   }
 
   override def editTerm(term: TournamentTerm): Unit = {

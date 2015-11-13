@@ -1,13 +1,13 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
+import models.Participant
 import models.strategy.strategies.DoubleEliminationStrategy
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
-import models.team.Team
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStrategy, Match}
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
 import play.api.libs.json.{Json, JsObject}
 
-import scala.StringBuilder
 import scala.collection.mutable
 
 /**
@@ -89,8 +89,8 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   /**
    * Represents max depth of elimination tree. Counts from 0 (final), e.g.
-   * For 32 teams depth equals 7.
-   * For 16 teams depth equals 5
+   * For 32 participants depth equals 7.
+   * For 16 participants depth equals 5
    */
   override def depth = (Math.log(teamsNumber)/Math.log(2)).asInstanceOf[Int] + 2
 
@@ -120,7 +120,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
     helper(n, Some(root))
   }
 
-  override def foreachTreeNodes(f:TreeNode => Unit) = {
+  override def foreachNode(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
     while(queue.nonEmpty) {
@@ -139,7 +139,7 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   override def toString = {
     val builder = new StringBuilder()
-    foreachTreeNodes(x => builder.append(x.toString))
+    foreachNode(x => builder.append(x.toString))
 
     /*var i = losersTreeDepth
     builder.append("{rounds:[ ")
@@ -190,31 +190,31 @@ class DoubleEliminationTree(override val _id:ObjectId,
     forthQF = forth
   }
 
-  def addLoserToSecondQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToSecondQF(loser: Option[Participant], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
     }
     var places = getMatchesInNthRound(round).reverse
-    while (places.nonEmpty && !places.head.canAddTeam()){
+    while (places.nonEmpty && !places.head.canAddParticipant()){
       places = places.tail
     }
     if(places.nonEmpty){
-      places.head.addTeam(loser)
+      places.head.addParticipant(loser)
     }
   }
 
-  def addLoserToThirdQF(loser: Option[Team], prevMatchDepth:Int): Unit = {
+  def addLoserToThirdQF(loser: Option[Participant], prevMatchDepth:Int): Unit = {
     var round = losersTreeDepth-(winnersTreeDepth-prevMatchDepth)*2+1
     if(prevMatchDepth == winnersTreeDepth){
       round = losersTreeDepth
     }
     var places = getMatchesInNthRound(round).reverse
-    while (places.nonEmpty && !places.head.canAddTeam()){
+    while (places.nonEmpty && !places.head.canAddParticipant()){
       places = places.tail
     }
     if(places.nonEmpty){
-      places.head.addTeam(loser)
+      places.head.addParticipant(loser)
     }
   }
 
@@ -250,6 +250,8 @@ class DoubleEliminationTree(override val _id:ObjectId,
 
   override def toJson(): JsObject = {
     Json.obj(
+      "type" -> "DoubleEliminationTree",
+      "discipline" -> tournamentType.getDisciplineName,
       "losersTreeDepth" -> losersTreeDepth,
       "winnersTreeDepth" -> winnersTreeDepth,
       "match" -> root.value.toJson,

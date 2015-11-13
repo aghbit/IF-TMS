@@ -2,7 +2,7 @@
  * Created by szymek on 08.03.15.
  */
 mainApp.controller('PlayersShowController', ['$scope',  '$http', '$stateParams', function ($scope, $http, $stateParams) {
-    $http.get('api/teams/' + $stateParams.id, {}).
+    $http.get('api/participants/' + $stateParams.id, {}).
         success(function(data, status, headers, config) {
             $scope.team = data;
             $('.collapsible').collapsible({

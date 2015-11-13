@@ -1,17 +1,14 @@
 package repositories
 
-import com.mongodb.{MongoException, BasicDBObject, DBObject}
-import com.mongodb.casbah.commons.{MongoDBList, Imports, MongoDBObjectBuilder, MongoDBObject}
-import com.mongodb.util.JSON
+import com.mongodb.casbah.commons.{Imports, MongoDBList, MongoDBObjectBuilder}
+import com.mongodb.{BasicDBObject, DBObject, MongoException}
 import configuration.CasbahMongoDBConfiguration
-import models.enums.ListEnum
-import models.strategy.scores.BeachVolleyballScore
-import models.strategy.strategies.{SingleEliminationStrategy, DoubleEliminationStrategy}
-import models.strategy.{Score, EliminationTree, Match}
-import models.team.Team
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStrategy, Match}
 import models.tournament.tournamenttype.TournamentType
-import models.tournament.tournamenttype.tournamenttypes.{Volleyball, BeachVolleyball}
 import org.bson.types.ObjectId
+import repositories.converters.MatchFromDBObjectConverter
+import repositories.factories.ReflectionFactory
 
 /**
  * Created by Szymek Seget on 28.05.15.
@@ -45,12 +42,13 @@ class EliminationTreeRepository {
     builder += ("discipline" -> className)
     val clazz = obj.getClass.getName
     builder += ("_class" -> clazz)
+    builder += ("strategy" -> obj.strategy.getClass.getName)
     var matches:List[Match] = List()
     obj.mapMatches(m => {
       matches = matches ::: List(m)
       m
     })
-    builder += ("matches" -> matches.map(m => JSON.parse(m.toJson.toString()).asInstanceOf[DBObject]))
+    builder += ("matches" -> matches.map(m => MatchFromDBObjectConverter.toDbObject(m)))
     collection.insert(builder.result())
   }
 
@@ -64,82 +62,41 @@ class EliminationTreeRepository {
         val teamsNumber = document.getAs[Int]("teamsNumber").get
         val matchesDBObjects = document.getAs[MongoDBList]("matches").get
         val iterator = matchesDBObjects.iterator
-        val strategy = clazz match {
-          case "models.strategy.eliminationtrees.SingleEliminationTree" => SingleEliminationStrategy
-          case "models.strategy.eliminationtrees.DoubleEliminationTree" => DoubleEliminationStrategy
-          case _ => throw new NoSuchElementException("This strategy is not implemented")
+        val strategyClassName = document.getAsOrElse[String]("strategy", throw new MongoException("_class not found!"))
+
+        val strategy = ReflectionFactory.build[EliminationStrategy](strategyClassName) match {
+          case Some(s) => s
+          case None => throw new Exception("This strategy is not implemented")
         }
-        val disipline = className match {
-          case "models.tournament.tournamenttype.tournamenttypes.BeachVolleyball$" => BeachVolleyball
-          case "models.tournament.tournamenttype.tournamenttypes.Volleyball$" => Volleyball
-          case _ => throw new Exception("NOT IMPLEMENTED!")
+        val discipline = ReflectionFactory.build[TournamentType](className) match {
+          case Some(s) => s
+          case None => throw new Exception("NOT IMPLEMENTED!")
         }
         var matches:List[Match] = List()
         while(iterator.hasNext) {
           val doc = iterator.next().asInstanceOf[DBObject]
-          val m = matchFromDBObject(doc, disipline)
+          val m = MatchFromDBObjectConverter.matchFromDBObject(doc, discipline)
           matches =  matches ::: List(m)
         }
         matches = matches.sortWith((m1,m2) => m1.id < m2.id)
-        val eliminationTree = strategy.initEmptyTree(eliminationTreeID, teamsNumber, disipline)
+        val eliminationTree = strategy.initEmpty(eliminationTreeID, teamsNumber, discipline)
         var i=0
-        eliminationTree.foreachTreeNodes(node => {
-          node.value = matches(i)
-          i=i+1
-        })
-        Some(eliminationTree)
-      }
+        eliminationTree match {
+          case t:EliminationTree =>{
+            t.foreachNode(node => {
+              node.value = matches(i)
+              i=i+1
+            })
+            Some(t)
+          }
+          case _ => ???
+        }
+        }
+
 
       case None => None
     }
 
-  }
-
-  private def matchFromDBObject(dBObject: DBObject, discipline:TournamentType):Match = {
-    val document:MongoDBObject = Imports.wrapDBObj(dBObject.asInstanceOf[DBObject])
-    val matchID = document.getAs[Int]("_id").get
-
-    val hostDBObject: MongoDBObject = document.getAs[MongoDBObject]("host").orNull
-    val guestDBObject: MongoDBObject = document.getAs[MongoDBObject]("guest").orNull
-    var host:Option[Team] = None
-    if(hostDBObject != null){
-      val hostDBID = hostDBObject.getAs[String]("_id").get
-      val hostID = new ObjectId(hostDBID)
-      val hostQuery = new BasicDBObject("_id", hostID)
-      val hosts = teamsRepository.findOne(hostQuery)
-      if(hosts.isDefined){
-        host = Some(hosts.get)
-      }
-    }
-    var guest:Option[Team] = None
-    if(guestDBObject != null){
-      val guestDBID = guestDBObject.getAs[String]("_id").get
-      val guestID = new ObjectId(guestDBID)
-      val guestQuery = new BasicDBObject("_id", guestID)
-      val guests = teamsRepository.findOne(guestQuery)
-      if(guests.isDefined){
-        guest = Some(guests.get)
-      }
-    }
-
-    val setsObjectList = document.getAs[MongoDBList]("sets").get
-
-    val score:Score = discipline.getNewScore()
-
-    val iterator = setsObjectList.iterator
-    var i:Int=1
-
-    while(iterator.hasNext){
-      val set = Imports.wrapDBObj(iterator.next().asInstanceOf[DBObject]).getAs[MongoDBObject](i.toString).get
-      val hostScore:Int = set.getAs[Int]("host").get
-      val guestScore:Int = set.getAs[Int]("guest").get
-      score.addSet()
-      score.setScoreInLastSet(hostScore, guestScore)
-      i=i+1
-    }
-
-    val m = new Match(matchID, host, guest, score)
-    m
   }
 
   def dropCollection() = {

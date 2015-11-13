@@ -7,14 +7,12 @@ import org.bson.types.ObjectId
  * Created by Szymek Seget on 06.03.15.
  */
 case class DefaultPlayerImpl(_id:ObjectId,
-                             name:String,
-                             surname:String) extends Player {
+                             override var name:String,
+                             override var surname:String) extends Player {
 
-  /**
-   * Only for Spring Data. Don't use it. For more information check: TMS-76
-   */
-  def this() = this(null, null, null)
+  override def getNickName: String = name + " " + surname
 
+  override def isReadyToSave: Boolean = name != null && surname != null
 }
 
 object DefaultPlayerImpl {

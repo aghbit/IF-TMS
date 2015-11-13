@@ -1,6 +1,6 @@
 package models.tournaments.tournamentstate
 
-import models.strategy.{EliminationTree, EliminationStrategy}
+import models.strategy.EliminationStrategy
 import models.team.Team
 import models.tournament.Tournament
 import models.tournament.tournamentstates.{BeforeEnrollment, DuringTournament}

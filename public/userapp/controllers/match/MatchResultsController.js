@@ -16,10 +16,22 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', funct
         "name": $scope.ngDialogData.team2.name
     };
     $scope.match.sets = [];
+    $scope.discipline = $scope.ngDialogData.discipline;
 
 
 
     $scope.submit = function() {
+        console.log($scope.match);
+        for(var i=0; i<$scope.match.sets.length; i++) {
+            $scope.match.sets[i].type = $scope.discipline + "Set"
+        }
+        //should be changed. In tournament tree from rest api should be variable with sets number.
+        if($scope.discipline == "Volleyball" && $scope.match.sets.length == 5){
+            $scope.match.sets[4].type = $scope.discipline + "TieBreak"
+        }else if($scope.discipline == "BeachVolleyball" && $scope.match.sets.length == 3) {
+            $scope.match.sets[2].type = $scope.discipline + "TieBreak";
+            $scope.match.sets = $scope.match.sets.slice(0, 3)
+        }
         var url = '/api/tournaments/' + $scope.ngDialogData.tournamentID + '/match/' + $scope.match._id;
             $http.post(url, $scope.match).
                 success(function(data, status, headers, config) {

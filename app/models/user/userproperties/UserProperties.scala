@@ -18,13 +18,6 @@ case class UserProperties(name: String,
                           phone: String,
                           mail: String) {
 
-
-    /*
-  Only for Spring Data. Don't use it. For more information check: TMS-76
-   */
-  def this() = this(null, null, null, null, null)
-
-
 }
 object JsonFormat {
   implicit val userPropertiesFormat:Format[UserProperties] = (

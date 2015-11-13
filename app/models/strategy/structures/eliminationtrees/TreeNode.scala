@@ -1,4 +1,4 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
 import models.strategy.Match
 import play.api.libs.json.{Json, JsObject}
@@ -76,11 +76,11 @@ class TreeNode(var left:Option[TreeNode],
       case None => builder.append("LeftChild: null ")
     }
     val hostID = value.host match {
-      case Some(i) => i.name
+      case Some(i) => i.getNickName
       case None => "null"
     }
     val guestID = value.guest match {
-      case Some(i) => i.name
+      case Some(i) => i.getNickName
       case None => "null"
     }
     builder.append("MyValue: [ID: "+value.id+" HOST: "+ hostID + " GUEST: "+ guestID+"] ")

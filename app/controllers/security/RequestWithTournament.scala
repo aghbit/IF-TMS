@@ -42,7 +42,7 @@ object TournamentAction extends ActionBuilder[RequestWithTournament] with Contro
         Future.successful(NotFound("You can't see this tournament or it doesn't exist!"))
       }
     }else{
-      Future.successful(NotFound("Wrong tournament id!"))
+      Future.successful(NotFound("Wrong tournament id! - " + tournamentId))
     }
   }
 

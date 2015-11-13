@@ -2,7 +2,8 @@ package models.tournament
 
 import java.util
 
-import models.strategy.{EliminationTree, EliminationStrategy}
+import models.Participant
+import models.strategy.{EliminationStructure, EliminationStrategy}
 import models.team.Team
 import models.tournament.tournamentfields.JsonFormatTournamentProperties._
 import models.tournament.tournamentfields._
@@ -27,23 +28,23 @@ trait Tournament {
 
   val _id: ObjectId
   var properties: TournamentProperties
-  var teams: util.ArrayList[Team]
+  var participants: util.ArrayList[Participant]
   val staff: TournamentStaff
   var strategy:EliminationStrategy
   val discipline:TournamentType
 
   def startNext(): Tournament
 
-  def addTeam(team: Team): Unit
+  def addParticipant(participant: Participant): Unit
 
-  def removeTeam(team: Team): Unit
+  def removeParticipant(participant: Participant): Unit
 
   def editTerm(term: TournamentTerm): Unit
 
   @throws(classOf[IllegalArgumentException])
-  def generateTree():EliminationTree  = {
+  def generateTree():EliminationStructure  = {
     try{
-      strategy.generateTree(teams.toList, discipline, _id)
+      strategy.generate(participants.toList, discipline, _id)
     }catch {
       case e:IllegalArgumentException => throw new IllegalArgumentException(e)
     }
@@ -67,7 +68,7 @@ trait Tournament {
   }
 
   def containsTeam(team: Team): Boolean = {
-    teams.contains(team)
+    participants.contains(team)
   }
 
   def containsReferee(referee: User): Boolean = {
@@ -76,7 +77,7 @@ trait Tournament {
 
   def isReadyToSave = properties.settings.isValid && properties.term.isValid
 
-  def getTeams = teams
+  def getParticipants = participants
 
   def toJson = {
     val tournamentPropertiesJson = Json.toJson(properties)
@@ -84,7 +85,8 @@ trait Tournament {
       "_id"->_id,
       "properties"->tournamentPropertiesJson,
       "staff"->staff.toJson,
-      "class"->this.getClass.toString
+      "class"->this.getClass.toString,
+      "participantType"->discipline.getParticipantType.toString
     )
   }
 }

@@ -111,7 +111,7 @@ trait VolleyballTeams extends Team {
     }
     Json.obj(
       "id"->_id,
-      "name"->name,
+      "nickName"->getNickName,
       "players"->JsArray(playersJsons),
       "benchWarmers" -> JsArray(benchWarmersJsons),
       "captain" -> (captain match {

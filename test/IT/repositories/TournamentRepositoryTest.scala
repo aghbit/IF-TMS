@@ -3,9 +3,9 @@ package IT.repositories
 import java.util
 
 import com.mongodb.BasicDBObject
-import models.strategy.EliminationTree
-import models.strategy.eliminationtrees.DoubleEliminationTree
+import models.strategy.structures.eliminationtrees.DoubleEliminationTree
 import models.strategy.strategies.{DoubleEliminationStrategy, SingleEliminationStrategy}
+import models.strategy.structures.EliminationTree
 import models.tournament.Tournament
 import models.tournament.tournamentstates.BeforeEnrollment
 import models.tournament.tournamentfields._

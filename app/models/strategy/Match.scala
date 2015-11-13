@@ -1,60 +1,60 @@
 package models.strategy
 
-import models.team.Team
+import assets.ObjectIdFormat._
+import models.Participant
 import models.tournament.tournamenttype.TournamentType
 import play.api.libs.json.{JsObject, Json}
-import assets.ObjectIdFormat._
 
 /**
  * Created by Szymek Seget on 2014-12-02.
  */
 class Match (var id:Int,
-             var host:Option[Team],
-             var guest:Option[Team],
+             var host:Option[Participant],
+             var guest:Option[Participant],
              var score:Score) {
 
 
   /**
-   * Adds team to this match. First check canAddTeam(), if this return false throw IllegalStateException.
+   * Adds team to this match. First check canAddParticipant(), if this return false throw IllegalStateException.
    * Otherwise adds team (passed as argument) to this team. First add as host, if host exists add as guest.
-   * @param team
+   * @param participant
    */
-  def addTeam(team: Option[Team]): Unit = {
-    if(!canAddTeam()){
-      throw new IllegalStateException("Can't add team "+team.get.name +" to this Match "+id)
+  def addParticipant(participant: Option[Participant]): Unit = {
+    if(!canAddParticipant()){
+      throw new IllegalStateException("Can't add participant "+participant.get.getNickName +" to this Match "+id)
     }
     host match {
       case Some(i) => {
         guest match {
-          case Some(g) =>
-          case None => guest = team
+          case Some(g) => 
+          case None => guest = participant
         }
       }
-      case None => host = team
+      case None => host = participant
     }
   }
 
-  def getWinner(): Option[Team] = {
-    if(score.isHostWinner()){
+  def getWinner(): Option[Participant] = {
+    if(score.isHostWinner){
       host
-    } else if (score.isGuestWinner()) {
+    } else if (score.isGuestWinner) {
       guest
     } else {
       None
     }
   }
 
-  def getLoser(): Option[Team] = {
-    if(score.isHostWinner()){
+  def getLoser(): Option[Participant] = {
+    if(score.isHostWinner){
       guest
-    }else if(score.isGuestWinner()){
+    }else if(score.isGuestWinner){
       host
     }else {
       None
     }
   }
 
-  def canAddTeam():Boolean = {
+  def canAddParticipant():Boolean = {
     (host, guest) match {
       case (Some(h), Some(g)) => false
       case _ => true
@@ -67,10 +67,10 @@ class Match (var id:Int,
    * {"_id": BSONObjectID.stringify,
    *  "host": {
    *            "id":BSONObjectID.stringify,
-   *            "name":"teamName"},
+   *            "name":"participantName"},
    *  "guest": {
    *             "id":BSONObjectID.stringify,
-   *             "name":"teamName"},
+   *             "name":"participantName"},
    *  "score": {
    *            sets: [{"1": {
    *                        "host":21,
@@ -90,11 +90,11 @@ class Match (var id:Int,
   def toJson:JsObject = {
     Json.obj("_id" -> id,
       host match {
-      case Some(h) => "host" -> Json.obj("_id" -> h._id, "name" -> h.name)
+      case Some(h) => "host" -> Json.obj("_id" -> h._id, "name" -> h.getNickName)
       case None => "host" -> None
       },
       guest match {
-        case Some(h) => "guest" -> Json.obj("_id" -> h._id, "name" -> h.name)
+        case Some(h) => "guest" -> Json.obj("_id" -> h._id, "name" -> h.getNickName)
         case None => "guest" -> None
       }
     )
@@ -105,7 +105,7 @@ class Match (var id:Int,
 
 }
 object Match {
-  def apply(host:Option[Team], guest:Option[Team], tournamentType: TournamentType) = {
+  def apply(host:Option[Participant], guest:Option[Participant], tournamentType: TournamentType) = {
     new Match(0, host, guest, tournamentType.getNewScore())
   }
 }

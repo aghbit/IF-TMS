@@ -16,17 +16,25 @@ POST          /api/tournaments/nextEnrollmentState        controllers.Tournament
 GET           /api/myTournaments                          controllers.TournamentsController.getMyTournaments
 GET           /api/tournaments                            controllers.TournamentsController.getTournaments
 GET           /api/tournaments/:id                        controllers.TournamentsController.getTournament(id:String)
+POST          /api/tournaments/:id/match/:matchId         controllers.TournamentsController.updateMatch(id:String, matchId:Int)
+#tree
 GET           /api/tournaments/:id/tree                   controllers.TournamentsController.getTournamentTree(id:String)
 POST          /api/tournaments/:id/tree                   controllers.TournamentsController.generateTournamentTree(id:String)
 DELETE        /api/tournaments/:id/tree                   controllers.TournamentsController.removeTournamentTree(id:String)
-POST          /api/tournaments/:id/match/:matchId         controllers.TournamentsController.updateMatch(id:String, matchId:Int)
+#table
+GET           /api/tournaments/:id/table                  controllers.TournamentsController.getTournamentTable(id:String)
+POST          /api/tournaments/:id/table                  controllers.TournamentsController.generateTournamentTable(id:String)
+DELETE        /api/tournaments/:id/table                  controllers.TournamentsController.removeTournamentTable(id:String)
 
 GET           /api/teams/:id                              controllers.TeamsController.getTeam(id:String)
 POST          /api/tournaments/:id/teams                  controllers.TeamsController.createTeam(id:String)
-DELETE        /api/tournaments/:tournId/:teamId           controllers.TeamsController.deleteTeam(tournId:String,teamId:String)
+DELETE        /api/tournaments/:id/teams/:teamId          controllers.TeamsController.deleteTeam(id:String, teamId:String)
+DELETE        /api/tournaments/:id/players/:playerId      controllers.PlayersController.deleteSinglePlayer(id:String, playerId:String)
 GET           /api/tournaments/:id/teams                  controllers.TeamsController.getTeams(id:String)
-POST          /api/teams/:teamId/players                  controllers.PlayersController.createPlayer(teamId:String)
-DELETE        /api/teams/:teamId/:playerId                controllers.PlayersController.deletePlayer(teamId:String,playerId:String)
+POST          /api/teams/:teamId/players                  controllers.PlayersController.createPlayerInTeam(teamId:String)
+POST          /api/tournaments/:id/players                controllers.PlayersController.createPlayerInTournament(id:String)
+GET           /api/tournaments/:id/players                controllers.PlayersController.getPlayers(id:String)
+DELETE        /api/teams/:teamId/:playerId                controllers.PlayersController.deletePlayer(teamId:String, playerId:String)
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                               controllers.Assets.at(path="/public", file)
 GET           /webjars/*file                              controllers.WebJarAssets.at(file)

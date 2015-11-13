@@ -1,7 +1,7 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
-import models.strategy.EliminationTree
 import models.strategy.strategies.DoubleEliminationStrategy
+import models.strategy.structures.EliminationTree
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import org.bson.types.ObjectId
@@ -16,7 +16,7 @@ class DoubleEliminationTreeTest extends FunSuite with BeforeAndAfter {
 
   before {
     val teams = (for (i <- 0 to 31) yield BeachVolleyballTeam("team " + i)).toList
-    underTest = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, ObjectId.get())
+    underTest = DoubleEliminationStrategy.generate(teams, BeachVolleyball, ObjectId.get())
   }
 
   test("Simple test"){

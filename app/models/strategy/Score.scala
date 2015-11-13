@@ -1,22 +1,46 @@
 package models.strategy
 
 
-import play.api.libs.json.JsObject
+import models.strategy.scores.newscores.PointsContainer
+import play.api.libs.json.{Json, JsObject}
 
-/**
- * Created by Rafal on 2014-12-07.
- */
-trait Score {
+class Score(val maxPointsContainersNumber:Int) {
 
-  def isHostWinner():Boolean
-  def isGuestWinner():Boolean
-  def isMatchFinished():Boolean
-  def addSet():Unit
-  def setScoreInLastSet(hostScore:Int, guestScore:Int):Unit
+ var pointsContainers:List[PointsContainer] = List()
+
+  private val defaultNumberOfContainersToWin:Int = maxPointsContainersNumber/2 + 1
+
+  def isHostWinner:Boolean = {
+    var hostContainersNumber = 0
+    pointsContainers.foreach(
+    p => if(p.isHostWinner) {
+      hostContainersNumber = hostContainersNumber + 1
+    })
+    hostContainersNumber == defaultNumberOfContainersToWin
+  }
+
+  def isGuestWinner:Boolean = {
+    var hostContainersNumber = 0
+    pointsContainers.foreach(
+      p => if(p.isGuestWinner) {
+        hostContainersNumber = hostContainersNumber + 1
+      })
+    hostContainersNumber == defaultNumberOfContainersToWin
+  }
+
+  def isMatchFinished:Boolean = {
+    isHostWinner || isGuestWinner
+  }
+
+  def addPointsContainer(pointsContainer: PointsContainer):Unit = {
+    require(pointsContainers.length < maxPointsContainersNumber, "Can't add points container.")
+    pointsContainers = pointsContainers ::: List(pointsContainer)
+  }
+
   /**
    * Return JsObject representation. e.g.
    * {"score": {
-   *          sets: [{"1": {
+   *          pointsContainers: [{"1": {
    *                        "host":21,
    *                        "guest":15}},
    *                 {"2": {
@@ -30,5 +54,11 @@ trait Score {
    * }
    * @return
    */
-  def toJson:JsObject
+  def toJson:JsObject = {
+    Json.obj("score" ->
+      Json.obj("pointsContainers" ->
+        Json.toJson(pointsContainers.zipWithIndex.map{ case (p, i) => p.toJson})
+      )
+    )
+  }
 }

@@ -1,7 +1,7 @@
 package models.strategy.strategies
 
-import models.strategy.EliminationTree
-import models.strategy.eliminationtrees.TreeNode
+import models.strategy.structures.eliminationtrees.TreeNode
+import models.strategy.structures.EliminationTree
 import models.team.teams.volleyball.volleyballs.BeachVolleyballTeam
 import models.tournament.tournamenttype.tournamenttypes.BeachVolleyball
 import org.bson.types.ObjectId
@@ -17,7 +17,7 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
 
   before {
     val teams = (for (i <- 0 to 15) yield BeachVolleyballTeam("team "+i)).toList
-    eliminationTree = DoubleEliminationStrategy.generateTree(teams, BeachVolleyball, ObjectId.get())
+    eliminationTree = DoubleEliminationStrategy.generate(teams, BeachVolleyball, ObjectId.get())
   }
 
   test("Simple test"){
@@ -33,10 +33,10 @@ class DoubleEliminationStrategy$Test extends FunSuite with BeforeAndAfter with M
     val iter:Iterator[TreeNode] = eliminationTree.iterator
     while (iter.hasNext){
       val node = iter.next()
-      node.value.score.addSet()
-      node.value.score.setScoreInLastSet(21,18)
-      node.value.score.addSet()
-      node.value.score.setScoreInLastSet(21,19)
+  //    node.value.score.addPointsContainer()
+   //   node.value.score.setScoreInLastSet(21,18)
+      //node.value.score.addPointsContainer()
+   //   node.value.score.setScoreInLastSet(21,19)
       DoubleEliminationStrategy.updateMatchResult(eliminationTree, node.value)
       //println("NODEE : " + node.value.id)
       //println(eliminationTree.toString())

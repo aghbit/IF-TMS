@@ -1,11 +1,11 @@
-package models.strategy.eliminationtrees
+package models.strategy.structures.eliminationtrees
 
 import models.strategy.strategies.SingleEliminationStrategy
-import models.strategy.{EliminationStrategy, Match, EliminationTree}
-import models.team.Team
+import models.strategy.structures.EliminationTree
+import models.strategy.{EliminationStrategy, Match}
 import models.tournament.tournamenttype.TournamentType
 import org.bson.types.ObjectId
-import play.api.libs.json.{Json, JsObject}
+import play.api.libs.json.{JsObject, Json}
 
 import scala.collection.mutable
 
@@ -92,7 +92,7 @@ class SingleEliminationTree (override val _id:ObjectId,
     }
   }
 
-  override def foreachTreeNodes(f:TreeNode => Unit) = {
+  override def foreachNode(f:TreeNode => Unit) = {
     val queue = new mutable.Queue[TreeNode]()
     queue.enqueue(root)
     while(queue.nonEmpty) {
@@ -111,8 +111,8 @@ class SingleEliminationTree (override val _id:ObjectId,
 
   /**
    * Represents max depth of elimination tree. Counts from 0 (final), e.g.
-   * For 32 teams depth equals 4.
-   * For 16 teams depth equals 3
+   * For 32 participants depth equals 4.
+   * For 16 participants depth equals 3
    */
   override def depth = (Math.log(teamsNumber)/Math.log(2)).asInstanceOf[Int]-1
 
@@ -147,12 +147,14 @@ class SingleEliminationTree (override val _id:ObjectId,
 
   override def iterator: Iterator[TreeNode] = {
     var list:List[TreeNode] = List()
-    foreachTreeNodes(t => list=List(t) ::: list)
+    foreachNode(t => list=List(t) ::: list)
     list.iterator
   }
 
   override def toJson(): JsObject = {
     Json.obj(
+      "type"->"SingleEliminationTree",
+      "discipline" -> tournamentType.getDisciplineName,
       "losersTreeDepth" -> 0,
       "winnersTreeDepth" -> (depth),
       "match" -> root.value.toJson,

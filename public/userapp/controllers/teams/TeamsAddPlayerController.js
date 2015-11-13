@@ -6,7 +6,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
 
         $scope.loggedIn = SessionService.isLoggedIn;
 
-        $http.get('api/teams/' + $stateParams.id, {}).
+        $http.get('api/participants/' + $stateParams.id, {}).
             success(function(data, status, headers, config) {
                 $scope.team = data;
 
@@ -15,7 +15,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
             });
 
         $scope.submit = function () {
-            $http.post('/api/teams/'+$stateParams.id+"/players", {
+            $http.post('/api/participants/'+$stateParams.id+"/players", {
                 "name": $scope.name,
                 "surname": $scope.surname
             }).
@@ -32,7 +32,7 @@ mainApp.controller('TeamsAddPlayerController', ['$scope', '$http', '$stateParams
                 });
 
             setTimeout( function() {
-                    $http.get('api/teams/' + $stateParams.id, {}).
+                    $http.get('api/participants/' + $stateParams.id, {}).
                         success(function (data, status, headers, config) {
                             $scope.team = data;
 
