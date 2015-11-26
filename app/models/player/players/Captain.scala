@@ -19,4 +19,5 @@ object Captain {
   def apply(name:String, surname:String, phone:String, mail:String) = {
     new Captain(ObjectId.get(), name, surname, phone, mail)
   }
+
 }
