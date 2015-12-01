@@ -59,6 +59,7 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
         })
         .state('tournaments/id/treeShowcase', {
             url: "/tournaments/{id}/treeShowcase",
+            params: {actualScale: 2},
             templateUrl: "/assets/userapp/partials/tournaments/treeShowcase.html",
             controller: 'TournamentsTreeShowcaseController'
         })

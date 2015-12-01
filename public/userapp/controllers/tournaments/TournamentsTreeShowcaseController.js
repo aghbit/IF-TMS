@@ -35,12 +35,17 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             $scope.match.team1 = team1;
             $scope.match.team2 = team2;
             $scope.match.discipline = $scope.tournamentTree.discipline;
-            $scope.match.tournamentID = $scope.tournament._id;
+
+            $scope.scorePopupData = {};
+            $scope.scorePopupData.match = $scope.match;
+            $scope.scorePopupData.tournamentID = $scope.tournament._id;
+            $scope.scorePopupData.actualScale = $scope.actualScale;
+
             ngDialog.open({
                 template: '/assets/userapp/partials/match/matchScore.html',
                 className: 'ngdialog-theme-plain',
                 controller: 'MatchResultsController',
-                data: $scope.match,
+                data: $scope.scorePopupData,
                 closeByDocument: true
             });
         };
@@ -120,6 +125,9 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         function buildTree(json) {
+            $scope.actualScale = $stateParams.actualScale;
+            $scope.scale = "scale("+$scope.actualScale+")";
+
             root = json;
             root.x0 = height / 2;
             root.y0 = width / 2;
@@ -276,7 +284,7 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 halfWidth = $scope.chartWidth/2 - (data.losersTreeDepth - data.winnersTreeDepth)*60;
                 height = $scope.chartHeight;
                 width = $scope.chartWidth;
-                buildTree(data);
+                buildTree(data, 1);
                 console.log(data);
 
             }).error(function(data, status, headers, config, statusText) {
@@ -284,13 +292,12 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 alert(status + " " + data);
             });
 
-        var actualScale = 1;
         $scope.enlarge = function() {
-            actualScale = actualScale*1.1;
-            $scope.scale = "scale("+actualScale+")";
+            $scope.actualScale = $scope.actualScale*1.1;
+            $scope.scale = "scale("+$scope.actualScale+")";
         };
         $scope.reduce = function() {
-            actualScale = actualScale/1.1;
-            $scope.scale = "scale("+actualScale+")";
+            $scope.actualScale = $scope.actualScale/1.1;
+            $scope.scale = "scale("+$scope.actualScale+")";
         };
     }]);
