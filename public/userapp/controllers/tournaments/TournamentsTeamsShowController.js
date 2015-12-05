@@ -39,7 +39,6 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
             $http.get('api/tournaments/' + $stateParams.id + "/players", {}).
                 success(function (data, status, headers, config) {
                     $scope.players = data;
-                    console.log(data)
                     $('.collapsible').collapsible({
                         accordion: false
                     });
