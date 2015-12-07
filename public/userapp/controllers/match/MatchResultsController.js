@@ -18,7 +18,9 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', funct
     $scope.match.sets = [];
     $scope.discipline = $scope.ngDialogData.match.discipline;
 
-    $scope.actualScale = $scope.ngDialogData.actualScale;
+    $scope.actualScale = $scope.ngDialogData.display.actualScale;
+    $scope.x = $scope.ngDialogData.display.x;
+    $scope.y = $scope.ngDialogData.display.y;
 
 
 
@@ -39,8 +41,7 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', funct
                 success(function(data, status, headers, config) {
                     notification("Score has been set.", 4000, true);
                     $scope.closeThisDialog();
-                    //$state.reload();
-                    $state.go($state.current, {actualScale: $scope.actualScale}, {reload: true});
+                    $state.go($state.current, {actualScale: $scope.actualScale, x: $scope.x, y: $scope.y}, {reload: true});
                 }).
                 error(function(data, status, headers, config) {
                     $scope.closeThisDialog();
