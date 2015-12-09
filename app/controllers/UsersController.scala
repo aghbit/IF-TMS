@@ -2,7 +2,6 @@ package controllers
 
 import com.mongodb.{BasicDBObjectBuilder, BasicDBObject}
 import controllers.security.{AuthorizationAction, TokenImpl, TokensKeeper}
-import models.enums.ListEnum
 import models.exceptions.UserWithThisLoginExistsInDB
 import models.user.userproperties.JsonFormat._
 import models.user.userproperties.UserProperties
@@ -14,6 +13,8 @@ import play.api.mvc.{Action, Controller}
 import repositories.UserRepository
 import play.api.libs.functional.syntax._
 import utils.Validators
+import scala.util.matching.Regex
+
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -59,6 +60,69 @@ object UsersController extends Controller{
         case None => Future.successful(NotFound("User with this ID was not found!"))
       }
     }
+  }
+
+  def modifyUser(id: String) = Action.async(parse.json) {
+    request =>
+      val name = request.body.\("name").validate[String](
+        minLength[String](Validators.NAME_MIN_LENGTH) andKeep
+          maxLength[String](Validators.NAME_MAX_LENGTH)
+      ).asEither
+
+      val login = request.body.\("login").validate[String](
+        minLength[String](Validators.LOGIN_MIN_LENGTH) andKeep
+          maxLength[String](Validators.LOGIN_MAX_LENGTH)
+      ).asEither
+
+      val phone = request.body.\("phone").validate[String](
+        pattern(new Regex(Validators.PHONE_REGEX))
+      ).asEither
+
+      val mail = request.body.\("mail").validate[String](
+        pattern(new Regex(Validators.EMAIL_REGEX))
+      ).asEither
+
+      val rawData = Map(
+        "name" -> name,
+        "login" -> login,
+        "phone" -> phone,
+        "mail" -> mail
+      )
+
+      val (errors, data) = Validators.simplifyEithers(rawData)
+
+      if(errors.isEmpty) {
+
+        val criteria = new BasicDBObject("_id", id)
+        val user = repository.findOne(criteria).get
+        val password = user.getProperties.password
+
+        val newUserProperties = UserProperties(
+          data.get("name").get,
+          data.get("login").get,
+          password,
+          data.get("phone").get,
+          data.get("mail").get
+        )
+
+        val newUser = UserImpl(newUserProperties)
+
+        try {
+          repository.remove(user)
+          repository.insert(newUser)
+          val token = newUser.generateToken
+          TokensKeeper.addToken(token)
+          Future.successful(Ok(token.toString))
+        }
+        catch {
+          case e: Exception => Future.failed(e)
+        }
+
+      }
+      else {
+        val jsErrors = errors.map(e => JsError.toFlatJson(e))
+        Future.successful(BadRequest("Detected error: " + jsErrors))
+      }
   }
 
   def login() = Action.async(parse.json) {
