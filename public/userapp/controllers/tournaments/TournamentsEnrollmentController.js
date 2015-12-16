@@ -15,7 +15,7 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
             }).error(function(data, status, headers, config, statusText) {
                 $scope.closeThisDialog();
                 $location.url(status + "/" + data);
-                notification("Sorry. An error occured loading tournament info.", 4000, false);
+                notification("Sorry. An error occurred while loading tournament info.", 4000, false);
             });
         
         $scope.submitTeam = function () {
@@ -28,7 +28,7 @@ mainApp.controller('TournamentsEnrollmentController', ['$scope', '$http', '$stat
             }).
                 success(function (data, status, headers, config) {
                     notification("Team " + $scope.teamName + " was created!", 4000, true)
-                    $location.path("/teams/"+data.id+"/addPlayer")
+                    $location.path("/participants/"+data.id+"/addPlayer")
                 }).
                 error(function (data, status, headers, config) {
                     ErrorMessageService.content = data;
