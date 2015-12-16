@@ -6,11 +6,14 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
     function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
 
         var container = document.getElementById('container'), dragging = false, previousmouse;
-        container.x = 0; container.y = 0;
+
+        container.x = $stateParams.x; container.y = $stateParams.y;
+        if(container.x !== null && container.y !== null)
+            container.style.left = container.x + 'px'; container.style.top = container.y + 'px';
 
         window.onmousedown = function(e) { dragging = true; previousmouse = {x: e.pageX, y: e.pageY}; };
 
-        window.onmouseup = function() { dragging = false; };
+        window.onmouseup = function() { dragging = false;};
 
         window.ondragstart = function(e) { e.preventDefault(); };
 
@@ -35,12 +38,22 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             $scope.match.team1 = team1;
             $scope.match.team2 = team2;
             $scope.match.discipline = $scope.tournamentTree.discipline;
-            $scope.match.tournamentID = $scope.tournament._id;
+
+            $scope.display = {};
+            $scope.display.actualScale = $scope.actualScale;
+            $scope.display.x = container.x;
+            $scope.display.y = container.y;
+
+            $scope.scorePopupData = {};
+            $scope.scorePopupData.match = $scope.match;
+            $scope.scorePopupData.display = $scope.display;
+            $scope.scorePopupData.tournamentID = $scope.tournament._id;
+
             ngDialog.open({
                 template: '/assets/userapp/partials/match/matchScore.html',
                 className: 'ngdialog-theme-plain',
                 controller: 'MatchResultsController',
-                data: $scope.match,
+                data: $scope.scorePopupData,
                 closeByDocument: true
             });
         };
@@ -120,6 +133,9 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         function buildTree(json) {
+            $scope.actualScale = $stateParams.actualScale;
+            $scope.scale = "scale("+$scope.actualScale+")";
+
             root = json;
             root.x0 = height / 2;
             root.y0 = width / 2;
@@ -284,13 +300,12 @@ mainApp.controller('TournamentsTreeShowcaseController', ['$scope', '$location', 
                 alert(status + " " + data);
             });
 
-        var actualScale = 1;
         $scope.enlarge = function() {
-            actualScale = actualScale*1.1;
-            $scope.scale = "scale("+actualScale+")";
+            $scope.actualScale = $scope.actualScale*1.1;
+            $scope.scale = "scale("+$scope.actualScale+")";
         };
         $scope.reduce = function() {
-            actualScale = actualScale/1.1;
-            $scope.scale = "scale("+actualScale+")";
+            $scope.actualScale = $scope.actualScale/1.1;
+            $scope.scale = "scale("+$scope.actualScale+")";
         };
     }]);

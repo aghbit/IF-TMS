@@ -241,6 +241,8 @@ object TournamentsController extends Controller{
         new TournamentSettings(8, maxTeamsNumber, false, 1)
       ),
       new TournamentStaff(new ObjectId("55ca3b9744ae7468a4dca767"), new util.ArrayList()),
+            //SZYMEK: 55ca3b9744ae7468a4dca767
+            //MACIEK: 5659e74bb5018ba988219b75
       eliminationStrategy,
       discipline)
     val playerRepo = new PlayerRepository

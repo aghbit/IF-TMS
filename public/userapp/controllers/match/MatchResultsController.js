@@ -6,17 +6,21 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', funct
 
 
     $scope.match = {};
-    $scope.match._id = $scope.ngDialogData.id;
+    $scope.match._id = $scope.ngDialogData.match.id;
     $scope.match.host = {
-        "_id": $scope.ngDialogData.team1._id,
-        "name": $scope.ngDialogData.team1.name
+        "_id": $scope.ngDialogData.match.team1._id,
+        "name": $scope.ngDialogData.match.team1.name
     };
     $scope.match.guest = {
-        "_id": $scope.ngDialogData.team2._id,
-        "name": $scope.ngDialogData.team2.name
+        "_id": $scope.ngDialogData.match.team2._id,
+        "name": $scope.ngDialogData.match.team2.name
     };
     $scope.match.sets = [];
-    $scope.discipline = $scope.ngDialogData.discipline;
+    $scope.discipline = $scope.ngDialogData.match.discipline;
+
+    $scope.actualScale = $scope.ngDialogData.display.actualScale;
+    $scope.x = $scope.ngDialogData.display.x;
+    $scope.y = $scope.ngDialogData.display.y;
 
 
 
@@ -37,10 +41,11 @@ mainApp.controller('MatchResultsController', ['$scope', '$http', '$state', funct
                 success(function(data, status, headers, config) {
                     notification("Score has been set.", 4000, true);
                     $scope.closeThisDialog();
-                    $state.reload();
+                    $state.go($state.current, {actualScale: $scope.actualScale, x: $scope.x, y: $scope.y}, {reload: true});
                 }).
                 error(function(data, status, headers, config) {
                     $scope.closeThisDialog();
+                    alert(data, status, headers);
                     notification("Sorry. Error occurred.", 4000, false);
                 });
 
