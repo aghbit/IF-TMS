@@ -132,18 +132,18 @@
                 </div>
             </div>
             <div>
-                <p class="row" style="text-align: center">
-                    <a class="btn" ng-show="registerQueue.currentState != 0" ng-click="registerQueue.go_to_prev()" id="previous" name="previous" >Prev<i
-                            class=""></i></a>
-                    <a class="btn" ng-show="registerQueue.currentState != 3"  ng-click="registerQueue.go_to_next()" id="next" name="next" >Next<i
-                            class=""></i></a>
+                <p class="center-align">
+                    <a class="btn" ng-show="registerQueue.currentState != 0" ng-click="registerQueue.go_to_prev()" id="previous" name="previous" >
+                        <i class="mdi-hardware-keyboard-arrow-left"></i></a>
+                    <a class="btn" ng-show="registerQueue.currentState != 3"  ng-click="registerQueue.go_to_next()" id="next" name="next" >
+                    <i class="mdi-hardware-keyboard-arrow-right"></i></a>
                 </p>
-                <p class="row" style="text-align: center">
-                    <button class="btn" type="submit" id="submit" name="submit" >Create <i
+                <p class="center-align">
+                    <button class="btn waves-light" type="submit" id="submit" name="submit" >Create <i
                             class="mdi-content-send right"></i></button>
-                    <button class="btn" type="reset" id="reset" name="reset" >Clear <i
+                    <button class="btn waves-light" type="reset" id="reset" name="reset" >Clear <i
                             class="mdi-content-send right"></i></button>
-                    <a class="btn" href="#/" id="cancel" name="cancel" >Cancel <i
+                    <a class="btn waves-light" href="#/" id="cancel" name="cancel" >Cancel <i
                             class="mdi-content-send right"></i></a>
                 </p>
             </div>
