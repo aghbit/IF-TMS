@@ -133,10 +133,10 @@
             </div>
             <div>
                 <p class="row" style="text-align: center">
-                    <button class="btn" ng-click="" id="previous" name="previous" >Prev<i
-                            class="mdi-content-send right"></i></button>
-                    <button class="btn" ng-click="" id="next" name="next" >Next<i
-                            class="mdi-content-send right"></i></button>
+                    <a class="btn" ng-show="registerQueue.currentState != 0" ng-click="registerQueue.go_to_prev()" id="previous" name="previous" >Prev<i
+                            class=""></i></a>
+                    <a class="btn" ng-show="registerQueue.currentState != 3"  ng-click="registerQueue.go_to_next()" id="next" name="next" >Next<i
+                            class=""></i></a>
                 </p>
                 <p class="row" style="text-align: center">
                     <button class="btn" type="submit" id="submit" name="submit" >Create <i
