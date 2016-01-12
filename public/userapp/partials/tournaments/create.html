@@ -1,10 +1,10 @@
 <div class="page-content">
     <div class="row">
         <ul class="tabs">
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(0)"><a class="active create-tour-tab">Tournament</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(1)"><a class="create-tour-tab">Matches</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(2)"><a class="create-tour-tab">Enrollment</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(3)"><a class="create-tour-tab">Time</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(0)" id="tab0"><a class="active create-tour-tab" href="#step0">Tournament</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(1)"><a class="create-tour-tab" href="#step1">Matches</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(2)"><a class="create-tour-tab" href="#step2">Enrollment</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(3)"><a class="create-tour-tab" href="#step3">Time</a></li>
         </ul>
 
         </div>
@@ -134,8 +134,8 @@
 
 
 
-            <button class="btn waves-effect waves-light create-tournament-button create-tour-submit" type="submit" id="submit" name="submit" >Create <i
-                    class="mdi-content-send right"></i></button>
+            <button class="btn waves-effect waves-light create-tournament-button create-tour-submit" type="submit" id="submit" name="submit" >
+                {{registerQueue.submitCaption}} <i class="mdi-content-send right"></i></button>
         </div>
     </form>
     </div>

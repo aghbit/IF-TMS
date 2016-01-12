@@ -80,7 +80,7 @@ mainApp.controller('RegisterController', ['$scope', '$http', '$location', 'ngDia
                 success(function (data, status, headers, config) {
                     $scope.closeThisDialog();
                     $location.url("/login");
-                    notification("You have been successfully registered. You may now log in.", 4000, true);
+                    notification("You have been successfully registered.", 4000, true);
                 }).
                 error(function (data, status, headers, config) {
                     $scope.closeThisDialog();
