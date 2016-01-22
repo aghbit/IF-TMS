@@ -86,7 +86,8 @@ trait Tournament {
       "properties"->tournamentPropertiesJson,
       "staff"->staff.toJson,
       "class"->this.getClass.toString,
-      "participantType"->discipline.getParticipantType.toString
+      "participantType"->discipline.getParticipantType.toString,
+      "discipline"->discipline.getDisciplineName.toString
     )
   }
 }

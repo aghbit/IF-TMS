@@ -10,16 +10,20 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$s
         }).error(function(data, status, headers, config, statusText) {
 
         });
+
     $scope.openedTournamentItem = undefined;
     $scope.rotateArrow = function(id){
+        if($("#list-icon"+id).hasClass("rotate-clockwise") || $("#list-icon"+id).hasClass("reverse-rotate-clockwise")) {
+            $("#list-icon"+id).toggleClass("reverse-rotate-clockwise");
+        }
         $("#list-icon"+id).toggleClass("rotate-clockwise");
         if($scope.openedTournamentItem !== undefined && $scope.openedTournamentItem!== id){
             $("#list-icon"+$scope.openedTournamentItem).toggleClass("rotate-clockwise");
+            $("#list-icon"+$scope.openedTournamentItem).toggleClass("reverse-rotate-clockwise");
         }
         if($scope.openedTournamentItem === id){
             $scope.openedTournamentItem = undefined;
-        }
-        else{
+        } else {
             $scope.openedTournamentItem = id;
         }
     }

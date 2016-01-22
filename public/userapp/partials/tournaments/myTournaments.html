@@ -3,15 +3,15 @@
         <h5 ng-if="tournaments.length == 0">You don't have any tournaments.</h5>
         <ul ng-if="tournaments.length != 0" class="collapsible col l12 m12 s12" data-collapsible="accordion" id="myTournaments">
             <li  ng-repeat="tournament in tournaments">
-                <div class="collapsible-header tournaments-header" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.properties.description.name}}</div>
+                <div class="collapsible-header white-text" ng-click="rotateArrow(tournament._id)"><i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>{{tournament.properties.description.name}}</div>
                 <div class="collapsible-body">
                     <ul class="collection">
-                        <li class="collection-item tournaments-date">
-                            <a class="btn waves-effect waves-light" ui-sref="tournaments/id/participants({id : tournament._id})">Show participants</a>
-                            <a class="btn waves-effect waves-light" ui-sref="tournaments/id/debug({id : tournament._id})">Debug</a>
-                            <a ng-if="tournament.properties.settings.canEnroll" class="btn waves-effect waves-light" ui-sref="tournaments/id/enrollment({id: tournament._id})">Enroll me</a>
-                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.BeforeEnrollment' && checkOwner(tournament._id) " class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Start enrollment</a>
-                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.Enrollment'" class="btn waves-effect waves-light" ng-click="nextEnrollmentState(tournament._id)">Stop enrollment</a></li>
+                        <li class="collection-item tournaments-date indigo lighten-2">
+                            <a class="btn waves-effect waves-light indigo" ui-sref="tournaments/id/participants({id : tournament._id})">Show participants</a>
+                            <a class="btn waves-effect waves-light indigo" ui-sref="tournaments/id/debug({id : tournament._id})">Debug</a>
+                            <a ng-if="tournament.properties.settings.canEnroll" class="btn waves-effect waves-light indigo" ui-sref="tournaments/id/enrollment({id: tournament._id})">Enroll me</a>
+                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.BeforeEnrollment' && checkOwner(tournament._id) " class="btn waves-effect waves-light indigo" ng-click="nextEnrollmentState(tournament._id)">Start enrollment</a>
+                            <a ng-if="tournament.class=='class models.tournament.tournamentstates.Enrollment'" class="btn waves-effect waves-light indigo" ng-click="nextEnrollmentState(tournament._id)">Stop enrollment</a></li>
 
                         <li class="collection-item tournaments-date">
                             <i class="mdi-notification-event-note"></i>{{tournament.properties.term.begin}}
@@ -19,7 +19,7 @@
                         </li>
                         <li class="collection-item"><i class="mdi-social-poll"></i> Level: {{tournament.properties.settings.level}}</li>
                         <li class="collection-item"><i class="mdi-image-healing"></i> Pitches: {{tournament.properties.settings.numberOfPitches}}</li>
-                        <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.properties.settings.discipline}}</li>
+                        <li class="collection-item"><i class="mdi-action-accessibility"></i> Discipline: {{tournament.discipline}}</li>
                         <li class="collection-item"><i class="mdi-social-people"></i> Max participants: {{tournament.properties.settings.numberOfTeams}}</li>
                         <li class="collection-item tournaments-description">{{tournament.properties.description.description}}</li>
                     </ul>

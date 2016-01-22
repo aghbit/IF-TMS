@@ -240,9 +240,9 @@ object TournamentsController extends Controller{
         ),
         new TournamentSettings(8, maxTeamsNumber, false, 1)
       ),
-      new TournamentStaff(new ObjectId("55ca3b9744ae7468a4dca767"), new util.ArrayList()),
+      new TournamentStaff(new ObjectId("569431b8b50197f6e366c8ec"), new util.ArrayList()),
             //SZYMEK: 55ca3b9744ae7468a4dca767
-            //MACIEK: 5659e74bb5018ba988219b75
+            //MACIEK: "569431b8b50197f6e366c8ec"
       eliminationStrategy,
       discipline)
     val playerRepo = new PlayerRepository
