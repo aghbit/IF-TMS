@@ -49,7 +49,7 @@ input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, inp
 
 
 .clickable {
-    cursor: hand;
+    cursor: pointer;
     color: white;
 }
 
@@ -368,10 +368,14 @@ footer.page-footer {
     color: dimgrey;
 }
 
+.tournaments-buttons {
+    text-align: center;
+}
+
 .tournaments-date{
     font-weight: 500;
     text-align: center;
-    color: white;
+    color: black;
 }
 
 li.active .collapsible-header {

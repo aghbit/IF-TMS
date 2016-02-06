@@ -1,19 +1,26 @@
 <div class="page-content">
     <div class="row">
+
+        <h2>{{tournamentName}}</h2>
+
+        <h5>Tree</h5>
         <p>
-            <button class="btn" ng-click="generate('tree')" >Generate Tree!</button>
-            <button class="btn" ng-click="show('tree')" >Show Tree as Json!</button>
-            <button class="btn" ng-click="showcase('tree')" >Show Tree (BETA)!</button>
-            <button class="btn btn-danger" ng-click="remove('tree')">Remove Tree!</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="generate('tree')" >Generate</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="show('tree')" >Show as Json</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="showcase('tree')" >Show (BETA)</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="remove('tree')">Remove</button>
         </p>
+
+        <h5>Table</h5>
         <p>
-            <button class="btn" ng-click="generate('table')" >Generate Table!</button>
-            <button class="btn" ng-click="show('table')" >Show Table as Json!</button>
-            <button class="btn" ng-click="showcase('table')" >Show Table (BETA)!</button>
-            <button class="btn btn-danger" ng-click="remove('table')">Remove Table!</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="generate('table')" >Generate</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="show('table')" >Show as Json</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="showcase('table')" >Show (BETA)</button>
+            <button class="btn waves-effect waves-light indigo" ng-click="remove('table')">Remove</button>
         </p>
-        <p>
-            {{message}}
-        </p>
+
+        <h5>Output</h5>
+        <pre>{{message}}</pre>
+
     </div>
 </div>

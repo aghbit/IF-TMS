@@ -6,16 +6,17 @@
     <div class="row">
         <div ng-show="tournament.participantType == 'team'">
             <h5 ng-if="teams.length == 0">No teams have enrolled yet!</h5>
-            <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection"  id="team-collaps">
+            <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection" id="team-collaps">
                 <li ng-repeat="team in teams">
-                    <div class="collapsible-header">
-                        <b>{{team.nickName}}</b>
+                    <div class="collapsible-header white-text">
+                        <i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>
+                        {{team.nickName}}
                         <a ng-click="deleteParticipantPopUp(team)" class="clickable right"><i class="mdi-content-clear"></i></a>
                         <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
                     </div>
                     <div class="collapsible-body">
                         <ul class="collection">
-                            <li class="collection-item active">
+                            <li class="collection-item active indigo lighten-2">
                                 Captain:  {{team.captain.name + " " + team.captain.surname}}
                                 <div class="right indigo-button">
                                     <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
@@ -26,8 +27,9 @@
                                 {{player.name + " " + player.surname}}
                                 <a ng-click="deletePlayerCheck(team,player)" class="right clickable mdi-content-clear"></a>
                             </li>
-                            <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item active">
-                            <i class="mdi-content-add"></i>Add Player</a>
+                            <a ng-click="addAnotherPlayer(team.id)" class="clickable collection-item indigo lighten-2 white-text">
+                                <i class="mdi-content-add"></i>Add Player
+                            </a>
                         </ul>
                     </div>
                 </li>
