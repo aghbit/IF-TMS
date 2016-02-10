@@ -9,16 +9,14 @@
             <ul ng-if="teams.length != 0" class="collapsible col l8 offset-l2 collection" id="team-collaps">
                 <li ng-repeat="team in teams">
                     <div class="collapsible-header white-text">
-                        <i id="list-icon{{ tournament._id }}" class="mdi-content-send"></i>
                         {{team.nickName}}
-                        <a ng-click="deleteParticipantPopUp(team)" class="clickable right"><i class="mdi-content-clear"></i></a>
-                        <a ng-click="editTeam(team.id)" class="clickable right"><i class="mdi-image-edit"></i></a>
+                        <a ng-click="deleteParticipantPopUp(team)" class="clickable right white-text"><i class="mdi-content-clear"></i></a>
                     </div>
                     <div class="collapsible-body">
                         <ul class="collection">
                             <li class="collection-item active indigo lighten-2">
                                 Captain:  {{team.captain.name + " " + team.captain.surname}}
-                                <div class="right indigo-button">
+                                <div class="right indigo lighten-2">
                                     <a ng-click="showContactInfo(team)" class="clickable">Contact</a>
                                 </div>
 

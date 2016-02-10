@@ -31,8 +31,8 @@ mainApp.controller('TournamentsMyTournamentsController', ['$scope',  '$http','$s
 
     $scope.checkOwner = function(tid){
         var cookie = $.cookie('tms-token');
-        var id = cookie.substr(0,24)
-        for (i = 0; i < $scope.tournaments.length; i++) {
+        var id = cookie.substr(0,24);
+        for (var i = 0; i < $scope.tournaments.length; i++) {
             if($scope.tournaments[i]._id==tid) {
                 if($scope.tournaments[i].staff.admin==id) return true
             }

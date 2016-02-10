@@ -15,7 +15,6 @@ mainApp.config( [
 mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$http', '$stateParams', 'SessionService', 'ngDialog',
     function ($scope, $location, $http, $stateParams, SessionService, ngDialog) {
 
-
         $scope.getTournament = function(){
             $http.get('api/tournaments/' + $stateParams.id, {}).
                 success(function(data, status, headers, config) {
@@ -72,20 +71,19 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
         $scope.url = (window.URL || window.webkitURL).createObjectURL( blob );
     };
                 
-    $scope.showContactInfo = function(contactPerson){
-        ngDialog.open({
-            template: '/assets/userapp/partials/participants/contactInfo.html',
-            className: 'ngdialog-theme-plain',
-            data: contactPerson,
-            closeByDocument: true
-        })
-    };
+        $scope.showContactInfo = function(contactPerson){
+
+            ngDialog.open({
+                template: '/assets/userapp/partials/participants/contactInfo.html',
+                className: 'ngdialog-theme-plain',
+                data: contactPerson,
+                closeByDocument: true
+            })
+        };
 
         $scope.addAnotherPlayer = function(teamID){
             $location.path('/participants/' + teamID + '/addPlayer');
         };
-
-
 
         $scope.addAnotherTeam = function(){
             $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
@@ -95,8 +93,8 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
             $location.path('/tournaments/' + $scope.tournament._id + '/enrollment');
         };
 
-
         $scope.deleteParticipantPopUp = function(participant) {
+
             participant.participantType = $scope.tournament.participantType
             ngDialog.open({
                 template: '/assets/userapp/partials/tournaments/deleteParticipantDialog.html',
@@ -106,7 +104,6 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
                 closeByDocument: true
             });
         };
-
 
         $scope.deleteTeam = function(team) {
             ngDialog.close();
@@ -164,10 +161,6 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
                 });
         };
 
-    $scope.editTeam = function(id) {
-        console.log(id);
-    };
-
         $scope.deletePlayerCheck = function(team,player) {
             if (team.captain.id == player.id) {
                 $scope.deleteCaptainPopUp(team);
@@ -187,7 +180,7 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
             });
         };
 
-    $scope.deletePlayer = function(teamId,playerId,showNotification) {
+        $scope.deletePlayer = function(teamId,playerId,showNotification) {
         showNotification = typeof showNotification === 'undefined';
 
         $http({
@@ -215,4 +208,5 @@ mainApp.controller('TournamentsTeamsShowController', ['$scope', '$location', '$h
                 notification("Something went wrong!", 4000, false)
             });
     };
+
 }]);
