@@ -52,7 +52,8 @@ mainApp.config(function ($stateProvider, $urlRouterProvider) {
             url: "/tournaments/{id}/debug",
             templateUrl: "/assets/userapp/partials/tournaments/debug.html",
             controller: 'TournamentsDebugController'
-        }).state('tournaments/id/edit-table', {
+        })
+        .state('tournaments/id/edit-table', {
             url: "/tournaments/{id}/edit-table",
             templateUrl: "/assets/userapp/partials/tournaments/editableTable.html",
             controller: 'TournamentTableController'

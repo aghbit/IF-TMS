@@ -35,12 +35,6 @@
                     <li class="divider"></li>
                     <li><a href="#/tournaments/myTournaments" class="waves-effect waves-light">My Tournaments</a></li>
                 </ul>
-                <ul id="optionsdropdown" class="dropdown-content">
-                    <li><a href="#!" class="waves-effect waves-light">Settings</a></li>
-                    <li><a href="#!" class="waves-effect waves-light">Stats</a></li>
-                    <li class="divider"></li>
-                    <li><a ng-click="signOut()" class="waves-effect waves-light">Logout</a></li>
-                </ul>
 
                 <div class="navbar-fixed">
                     <nav>
@@ -57,9 +51,7 @@
                                 <ul class="right">
                                     <li><div id="notification-container"></div></li>
                                     <li ng-hide="loggedIn"><a ng-click="loginPopUp()" class="waves-effect waves-light">Log in</a></li>
-                                    <li ng-show="loggedIn"><a class="dropdown-button waves-effect waves-light" id="optionsdropdownbutton" href="#" data-activates="optionsdropdown"><i class="mdi-navigation-menu"></i>
-                                    </a>
-                                    </li>
+                                    <li ng-show="loggedIn"><a ng-click="signOut()" class="waves-effect waves-light">Log out</a></li>
                                 </ul>
                             </div>
                         </div>

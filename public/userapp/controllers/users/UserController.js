@@ -23,14 +23,6 @@ mainApp.controller('UserController', ['$scope', '$rootScope', '$http', '$locatio
             closeByDocument: true
         });
     }
-    $scope.deletePopUp = function () {
-        //  $scope.closeThisDialog();
-        ngDialog.open({
-            template: '/assets/userapp/partials/users/delete.html',
-            className: 'ngdialog-theme-plain',
-            closeByDocument: true
-        });
-    }
 
 
 }]);
