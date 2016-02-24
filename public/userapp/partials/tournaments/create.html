@@ -1,10 +1,10 @@
 <div class="page-content">
     <div class="row">
         <ul class="tabs">
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(0)" id="tab0"><a class="active create-tour-tab" href="#step0">Tournament</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(1)"><a class="create-tour-tab" href="#step1">Matches</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(2)"><a class="create-tour-tab" href="#step2">Enrollment</a></li>
-            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(3)"><a class="create-tour-tab" href="#step3">Time</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(0)"><a class="active create-tour-tab">Tournament</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(1)"><a class="create-tour-tab">Matches</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(2)"><a class="create-tour-tab">Enrollment</a></li>
+            <li class="tab col s3 reg-tabs" ng-click="registerQueue.step_activate(3)"><a class="create-tour-tab">Time</a></li>
         </ul>
 
         </div>
@@ -131,11 +131,22 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <button class="btn waves-effect waves-light create-tournament-button create-tour-submit" type="submit" id="submit" name="submit" >
-                {{registerQueue.submitCaption}} <i class="mdi-content-send right"></i></button>
+            <div>
+                <p class="center-align">
+                    <a class="btn" ng-show="registerQueue.currentState != 0" ng-click="registerQueue.go_to_prev()" id="previous" name="previous" >
+                        <i class="mdi-hardware-keyboard-arrow-left"></i></a>
+                    <a class="btn" ng-show="registerQueue.currentState != 3"  ng-click="registerQueue.go_to_next()" id="next" name="next" >
+                    <i class="mdi-hardware-keyboard-arrow-right"></i></a>
+                </p>
+                <p class="center-align">
+                    <button class="btn waves-light" type="submit" id="submit" name="submit" >Create <i
+                            class="mdi-content-send right"></i></button>
+                    <button class="btn waves-light" type="reset" id="reset" name="reset" >Clear <i
+                            class="mdi-content-send right"></i></button>
+                    <a class="btn waves-light" href="#/" id="cancel" name="cancel" >Cancel <i
+                            class="mdi-content-send right"></i></a>
+                </p>
+            </div>
         </div>
     </form>
     </div>

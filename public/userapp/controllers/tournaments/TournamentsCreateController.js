@@ -81,6 +81,12 @@ mainApp.controller('TournamentsCreateController', ['$scope', '$http', '$location
         },
         test: function () {
             $scope.registerQueue.active[0] = "carousel-element-active";
+        },
+        go_to_next: function() {
+            $scope.registerQueue.step_activate(this.currentState + 1);
+        },
+        go_to_prev: function() {
+            $scope.registerQueue.step_activate(this.currentState - 1);
         }
     };
 
